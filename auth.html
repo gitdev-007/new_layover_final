@@ -270,7 +270,7 @@
 
     <!-- Supabase Client -->
     <script>
-        const supabase = window.supabase.createClient(
+        const supabaseClient = window.supabase.createClient(
             'https://piygbsxvvptcivffhnvu.supabase.co',
             'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
         );
@@ -359,6 +359,7 @@
 
         // Handle login form submission
         loginForm.addEventListener('submit', async (e) => {
+            console.log("Login submitted");
             e.preventDefault();
             hideMessages();
             setLoginLoading(true);
@@ -380,7 +381,7 @@
             }
 
             try {
-                const result = await supabase.auth.signInWithPassword({
+                const result = await supabaseClient.auth.signInWithPassword({
                     email,
                     password
                 });
@@ -417,6 +418,7 @@
 
         // Handle signup form submission
         signupForm.addEventListener('submit', async (e) => {
+            console.log("Signup submitted");
             e.preventDefault();
             hideMessages();
             setSignupLoading(true);
@@ -445,7 +447,7 @@
             }
 
             try {
-                const result = await supabase.auth.signUp({
+                const result = await supabaseClient.auth.signUp({
                     email,
                     password,
                     options: {
@@ -497,18 +499,18 @@
 
         // Google Sign In Function
         async function signInWithGoogle() {
-            await supabase.auth.signInWithOAuth({
+            await supabaseClient.auth.signInWithOAuth({
                 provider: "google",
                 options: {
-                    redirectTo: "https://new-layover-final.vercel.app"
+                    redirectTo: window.location.origin + "/auth/callback.html"
                 }
             });
         }
 
         // Handle Google Sign In Button Click
         googleSignInBtn.addEventListener('click', async () => {
+            console.log("Google button clicked");
             hideMessages();
-            setLoading(true);
             googleSignInBtn.disabled = true;
 
             try {
@@ -518,13 +520,12 @@
             } catch (error) {
                 console.error('Google sign-in error:', error);
                 showError('Google sign-in failed. Please try again.');
-                setLoading(false);
                 googleSignInBtn.disabled = false;
             }
         });
 
         // Listen for auth state changes
-        supabase.auth.onAuthStateChange((event, session) => {
+        supabaseClient.auth.onAuthStateChange((event, session) => {
             console.log('Auth state changed:', event, session);
             
             if (event === 'SIGNED_IN') {
@@ -542,7 +543,7 @@
         // Check if user is already logged in
         async function checkAuth() {
             try {
-                const { data: { session } } = await supabase.auth.getSession();
+                const { data: { session } } = await supabaseClient.auth.getSession();
                 if (session) {
                     // User is already logged in, redirect to plan page
                     window.location.href = '/plan.html';
@@ -553,6 +554,7 @@
         }
 
         // Check auth on page load
+            console.log("Auth page loaded");
             checkAuth();
         } catch (err) {
             console.error("Auth error:", err);
