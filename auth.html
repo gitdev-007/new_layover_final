@@ -153,32 +153,17 @@
                     <div class="flex-1 h-px bg-white/10"></div>
                 </div>
 
-                <!-- Form -->
-                <form id="authForm" class="space-y-6">
-                    <!-- Name Input (only for signup) -->
-                    <div id="nameField" class="hidden">
-                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="name">Name</label>
-                        <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">person</span>
-                            <input 
-                                id="name" 
-                                name="name" 
-                                type="text" 
-                                placeholder="John Doe"
-                                class="w-full pl-12 pr-4 py-3 bg-surface-container/50 border border-white/10 rounded-xl text-white placeholder-secondary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                            />
-                        </div>
-                    </div>
-
+                <!-- Login Form -->
+                <form id="loginForm" class="space-y-6">
                     <!-- Email Input -->
                     <div>
-                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="email">Email</label>
+                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="loginEmail">Email</label>
                         <div class="relative">
                             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">email</span>
-                            <input 
-                                id="email" 
-                                name="email" 
-                                type="email" 
+                            <input
+                                id="loginEmail"
+                                name="email"
+                                type="email"
                                 required
                                 placeholder="you@example.com"
                                 class="w-full pl-12 pr-4 py-3 bg-surface-container/50 border border-white/10 rounded-xl text-white placeholder-secondary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
@@ -188,13 +173,13 @@
 
                     <!-- Password Input -->
                     <div>
-                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="password">Password</label>
+                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="loginPassword">Password</label>
                         <div class="relative">
                             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">lock</span>
-                            <input 
-                                id="password" 
-                                name="password" 
-                                type="password" 
+                            <input
+                                id="loginPassword"
+                                name="password"
+                                type="password"
                                 required
                                 placeholder="••••••••"
                                 class="w-full pl-12 pr-4 py-3 bg-surface-container/50 border border-white/10 rounded-xl text-white placeholder-secondary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
@@ -203,13 +188,73 @@
                     </div>
 
                     <!-- Submit Button -->
-                    <button 
+                    <button
                         type="submit"
-                        id="submitBtn"
+                        id="loginSubmitBtn"
                         class="w-full bg-primary-container text-on-primary-container py-3 rounded-xl font-label-md hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary-container/20 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        <span id="submitText">Sign In</span>
-                        <span id="loadingSpinner" class="hidden material-symbols-outlined animate-spin">refresh</span>
+                        <span id="loginSubmitText">Sign In</span>
+                        <span id="loginLoadingSpinner" class="hidden material-symbols-outlined animate-spin">refresh</span>
+                    </button>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="space-y-6 hidden">
+                    <!-- Name Input -->
+                    <div>
+                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="signupName">Name</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">person</span>
+                            <input
+                                id="signupName"
+                                name="name"
+                                type="text"
+                                placeholder="John Doe"
+                                class="w-full pl-12 pr-4 py-3 bg-surface-container/50 border border-white/10 rounded-xl text-white placeholder-secondary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Email Input -->
+                    <div>
+                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="signupEmail">Email</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">email</span>
+                            <input
+                                id="signupEmail"
+                                name="email"
+                                type="email"
+                                required
+                                placeholder="you@example.com"
+                                class="w-full pl-12 pr-4 py-3 bg-surface-container/50 border border-white/10 rounded-xl text-white placeholder-secondary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Password Input -->
+                    <div>
+                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="signupPassword">Password</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">lock</span>
+                            <input
+                                id="signupPassword"
+                                name="password"
+                                type="password"
+                                required
+                                placeholder="••••••••"
+                                class="w-full pl-12 pr-4 py-3 bg-surface-container/50 border border-white/10 rounded-xl text-white placeholder-secondary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button
+                        type="submit"
+                        id="signupSubmitBtn"
+                        class="w-full bg-primary-container text-on-primary-container py-3 rounded-xl font-label-md hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary-container/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <span id="signupSubmitText">Sign Up</span>
+                        <span id="signupLoadingSpinner" class="hidden material-symbols-outlined animate-spin">refresh</span>
                     </button>
                 </form>
 
@@ -230,43 +275,41 @@
             'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
         );
 
-        // DOM Elements
-        const loginTab = document.getElementById('loginTab');
+        try {
+            // DOM Elements
+            const loginTab = document.getElementById('loginTab');
         const signupTab = document.getElementById('signupTab');
-        const authForm = document.getElementById('authForm');
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const nameField = document.getElementById('nameField');
-        const submitBtn = document.getElementById('submitBtn');
-        const submitText = document.getElementById('submitText');
-        const loadingSpinner = document.getElementById('loadingSpinner');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const signupName = document.getElementById('signupName');
+        const signupEmail = document.getElementById('signupEmail');
+        const signupPassword = document.getElementById('signupPassword');
+        const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+        const signupSubmitBtn = document.getElementById('signupSubmitBtn');
         const errorMessage = document.getElementById('errorMessage');
         const successMessage = document.getElementById('successMessage');
         const googleSignInBtn = document.getElementById('googleSignInBtn');
 
-        let isLogin = true;
-
-        // Toggle between login and signup
-        loginTab.addEventListener('click', () => {
-            isLogin = true;
-            loginTab.classList.add('bg-primary-container', 'text-on-primary-container');
-            loginTab.classList.remove('text-secondary');
-            signupTab.classList.remove('bg-primary-container', 'text-on-primary-container');
-            signupTab.classList.add('text-secondary');
-            submitText.textContent = 'Sign In';
-            nameField.classList.add('hidden');
-            hideMessages();
-        });
-
-        signupTab.addEventListener('click', () => {
-            isLogin = false;
+        // Tab switching
+        document.getElementById("signupTab").addEventListener("click", () => {
+            document.getElementById("loginForm").classList.add("hidden");
+            document.getElementById("signupForm").classList.remove("hidden");
             signupTab.classList.add('bg-primary-container', 'text-on-primary-container');
             signupTab.classList.remove('text-secondary');
             loginTab.classList.remove('bg-primary-container', 'text-on-primary-container');
             loginTab.classList.add('text-secondary');
-            submitText.textContent = 'Sign Up';
-            nameField.classList.remove('hidden');
+            hideMessages();
+        });
+
+        document.getElementById("loginTab").addEventListener("click", () => {
+            document.getElementById("signupForm").classList.add("hidden");
+            document.getElementById("loginForm").classList.remove("hidden");
+            loginTab.classList.add('bg-primary-container', 'text-on-primary-container');
+            loginTab.classList.remove('text-secondary');
+            signupTab.classList.remove('bg-primary-container', 'text-on-primary-container');
+            signupTab.classList.add('text-secondary');
             hideMessages();
         });
 
@@ -288,104 +331,154 @@
             successMessage.classList.add('hidden');
         }
 
-        // Set loading state
-        function setLoading(loading) {
+        // Set loading state for login
+        function setLoginLoading(loading) {
             if (loading) {
-                submitBtn.disabled = true;
-                submitText.classList.add('hidden');
-                loadingSpinner.classList.remove('hidden');
+                loginSubmitBtn.disabled = true;
+                document.getElementById('loginSubmitText').classList.add('hidden');
+                document.getElementById('loginLoadingSpinner').classList.remove('hidden');
             } else {
-                submitBtn.disabled = false;
-                submitText.classList.remove('hidden');
-                loadingSpinner.classList.add('hidden');
+                loginSubmitBtn.disabled = false;
+                document.getElementById('loginSubmitText').classList.remove('hidden');
+                document.getElementById('loginLoadingSpinner').classList.add('hidden');
             }
         }
 
-        // Handle form submission
-        authForm.addEventListener('submit', async (e) => {
+        // Set loading state for signup
+        function setSignupLoading(loading) {
+            if (loading) {
+                signupSubmitBtn.disabled = true;
+                document.getElementById('signupSubmitText').classList.add('hidden');
+                document.getElementById('signupLoadingSpinner').classList.remove('hidden');
+            } else {
+                signupSubmitBtn.disabled = false;
+                document.getElementById('signupSubmitText').classList.remove('hidden');
+                document.getElementById('signupLoadingSpinner').classList.add('hidden');
+            }
+        }
+
+        // Handle login form submission
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             hideMessages();
-            setLoading(true);
+            setLoginLoading(true);
 
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-            const name = nameInput.value.trim();
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value;
 
             // Validation
             if (!email || !password) {
                 showError('Please fill in all required fields.');
-                setLoading(false);
-                return;
-            }
-
-            if (!isLogin && !name.trim()) {
-                showError('Please enter your name.');
-                setLoading(false);
+                setLoginLoading(false);
                 return;
             }
 
             if (password.length < 6) {
                 showError('Password must be at least 6 characters long.');
-                setLoading(false);
+                setLoginLoading(false);
                 return;
             }
 
             try {
-                let result;
-
-                if (isLogin) {
-                    // Login
-                    result = await supabase.auth.signInWithPassword({
-                        email,
-                        password
-                    });
-                } else {
-                    // Signup with name in metadata
-                    result = await supabase.auth.signUp({
-                        email,
-                        password,
-                        options: {
-                            data: {
-                                name: name.trim(),
-                                full_name: name.trim()
-                            }
-                        }
-                    });
-                }
+                const result = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
 
                 if (result.error) {
                     throw result.error;
                 }
 
-                if (isLogin) {
-                    // Login successful - redirect to plan page
-                    showSuccess('Login successful! Redirecting...');
-                    setTimeout(() => {
-                        window.location.href = '/plan.html';
-                    }, 1500);
-                } else {
-                    // Signup successful
-                    if (result.user && !result.session) {
-                        // Email confirmation required
-                        showSuccess('Account created! Please check your email to confirm your account.');
-                        authForm.reset();
-                    } else if (result.session) {
-                        // Auto-login after signup
-                        showSuccess('Account created! Redirecting...');
-                        setTimeout(() => {
-                            window.location.href = '/plan.html';
-                        }, 1500);
-                    }
-                }
+                // Login successful - redirect to plan page
+                showSuccess('Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = '/plan.html';
+                }, 1500);
 
             } catch (error) {
-                console.error('Auth error:', error);
+                console.error('Login error:', error);
                 let errorMessage = 'An error occurred. Please try again.';
                 
                 if (error.message) {
                     if (error.message.includes('Invalid login credentials')) {
                         errorMessage = 'Invalid email or password.';
-                    } else if (error.message.includes('User already registered')) {
+                    } else if (error.message.includes('Invalid email')) {
+                        errorMessage = 'Please enter a valid email address.';
+                    } else {
+                        errorMessage = error.message;
+                    }
+                }
+                
+                showError(errorMessage);
+            } finally {
+                setLoginLoading(false);
+            }
+        });
+
+        // Handle signup form submission
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessages();
+            setSignupLoading(true);
+
+            const email = signupEmail.value.trim();
+            const password = signupPassword.value;
+            const name = signupName.value.trim();
+
+            // Validation
+            if (!email || !password) {
+                showError('Please fill in all required fields.');
+                setSignupLoading(false);
+                return;
+            }
+
+            if (!name.trim()) {
+                showError('Please enter your name.');
+                setSignupLoading(false);
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long.');
+                setSignupLoading(false);
+                return;
+            }
+
+            try {
+                const result = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            name: name.trim(),
+                            full_name: name.trim()
+                        }
+                    }
+                });
+
+                if (result.error) {
+                    throw result.error;
+                }
+
+                // Signup successful
+                if (result.user && !result.session) {
+                    // Email confirmation required
+                    showSuccess('Account created! Please check your email to confirm your account.');
+                    signupForm.reset();
+                } else if (result.session) {
+                    // Auto-login after signup
+                    showSuccess('Account created! Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = '/plan.html';
+                    }, 1500);
+                }
+
+            } catch (error) {
+                console.error('Signup error:', error);
+                let errorMessage = 'An error occurred. Please try again.';
+                
+                if (error.message) {
+                    if (error.message.includes('User already registered')) {
                         errorMessage = 'An account with this email already exists.';
                     } else if (error.message.includes('Password should be')) {
                         errorMessage = 'Password must be at least 6 characters long.';
@@ -398,39 +491,33 @@
                 
                 showError(errorMessage);
             } finally {
-                setLoading(false);
+                setSignupLoading(false);
             }
         });
 
-        // Handle Google Sign In
+        // Google Sign In Function
+        async function signInWithGoogle() {
+            await supabase.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: "https://new-layover-final.vercel.app"
+                }
+            });
+        }
+
+        // Handle Google Sign In Button Click
         googleSignInBtn.addEventListener('click', async () => {
             hideMessages();
             setLoading(true);
             googleSignInBtn.disabled = true;
 
             try {
-                const { data, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: `${window.location.origin}/auth/callback.html`,
-                        queryParams: {
-                            access_type: 'offline',
-                            prompt: 'consent',
-                        }
-                    }
-                });
-
-                if (error) {
-                    throw error;
-                }
-
+                await signInWithGoogle();
                 // OAuth will redirect automatically
                 showSuccess('Redirecting to Google...');
-
             } catch (error) {
                 console.error('Google sign-in error:', error);
                 showError('Google sign-in failed. Please try again.');
-            } finally {
                 setLoading(false);
                 googleSignInBtn.disabled = false;
             }
@@ -466,7 +553,10 @@
         }
 
         // Check auth on page load
-        checkAuth();
+            checkAuth();
+        } catch (err) {
+            console.error("Auth error:", err);
+        }
     </script>
 </body>
 </html>
