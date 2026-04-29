@@ -569,22 +569,24 @@
             e.preventDefault();
         });
 
-        // Initialize Supabase client with error handling - ONLY ONE instance
-        let supabase = null;
+        // Initialize Supabase client with error handling
+        let supabaseClient = null;
+
         try {
             console.log('Initializing Supabase client...');
-            if (!window.supabase) {
-                throw new Error('Supabase not available on window object');
+
+            if (typeof supabase === 'undefined') {
+                throw new Error('Supabase library not loaded');
             }
-            
-            supabase = window.supabase.createClient(
+
+            supabaseClient = supabase.createClient(
                 'https://piygbsxvvptcivffhnvu.supabase.co',
                 'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
             );
+
             console.log('✅ Supabase client initialized successfully');
         } catch (error) {
             console.error('❌ Failed to initialize Supabase client:', error);
-            // Continue without Supabase - button will show error when clicked
         }
 
         // Mobile menu functionality
@@ -644,9 +646,8 @@
             e.preventDefault();
             
             // Check if Supabase is available
-            if (!supabase) {
-                console.error('❌ Supabase client not available');
-                alert('Authentication service unavailable. Please refresh the page.');
+            if (!supabaseClient) {
+                alert('Authentication service unavailable');
                 return;
             }
             
@@ -654,7 +655,7 @@
                 console.log('🔍 Checking user authentication...');
                 
                 // Use Supabase client to check authentication
-                const { data: { user } } = await supabase.auth.getUser();
+                const { data: { user } } = await supabaseClient.auth.getUser();
                 
                 if (!user) {
                     // If user is NOT logged in → show alert OR redirect to login
@@ -733,11 +734,11 @@
         // Handle logout
         async function handleLogout() {
             try {
-                if (!supabase) {
+                if (!supabaseClient) {
                     throw new Error('Supabase client not available');
                 }
                 
-                const { error } = await supabase.auth.signOut();
+                const { error } = await supabaseClient.auth.signOut();
                 
                 if (error) {
                     throw error;
@@ -752,12 +753,12 @@
 
         // Listen for auth state changes
         function setupAuthListener() {
-            if (!supabase) {
+            if (!supabaseClient) {
                 console.error('❌ Cannot setup auth listener - Supabase not available');
                 return;
             }
             
-            supabase.auth.onAuthStateChange((event, session) => {
+            supabaseClient.auth.onAuthStateChange((event, session) => {
                 console.log('Auth state changed:', event, session);
                 
                 if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
@@ -775,13 +776,13 @@
         // Check initial auth state
         async function checkInitialAuth() {
             try {
-                if (!supabase) {
+                if (!supabaseClient) {
                     console.error('❌ Cannot check auth - Supabase not available');
                     updateAuthUI(null);
                     return;
                 }
                 
-                const { data: { user } } = await supabase.auth.getUser();
+                const { data: { user } } = await supabaseClient.auth.getUser();
                 updateAuthUI(user);
             } catch (error) {
                 console.error('Initial auth check error:', error);
