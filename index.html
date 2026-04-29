@@ -640,70 +640,41 @@
             }
         }
 
-        // Plan Layover button click handler with comprehensive error handling
-        async function handlePlanLayoverClick(e) {
-            console.log('🔘 Plan Layover button clicked');
+        // Plan Layover button click handler - clean auth flow with no alerts
+        document.getElementById("plan-layover-btn").addEventListener("click", async function (e) {
             e.preventDefault();
-            
-            // Check if Supabase is available
-            if (!supabaseClient) {
-                alert('Authentication service unavailable');
+            console.log("Plan Layover button clicked");
+
+            const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+            if (!session) {
+                console.log("User not logged in → redirecting");
+                window.location.href = "/auth.html";
                 return;
             }
-            
-            try {
-                console.log('🔍 Checking user authentication...');
-                
-                // Use Supabase client to check authentication
-                const { data: { user } } = await supabaseClient.auth.getUser();
-                
-                if (!user) {
-                    // If user is NOT logged in → show alert OR redirect to login
-                    console.log('⚠️ User not authenticated');
-                    alert('Please sign in to access this feature.');
-                    console.log('🔄 Redirecting to auth page...');
-                    window.location.href = '/auth.html';
-                } else {
-                    // If logged in → redirect to next page (explore / dashboard)
-                    console.log('✅ User authenticated:', user.email);
-                    console.log('🔄 Redirecting to dashboard...');
-                    window.location.href = '/plan.html'; // Using plan.html as dashboard
-                }
-                
-            } catch (error) {
-                console.error('❌ Unexpected error during auth check:', error);
-                console.log('🔄 Redirecting to auth page for safety...');
-                window.location.href = '/auth.html';
-            }
-        }
 
-        // Select the button using getElementById and add click listener
-        function setupPlanLayoverButton() {
-            try {
-                console.log('🔍 Looking for Plan Layover button...');
-                
-                const planLayoverBtn = document.getElementById('plan-layover-btn');
-                
-                if (!planLayoverBtn) {
-                    console.error('❌ Plan Layover button not found in DOM');
+            console.log("User logged in → continue");
+            window.location.href = "/plan.html";
+        });
+
+        // Mobile Plan Layover button - same logic
+        const mobileBtn = document.getElementById("plan-layover-btn-mobile");
+        if (mobileBtn) {
+            mobileBtn.addEventListener("click", async function (e) {
+                e.preventDefault();
+                console.log("Plan Layover button clicked (mobile)");
+
+                const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+                if (!session) {
+                    console.log("User not logged in → redirecting");
+                    window.location.href = "/auth.html";
                     return;
                 }
-                
-                planLayoverBtn.addEventListener('click', handlePlanLayoverClick);
-                console.log('✅ Plan Layover button click handler added successfully');
-                
-                // Also check for mobile button
-                const planLayoverBtnMobile = document.getElementById('plan-layover-btn-mobile');
-                if (planLayoverBtnMobile) {
-                    planLayoverBtnMobile.addEventListener('click', handlePlanLayoverClick);
-                    console.log('✅ Mobile Plan Layover button click handler added successfully');
-                } else {
-                    console.log('ℹ️ Mobile Plan Layover button not found (optional)');
-                }
-                
-            } catch (error) {
-                console.error('❌ Failed to setup Plan Layover button:', error);
-            }
+
+                console.log("User logged in → continue");
+                window.location.href = "/plan.html";
+            });
         }
 
         // Authentication UI elements
@@ -793,17 +764,14 @@
         // Main initialization function
         function initializeApp() {
             console.log('🚀 Initializing application...');
-            
+
             // Initialize mobile menu
             initializeMobileMenu();
-            
-            // Setup Plan Layover button
-            setupPlanLayoverButton();
-            
+
             // Setup auth listener and check initial state
             setupAuthListener();
             checkInitialAuth();
-            
+
             console.log('✅ Application initialization complete');
         }
 
