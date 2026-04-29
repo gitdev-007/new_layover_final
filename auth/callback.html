@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Authentication Callback | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#5b403a",
+                        "on-secondary": "#313030",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#ffdad2",
+                        "on-secondary-container": "#bab8b7",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-dim": "#121414",
+                        "secondary": "#c8c6c5",
+                        "on-tertiary-container": "#2b2b2b",
+                        "tertiary": "#c8c6c5",
+                        "background": "#121414",
+                        "primary-fixed-dim": "#ffb4a3",
+                        "on-background": "#e2e2e2",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "surface-container": "#1e2020",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "tertiary-container": "#949292",
+                        "inverse-surface": "#e2e2e2",
+                        "outline": "#aa8981",
+                        "tertiary-fixed": "#e5e2e1",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-fixed": "#3d0700",
+                        "surface": "#121414",
+                        "on-primary-container": "#590e00",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-surface": "#e2e2e2",
+                        "inverse-primary": "#b52700",
+                        "surface-bright": "#38393a",
+                        "on-primary": "#621000",
+                        "surface-tint": "#ffb4a3",
+                        "primary": "#ffb4a3",
+                        "surface-container-highest": "#333535",
+                        "surface-variant": "#333535",
+                        "secondary-container": "#4a4949",
+                        "on-primary-fixed-variant": "#8a1b00",
+                        "primary-container": "#ff5a33",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary": "#303030",
+                        "on-secondary-fixed-variant": "#474646",
+                        "surface-container-lowest": "#0c0f0f",
+                        "surface-container-low": "#1a1c1c",
+                        "on-surface-variant": "#e3beb6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass { background: rgba(18, 18, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        html { scroll-behavior: smooth; }
+        body { scroll-padding-top: 110px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+    <!-- Background -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-surface via-surface-container to-surface"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 min-h-screen flex items-center justify-center px-8">
+        <div class="w-full max-w-md">
+            <!-- Loading State -->
+            <div id="loadingState" class="text-center">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-container mx-auto mb-4"></div>
+                <h1 class="text-2xl font-bold text-white mb-2">Completing Authentication</h1>
+                <p class="text-secondary/80">Please wait while we sign you in...</p>
+            </div>
+
+            <!-- Success State -->
+            <div id="successState" class="hidden text-center">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-primary text-2xl">check</span>
+                </div>
+                <h1 class="text-2xl font-bold text-white mb-2">Authentication Successful</h1>
+                <p class="text-secondary/80 mb-6">Welcome to LayoverX!</p>
+                <div class="animate-pulse text-secondary/60 text-sm">
+                    Redirecting to your dashboard...
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="hidden text-center">
+                <div class="w-16 h-16 bg-error-container/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-error text-2xl">error</span>
+                </div>
+                <h1 class="text-2xl font-bold text-white mb-2">Authentication Failed</h1>
+                <p id="errorMessage" class="text-secondary/80 mb-6">There was an issue signing you in.</p>
+                <button onclick="window.location.href='/auth.html'" class="bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-label-md hover:scale-[1.02] active:scale-[0.98] transition-all">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Supabase Client -->
+    <script type="module">
+        import { createClient } from '../lib/supabaseClient.js';
+
+        const supabase = createClient(
+            'https://piygbsxvvptcivffhnvu.supabase.co',
+            'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
+        );
+
+        // DOM Elements
+        const loadingState = document.getElementById('loadingState');
+        const successState = document.getElementById('successState');
+        const errorState = document.getElementById('errorState');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Show state functions
+        function showLoading() {
+            loadingState.classList.remove('hidden');
+            successState.classList.add('hidden');
+            errorState.classList.add('hidden');
+        }
+
+        function showSuccess() {
+            loadingState.classList.add('hidden');
+            successState.classList.remove('hidden');
+            errorState.classList.add('hidden');
+        }
+
+        function showError(message) {
+            loadingState.classList.add('hidden');
+            successState.classList.add('hidden');
+            errorState.classList.remove('hidden');
+            errorMessage.textContent = message;
+        }
+
+        // Handle OAuth callback
+        async function handleAuthCallback() {
+            try {
+                showLoading();
+
+                // Get session after OAuth redirect
+                const { data, error } = await supabase.auth.getSession();
+
+                if (error) {
+                    throw error;
+                }
+
+                if (data.session) {
+                    // Successfully authenticated
+                    showSuccess();
+                    
+                    // Redirect to plan page after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/plan.html';
+                    }, 2000);
+                } else {
+                    // No session found
+                    showError('No authentication session found. Please try signing in again.');
+                }
+
+            } catch (error) {
+                console.error('Auth callback error:', error);
+                showError('Authentication failed. Please try again.');
+            }
+        }
+
+        // Handle the callback on page load
+        handleAuthCallback();
+    </script>
+</body>
+</html>
