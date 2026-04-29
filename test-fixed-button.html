@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Button Test | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">Fixed Plan Layover Button Test</h1>
+        
+        <!-- Status Display -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Current Status</h2>
+            <div id="statusDisplay" class="text-gray-300 mb-4">Initializing...</div>
+            <button onclick="checkStatus()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg">
+                Check Status
+            </button>
+        </div>
+
+        <!-- Test Button -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Plan Layover Button</h2>
+            <button id="plan-layover-btn" class="bg-orange-600 hover:bg-orange-700 px-6 py-2.5 rounded-full font-medium active:scale-95 duration-200">
+                Plan Layover
+            </button>
+            <div id="testResult" class="text-sm text-gray-300 mt-4">
+                Click the button to test functionality.
+            </div>
+        </div>
+
+        <!-- Expected Results -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Expected Results</h2>
+            <div class="space-y-3 text-gray-300">
+                <div class="flex items-start gap-3">
+                    <span class="text-green-400">✅</span>
+                    <div>
+                        <strong>No Console Errors:</strong> Should see no JavaScript errors
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-green-400">✅</span>
+                    <div>
+                        <strong>Button Click Works:</strong> Should detect button clicks
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-green-400">✅</span>
+                    <div>
+                        <strong>Auth Check Runs:</strong> Should check user authentication
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-green-400">✅</span>
+                    <div>
+                        <strong>Proper Redirect:</strong> Should redirect based on auth state
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Console Output -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Console Output</h2>
+            <div id="consoleOutput" class="bg-gray-900 rounded p-4 font-mono text-sm min-h-[200px] max-h-96 overflow-y-auto">
+                <div class="text-gray-400">Waiting for initialization...</div>
+            </div>
+            <div class="mt-4 flex gap-4">
+                <button onclick="clearConsole()" class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg">
+                    Clear Console
+                </button>
+                <button onclick="simulateAuth()" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg">
+                    Simulate Auth
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="mt-8 flex gap-4">
+            <a href="index.html" class="bg-orange-600 hover:bg-orange-700 px-6 py-3 rounded-lg font-medium">
+                Homepage
+            </a>
+            <a href="auth.html" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium">
+                Auth Page
+            </a>
+            <a href="plan.html" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-medium">
+                Plan Page
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Console output display
+        const consoleOutput = document.getElementById('consoleOutput');
+        const statusDisplay = document.getElementById('statusDisplay');
+        const testResult = document.getElementById('testResult');
+
+        // Override console methods to capture output
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        
+        function addToConsole(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ef4444' : type === 'warn' ? '#f59e0b' : type === 'success' ? '#10b981' : '#6b7280';
+            consoleOutput.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            addToConsole(args.join(' '), 'log');
+        };
+
+        console.error = function(...args) {
+            originalConsoleError.apply(console, args);
+            addToConsole(args.join(' '), 'error');
+        };
+
+        function clearConsole() {
+            consoleOutput.innerHTML = '<div class="text-gray-400">Console cleared...</div>';
+        }
+
+        // Initialize Supabase client - ONLY ONE instance
+        let supabase = null;
+        function initializeSupabase() {
+            try {
+                console.log('Initializing Supabase client...');
+                if (!window.supabase) {
+                    throw new Error('Supabase not available on window object');
+                }
+                
+                supabase = window.supabase.createClient(
+                    'https://piygbsxvvptcivffhnvu.supabase.co',
+                    'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
+                );
+                console.log('✅ Supabase client initialized successfully');
+                statusDisplay.innerHTML = '<span class="text-green-400">✅ Supabase client ready</span>';
+                return true;
+            } catch (error) {
+                console.error('❌ Failed to initialize Supabase client:', error);
+                statusDisplay.innerHTML = `<span class="text-red-400">❌ Supabase error: ${error.message}</span>`;
+                return false;
+            }
+        }
+
+        // Plan Layover button click handler - FIXED VERSION
+        async function handlePlanLayoverClick(e) {
+            console.log('🔘 Plan Layover button clicked');
+            e.preventDefault();
+            
+            // Check if Supabase is available
+            if (!supabase) {
+                console.error('❌ Supabase client not available');
+                testResult.innerHTML = '<span class="text-red-400">❌ Supabase not available</span>';
+                alert('Authentication service unavailable. Please refresh the page.');
+                return;
+            }
+            
+            try {
+                console.log('🔍 Checking user authentication...');
+                
+                // Use Supabase client to check authentication
+                const { data: { user } } = await supabase.auth.getUser();
+                
+                if (!user) {
+                    // If user is NOT logged in → show alert OR redirect to login
+                    console.log('⚠️ User not authenticated');
+                    testResult.innerHTML = '<span class="text-yellow-400">⚠️ Not authenticated - showing alert</span>';
+                    alert('Please sign in to access this feature.');
+                    console.log('🔄 Redirecting to auth page...');
+                    window.location.href = '/auth.html';
+                } else {
+                    // If logged in → redirect to next page (explore / dashboard)
+                    console.log('✅ User authenticated:', user.email);
+                    testResult.innerHTML = `<span class="text-green-400">✅ Authenticated as ${user.email}</span>`;
+                    console.log('🔄 Redirecting to dashboard...');
+                    window.location.href = '/plan.html'; // Using plan.html as dashboard
+                }
+                
+            } catch (error) {
+                console.error('❌ Unexpected error during auth check:', error);
+                testResult.innerHTML = '<span class="text-red-400">❌ Auth check failed</span>';
+                console.log('🔄 Redirecting to auth page for safety...');
+                window.location.href = '/auth.html';
+            }
+        }
+
+        // Setup Plan Layover button
+        function setupPlanLayoverButton() {
+            try {
+                console.log('🔍 Looking for Plan Layover button...');
+                
+                const planLayoverBtn = document.getElementById('plan-layover-btn');
+                
+                if (!planLayoverBtn) {
+                    console.error('❌ Plan Layover button not found in DOM');
+                    testResult.innerHTML = '<span class="text-red-400">❌ Button not found</span>';
+                    return;
+                }
+                
+                planLayoverBtn.addEventListener('click', handlePlanLayoverClick);
+                console.log('✅ Plan Layover button click handler added successfully');
+                testResult.innerHTML = '<span class="text-green-400">✅ Button ready to test</span>';
+                
+            } catch (error) {
+                console.error('❌ Failed to setup Plan Layover button:', error);
+                testResult.innerHTML = '<span class="text-red-400">❌ Setup failed</span>';
+            }
+        }
+
+        // Check current status
+        function checkStatus() {
+            console.log('🔄 Checking current status...');
+            
+            const supabaseReady = !!supabase;
+            const buttonExists = !!document.getElementById('plan-layover-btn');
+            
+            let statusHtml = '';
+            if (supabaseReady && buttonExists) {
+                statusHtml = '<span class="text-green-400">✅ Everything ready</span>';
+            } else {
+                statusHtml = '<span class="text-yellow-400">⚠️ Issues found</span>';
+                if (!supabaseReady) statusHtml += ' - Supabase not ready';
+                if (!buttonExists) statusHtml += ' - Button not found';
+            }
+            
+            statusDisplay.innerHTML = statusHtml;
+        }
+
+        // Simulate authentication for testing
+        function simulateAuth() {
+            console.log('🎭 Simulating authenticated user...');
+            testResult.innerHTML = '<span class="text-purple-400">🎭 Simulating auth for testing</span>';
+            
+            // Create a mock user object for testing
+            if (supabase) {
+                supabase.auth._user = {
+                    email: 'test@example.com',
+                    id: 'test-id'
+                };
+            }
+        }
+
+        // Main initialization
+        function initializeApp() {
+            console.log('🚀 Initializing test application...');
+            
+            // Initialize Supabase
+            const supabaseReady = initializeSupabase();
+            
+            if (supabaseReady) {
+                // Setup Plan Layover button
+                setupPlanLayoverButton();
+            }
+            
+            console.log('✅ Test application initialization complete');
+        }
+
+        // Ensure script runs after DOM loads
+        if (document.readyState === 'loading') {
+            console.log('⏳ DOM still loading, waiting for DOMContentLoaded...');
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            console.log('⚡ DOM already loaded, initializing immediately...');
+            initializeApp();
+        }
+
+        // Log page load
+        console.log('🚀 Fixed button test page loaded');
+    </script>
+</body>
+</html>
