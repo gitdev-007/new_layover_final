@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Plan Layover | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#5b403a",
+                        "on-secondary": "#313030",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#ffdad2",
+                        "on-secondary-container": "#bab8b7",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-dim": "#121414",
+                        "secondary": "#c8c6c5",
+                        "on-tertiary-container": "#2b2b2b",
+                        "tertiary": "#c8c6c5",
+                        "background": "#121414",
+                        "primary-fixed-dim": "#ffb4a3",
+                        "on-background": "#e2e2e2",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "surface-container": "#1e2020",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "tertiary-container": "#949292",
+                        "inverse-surface": "#e2e2e2",
+                        "outline": "#aa8981",
+                        "tertiary-fixed": "#e5e2e1",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-fixed": "#3d0700",
+                        "surface": "#121414",
+                        "on-primary-container": "#590e00",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-surface": "#e2e2e2",
+                        "inverse-primary": "#b52700",
+                        "surface-bright": "#38393a",
+                        "on-primary": "#621000",
+                        "surface-tint": "#ffb4a3",
+                        "primary": "#ffb4a3",
+                        "surface-container-highest": "#333535",
+                        "surface-variant": "#333535",
+                        "secondary-container": "#4a4949",
+                        "on-primary-fixed-variant": "#8a1b00",
+                        "primary-container": "#ff5a33",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary": "#303030",
+                        "on-secondary-fixed-variant": "#474646",
+                        "surface-container-lowest": "#0c0f0f",
+                        "surface-container-low": "#1a1c1c",
+                        "on-surface-variant": "#e3beb6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass { background: rgba(18, 18, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        html { scroll-behavior: smooth; }
+        body { scroll-padding-top: 110px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 z-50 bg-surface flex items-center justify-center">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-container mx-auto mb-4"></div>
+            <p class="text-secondary/60">Checking authentication...</p>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until auth check completes) -->
+    <main id="mainContent" class="hidden">
+        <!-- Background -->
+        <div class="fixed inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-surface via-surface-container to-surface"></div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="relative z-10 min-h-screen px-8 py-12">
+            <!-- Header -->
+            <div class="max-w-6xl mx-auto mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="font-headline-xl text-white mb-2">Plan Layover Dashboard</h1>
+                        <p class="text-secondary/80">Manage your layover experiences</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p id="userEmail" class="text-white text-sm"></p>
+                            <p class="text-secondary/60 text-xs">Welcome back</p>
+                        </div>
+                        <button id="logoutBtn" class="px-4 py-2 rounded-full border border-white/10 bg-white/[0.03] text-secondary hover:text-white hover:bg-white/[0.06] transition-colors text-sm">
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Quick Actions Card -->
+                <div class="glass rounded-[28px] border border-white/10 p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-primary">flight_takeoff</span>
+                        <h3 class="font-headline-md text-white">Quick Actions</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <button class="w-full bg-primary-container text-on-primary-container py-3 rounded-xl font-label-md hover:scale-[1.02] active:scale-[0.98] transition-all">
+                            Plan New Layover
+                        </button>
+                        <button class="w-full border border-white/10 bg-white/[0.04] text-white py-3 rounded-xl font-label-md hover:bg-white/[0.08] transition-all">
+                            Browse Experiences
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Bookings Card -->
+                <div class="glass rounded-[28px] border border-white/10 p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-primary">history</span>
+                        <h3 class="font-headline-md text-white">Recent Bookings</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-surface-container/50 rounded-xl">
+                            <p class="text-white text-sm font-medium">Dubai Airport Lounge</p>
+                            <p class="text-secondary/60 text-xs">DXB • 4 hours • Dec 15</p>
+                        </div>
+                        <div class="p-3 bg-surface-container/50 rounded-xl">
+                            <p class="text-white text-sm font-medium">Singapore Spa Treatment</p>
+                            <p class="text-secondary/60 text-xs">SIN • 2 hours • Dec 10</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Layovers Card -->
+                <div class="glass rounded-[28px] border border-white/10 p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-primary">calendar_today</span>
+                        <h3 class="font-headline-md text-white">Upcoming</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl">
+                            <p class="text-primary text-sm font-medium">Mumbai Transit</p>
+                            <p class="text-primary/80 text-xs">BOM • Tomorrow • 6 hours</p>
+                        </div>
+                        <div class="p-3 bg-surface-container/50 rounded-xl">
+                            <p class="text-white text-sm font-medium">London Connection</p>
+                            <p class="text-secondary/60 text-xs">LHR • Dec 28 • 3 hours</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Card -->
+                <div class="glass rounded-[28px] border border-white/10 p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-primary">analytics</span>
+                        <h3 class="font-headline-md text-white">Your Stats</h3>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-primary">12</p>
+                            <p class="text-secondary/60 text-xs">Total Bookings</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-primary">8</p>
+                            <p class="text-secondary/60 text-xs">Cities Visited</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-primary">24h</p>
+                            <p class="text-secondary/60 text-xs">Time Saved</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-primary">4.8</p>
+                            <p class="text-secondary/60 text-xs">Avg Rating</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Experiences Card -->
+                <div class="glass rounded-[28px] border border-white/10 p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-primary">favorite</span>
+                        <h3 class="font-headline-md text-white">Saved</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-surface-container/50 rounded-xl">
+                            <p class="text-white text-sm font-medium">Tokyo Narita Lounge</p>
+                            <p class="text-secondary/60 text-xs">Premium • NRT</p>
+                        </div>
+                        <div class="p-3 bg-surface-container/50 rounded-xl">
+                            <p class="text-white text-sm font-medium">Amsterdam City Tour</p>
+                            <p class="text-secondary/60 text-xs">5 hours • AMS</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links Card -->
+                <div class="glass rounded-[28px] border border-white/10 p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-primary">link</span>
+                        <h3 class="font-headline-md text-white">Quick Links</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <a href="#" class="block p-2 text-secondary hover:text-white transition-colors text-sm">
+                            Profile Settings
+                        </a>
+                        <a href="#" class="block p-2 text-secondary hover:text-white transition-colors text-sm">
+                            Payment Methods
+                        </a>
+                        <a href="#" class="block p-2 text-secondary hover:text-white transition-colors text-sm">
+                            Travel Preferences
+                        </a>
+                        <a href="#" class="block p-2 text-secondary hover:text-white transition-colors text-sm">
+                            Help & Support
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to Home -->
+            <div class="max-w-6xl mx-auto mt-12">
+                <a href="index.html" class="inline-flex items-center gap-2 text-secondary/60 hover:text-secondary transition-colors text-sm">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Back to home
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Supabase Client -->
+    <script type="module">
+        import { createClient } from './lib/supabase.js';
+
+        const supabase = createClient(
+            'https://ygadhaxppmvuvjwdfeam.supabase.co',
+            'sb_publishable_G22v5QMm7kxmFQABahsopw_JS_lblR2'
+        );
+
+        // DOM Elements
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('mainContent');
+        const userEmail = document.getElementById('userEmail');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Check authentication on page load
+        async function checkAuth() {
+            try {
+                const { data, error } = await supabase.auth.getUser();
+                
+                if (error) {
+                    throw error;
+                }
+
+                if (!data.user) {
+                    // No user found, redirect to auth page
+                    window.location.href = '/auth.html';
+                    return;
+                }
+
+                // User is authenticated, show dashboard
+                userEmail.textContent = data.user.email || 'User';
+                mainContent.classList.remove('hidden');
+                loadingScreen.classList.add('hidden');
+
+            } catch (error) {
+                console.error('Auth check error:', error);
+                // On error, redirect to auth page for safety
+                window.location.href = '/auth.html';
+            }
+        }
+
+        // Handle logout
+        async function handleLogout() {
+            try {
+                const { error } = await supabase.auth.signOut();
+                
+                if (error) {
+                    throw error;
+                }
+
+                // Redirect to home page after logout
+                window.location.href = '/index.html';
+
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Even if logout fails, redirect to home page
+                window.location.href = '/index.html';
+            }
+        }
+
+        // Add logout event listener
+        logoutBtn.addEventListener('click', handleLogout);
+
+        // Listen for auth state changes
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Auth state changed:', event, session);
+            
+            if (event === 'SIGNED_OUT') {
+                // User signed out, redirect to auth page
+                window.location.href = '/auth.html';
+            } else if (event === 'TOKEN_REFRESHED') {
+                // Token refreshed, update user info
+                if (session?.user) {
+                    userEmail.textContent = session.user.email || 'User';
+                }
+            }
+        });
+
+        // Check auth on page load
+        checkAuth();
+    </script>
+</body>
+</html>

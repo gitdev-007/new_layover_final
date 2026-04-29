@@ -170,7 +170,11 @@
 </nav>
 </div>
 <div class="hidden md:flex items-center gap-6">
-<a class="px-4 py-2 rounded-full border border-white/10 bg-white/[0.03] text-secondary hover:text-white hover:bg-white/[0.06] transition-colors" href="#">Sign In</a>
+<!-- Auth UI - will be shown/hidden based on auth state -->
+<div id="authButtons" class="flex items-center gap-3">
+<a id="signInBtn" class="px-4 py-2 rounded-full border border-white/10 bg-white/[0.03] text-secondary hover:text-white hover:bg-white/[0.06] transition-colors" href="auth.html">Sign In</a>
+</div>
+<!-- Plan Layover button (always visible) -->
 <button class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-full font-label-md active:scale-95 duration-200">Plan Layover</button>
 </div>
 <button aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu" class="md:hidden w-11 h-11 rounded-full border border-white/10 bg-white/5 text-white flex items-center justify-center" data-mobile-menu-toggle type="button">
@@ -266,7 +270,6 @@
 </div>
 </div>
 <div class="flex flex-col sm:flex-row gap-3 mt-4">
-<button class="w-full sm:w-auto bg-primary-container text-on-primary-container px-8 py-4 rounded-full font-label-md hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary-container/20" type="button">Plan Layover</button>
 <button class="w-full sm:w-auto border border-white/10 bg-white/[0.04] text-white px-8 py-4 rounded-full font-label-md hover:bg-white/[0.08] transition-all" type="button">Explore Experiences</button>
 </div>
 <p class="text-secondary/60 text-sm text-left mt-4 px-2">Browse all experiences without signing in. Login is only required when you continue to booking or checkout.</p>
@@ -553,7 +556,14 @@
 </div>
 </div>
 </footer>
-<script>
+<script type="module">
+        import { createClient } from './lib/supabase.js';
+
+        const supabase = createClient(
+            'https://ygadhaxppmvuvjwdfeam.supabase.co',
+            'sb_publishable_G22v5QMm7kxmFQABahsopw_JS_lblR2'
+        );
+
         const mobileMenuToggle = document.querySelector('[data-mobile-menu-toggle]');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileDropdownTriggers = document.querySelectorAll('[data-mobile-dropdown-trigger]');
@@ -595,6 +605,105 @@
                 if (icon) icon.textContent = 'menu';
             });
         });
+
+        // Plan Layover button handlers with auth check
+        async function handlePlanLayoverClick(e) {
+            e.preventDefault();
+            
+            try {
+                const { data } = await supabase.auth.getUser();
+                
+                if (!data.user) {
+                    // User not authenticated, redirect to auth page
+                    window.location.href = '/auth.html';
+                } else {
+                    // User authenticated, redirect to plan page
+                    window.location.href = '/plan.html';
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                // On error, redirect to auth page for safety
+                window.location.href = '/auth.html';
+            }
+        }
+
+        // Add click handlers to all Plan Layover buttons
+        const planLayoverButtons = document.querySelectorAll('button');
+        planLayoverButtons.forEach(button => {
+            if (button.textContent.trim() === 'Plan Layover') {
+                button.addEventListener('click', handlePlanLayoverClick);
+            }
+        });
+
+        // Authentication UI elements
+        const authButtons = document.getElementById('authButtons');
+        const signInBtn = document.getElementById('signInBtn');
+
+        // Update UI based on auth state
+        function updateAuthUI(user) {
+            if (user) {
+                // User is authenticated - show logout button
+                authButtons.innerHTML = `
+                    <span class="text-secondary/60 text-sm mr-2">Welcome, ${user.email?.split('@')[0] || 'User'}</span>
+                    <button id="logoutBtn" class="px-4 py-2 rounded-full border border-white/10 bg-white/[0.03] text-secondary hover:text-white hover:bg-white/[0.06] transition-colors">
+                        Sign Out
+                    </button>
+                `;
+                
+                // Add logout handler
+                document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            } else {
+                // User is not authenticated - show sign in button
+                authButtons.innerHTML = `
+                    <a id="signInBtn" class="px-4 py-2 rounded-full border border-white/10 bg-white/[0.03] text-secondary hover:text-white hover:bg-white/[0.06] transition-colors" href="auth.html">Sign In</a>
+                `;
+            }
+        }
+
+        // Handle logout
+        async function handleLogout() {
+            try {
+                const { error } = await supabase.auth.signOut();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                console.log('User logged out successfully');
+                
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        // Listen for auth state changes
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Auth state changed:', event, session);
+            
+            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                updateAuthUI(session?.user);
+            } else if (event === 'SIGNED_OUT') {
+                updateAuthUI(null);
+                // Redirect to home page if user was on protected page
+                if (window.location.pathname.includes('plan.html')) {
+                    window.location.href = '/index.html';
+                }
+            }
+        });
+
+        // Check initial auth state
+        async function checkInitialAuth() {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                updateAuthUI(user);
+            } catch (error) {
+                console.error('Initial auth check error:', error);
+                updateAuthUI(null);
+            }
+        }
+
+        // Check initial auth state on page load
+        checkInitialAuth();
 
         const fadeSections = document.querySelectorAll('.fade-section');
         if ('IntersectionObserver' in window) {

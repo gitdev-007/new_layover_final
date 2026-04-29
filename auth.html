@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Authentication | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#5b403a",
+                        "on-secondary": "#313030",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#ffdad2",
+                        "on-secondary-container": "#bab8b7",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-dim": "#121414",
+                        "secondary": "#c8c6c5",
+                        "on-tertiary-container": "#2b2b2b",
+                        "tertiary": "#c8c6c5",
+                        "background": "#121414",
+                        "primary-fixed-dim": "#ffb4a3",
+                        "on-background": "#e2e2e2",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "surface-container": "#1e2020",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "tertiary-container": "#949292",
+                        "inverse-surface": "#e2e2e2",
+                        "outline": "#aa8981",
+                        "tertiary-fixed": "#e5e2e1",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-fixed": "#3d0700",
+                        "surface": "#121414",
+                        "on-primary-container": "#590e00",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-surface": "#e2e2e2",
+                        "inverse-primary": "#b52700",
+                        "surface-bright": "#38393a",
+                        "on-primary": "#621000",
+                        "surface-tint": "#ffb4a3",
+                        "primary": "#ffb4a3",
+                        "surface-container-highest": "#333535",
+                        "surface-variant": "#333535",
+                        "secondary-container": "#4a4949",
+                        "on-primary-fixed-variant": "#8a1b00",
+                        "primary-container": "#ff5a33",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary": "#303030",
+                        "on-secondary-fixed-variant": "#474646",
+                        "surface-container-lowest": "#0c0f0f",
+                        "surface-container-low": "#1a1c1c",
+                        "on-surface-variant": "#e3beb6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass { background: rgba(18, 18, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        html { scroll-behavior: smooth; }
+        body { scroll-padding-top: 110px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+    <!-- Background -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-surface via-surface-container to-surface"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 min-h-screen flex items-center justify-center px-8">
+        <div class="w-full max-w-md">
+            <!-- Logo and Title -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-black tracking-tighter text-white mb-2">LayoverX</h1>
+                <p class="text-secondary/80">Sign in to your account</p>
+            </div>
+
+            <!-- Auth Form -->
+            <div class="glass rounded-[28px] border border-white/10 p-8">
+                <!-- Toggle Buttons -->
+                <div class="flex bg-surface-container/50 rounded-full p-1 mb-8">
+                    <button id="loginTab" class="flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all bg-primary-container text-on-primary-container">Login</button>
+                    <button id="signupTab" class="flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all text-secondary hover:text-white">Sign Up</button>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="hidden mb-6 p-4 rounded-xl bg-error-container/10 border border-error-container/20 text-error text-sm"></div>
+
+                <!-- Success Message -->
+                <div id="successMessage" class="hidden mb-6 p-4 rounded-xl bg-primary/10 border border-primary/20 text-primary text-sm"></div>
+
+                <!-- Form -->
+                <form id="authForm" class="space-y-6">
+                    <!-- Email Input -->
+                    <div>
+                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="email">Email</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">email</span>
+                            <input 
+                                id="email" 
+                                name="email" 
+                                type="email" 
+                                required
+                                placeholder="you@example.com"
+                                class="w-full pl-12 pr-4 py-3 bg-surface-container/50 border border-white/10 rounded-xl text-white placeholder-secondary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Password Input -->
+                    <div>
+                        <label class="block text-sm font-medium text-secondary/80 mb-2" for="password">Password</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">lock</span>
+                            <input 
+                                id="password" 
+                                name="password" 
+                                type="password" 
+                                required
+                                placeholder="••••••••"
+                                class="w-full pl-12 pr-4 py-3 bg-surface-container/50 border border-white/10 rounded-xl text-white placeholder-secondary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit"
+                        id="submitBtn"
+                        class="w-full bg-primary-container text-on-primary-container py-3 rounded-xl font-label-md hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary-container/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <span id="submitText">Sign In</span>
+                        <span id="loadingSpinner" class="hidden material-symbols-outlined animate-spin">refresh</span>
+                    </button>
+                </form>
+
+                <!-- Back to Home -->
+                <div class="mt-8 text-center">
+                    <a href="index.html" class="text-secondary/60 hover:text-secondary transition-colors text-sm">
+                        ← Back to home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Supabase Client -->
+    <script type="module">
+        import { createClient } from './lib/supabase.js';
+
+        const supabase = createClient(
+            'https://ygadhaxppmvuvjwdfeam.supabase.co',
+            'sb_publishable_G22v5QMm7kxmFQABahsopw_JS_lblR2'
+        );
+
+        // DOM Elements
+        const loginTab = document.getElementById('loginTab');
+        const signupTab = document.getElementById('signupTab');
+        const authForm = document.getElementById('authForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitText = document.getElementById('submitText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        let isLogin = true;
+
+        // Toggle between login and signup
+        loginTab.addEventListener('click', () => {
+            isLogin = true;
+            loginTab.classList.add('bg-primary-container', 'text-on-primary-container');
+            loginTab.classList.remove('text-secondary');
+            signupTab.classList.remove('bg-primary-container', 'text-on-primary-container');
+            signupTab.classList.add('text-secondary');
+            submitText.textContent = 'Sign In';
+            hideMessages();
+        });
+
+        signupTab.addEventListener('click', () => {
+            isLogin = false;
+            signupTab.classList.add('bg-primary-container', 'text-on-primary-container');
+            signupTab.classList.remove('text-secondary');
+            loginTab.classList.remove('bg-primary-container', 'text-on-primary-container');
+            loginTab.classList.add('text-secondary');
+            submitText.textContent = 'Sign Up';
+            hideMessages();
+        });
+
+        // Show/hide messages
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+            successMessage.classList.add('hidden');
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.classList.remove('hidden');
+            errorMessage.classList.add('hidden');
+        }
+
+        function hideMessages() {
+            errorMessage.classList.add('hidden');
+            successMessage.classList.add('hidden');
+        }
+
+        // Set loading state
+        function setLoading(loading) {
+            if (loading) {
+                submitBtn.disabled = true;
+                submitText.classList.add('hidden');
+                loadingSpinner.classList.remove('hidden');
+            } else {
+                submitBtn.disabled = false;
+                submitText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+            }
+        }
+
+        // Handle form submission
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessages();
+            setLoading(true);
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            try {
+                let result;
+
+                if (isLogin) {
+                    // Login
+                    result = await supabase.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+                } else {
+                    // Signup
+                    result = await supabase.auth.signUp({
+                        email,
+                        password
+                    });
+                }
+
+                if (result.error) {
+                    throw result.error;
+                }
+
+                if (isLogin) {
+                    // Login successful - redirect to plan page
+                    showSuccess('Login successful! Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = '/plan.html';
+                    }, 1500);
+                } else {
+                    // Signup successful
+                    if (result.user && !result.session) {
+                        // Email confirmation required
+                        showSuccess('Account created! Please check your email to confirm your account.');
+                        authForm.reset();
+                    } else if (result.session) {
+                        // Auto-login after signup
+                        showSuccess('Account created! Redirecting...');
+                        setTimeout(() => {
+                            window.location.href = '/plan.html';
+                        }, 1500);
+                    }
+                }
+
+            } catch (error) {
+                console.error('Auth error:', error);
+                let errorMessage = 'An error occurred. Please try again.';
+                
+                if (error.message) {
+                    if (error.message.includes('Invalid login credentials')) {
+                        errorMessage = 'Invalid email or password.';
+                    } else if (error.message.includes('User already registered')) {
+                        errorMessage = 'An account with this email already exists.';
+                    } else if (error.message.includes('Password should be')) {
+                        errorMessage = 'Password must be at least 6 characters long.';
+                    } else if (error.message.includes('Invalid email')) {
+                        errorMessage = 'Please enter a valid email address.';
+                    } else {
+                        errorMessage = error.message;
+                    }
+                }
+                
+                showError(errorMessage);
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Listen for auth state changes
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Auth state changed:', event, session);
+            
+            if (event === 'SIGNED_IN') {
+                // User signed in, redirect to plan page
+                showSuccess('Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = '/plan.html';
+                }, 1500);
+            } else if (event === 'SIGNED_OUT') {
+                // User signed out, stay on auth page
+                hideMessages();
+            }
+        });
+
+        // Check if user is already logged in
+        async function checkAuth() {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    // User is already logged in, redirect to plan page
+                    window.location.href = '/plan.html';
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+            }
+        }
+
+        // Check auth on page load
+        checkAuth();
+    </script>
+</body>
+</html>
