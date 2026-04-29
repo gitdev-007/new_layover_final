@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Test | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">Supabase CDN Test</h1>
+        
+        <div id="status" class="mb-8 p-4 rounded-lg bg-gray-800">
+            <p class="text-yellow-400">Testing Supabase connection...</p>
+        </div>
+        
+        <div class="space-y-4">
+            <button onclick="testConnection()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg">
+                Test Connection
+            </button>
+            
+            <button onclick="testAuth()" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg">
+                Test Auth Methods
+            </button>
+            
+            <button onclick="testDatabase()" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg">
+                Test Database Access
+            </button>
+        </div>
+        
+        <div id="results" class="mt-8 p-4 rounded-lg bg-gray-800">
+            <h2 class="text-xl font-semibold mb-4">Test Results:</h2>
+            <pre id="output" class="text-sm text-gray-300"></pre>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(
+            'https://piygbsxvvptcivffhnvu.supabase.co',
+            'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
+        );
+
+        const statusEl = document.getElementById('status');
+        const outputEl = document.getElementById('output');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#6b7280';
+            outputEl.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span>\n`;
+            outputEl.scrollTop = outputEl.scrollHeight;
+        }
+
+        function updateStatus(message, type = 'info') {
+            const color = type === 'error' ? 'text-red-400' : type === 'success' ? 'text-green-400' : 'text-yellow-400';
+            statusEl.innerHTML = `<p class="${color}">${message}</p>`;
+        }
+
+        async function testConnection() {
+            log('Testing Supabase connection...');
+            try {
+                // Test basic connection by checking session
+                const { data, error } = await supabase.auth.getSession();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                log('✅ Supabase connection successful!', 'success');
+                log('Session data: ' + JSON.stringify(data, null, 2));
+                updateStatus('✅ Connection successful!', 'success');
+                
+            } catch (error) {
+                log('❌ Connection failed: ' + error.message, 'error');
+                updateStatus('❌ Connection failed!', 'error');
+            }
+        }
+
+        async function testAuth() {
+            log('Testing authentication methods...');
+            
+            try {
+                // Test sign up (will fail if user exists, that's expected)
+                log('Testing sign up method...');
+                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+                    email: 'test@example.com',
+                    password: 'testpassword123'
+                });
+                
+                if (signUpError && !signUpError.message.includes('already registered')) {
+                    throw signUpError;
+                }
+                
+                log('✅ Sign up method available: ' + (signUpError?.message || 'Method works'), 'success');
+                
+                // Test sign in method
+                log('Testing sign in method...');
+                const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+                    email: 'nonexistent@example.com',
+                    password: 'wrongpassword'
+                });
+                
+                if (signInError && signInError.message.includes('Invalid login credentials')) {
+                    log('✅ Sign in method available (expected error for wrong credentials)', 'success');
+                } else if (signInError) {
+                    throw signInError;
+                } else {
+                    log('✅ Sign in method available', 'success');
+                }
+                
+                // Test Google OAuth
+                log('Testing Google OAuth method...');
+                const { data: oauthData, error: oauthError } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: { skipBrowserRedirect: true }
+                });
+                
+                if (oauthError) {
+                    log('⚠️ Google OAuth may not be configured: ' + oauthError.message);
+                } else {
+                    log('✅ Google OAuth method available', 'success');
+                }
+                
+                updateStatus('✅ Auth methods tested!', 'success');
+                
+            } catch (error) {
+                log('❌ Auth test failed: ' + error.message, 'error');
+                updateStatus('❌ Auth test failed!', 'error');
+            }
+        }
+
+        async function testDatabase() {
+            log('Testing database access...');
+            
+            try {
+                // Test accessing profiles table
+                log('Testing profiles table access...');
+                const { data: profilesData, error: profilesError } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .limit(1);
+                
+                if (profilesError) {
+                    if (profilesError.message.includes('relation') && profilesError.message.includes('does not exist')) {
+                        log('⚠️ Profiles table does not exist (create it in Supabase dashboard)');
+                    } else {
+                        throw profilesError;
+                    }
+                } else {
+                    log('✅ Profiles table accessible', 'success');
+                    log('Profiles data: ' + JSON.stringify(profilesData, null, 2));
+                }
+                
+                updateStatus('✅ Database access tested!', 'success');
+                
+            } catch (error) {
+                log('❌ Database test failed: ' + error.message, 'error');
+                updateStatus('❌ Database test failed!', 'error');
+            }
+        }
+
+        // Auto-test connection on page load
+        window.addEventListener('load', () => {
+            log('Page loaded, Supabase client initialized');
+            log('Client URL: https://piygbsxvvptcivffhnvu.supabase.co');
+            log('✅ Supabase available via window.supabase', 'success');
+            updateStatus('✅ Supabase loaded successfully!', 'success');
+        });
+    </script>
+</body>
+</html>

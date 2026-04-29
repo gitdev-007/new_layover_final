@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Test | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">Authentication Test</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Test Connection -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Connection Test</h2>
+                <button onclick="testConnection()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg mb-4">
+                    Test Supabase Connection
+                </button>
+                <div id="connectionResult" class="text-sm text-gray-300"></div>
+            </div>
+
+            <!-- Test Sign Up -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Sign Up Test</h2>
+                <input type="text" id="testName" placeholder="Name" class="w-full mb-2 px-3 py-2 bg-gray-700 rounded">
+                <input type="email" id="testEmail" placeholder="Email" class="w-full mb-2 px-3 py-2 bg-gray-700 rounded">
+                <input type="password" id="testPassword" placeholder="Password" class="w-full mb-4 px-3 py-2 bg-gray-700 rounded">
+                <button onclick="testSignUp()" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg">
+                    Test Sign Up
+                </button>
+                <div id="signUpResult" class="text-sm text-gray-300 mt-4"></div>
+            </div>
+
+            <!-- Test Login -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Login Test</h2>
+                <input type="email" id="loginEmail" placeholder="Email" class="w-full mb-2 px-3 py-2 bg-gray-700 rounded">
+                <input type="password" id="loginPassword" placeholder="Password" class="w-full mb-4 px-3 py-2 bg-gray-700 rounded">
+                <button onclick="testLogin()" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg">
+                    Test Login
+                </button>
+                <div id="loginResult" class="text-sm text-gray-300 mt-4"></div>
+            </div>
+
+            <!-- Test Google OAuth -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Google OAuth Test</h2>
+                <button onclick="testGoogleOAuth()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg">
+                    Test Google Sign In
+                </button>
+                <div id="googleResult" class="text-sm text-gray-300 mt-4"></div>
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">All Test Results</h2>
+            <pre id="allResults" class="text-sm text-gray-300 max-h-96 overflow-y-auto"></pre>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="mt-8 flex gap-4">
+            <a href="auth.html" class="bg-orange-600 hover:bg-orange-700 px-6 py-3 rounded-lg font-medium">
+                Go to Auth Page
+            </a>
+            <a href="test-supabase.html" class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium">
+                Supabase Test
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(
+            'https://piygbsxvvptcivffhnvu.supabase.co',
+            'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
+        );
+
+        const allResultsEl = document.getElementById('allResults');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#6b7280';
+            allResultsEl.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span>\n`;
+            allResultsEl.scrollTop = allResultsEl.scrollHeight;
+        }
+
+        function updateResult(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            const color = type === 'error' ? 'text-red-400' : type === 'success' ? 'text-green-400' : 'text-gray-300';
+            element.className = `text-sm ${color}`;
+            element.textContent = message;
+        }
+
+        async function testConnection() {
+            log('Testing Supabase connection...');
+            updateResult('connectionResult', 'Testing connection...');
+
+            try {
+                const { data, error } = await supabase.auth.getSession();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                log('✅ Supabase connection successful!', 'success');
+                updateResult('connectionResult', '✅ Connection successful!', 'success');
+                
+            } catch (error) {
+                log('❌ Connection failed: ' + error.message, 'error');
+                updateResult('connectionResult', '❌ Connection failed: ' + error.message, 'error');
+            }
+        }
+
+        async function testSignUp() {
+            const name = document.getElementById('testName').value.trim();
+            const email = document.getElementById('testEmail').value.trim();
+            const password = document.getElementById('testPassword').value;
+
+            if (!name || !email || !password) {
+                updateResult('signUpResult', 'Please fill all fields', 'error');
+                return;
+            }
+
+            log(`Testing sign up for: ${email}`);
+            updateResult('signUpResult', 'Testing sign up...');
+
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            name: name.trim(),
+                            full_name: name.trim()
+                        }
+                    }
+                });
+
+                if (error) {
+                    if (error.message.includes('already registered')) {
+                        log('⚠️ User already exists (expected for test)', 'success');
+                        updateResult('signUpResult', '⚠️ User already exists', 'success');
+                    } else {
+                        throw error;
+                    }
+                } else {
+                    log('✅ Sign up successful!', 'success');
+                    log('User data: ' + JSON.stringify(data, null, 2));
+                    updateResult('signUpResult', '✅ Sign up successful!', 'success');
+                }
+                
+            } catch (error) {
+                log('❌ Sign up failed: ' + error.message, 'error');
+                updateResult('signUpResult', '❌ Sign up failed: ' + error.message, 'error');
+            }
+        }
+
+        async function testLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                updateResult('loginResult', 'Please fill all fields', 'error');
+                return;
+            }
+
+            log(`Testing login for: ${email}`);
+            updateResult('loginResult', 'Testing login...');
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
+
+                if (error) {
+                    if (error.message.includes('Invalid login credentials')) {
+                        log('⚠️ Invalid credentials (expected for test)', 'success');
+                        updateResult('loginResult', '⚠️ Invalid credentials', 'success');
+                    } else {
+                        throw error;
+                    }
+                } else {
+                    log('✅ Login successful!', 'success');
+                    log('Session data: ' + JSON.stringify(data, null, 2));
+                    updateResult('loginResult', '✅ Login successful!', 'success');
+                    
+                    // Auto sign out after successful test
+                    setTimeout(async () => {
+                        await supabase.auth.signOut();
+                        log('Auto signed out after test');
+                    }, 2000);
+                }
+                
+            } catch (error) {
+                log('❌ Login failed: ' + error.message, 'error');
+                updateResult('loginResult', '❌ Login failed: ' + error.message, 'error');
+            }
+        }
+
+        async function testGoogleOAuth() {
+            log('Testing Google OAuth...');
+            updateResult('googleResult', 'Testing Google OAuth...');
+
+            try {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: `${window.location.origin}/auth/callback.html`,
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'consent',
+                        }
+                    }
+                });
+
+                if (error) {
+                    if (error.message.includes('not configured')) {
+                        log('⚠️ Google OAuth not configured in Supabase', 'success');
+                        updateResult('googleResult', '⚠️ Google OAuth not configured', 'success');
+                    } else {
+                        throw error;
+                    }
+                } else {
+                    log('✅ Google OAuth initiated!', 'success');
+                    log('OAuth URL would redirect to Google');
+                    updateResult('googleResult', '✅ Google OAuth initiated!', 'success');
+                }
+                
+            } catch (error) {
+                log('❌ Google OAuth failed: ' + error.message, 'error');
+                updateResult('googleResult', '❌ Google OAuth failed: ' + error.message, 'error');
+            }
+        }
+
+        // Auto-test connection on page load
+        window.addEventListener('load', () => {
+            log('Auth test page loaded');
+            log('Supabase client initialized');
+            testConnection();
+        });
+    </script>
+</body>
+</html>

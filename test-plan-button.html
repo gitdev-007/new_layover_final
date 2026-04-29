@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Layover Button Test | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">Plan Layover Button Test</h1>
+        
+        <!-- Test Status -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Authentication Status</h2>
+            <div id="authStatus" class="text-gray-300">Checking authentication...</div>
+            <button onclick="checkAuthStatus()" class="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg">
+                Check Auth Status
+            </button>
+        </div>
+
+        <!-- Test Buttons -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Desktop Button Test -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Desktop Button Test</h2>
+                <button id="plan-layover-btn" class="bg-orange-600 hover:bg-orange-700 px-6 py-2.5 rounded-full font-medium active:scale-95 duration-200">
+                    Plan Layover
+                </button>
+                <div id="desktopResult" class="text-sm text-gray-300 mt-4"></div>
+            </div>
+
+            <!-- Mobile Button Test -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Mobile Button Test</h2>
+                <button id="plan-layover-btn-mobile" class="w-full bg-orange-600 hover:bg-orange-700 px-6 py-3 rounded-2xl font-medium mt-3">
+                    Plan Layover
+                </button>
+                <div id="mobileResult" class="text-sm text-gray-300 mt-4"></div>
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Test Results</h2>
+            <pre id="testResults" class="text-sm text-gray-300 max-h-96 overflow-y-auto"></pre>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="mt-8 flex gap-4">
+            <a href="index.html" class="bg-orange-600 hover:bg-orange-700 px-6 py-3 rounded-lg font-medium">
+                Go to Homepage
+            </a>
+            <a href="auth.html" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium">
+                Go to Auth Page
+            </a>
+            <a href="plan.html" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-medium">
+                Go to Plan Page
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(
+            'https://piygbsxvvptcivffhnvu.supabase.co',
+            'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
+        );
+
+        const testResultsEl = document.getElementById('testResults');
+        const authStatusEl = document.getElementById('authStatus');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#6b7280';
+            testResultsEl.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span>\n`;
+            testResultsEl.scrollTop = testResultsEl.scrollHeight;
+        }
+
+        function updateResult(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            const color = type === 'error' ? 'text-red-400' : type === 'success' ? 'text-green-400' : type === 'warning' ? 'text-yellow-400' : 'text-gray-300';
+            element.className = `text-sm ${color}`;
+            element.textContent = message;
+        }
+
+        async function checkAuthStatus() {
+            log('Checking authentication status...');
+            authStatusEl.textContent = 'Checking...';
+
+            try {
+                const { data, error } = await supabase.auth.getUser();
+                
+                if (error) {
+                    log('❌ Auth check failed: ' + error.message, 'error');
+                    authStatusEl.innerHTML = `<span class="text-red-400">Not authenticated (Error: ${error.message})</span>`;
+                } else if (data.user) {
+                    log('✅ User is authenticated: ' + data.user.email, 'success');
+                    authStatusEl.innerHTML = `<span class="text-green-400">Authenticated as: ${data.user.email}</span>`;
+                } else {
+                    log('⚠️ User not authenticated', 'warning');
+                    authStatusEl.innerHTML = `<span class="text-yellow-400">Not authenticated</span>`;
+                }
+                
+            } catch (error) {
+                log('❌ Auth check error: ' + error.message, 'error');
+                authStatusEl.innerHTML = `<span class="text-red-400">Error: ${error.message}</span>`;
+            }
+        }
+
+        // Plan Layover button handler (same as in index.html)
+        async function handlePlanLayoverClick(e) {
+            e.preventDefault();
+            
+            try {
+                // Check current user using supabase.auth.getUser()
+                const { data, error } = await supabase.auth.getUser();
+                
+                if (error) {
+                    log('❌ Auth check error: ' + error.message, 'error');
+                    // On error, redirect to auth page for safety
+                    log('→ Redirecting to /auth.html (due to error)', 'warning');
+                    updateResult(e.target.id === 'plan-layover-btn' ? 'desktopResult' : 'mobileResult', 'Redirecting to auth page...', 'warning');
+                    setTimeout(() => window.location.href = '/auth.html', 1000);
+                    return;
+                }
+                
+                if (!data.user) {
+                    // User NOT logged in → redirect to /auth.html
+                    log('⚠️ User not authenticated, redirecting to auth page...', 'warning');
+                    updateResult(e.target.id === 'plan-layover-btn' ? 'desktopResult' : 'mobileResult', 'Redirecting to auth page...', 'warning');
+                    setTimeout(() => window.location.href = '/auth.html', 1000);
+                } else {
+                    // User logged in → redirect to main page (plan.html)
+                    log('✅ User authenticated, redirecting to plan page...', 'success');
+                    updateResult(e.target.id === 'plan-layover-btn' ? 'desktopResult' : 'mobileResult', 'Redirecting to plan page...', 'success');
+                    setTimeout(() => window.location.href = '/plan.html', 1000);
+                }
+            } catch (error) {
+                log('❌ Auth check error: ' + error.message, 'error');
+                // On error, redirect to auth page for safety
+                log('→ Redirecting to /auth.html (due to error)', 'warning');
+                updateResult(e.target.id === 'plan-layover-btn' ? 'desktopResult' : 'mobileResult', 'Redirecting to auth page...', 'warning');
+                setTimeout(() => window.location.href = '/auth.html', 1000);
+            }
+        }
+
+        // Setup Plan Layover buttons
+        function setupPlanLayoverButtons() {
+            // Desktop navbar button
+            const planLayoverBtn = document.getElementById('plan-layover-btn');
+            if (planLayoverBtn) {
+                planLayoverBtn.addEventListener('click', handlePlanLayoverClick);
+                log('✅ Desktop Plan Layover button handler added', 'success');
+            } else {
+                log('❌ Desktop Plan Layover button not found', 'error');
+            }
+            
+            // Mobile menu button
+            const planLayoverBtnMobile = document.getElementById('plan-layover-btn-mobile');
+            if (planLayoverBtnMobile) {
+                planLayoverBtnMobile.addEventListener('click', handlePlanLayoverClick);
+                log('✅ Mobile Plan Layover button handler added', 'success');
+            } else {
+                log('❌ Mobile Plan Layover button not found', 'error');
+            }
+        }
+
+        // Ensure script runs after DOM loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setupPlanLayoverButtons();
+                checkAuthStatus();
+            });
+        } else {
+            setupPlanLayoverButtons();
+            checkAuthStatus();
+        }
+
+        // Log page load
+        log('Plan Layover button test page loaded');
+        log('Supabase client initialized');
+        log('Ready to test button behavior');
+    </script>
+</body>
+</html>

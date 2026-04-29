@@ -5,6 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>LayoverX | Elevating the art of the journey</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -175,7 +176,7 @@
 <a id="signInBtn" class="px-4 py-2 rounded-full border border-white/10 bg-white/[0.03] text-secondary hover:text-white hover:bg-white/[0.06] transition-colors" href="auth.html">Sign In</a>
 </div>
 <!-- Plan Layover button (always visible) -->
-<button class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-full font-label-md active:scale-95 duration-200">Plan Layover</button>
+<button id="plan-layover-btn" class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-full font-label-md active:scale-95 duration-200">Plan Layover</button>
 </div>
 <button aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu" class="md:hidden w-11 h-11 rounded-full border border-white/10 bg-white/5 text-white flex items-center justify-center" data-mobile-menu-toggle type="button">
 <span class="material-symbols-outlined">menu</span>
@@ -218,7 +219,7 @@
 <a class="block rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-secondary hover:text-white transition" href="#about-us">About</a>
 <a class="block rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-secondary hover:text-white transition" href="#contact">Contact</a>
 <a class="block rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-secondary hover:text-white transition" href="#">Sign In</a>
-<button class="w-full bg-primary-container text-on-primary-container px-6 py-3 rounded-2xl font-label-md mt-3" type="button">Plan Layover</button>
+<button id="plan-layover-btn-mobile" class="w-full bg-primary-container text-on-primary-container px-6 py-3 rounded-2xl font-label-md mt-3" type="button">Plan Layover</button>
 </div>
 </div>
 </header>
@@ -556,84 +557,181 @@
 </div>
 </div>
 </footer>
-<script type="module">
-        import { createClient } from './lib/supabase.js';
+<script>
+        // Global error handler to prevent script execution stops
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+            e.preventDefault();
+        });
 
-        const supabase = createClient(
-            'https://ygadhaxppmvuvjwdfeam.supabase.co',
-            'sb_publishable_G22v5QMm7kxmFQABahsopw_JS_lblR2'
-        );
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled promise rejection:', e.reason);
+            e.preventDefault();
+        });
 
-        const mobileMenuToggle = document.querySelector('[data-mobile-menu-toggle]');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileDropdownTriggers = document.querySelectorAll('[data-mobile-dropdown-trigger]');
-        const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]');
-
-        if (mobileMenuToggle && mobileMenu) {
-            mobileMenuToggle.addEventListener('click', () => {
-                const isOpen = !mobileMenu.classList.contains('hidden');
-                mobileMenu.classList.toggle('hidden', isOpen);
-                mobileMenuToggle.setAttribute('aria-expanded', String(!isOpen));
-                const icon = mobileMenuToggle.querySelector('.material-symbols-outlined');
-                if (icon) icon.textContent = isOpen ? 'menu' : 'close';
-            });
+        // Initialize Supabase client with error handling
+        let supabase = null;
+        try {
+            console.log('Initializing Supabase client...');
+            if (!window.supabase) {
+                throw new Error('Supabase not available on window object');
+            }
+            
+            supabase = window.supabase.createClient(
+                'https://piygbsxvvptcivffhnvu.supabase.co',
+                'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
+            );
+            console.log('✅ Supabase client initialized successfully');
+        } catch (error) {
+            console.error('❌ Failed to initialize Supabase client:', error);
+            // Continue without Supabase - button will show error when clicked
         }
 
-        mobileDropdownTriggers.forEach((trigger) => {
-            trigger.addEventListener('click', () => {
-                const key = trigger.getAttribute('data-mobile-dropdown-trigger');
-                const target = document.querySelector(`[data-mobile-dropdown="${key}"]`);
-                if (!target) return;
+        // Mobile menu functionality
+        function initializeMobileMenu() {
+            try {
+                const mobileMenuToggle = document.querySelector('[data-mobile-menu-toggle]');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileDropdownTriggers = document.querySelectorAll('[data-mobile-dropdown-trigger]');
+                const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]');
 
-                const isOpen = !target.classList.contains('hidden');
-                target.classList.toggle('hidden', isOpen);
-                trigger.setAttribute('aria-expanded', String(!isOpen));
-
-                const icon = trigger.querySelector('.material-symbols-outlined');
-                if (icon) {
-                    icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+                if (mobileMenuToggle && mobileMenu) {
+                    mobileMenuToggle.addEventListener('click', () => {
+                        const isOpen = !mobileMenu.classList.contains('hidden');
+                        mobileMenu.classList.toggle('hidden', isOpen);
+                        mobileMenuToggle.setAttribute('aria-expanded', String(!isOpen));
+                        const icon = mobileMenuToggle.querySelector('.material-symbols-outlined');
+                        if (icon) icon.textContent = isOpen ? 'menu' : 'close';
+                    });
                 }
-            });
-        });
 
-        mobileNavLinks.forEach((link) => {
-            link.addEventListener('click', () => {
-                if (!mobileMenu || !mobileMenuToggle) return;
-                mobileMenu.classList.add('hidden');
-                mobileMenuToggle.setAttribute('aria-expanded', 'false');
-                const icon = mobileMenuToggle.querySelector('.material-symbols-outlined');
-                if (icon) icon.textContent = 'menu';
-            });
-        });
+                mobileDropdownTriggers.forEach((trigger) => {
+                    trigger.addEventListener('click', () => {
+                        const key = trigger.getAttribute('data-mobile-dropdown-trigger');
+                        const target = document.querySelector(`[data-mobile-dropdown="${key}"]`);
+                        if (!target) return;
 
-        // Plan Layover button handlers with auth check
+                        const isOpen = !target.classList.contains('hidden');
+                        target.classList.toggle('hidden', isOpen);
+                        trigger.setAttribute('aria-expanded', String(!isOpen));
+
+                        const icon = trigger.querySelector('.material-symbols-outlined');
+                        if (icon) {
+                            icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+                        }
+                    });
+                });
+
+                mobileNavLinks.forEach((link) => {
+                    link.addEventListener('click', () => {
+                        if (!mobileMenu || !mobileMenuToggle) return;
+                        mobileMenu.classList.add('hidden');
+                        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                        const icon = mobileMenuToggle.querySelector('.material-symbols-outlined');
+                        if (icon) icon.textContent = 'menu';
+                    });
+                });
+                
+                console.log('✅ Mobile menu initialized');
+            } catch (error) {
+                console.error('❌ Failed to initialize mobile menu:', error);
+            }
+        }
+
+        // Plan Layover button click handler with comprehensive error handling
         async function handlePlanLayoverClick(e) {
+            console.log('🔘 Plan Layover button clicked');
             e.preventDefault();
             
+            // Check if Supabase is available
+            if (!supabase) {
+                console.error('❌ Supabase client not available');
+                alert('Authentication service unavailable. Please refresh the page.');
+                return;
+            }
+            
             try {
-                const { data } = await supabase.auth.getUser();
+                console.log('🔍 Checking user authentication...');
+                
+                // Use Supabase client to check authentication
+                const { data, error } = await supabase.auth.getUser();
+                
+                if (error) {
+                    console.error('❌ Auth check failed:', error);
+                    console.log('🔄 Redirecting to auth page due to auth error...');
+                    window.location.href = '/auth.html';
+                    return;
+                }
                 
                 if (!data.user) {
-                    // User not authenticated, redirect to auth page
+                    // If no user → redirect to /auth.html
+                    console.log('⚠️ User not authenticated');
+                    console.log('🔄 Redirecting to auth page...');
                     window.location.href = '/auth.html';
                 } else {
-                    // User authenticated, redirect to plan page
-                    window.location.href = '/plan.html';
+                    // If user exists → redirect to main page (/main.html)
+                    console.log('✅ User authenticated:', data.user.email);
+                    console.log('🔄 Redirecting to main page...');
+                    window.location.href = '/main.html';
                 }
+                
             } catch (error) {
-                console.error('Auth check error:', error);
-                // On error, redirect to auth page for safety
+                console.error('❌ Unexpected error during auth check:', error);
+                console.log('🔄 Redirecting to auth page for safety...');
                 window.location.href = '/auth.html';
             }
         }
 
-        // Add click handlers to all Plan Layover buttons
-        const planLayoverButtons = document.querySelectorAll('button');
-        planLayoverButtons.forEach(button => {
-            if (button.textContent.trim() === 'Plan Layover') {
-                button.addEventListener('click', handlePlanLayoverClick);
+        // Select the button using getElementById and add click listener
+        function setupPlanLayoverButton() {
+            try {
+                console.log('🔍 Looking for Plan Layover button...');
+                
+                const planLayoverBtn = document.getElementById('plan-layover-btn');
+                
+                if (!planLayoverBtn) {
+                    console.error('❌ Plan Layover button not found in DOM');
+                    return;
+                }
+                
+                planLayoverBtn.addEventListener('click', handlePlanLayoverClick);
+                console.log('✅ Plan Layover button click handler added successfully');
+                
+                // Also check for mobile button
+                const planLayoverBtnMobile = document.getElementById('plan-layover-btn-mobile');
+                if (planLayoverBtnMobile) {
+                    planLayoverBtnMobile.addEventListener('click', handlePlanLayoverClick);
+                    console.log('✅ Mobile Plan Layover button click handler added successfully');
+                } else {
+                    console.log('ℹ️ Mobile Plan Layover button not found (optional)');
+                }
+                
+            } catch (error) {
+                console.error('❌ Failed to setup Plan Layover button:', error);
             }
-        });
+        }
+
+        // Main initialization function
+        function initializeApp() {
+            console.log('🚀 Initializing application...');
+            
+            // Initialize mobile menu
+            initializeMobileMenu();
+            
+            // Setup Plan Layover button
+            setupPlanLayoverButton();
+            
+            console.log('✅ Application initialization complete');
+        }
+
+        // Ensure script runs after DOM loads using DOMContentLoaded
+        if (document.readyState === 'loading') {
+            console.log('⏳ DOM still loading, waiting for DOMContentLoaded...');
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            console.log('⚡ DOM already loaded, initializing immediately...');
+            initializeApp();
+        }
 
         // Authentication UI elements
         const authButtons = document.getElementById('authButtons');

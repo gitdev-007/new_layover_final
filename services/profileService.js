@@ -1,7 +1,13 @@
-import { supabase } from '../lib/supabaseClient'
-
 // Profile service for handling user profiles
-export const profileService = {
+// Note: This file is designed for ES modules. For plain HTML + JavaScript,
+// you should include the profile functions directly in your HTML script tags
+// or load this file as a regular script (not type="module")
+
+// For plain HTML usage, include this script after Supabase CDN:
+// <script src="services/profileService.js"></script>
+// Then use: profileService.getProfile(userId)
+
+const profileService = {
   // Fetch user profile by user ID
   async getProfile(userId) {
     try {
@@ -92,4 +98,9 @@ export const profileService = {
       return { data: null, error }
     }
   }
+}
+
+// Make profileService available globally for plain HTML usage
+if (typeof window !== 'undefined') {
+  window.profileService = profileService
 }

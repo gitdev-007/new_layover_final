@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Click Test | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">Plan Layover Button Click Test</h1>
+        
+        <!-- Test Section -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Test the Plan Layover Button</h2>
+            
+            <!-- Plan Layover button with proper ID -->
+            <button id="plan-layover-btn" class="bg-orange-600 hover:bg-orange-700 px-6 py-2.5 rounded-full font-medium active:scale-95 duration-200">
+                Plan Layover
+            </button>
+            
+            <div class="mt-4 text-sm text-gray-300">
+                <p>Click the button above and check the browser console.</p>
+                <p>You should see: <code class="bg-gray-700 px-2 py-1 rounded">"Plan Layover clicked"</code></p>
+            </div>
+        </div>
+
+        <!-- Console Output Display -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Console Output</h2>
+            <div id="consoleOutput" class="bg-gray-900 rounded p-4 font-mono text-sm text-green-400 min-h-[100px]">
+                <div>Waiting for button click...</div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="mt-8 bg-gray-800 rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">How to Test</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                <li>Open browser developer tools (F12)</li>
+                <li>Go to the Console tab</li>
+                <li>Click the "Plan Layover" button above</li>
+                <li>Look for the message: "Plan Layover clicked"</li>
+                <li>Also check this page's console output display</li>
+            </ol>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="mt-8 flex gap-4">
+            <a href="index.html" class="bg-orange-600 hover:bg-orange-700 px-6 py-3 rounded-lg font-medium">
+                Go to Homepage
+            </a>
+            <button onclick="clearConsole()" class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium">
+                Clear Console
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Console output display
+        const consoleOutput = document.getElementById('consoleOutput');
+        
+        // Override console.log to capture output
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            
+            // Display in our console output div
+            const message = args.join(' ');
+            const timestamp = new Date().toLocaleTimeString();
+            consoleOutput.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+
+        // Clear console function
+        function clearConsole() {
+            consoleOutput.innerHTML = '<div>Console cleared...</div>';
+        }
+
+        // Plan Layover button click handler - basic console log for verification
+        function handlePlanLayoverClick(e) {
+            console.log("Plan Layover clicked");
+            e.preventDefault();
+        }
+
+        // Select the button using getElementById and add click listener
+        function setupPlanLayoverButton() {
+            const planLayoverBtn = document.getElementById('plan-layover-btn');
+            if (planLayoverBtn) {
+                planLayoverBtn.addEventListener('click', handlePlanLayoverClick);
+                console.log('Plan Layover button click handler added');
+            } else {
+                console.log('Plan Layover button not found');
+            }
+        }
+
+        // Ensure script runs after DOM loads using DOMContentLoaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupPlanLayoverButton);
+        } else {
+            setupPlanLayoverButton();
+        }
+
+        // Log page load
+        console.log('Button click test page loaded');
+    </script>
+</body>
+</html>
