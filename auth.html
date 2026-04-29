@@ -500,10 +500,7 @@
         // Google Sign In Function
         async function signInWithGoogle() {
             await supabaseClient.auth.signInWithOAuth({
-                provider: "google",
-                options: {
-                    redirectTo: window.location.origin + "/auth/callback.html"
-                }
+                provider: 'google'
             });
         }
 
