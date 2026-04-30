@@ -271,7 +271,7 @@
 </div>
 </div>
 <div class="flex justify-center items-center mt-4">
-<button class="w-full sm:w-auto border border-white/10 bg-white/[0.04] text-white px-8 py-4 rounded-full font-label-md hover:bg-white/[0.08] transition-all" type="button">Explore Experiences</button>
+<button id="exploreBtn" class="w-full sm:w-auto border border-white/10 bg-white/[0.04] text-white px-8 py-4 rounded-full font-label-md hover:bg-white/[0.08] transition-all" type="button">Explore Experiences</button>
 </div>
 <p class="text-secondary/60 text-sm text-left mt-4 px-2">Browse all experiences without signing in. Login is only required when you continue to booking or checkout.</p>
 </div>
@@ -782,6 +782,33 @@
         } else {
             console.log('⚡ DOM already loaded, initializing immediately...');
             initializeApp();
+        }
+
+        // Explore Experiences button - QR verification flow
+        function setupExploreButton() {
+            const exploreBtn = document.getElementById('exploreBtn');
+            
+            if (!exploreBtn) {
+                console.error('❌ Explore button not found - id="exploreBtn" missing');
+                return;
+            }
+            
+            exploreBtn.addEventListener('click', function(e) {
+                // Prevent default if inside form
+                e.preventDefault();
+                
+                console.log('✅ Explore Experiences clicked - redirecting to QR Upload...');
+                window.location.href = 'QR Uplaod State.html';
+            });
+            
+            console.log('✅ Explore button handler attached');
+        }
+        
+        // Setup on DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupExploreButton);
+        } else {
+            setupExploreButton();
         }
 
         // Fade-in animations
