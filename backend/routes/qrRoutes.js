@@ -3,7 +3,22 @@ import { processQR, verifyQR } from '../services/qrService.js';
 
 const router = Router();
 
-// POST /api/qr/process - Process QR code
+// GET /test - Test route to verify QR router is working
+router.get('/test', (req, res) => {
+  res.json({ success: true, message: 'QR route working' });
+});
+
+// GET /process - Test route (for debugging)
+router.get('/process', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'QR process endpoint ready (POST to scan image)',
+    method: 'POST',
+    body: { imageData: 'base64-encoded-image' }
+  });
+});
+
+// POST /process - Main QR processing endpoint
 router.post('/process', async (req, res) => {
   try {
     const { imageData } = req.body;

@@ -27,12 +27,29 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Root test route
+app.get('/', (req, res) => {
+  res.send('Backend is running');
+});
+
 // Routes
 app.use('/api/qr', qrRoutes);
 app.use('/api', uploadRoutes);
 app.use('/api', processRoutes);
 app.use('/api', confirmationRoutes);
 app.use('/api/admin', adminRoutes);
+
+// Log all registered routes for debugging
+console.log('\n📋 Registered Routes:');
+console.log('====================');
+console.log('GET  /                    - Root test');
+console.log('GET  /api/qr/test         - QR route test');
+console.log('POST /api/qr/scan         - QR scan endpoint');
+console.log('POST /api/upload-qr      - Upload QR file');
+console.log('GET  /api/qr-status/:id   - Check QR status');
+console.log('GET  /api/process-qr/:id  - Process QR (legacy)');
+console.log('GET  /health              - Health check');
+console.log('====================\n');
 
 // Health check endpoint
 app.get('/health', (req, res) => {
