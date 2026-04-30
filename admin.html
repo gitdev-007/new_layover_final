@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCheck - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-slate-900 text-white border-b border-slate-800 shadow-lg">
+        <div class="flex items-center gap-3">
+            <span class="text-xl font-bold tracking-tight">SkyCheck Admin</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span id="adminEmail" class="text-sm text-slate-400"></span>
+            <button id="logoutBtn" class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all text-sm">
+                <span class="material-symbols-outlined text-sm">logout</span>
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-24 pb-12 px-6 flex justify-center">
+        <div class="w-full max-w-[1200px]">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-slate-800 mb-2">QR Upload Management</h1>
+                    <p class="text-slate-600">Review and manage all flight QR verifications</p>
+                </div>
+                <button id="refreshBtn" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
+                    <span class="material-symbols-outlined">refresh</span>
+                    Refresh
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="text-sm text-slate-500 mb-1">Total Uploads</div>
+                    <div id="totalCount" class="text-2xl font-bold text-slate-800">-</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="text-sm text-slate-500 mb-1">Verified</div>
+                    <div id="verifiedCount" class="text-2xl font-bold text-green-600">-</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="text-sm text-slate-500 mb-1">Fraud</div>
+                    <div id="fraudCount" class="text-2xl font-bold text-red-600">-</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="text-sm text-slate-500 mb-1">Invalid</div>
+                    <div id="invalidCount" class="text-2xl font-bold text-orange-600">-</div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="text-center py-12 bg-white rounded-xl border border-slate-200">
+                <span class="material-symbols-outlined text-4xl text-slate-400 animate-spin">refresh</span>
+                <p class="text-slate-500 mt-4">Loading uploads...</p>
+            </div>
+
+            <!-- Uploads Table -->
+            <div id="uploadsTable" class="hidden bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-slate-50 border-b border-slate-200">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">File</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Airline</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Valid</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Fraud</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="uploadsList" class="divide-y divide-slate-200">
+                            <!-- Uploads will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-12 bg-white rounded-xl border border-slate-200">
+                <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">inbox</span>
+                <h3 class="text-xl font-semibold text-slate-700">No uploads found</h3>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Supabase Config - Update with your credentials
+        const SUPABASE_URL = 'https://your-project.supabase.co';
+        const SUPABASE_ANON_KEY = 'your-anon-key';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Check auth
+        async function init() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            // Show user email
+            document.getElementById('adminEmail').textContent = session.user.email;
+            
+            // Load uploads
+            await loadUploads();
+        }
+
+        // Fetch and display all uploads
+        async function loadUploads() {
+            try {
+                document.getElementById('loadingState').classList.remove('hidden');
+                document.getElementById('uploadsTable').classList.add('hidden');
+                document.getElementById('emptyState').classList.add('hidden');
+
+                // Fetch all uploads using admin view (requires proper RLS setup)
+                const { data: uploads, error } = await supabase
+                    .from('qr_uploads')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                document.getElementById('loadingState').classList.add('hidden');
+
+                if (!uploads || uploads.length === 0) {
+                    document.getElementById('emptyState').classList.remove('hidden');
+                    updateStats(0, 0, 0, 0);
+                    return;
+                }
+
+                document.getElementById('uploadsTable').classList.remove('hidden');
+
+                // Update stats
+                const verified = uploads.filter(u => u.status === 'verified').length;
+                const fraud = uploads.filter(u => u.is_fraud).length;
+                const invalid = uploads.filter(u => u.is_valid === false).length;
+                updateStats(uploads.length, verified, fraud, invalid);
+
+                // Render table
+                const tbody = document.getElementById('uploadsList');
+                tbody.innerHTML = uploads.map(upload => {
+                    // Row styling based on fraud/invalid
+                    let rowClass = 'hover:bg-slate-50 transition-colors';
+                    if (upload.is_fraud) {
+                        rowClass = 'bg-red-50 hover:bg-red-100 transition-colors';
+                    } else if (upload.is_valid === false) {
+                        rowClass = 'bg-orange-50 hover:bg-orange-100 transition-colors';
+                    }
+
+                    // Status badge
+                    const statusColors = {
+                        'uploaded': 'bg-amber-100 text-amber-700',
+                        'processing': 'bg-blue-100 text-blue-700',
+                        'verified': 'bg-green-100 text-green-700',
+                        'failed': 'bg-red-100 text-red-700',
+                        'duplicate': 'bg-purple-100 text-purple-700',
+                        'fraud': 'bg-red-100 text-red-700'
+                    };
+                    const statusClass = statusColors[upload.status] || 'bg-slate-100 text-slate-700';
+
+                    // Valid badge
+                    const validBadge = upload.is_valid === true 
+                        ? '<span class="flex items-center gap-1 text-green-600"><span class="material-symbols-outlined text-sm">check_circle</span> Yes</span>'
+                        : upload.is_valid === false
+                        ? '<span class="flex items-center gap-1 text-red-600"><span class="material-symbols-outlined text-sm">cancel</span> No</span>'
+                        : '<span class="text-slate-400">-</span>';
+
+                    // Fraud badge
+                    const fraudBadge = upload.is_fraud
+                        ? '<span class="flex items-center gap-1 text-red-600 font-semibold"><span class="material-symbols-outlined text-sm">warning</span> FRAUD</span>'
+                        : '<span class="text-slate-400">-</span>';
+
+                    // File name
+                    const fileName = upload.file_url 
+                        ? upload.file_url.split('/').pop().substring(14)
+                        : 'File';
+
+                    // Action buttons (disable if already processed)
+                    const disableActions = upload.status === 'approved' || upload.status === 'rejected';
+                    const actionButtons = disableActions
+                        ? `<span class="text-slate-400 text-sm">${upload.status}</span>`
+                        : `
+                            <button onclick="approveUpload('${upload.id}')" class="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors mr-2">Approve</button>
+                            <button onclick="rejectUpload('${upload.id}')" class="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors">Reject</button>
+                        `;
+
+                    return `
+                        <tr class="${rowClass}">
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-slate-400 text-sm">description</span>
+                                    <span class="text-sm text-slate-700">${fileName}</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="font-semibold text-blue-900">${upload.airline || '-'}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="px-2 py-1 rounded-full text-xs font-semibold ${statusClass}">
+                                    ${upload.status || 'unknown'}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">${validBadge}</td>
+                            <td class="px-4 py-3">${fraudBadge}</td>
+                            <td class="px-4 py-3">${actionButtons}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading uploads:', error);
+                document.getElementById('loadingState').classList.add('hidden');
+                alert('Failed to load uploads: ' + error.message);
+            }
+        }
+
+        // Update stats
+        function updateStats(total, verified, fraud, invalid) {
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('verifiedCount').textContent = verified;
+            document.getElementById('fraudCount').textContent = fraud;
+            document.getElementById('invalidCount').textContent = invalid;
+        }
+
+        // Approve upload
+        async function approveUpload(id) {
+            try {
+                const { error } = await supabase
+                    .from('qr_uploads')
+                    .update({ status: 'approved' })
+                    .eq('id', id);
+
+                if (error) throw error;
+                
+                alert('Upload approved');
+                await loadUploads();
+            } catch (error) {
+                console.error('Approve error:', error);
+                alert('Failed to approve: ' + error.message);
+            }
+        }
+
+        // Reject upload
+        async function rejectUpload(id) {
+            try {
+                const { error } = await supabase
+                    .from('qr_uploads')
+                    .update({ status: 'rejected' })
+                    .eq('id', id);
+
+                if (error) throw error;
+                
+                alert('Upload rejected');
+                await loadUploads();
+            } catch (error) {
+                console.error('Reject error:', error);
+                alert('Failed to reject: ' + error.message);
+            }
+        }
+
+        // Event listeners
+        document.getElementById('refreshBtn').addEventListener('click', loadUploads);
+        
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            window.location.href = 'auth.html';
+        });
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
