@@ -8,6 +8,33 @@ router.get('/test', (req, res) => {
   res.json({ success: true, message: 'QR route working' });
 });
 
+// POST /scan - QR scan endpoint
+router.post('/scan', async (req, res) => {
+  try {
+    const { imageData } = req.body;
+    
+    if (!imageData) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Image data is required' 
+      });
+    }
+    
+    const result = await processQR(imageData);
+    res.json({ 
+      success: true, 
+      message: 'Scan route working',
+      data: result 
+    });
+  } catch (error) {
+    console.error('QR scan error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to process QR code' 
+    });
+  }
+});
+
 // GET /process - Test route (for debugging)
 router.get('/process', (req, res) => {
   res.json({ 
