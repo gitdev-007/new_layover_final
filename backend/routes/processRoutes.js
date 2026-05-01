@@ -23,9 +23,9 @@ router.get('/qr-status', async (req, res) => {
       });
     }
 
-    const { data: upload, error } = await query.single();
+    const { data, error } = await query.single();
 
-    if (error || !upload) {
+    if (error || !data) {
       return res.status(404).json({
         success: false,
         message: 'QR upload not found'
@@ -34,12 +34,12 @@ router.get('/qr-status', async (req, res) => {
 
     res.json({
       success: true,
-      qrData: upload.qr_data,
-      isValid: upload.is_valid,
-      isDuplicate: upload.is_duplicate,
-      status: upload.status,
-      extractedInfo: upload.extracted_info,
-      airline: upload.airline
+      qrData: data.qr_data,
+      isValid: data.is_valid,
+      isDuplicate: data.is_duplicate,
+      status: data.status,
+      extractedInfo: data.extracted_info,
+      airline: data.airline
     });
 
   } catch (err) {
@@ -50,7 +50,6 @@ router.get('/qr-status', async (req, res) => {
     });
   }
 });
-
 // GET /process-qr - Check processing status (supports id or url query param)
 router.get('/process-qr', async (req, res) => {
   try {
