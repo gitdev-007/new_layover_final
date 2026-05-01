@@ -11,20 +11,17 @@ import adminRoutes from './routes/adminRoutes.js';
 dotenv.config();
 
 const app = express();
-// CORS configuration - Allow multiple origins
-const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-    'https://new-layover-final.vercel.app',
-    'https://layoverx-dummy.vercel.app'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-};
+
+// CORS configuration - Allow all origins
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.options('*', cors());
 
 // Middleware
-app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
