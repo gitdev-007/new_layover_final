@@ -425,21 +425,27 @@ uploadBtn.addEventListener('click', async () => {
             body: formData
         });
 
-        const data = await response.json();
+       const data = await response.json();
 
-        if (!response.ok) {
-            throw new Error(data.error || 'Upload failed');
-        }
+console.log("UPLOAD RESPONSE:", data);
 
-        if (data.success && data.data && data.data.id) {
-            // Store ID in localStorage
-            localStorage.setItem('qr_id', data.data.id);
-            
-            // Redirect to processing page
-            window.location.href = 'QR Processing State.html';
-        } else {
-            throw new Error('Invalid response from server');
-        }
+//  REMOVE strict response.ok check
+//  Only fail if no data returned
+
+if (!data || !data.data) {
+    alert("Upload failed - check console");
+    console.error("Bad response:", data);
+    setLoading(false);
+    return;
+}
+
+        if (data && data.data && data.data.id) {
+    localStorage.setItem('qr_id', data.data.id);
+    window.location.href = 'QR Processing State.html';
+} else {
+    alert("Upload succeeded but response format is wrong");
+    console.error("Response:", data);
+}
 
     } catch (error) {
         console.error('Upload error:', error);
