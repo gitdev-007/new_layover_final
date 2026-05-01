@@ -203,15 +203,13 @@
         const POLL_INTERVAL = 2000; // 2 seconds
 
         // Get qr_id from localStorage on page load
-        console.log("QR ID from localStorage:", localStorage.getItem('qr_id'));
-        const qrId = localStorage.getItem('qr_id');
-        let pollTimer = null;
-        
-        // Update reference ID display
-        if (qrId) {
-            document.getElementById('refId').textContent = 'QR-' + qrId.substring(0, 8).toUpperCase();
-        } else {
-            document.getElementById('refId').textContent = 'Not found';
+        const qrId = localStorage.getItem("qr_id");
+
+        console.log("QR ID from localStorage:", qrId);
+
+        if (!qrId) {
+            alert("QR ID missing");
+            return;
         }
 
         // Poll for QR processing status

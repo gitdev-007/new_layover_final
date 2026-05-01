@@ -438,40 +438,26 @@ uploadBtn.addEventListener('click', async () => {
             body: formData
         });
 
-       const data = await response.json();
+        const data = await response.json();
 
-console.log("UPLOAD RESPONSE:", data);
+        console.log("UPLOAD RESPONSE:", data);
 
-//  REMOVE strict response.ok check
-//  Only fail if no data returned
+        // Upload case (returns URL)
+        if (data.success && data.url) {
+            localStorage.setItem("qr_id", data.url);
+            window.location.href = "QR Processing State.html";
+            return;
+        }
 
-console.log("UPLOAD RESPONSE:", data);
+        // Scan case (returns ID)
+        if (data.success && data.data && data.data.id) {
+            localStorage.setItem("qr_id", data.data.id);
+            window.location.href = "QR Processing State.html";
+            return;
+        }
 
-// Upload success (has URL)
-if (data.success && data.url) {
-    localStorage.setItem('qr_url', data.url);
-    window.location.href = 'QR Processing State.html';
-    return;
-}
-
-// Scan success (has message)
-if (data.success && data.message) {
-    alert("QR scanned successfully");
-    return;
-}
-
-//  fallback
-alert("Something unexpected happened");
-console.error("Response:", data);
-
-        if (data && data.data && data.data.id) {
-    localStorage.setItem('qr_id', data.data.id);
-    window.location.href = 'QR Processing State.html';
-} else {
-    alert("Upload succeeded but response format is wrong");
-    console.error("Response:", data);
-}
-
+        // fallback
+        throw new Error("Invalid response from server");
     } catch (error) {
         console.error('Upload error:', error);
         alert('Something went wrong');
