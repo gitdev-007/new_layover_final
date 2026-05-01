@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
+import AWS from 'aws-sdk';
 import supabaseClient from '../supabaseClient.js';
 import { scanQR } from '../services/qrScanner.js';
 import { validateQR } from '../services/validation.js';
@@ -8,6 +9,13 @@ import { detectFraud } from '../services/fraudDetection.js';
 import { decodeBCBP } from '../services/bcbpDecoder.js';
 
 const router = Router();
+
+// Configure AWS S3
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
 
 /**
  * Background QR processing function
@@ -36,27 +44,15 @@ async function processQRInBackground(id) {
       .update({ status: 'processing' })
       .eq('id', id);
 
-    // Extract file path from stored URL
-    const filePath = upload.file_url.split('/').slice(-2).join('/');
+    // Download file from S3
+    const s3Key = upload.file_url.split('/').pop();
+    const s3Params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: s3Key,
+    };
     
-    // Generate fresh signed URL
-    const { data: signedUrlData, error: signedUrlError } = await supabaseClient
-      .storage
-      .from('qr-files')
-      .createSignedUrl(filePath, 3600);
-
-    if (signedUrlError) {
-      throw new Error(`Failed to generate signed URL: ${signedUrlError.message}`);
-    }
-
-    // Download file
-    const response = await fetch(signedUrlData.signedUrl);
-    if (!response.ok) {
-      throw new Error(`Failed to download file: ${response.statusText}`);
-    }
-
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const s3Object = await s3.getObject(s3Params).promise();
+    const buffer = s3Object.Body;
 
     // Scan QR code
     const qrData = await scanQR(buffer);
@@ -153,7 +149,7 @@ function rateLimit(req, res, next) {
   // Check current IP
   const ipData = rateLimits.get(ip);
   if (ipData) {
-    if (now - ipData.timestamp > RATE_LIMIT_WINDOW) {
+    if (now - data.timestamp > RATE_LIMIT_WINDOW) {
       // Reset window
       rateLimits.set(ip, { count: 1, timestamp: now });
     } else if (ipData.count >= RATE_LIMIT_MAX) {
@@ -174,20 +170,9 @@ function rateLimit(req, res, next) {
   next();
 }
 
-// Configure multer for memory storage
-const storage = multer.memoryStorage();
+// Configure multer with memory storage
 const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-  fileFilter: (req, file, cb) => {
-    // Only allow: image/png, image/jpeg, application/pdf
-    const allowedTypes = ['image/png', 'image/jpeg', 'application/pdf'];
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error(`Invalid file type: ${file.mimetype}. Only PNG, JPEG, and PDF files are allowed.`), false);
-    }
-  }
+  storage: multer.memoryStorage(),
 });
 
 // GET /my-uploads - Get user's uploads
@@ -238,116 +223,30 @@ router.get('/my-uploads', async (req, res) => {
   }
 });
 
-// Multer error handler middleware
-function handleMulterError(err, req, res, next) {
-  if (err instanceof multer.MulterError) {
-    if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({
-        success: false,
-        error: 'File size exceeds 5MB limit'
-      });
-    }
-    return res.status(400).json({
-      success: false,
-      error: err.message
-    });
-  } else if (err) {
-    return res.status(400).json({
-      success: false,
-      error: err.message
-    });
-  }
-  next();
-}
-
-// POST /upload-qr - Upload QR file
-router.post('/upload-qr', rateLimit, upload.single('file'), handleMulterError, async (req, res) => {
+// POST /upload-qr - Upload QR file to S3
+router.post('/upload-qr', rateLimit, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    // Get user from JWT token
-    const authHeader = req.headers.authorization;
-    let userId = null;
-    
-    if (authHeader) {
-      const token = authHeader.replace('Bearer ', '');
-      const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
-      
-      if (authError) {
-        console.error('Auth error:', authError.message);
-      } else if (user) {
-        userId = user.id;
-      }
-    }
-
-    const file = req.file;
-    const timestamp = Date.now();
-    const fileName = `${timestamp}-${file.originalname}`;
-    const filePath = `uploads/${fileName}`;
-
-    // Upload file to Supabase Storage
-    const { data: storageData, error: storageError } = await supabaseClient
-      .storage
-      .from('qr-files')
-      .upload(filePath, file.buffer, {
-        contentType: file.mimetype,
-        cacheControl: '3600'
-      });
-
-    if (storageError) {
-      throw new Error(`Storage upload failed: ${storageError.message}`);
-    }
-
-    // Generate signed URL (1 hour expiry) for private bucket
-    const { data: signedUrlData, error: signedUrlError } = await supabaseClient
-      .storage
-      .from('qr-files')
-      .createSignedUrl(filePath, 3600); // 3600 seconds = 1 hour
-
-    if (signedUrlError) {
-      throw new Error(`Failed to generate signed URL: ${signedUrlError.message}`);
-    }
-
-    const fileUrl = signedUrlData.signedUrl;
-
-    // Insert record in qr_uploads table
-    const insertData = {
-      file_url: fileUrl,
-      status: 'uploaded'
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: Date.now() + '-' + req.file.originalname,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
     };
-    
-    // Add user_id if authenticated
-    if (userId) {
-      insertData.user_id = userId;
-    }
-    
-    const { data: insertResult, error: insertError } = await supabaseClient
-      .from('qr_uploads')
-      .insert([insertData])
-      .select()
-      .single();
 
-    if (insertError) {
-      throw new Error(`Database insert failed: ${insertError.message}`);
-    }
+    const data = await s3.upload(params).promise();
 
-    // Trigger async processing (don't await - run in background)
-    processQRInBackground(insertResult.id);
-
-    // Return immediately with upload ID
-    res.status(201).json({
-      success: true,
-      data: insertResult
+    res.json({
+      message: 'Upload successful',
+      url: data.Location,
     });
 
   } catch (error) {
-    console.error('Upload error:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message || 'Failed to upload file'
-    });
+    console.error('UPLOAD ERROR:', error);
+    res.status(500).json({ error: error.message });
   }
 });
 
