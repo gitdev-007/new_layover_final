@@ -383,20 +383,22 @@ async function scanQR() {
 // Accept response if it has id
 console.log("UPLOAD RESPONSE:", data);
 
-// Case 1: Scan QR response
-if (data.success && data.message && (!data.data || Object.keys(data.data).length === 0)) {
-    alert("QR processed successfully");
+// Case 1: Upload API (returns URL)
+if (data.success && data.url) {
+    localStorage.setItem('qr_url', data.url);
+    window.location.href = 'QR Processing State.html';
     return;
 }
 
-// Case 2: Upload QR response
-if (data.data && data.data.id) {
-    localStorage.setItem('qr_id', data.data.id);
-    window.location.href = 'QR Processing State.html';
-} else {
-    alert("Upload done but ID missing");
-    console.error("Response:", data);
+// Case 2: Scan API (returns message)
+if (data.success && data.message) {
+    alert("QR scanned successfully");
+    return;
 }
+
+//  If nothing matches
+alert("Unexpected response");
+console.error("Response:", data);
     } catch (error) {
         // Network or other errors
         alert('Failed to scan QR code. Please try again.');
