@@ -443,12 +443,24 @@ console.log("UPLOAD RESPONSE:", data);
 //  REMOVE strict response.ok check
 //  Only fail if no data returned
 
-if (!data || !data.data) {
-    alert("Upload failed - check console");
-    console.error("Bad response:", data);
-    setLoading(false);
+console.log("UPLOAD RESPONSE:", data);
+
+// Upload success (has URL)
+if (data.success && data.url) {
+    localStorage.setItem('qr_url', data.url);
+    window.location.href = 'QR Processing State.html';
     return;
 }
+
+// Scan success (has message)
+if (data.success && data.message) {
+    alert("QR scanned successfully");
+    return;
+}
+
+//  fallback
+alert("Something unexpected happened");
+console.error("Response:", data);
 
         if (data && data.data && data.data.id) {
     localStorage.setItem('qr_id', data.data.id);
