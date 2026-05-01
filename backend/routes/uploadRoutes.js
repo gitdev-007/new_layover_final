@@ -134,42 +134,37 @@ const rateLimits = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const RATE_LIMIT_MAX = 10; // max 10 requests per minute
 
-// Rate limiter middleware
 function rateLimit(req, res, next) {
   const ip = req.ip || req.connection.remoteAddress || 'unknown';
   const now = Date.now();
-  
-  // Clean up old entries
-  for (const [key, data] of rateLimits.entries()) {
-    if (now - value.timestamp > RATE_LIMIT_WINDOW) {
+
+  // Remove old entries
+  for (const [key, entry] of rateLimits.entries()) {
+    if (now - entry.timestamp > RATE_LIMIT_WINDOW) {
       rateLimits.delete(key);
     }
   }
-  
-  // Check current IP
+
   const ipData = rateLimits.get(ip);
+
   if (ipData) {
     if (now - ipData.timestamp > RATE_LIMIT_WINDOW) {
-      // Reset window
       rateLimits.set(ip, { count: 1, timestamp: now });
     } else if (ipData.count >= RATE_LIMIT_MAX) {
-      // Rate limit exceeded
       return res.status(429).json({
         success: false,
-        error: 'Rate limit exceeded. Maximum 10 uploads per minute allowed.'
+        error: 'Rate limit exceeded'
       });
     } else {
-      // Increment count
       rateLimits.set(ip, {
-  count: ipData.count + 1,
-  timestamp: ipData.timestamp
-});
+        count: ipData.count + 1,
+        timestamp: ipData.timestamp
+      });
     }
   } else {
-    // First request from this IP
     rateLimits.set(ip, { count: 1, timestamp: now });
   }
-  
+
   next();
 }
 
