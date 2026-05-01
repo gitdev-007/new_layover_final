@@ -3,17 +3,28 @@ import supabaseClient from '../supabaseClient.js';
 
 const router = Router();
 
-// GET /qr-status/:id - Poll for processing status
-router.get('/qr-status/:id', async (req, res) => {
+// GET /qr-status - Poll for processing status (supports id or url query param)
+router.get('/qr-status', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id, url } = req.query;
 
-    // Fetch upload with current status
-    const { data: upload, error: fetchError } = await supabaseClient
-      .from('qr_uploads')
-      .select('*')
-      .eq('id', id)
-      .single();
+    // Validate that at least one param is provided
+    if (!id && !url) {
+      return res.status(400).json({
+        success: false,
+        message: 'id or url required'
+      });
+    }
+
+    // Build query based on provided param
+    let query = supabaseClient.from('qr_uploads').select('*');
+    if (id) {
+      query = query.eq('id', id);
+    } else if (url) {
+      query = query.eq('file_url', url);
+    }
+
+    const { data: upload, error: fetchError } = await query.single();
 
     if (fetchError || !upload) {
       return res.status(404).json({ 
@@ -42,17 +53,28 @@ router.get('/qr-status/:id', async (req, res) => {
   }
 });
 
-// GET /process-qr/:id - Check processing status (background job does the actual work)
-router.get('/process-qr/:id', async (req, res) => {
+// GET /process-qr - Check processing status (supports id or url query param)
+router.get('/process-qr', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id, url } = req.query;
 
-    // Fetch upload with current status
-    const { data: upload, error: fetchError } = await supabaseClient
-      .from('qr_uploads')
-      .select('*')
-      .eq('id', id)
-      .single();
+    // Validate that at least one param is provided
+    if (!id && !url) {
+      return res.status(400).json({
+        success: false,
+        message: 'id or url required'
+      });
+    }
+
+    // Build query based on provided param
+    let query = supabaseClient.from('qr_uploads').select('*');
+    if (id) {
+      query = query.eq('id', id);
+    } else if (url) {
+      query = query.eq('file_url', url);
+    }
+
+    const { data: upload, error: fetchError } = await query.single();
 
     if (fetchError || !upload) {
       return res.status(404).json({ 
