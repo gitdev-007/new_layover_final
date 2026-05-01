@@ -385,11 +385,13 @@ console.log("UPLOAD RESPONSE:", data);
 
 // Case 1: Upload API (returns URL)
 if (data.success && data.url) {
-    localStorage.setItem('qr_url', data.url);
+    console.log("Saving QR ID:", data.url);
+
+    localStorage.setItem('qr_id', data.url);
+
     window.location.href = 'QR Processing State.html';
     return;
 }
-
 // Case 2: Scan API (returns message)
 if (data.success && data.message) {
     alert("QR scanned successfully");

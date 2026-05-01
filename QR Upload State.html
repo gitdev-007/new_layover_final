@@ -432,6 +432,7 @@ uploadBtn.addEventListener('click', async () => {
 
         // ✅ Upload case (your backend returns url)
 if (data.success && data.url) {
+    console.log("Saving QR ID:", data.url);
     localStorage.setItem('qr_id', data.url);
     window.location.href = 'QR Processing State.html';
     return;

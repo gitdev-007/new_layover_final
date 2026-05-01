@@ -203,6 +203,7 @@
         const POLL_INTERVAL = 2000; // 2 seconds
 
         // Get qr_id from localStorage on page load
+        console.log("QR ID from localStorage:", localStorage.getItem('qr_id'));
         const qrId = localStorage.getItem('qr_id');
         let pollTimer = null;
         
@@ -215,11 +216,10 @@
 
         // Poll for QR processing status
         async function pollStatus() {
-            if (!qrId) {
-                alert('No QR ID found. Please upload a file first.');
-                window.location.href = 'QR Uplaod State.html';
-                return;
-            }
+           if (!qrId || qrId === "null" || qrId === "undefined") {
+    console.error("QR ID missing:", qrId);
+    return; //  no alert, no redirect
+}
 
             try {
                 // Update UI to show processing
