@@ -430,16 +430,15 @@ uploadBtn.addEventListener('click', async () => {
             throw new Error(data.message || 'Upload failed');
         }
 
-        if (data.success && data.data && data.data.id) {
-            // Store ID in localStorage
-            localStorage.setItem('qr_id', data.data.id);
-            
-            // Redirect to processing page
-            window.location.href = 'QR Processing State.html';
-        } else {
-            throw new Error('Invalid response from server');
-        }
+        // ✅ Upload case (your backend returns url)
+if (data.success && data.url) {
+    localStorage.setItem('qr_id', data.url);
+    window.location.href = 'QR Processing State.html';
+    return;
+}
 
+//  fallback
+throw new Error('Invalid response from server');
     } catch (error) {
         console.error('Upload error:', error);
         alert('Something went wrong');
