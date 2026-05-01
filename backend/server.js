@@ -12,11 +12,13 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
-
-// CORS configuration
+// CORS configuration - Allow multiple origins
 const corsOptions = {
-  origin: FRONTEND_URL,
+  origin: [
+    'http://localhost:3000',
+    'https://new-layover-final.vercel.app',
+    'https://layoverx-dummy.vercel.app'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
