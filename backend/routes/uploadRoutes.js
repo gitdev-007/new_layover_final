@@ -141,7 +141,7 @@ function rateLimit(req, res, next) {
   
   // Clean up old entries
   for (const [key, data] of rateLimits.entries()) {
-    if (now - data.timestamp > RATE_LIMIT_WINDOW) {
+    if (now - value.timestamp > RATE_LIMIT_WINDOW) {
       rateLimits.delete(key);
     }
   }
@@ -149,7 +149,7 @@ function rateLimit(req, res, next) {
   // Check current IP
   const ipData = rateLimits.get(ip);
   if (ipData) {
-    if (now - data.timestamp > RATE_LIMIT_WINDOW) {
+    if (now - ipData.timestamp > RATE_LIMIT_WINDOW) {
       // Reset window
       rateLimits.set(ip, { count: 1, timestamp: now });
     } else if (ipData.count >= RATE_LIMIT_MAX) {
@@ -160,7 +160,10 @@ function rateLimit(req, res, next) {
       });
     } else {
       // Increment count
-      ipData.count++;
+      rateLimits.set(ip, {
+  count: ipData.count + 1,
+  timestamp: ipData.timestamp
+});
     }
   } else {
     // First request from this IP
