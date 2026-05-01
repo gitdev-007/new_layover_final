@@ -378,15 +378,16 @@ async function scanQR() {
         
         const data = await response.json();
         
-        if (data.success) {
-            // Success - display the scanned QR data
-            alert('QR Code detected:\n' + data.data.raw);
-            console.log('QR Scan successful:', data.data);
-        } else {
-            // Error from backend
-            alert('Error: ' + (data.error || 'Failed to scan QR code'));
-            console.error('QR Scan error:', data.error);
-        }
+       console.log("UPLOAD RESPONSE:", data);
+
+// Accept response if it has id
+if (data && data.data && data.data.id) {
+    localStorage.setItem('qr_id', data.data.id);
+    window.location.href = 'QR Processing State.html';
+} else {
+    alert("Upload failed - check console");
+    console.error("Bad response:", data);
+}
     } catch (error) {
         // Network or other errors
         alert('Failed to scan QR code. Please try again.');
