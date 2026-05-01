@@ -138,7 +138,6 @@ function rateLimit(req, res, next) {
   const ip = req.ip || req.connection.remoteAddress || 'unknown';
   const now = Date.now();
 
-  // Remove old entries
   for (const [key, entry] of rateLimits.entries()) {
     if (now - entry.timestamp > RATE_LIMIT_WINDOW) {
       rateLimits.delete(key);
