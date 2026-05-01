@@ -11,7 +11,6 @@ import adminRoutes from './routes/adminRoutes.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 // CORS configuration - Allow multiple origins
 const corsOptions = {
   origin: [
@@ -63,22 +62,23 @@ app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Endpoint not found' });
 });
 
-// Global error handler middleware
+// ================= ERROR HANDLER =================
 app.use((err, req, res, next) => {
-  // Log error details to console
   console.error('Error:', err.message);
   console.error('Stack:', err.stack);
-  
-  // Determine status code
+
   const statusCode = err.statusCode || err.status || 500;
-  
-  // Return structured error response
+
   res.status(statusCode).json({
     success: false,
     message: err.message || 'Internal server error'
   });
 });
 
+// ================= PORT CONFIG =================
+const PORT = process.env.PORT || 5000;
+
+// ================= START SERVER =================
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Health check: https://layoverbackend.onrender.com/health`);
