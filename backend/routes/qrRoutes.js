@@ -1,36 +1,42 @@
 import { Router } from 'express';
+import multer from 'multer';
 import { processQR, verifyQR } from '../services/qrService.js';
 
 const router = Router();
+
+// Configure multer with memory storage
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 // GET /test - Test route to verify QR router is working
 router.get('/test', (req, res) => {
   res.json({ success: true, message: 'QR route working' });
 });
 
-// POST /scan - QR scan endpoint
-router.post('/scan', async (req, res) => {
+// POST /scan - QR scan endpoint with file upload
+router.post('/scan', upload.single('file'), async (req, res) => {
   try {
-    const { imageData } = req.body;
-    
-    if (!imageData) {
+    if (!req.file) {
       return res.status(400).json({ 
         success: false, 
-        error: 'Image data is required' 
+        error: 'Image file is required' 
       });
     }
+
+    // Convert buffer to base64 for QR processing
+    const imageData = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
     
     const result = await processQR(imageData);
     res.json({ 
       success: true, 
-      message: 'Scan route working',
+      message: 'File received and processed successfully',
       data: result 
     });
   } catch (error) {
     console.error('QR scan error:', error);
     res.status(500).json({ 
       success: false, 
-      error: 'Failed to process QR code' 
+      error: error.message || 'Failed to process QR code' 
     });
   }
 });
