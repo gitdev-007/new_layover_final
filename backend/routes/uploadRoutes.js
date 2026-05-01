@@ -223,32 +223,38 @@ router.get('/my-uploads', async (req, res) => {
   }
 });
 
-// POST /upload-qr - Upload QR file to S3
-router.post('/upload-qr', rateLimit, upload.single('file'), async (req, res) => {
+export const uploadQR = async (req, res) => {
   try {
+    console.log("FILE RECEIVED:", req.file);
+
     if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
+      return res.status(400).json({ message: "No file uploaded" });
     }
 
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: Date.now() + '-' + req.file.originalname,
+      Key: Date.now() + "-" + req.file.originalname,
       Body: req.file.buffer,
       ContentType: req.file.mimetype,
     };
 
-    const data = await s3.upload(params).promise();
+    const uploadResult = await s3.upload(params).promise();
 
-    res.json({
-      message: 'Upload successful',
-      url: data.Location,
+    return res.status(200).json({
+      success: true,
+      url: uploadResult.Location,
     });
 
   } catch (error) {
-    console.error('UPLOAD ERROR:', error);
-    res.status(500).json({ error: error.message });
+    console.error("UPLOAD ERROR FULL:", error);
+    return res.status(500).json({
+      message: error.message || "Upload failed",
+    });
   }
-});
+};
+
+// POST /upload-qr - Upload QR file to S3
+router.post('/upload-qr', rateLimit, upload.single('file'), uploadQR);
 
 // Export cleanup function for testing/development
 export function cleanupRateLimits() {
