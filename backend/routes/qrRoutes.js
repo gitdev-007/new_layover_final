@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { processQR, verifyQR } from '../services/qrService.js';
+import sharp from 'sharp';
+import { MultiFormatReader, BarcodeFormat, DecodeHintType, RGBLuminanceSource, BinaryBitmap, HybridBinarizer } from '@zxing/library';
 
 const router = Router();
 
@@ -8,12 +9,60 @@ const router = Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+// Helper function to scan QR code from image buffer
+async function scanQRFromBuffer(buffer) {
+  try {
+    // Convert image to raw RGBA pixels using sharp
+    const { data, info } = await sharp(buffer)
+      .raw()
+      .ensureAlpha()
+      .resize(800, 800, { fit: 'inside', withoutEnlargement: false })
+      .toBuffer({ resolveWithObject: true });
+
+    const { width, height } = info;
+    
+    // Convert RGBA to luminance (grayscale)
+    const luminances = new Uint8ClampedArray(width * height);
+    for (let i = 0; i < width * height; i++) {
+      const r = data[i * 4];
+      const g = data[i * 4 + 1];
+      const b = data[i * 4 + 2];
+      // Standard luminance formula
+      luminances[i] = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+    }
+
+    // Create luminance source and binary bitmap for ZXing
+    const luminanceSource = new RGBLuminanceSource(luminances, width, height);
+    const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
+
+    // Configure hints for QR code detection
+    const hints = new Map();
+    hints.set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.QR_CODE]);
+    hints.set(DecodeHintType.TRY_HARDER, true);
+
+    // Create reader and decode
+    const reader = new MultiFormatReader();
+    reader.setHints(hints);
+    
+    const result = reader.decode(binaryBitmap);
+    
+    return {
+      text: result.getText(),
+      format: result.getBarcodeFormat().toString(),
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    console.error('QR Scan Error:', error);
+    return null;
+  }
+}
+
 // GET /test - Test route to verify QR router is working
 router.get('/test', (req, res) => {
   res.json({ success: true, message: 'QR route working' });
 });
 
-// POST /scan - QR scan endpoint with file upload
+// POST /scan - QR scan endpoint with real QR code detection
 router.post('/scan', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
@@ -23,14 +72,45 @@ router.post('/scan', upload.single('file'), async (req, res) => {
       });
     }
 
-    // Convert buffer to base64 for QR processing
-    const imageData = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    console.log(`📸 Processing file: ${req.file.originalname}, Size: ${req.file.size} bytes, Type: ${req.file.mimetype}`);
+
+    // Scan QR code from the uploaded image buffer
+    const qrResult = await scanQRFromBuffer(req.file.buffer);
     
-    const result = await processQR(imageData);
+    if (!qrResult) {
+      return res.status(400).json({
+        success: false,
+        error: 'No QR code found in the image'
+      });
+    }
+
+    // Detect type based on content patterns
+    let type = 'UNKNOWN';
+    const rawText = qrResult.text;
+    
+    if (rawText.startsWith('M1') && rawText.includes('E')) {
+      type = 'IATA_BCBP'; // IATA Bar Coded Boarding Pass
+    } else if (rawText.includes('://')) {
+      type = 'URL';
+    } else if (/^[A-Z0-9]{6}$/.test(rawText)) {
+      type = 'PNR_CODE';
+    } else if (rawText.includes('BEGIN:VCARD')) {
+      type = 'VCARD';
+    } else if (rawText.includes('WIFI:')) {
+      type = 'WIFI';
+    }
+
+    console.log(`✅ QR Code detected: ${type}`);
+    
     res.json({ 
       success: true, 
-      message: 'File received and processed successfully',
-      data: result 
+      message: 'QR code scanned successfully',
+      data: {
+        raw: qrResult.text,
+        type: type,
+        format: qrResult.format,
+        timestamp: qrResult.timestamp
+      }
     });
   } catch (error) {
     console.error('QR scan error:', error);
