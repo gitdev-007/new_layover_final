@@ -3,6 +3,51 @@ import supabaseClient from '../supabaseClient.js';
 
 const router = Router();
 
+router.get('/qr-status-by-url', async (req, res) => {
+  try {
+    const { url } = req.query;
+
+    if (!url) {
+      return res.status(400).json({
+        success: false,
+        message: 'URL is required'
+      });
+    }
+
+    const decodedUrl = decodeURIComponent(url);
+
+    const { data: upload, error } = await supabaseClient
+      .from('qr_uploads')
+      .select('*')
+      .ilike('file_url', `%${decodedUrl}%`)
+      .single();
+
+    if (error || !upload) {
+      return res.status(404).json({
+        success: false,
+        message: 'QR not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      qrData: upload.qr_data,
+      isValid: upload.is_valid,
+      isDuplicate: upload.is_duplicate,
+      status: upload.status,
+      extractedInfo: upload.extracted_info,
+      airline: upload.airline
+    });
+
+  } catch (err) {
+    console.error('QR status (URL) error:', err);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
 // GET /qr-status - Poll for processing status (supports id or url query param)
 router.get('/qr-status', async (req, res) => {
   try {
