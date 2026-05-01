@@ -8,32 +8,30 @@ router.get('/qr-status', async (req, res) => {
   try {
     const { id, url } = req.query;
 
-    // Validate that at least one param is provided
-    if (!id && !url) {
+    let query = supabaseClient
+      .from('qr_uploads')
+      .select('*');
+
+    if (id) {
+      query = query.eq('id', id);
+    } else if (url) {
+      query = query.eq('file_url', url);
+    } else {
       return res.status(400).json({
         success: false,
         message: 'id or url required'
       });
     }
 
-    // Build query based on provided param
-    let query = supabaseClient.from('qr_uploads').select('*');
-    if (id) {
-      query = query.eq('id', id);
-    } else if (url) {
-      query = query.eq('file_url', url);
-    }
+    const { data: upload, error } = await query.single();
 
-    const { data: upload, error: fetchError } = await query.single();
-
-    if (fetchError || !upload) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'QR upload not found' 
+    if (error || !upload) {
+      return res.status(404).json({
+        success: false,
+        message: 'QR upload not found'
       });
     }
 
-    // Return current status (background job updates this)
     res.json({
       success: true,
       qrData: upload.qr_data,
@@ -44,11 +42,11 @@ router.get('/qr-status', async (req, res) => {
       airline: upload.airline
     });
 
-  } catch (error) {
-    console.error('QR status error:', error);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({
       success: false,
-      message: error.message || 'Failed to check processing status'
+      message: 'Server error'
     });
   }
 });
