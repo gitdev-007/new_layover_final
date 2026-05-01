@@ -15,7 +15,7 @@ router.get('/qr-status', async (req, res) => {
     if (id) {
       query = query.eq('id', id);
     } else if (url) {
-      query = query.eq('file_url', url);
+      query = query.ilike('file_url', `%${decodeURIComponent(url)}%`);
     } else {
       return res.status(400).json({
         success: false,
