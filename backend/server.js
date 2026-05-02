@@ -44,7 +44,7 @@ console.log('GET  /                    - Root test');
 console.log('GET  /api/qr/test         - QR route test');
 console.log('POST /api/qr/scan         - QR scan endpoint');
 console.log('POST /api/upload-qr      - Upload QR file');
-console.log('GET  /api/qr-status/:id   - Check QR status');
+console.log('GET  /api/qr-status       - Check QR status (query: id or url)');
 console.log('GET  /api/process-qr/:id  - Process QR (legacy)');
 console.log('GET  /health              - Health check');
 console.log('====================\n');
