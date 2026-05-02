@@ -175,47 +175,37 @@ const upload = multer({
 // GET /my-uploads - Get user's uploads
 router.get('/my-uploads', async (req, res) => {
   try {
-    // Get user from JWT token
+    // ✅ FIX: Properly extract token
     const authHeader = req.headers.authorization;
-    
-    if (!authHeader) {
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({
         success: false,
         error: 'Authentication required'
       });
     }
 
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
+    const token = authHeader.split(' ')[1];
+
+    // ✅ FIX: Correct Supabase user fetch
+    const {
+      data: { user },
+      error: authError
+    } = await supabaseClient.auth.getUser(token);
 
     if (authError || !user) {
       return res.status(401).json({
         success: false,
-        error: 'Invalid or expired token'
+        error: 'Invalid token'
       });
     }
 
-    // Fetch user's uploads
-    const { data: uploads, error } = await supabaseClient
-      .from('qr_uploads')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      throw new Error(`Failed to fetch uploads: ${error.message}`);
-    }
-
-    res.json({
-      success: true,
-      data: uploads || []
-    });
+    // ✅ KEEP REST OF YOUR CODE SAME BELOW (fetch uploads etc.)
 
   } catch (error) {
-    console.error('Fetch uploads error:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      error: error.message || 'Failed to fetch uploads'
+      error: error.message
     });
   }
 });
