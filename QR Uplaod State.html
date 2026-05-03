@@ -383,11 +383,16 @@ async function scanQR() {
 // Accept response if it has id
 console.log("UPLOAD RESPONSE:", data);
 
-// Case 1: Upload API (returns URL)
+// Case 1: Upload API (returns URL and id)
 if (data.success && data.url) {
-    console.log("Saving QR ID:", data.url);
-
-    localStorage.setItem('qr_id', data.url);
+    // Prefer DB id if available, otherwise store URL
+    if (data.id) {
+        console.log("Saving QR DB ID:", data.id);
+        localStorage.setItem('qr_id', String(data.id));
+    } else {
+        console.log("Saving QR URL:", data.url);
+        localStorage.setItem('qr_id', data.url);
+    }
 
     window.location.href = 'QR Processing State.html';
     return;
@@ -442,9 +447,15 @@ uploadBtn.addEventListener('click', async () => {
 
         console.log("UPLOAD RESPONSE:", data);
 
-        // Upload case (returns URL)
+        // Upload case (returns URL and id)
         if (data.success && data.url) {
-            localStorage.setItem("qr_id", data.url);
+            if (data.id) {
+                console.log("Saving QR DB ID:", data.id);
+                localStorage.setItem("qr_id", String(data.id));
+            } else {
+                console.log("Saving QR URL:", data.url);
+                localStorage.setItem("qr_id", data.url);
+            }
             window.location.href = "QR Processing State.html";
             return;
         }

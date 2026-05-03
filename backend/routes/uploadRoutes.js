@@ -38,10 +38,10 @@ async function processQRInBackground(id) {
       return;
     }
 
-    // Update status to processing
+    // Update status to processing (25%)
     await supabaseClient
       .from('qr_uploads')
-      .update({ status: 'processing' })
+      .update({ status: 'processing', progress: 25 })
       .eq('id', id);
 
     // Download file from S3
@@ -54,8 +54,13 @@ async function processQRInBackground(id) {
     const s3Object = await s3.getObject(s3Params).promise();
     const buffer = s3Object.Body;
 
-    // Scan QR code
+    // Scan QR code (50%)
     const qrData = await scanQR(buffer);
+
+    await supabaseClient
+      .from('qr_uploads')
+      .update({ status: 'scanning', progress: 50, qr_data: qrData })
+      .eq('id', id);
 
     // Check for duplicate QR data
     const { data: existingUploads, error: duplicateError } = await supabaseClient
@@ -80,6 +85,12 @@ async function processQRInBackground(id) {
       extractedInfo = parseQRData(qrData);
     }
     
+    // Validating (75%)
+    await supabaseClient
+      .from('qr_uploads')
+      .update({ status: 'validating', progress: 75 })
+      .eq('id', id);
+
     const validationResult = validateQR(qrData);
     const isValid = validationResult.isValid;
 
@@ -95,7 +106,7 @@ async function processQRInBackground(id) {
       status = 'fraud';
     }
 
-    // Update DB with results
+    // Update DB with results (100%)
     // Handle both BCBP (airlineCode) and standard parser (airline) formats
     const airlineCode = extractedInfo.airlineCode || extractedInfo.airline || null;
     
@@ -105,6 +116,7 @@ async function processQRInBackground(id) {
         qr_data: qrData,
         is_valid: isValid,
         status: status,
+        progress: 100,
         is_duplicate: isDuplicate,
         is_fraud: fraudResult.isFraud,
         fraud_reason: fraudResult.reason,
@@ -123,6 +135,7 @@ async function processQRInBackground(id) {
       .from('qr_uploads')
       .update({
         status: 'failed',
+        progress: 100,
         qr_data: error.message
       })
       .eq('id', id);
@@ -218,18 +231,48 @@ export const uploadQR = async (req, res) => {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
+    const s3Key = Date.now() + "-" + req.file.originalname;
+
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: Date.now() + "-" + req.file.originalname,
+      Key: s3Key,
       Body: req.file.buffer,
       ContentType: req.file.mimetype,
     };
 
     const uploadResult = await s3.upload(params).promise();
+    const fileUrl = uploadResult.Location;
+
+    // Insert DB record with initial status and progress
+    const { data: dbRecord, error: dbError } = await supabaseClient
+      .from('qr_uploads')
+      .insert({
+        file_url: fileUrl,
+        status: 'uploaded',
+        progress: 0,
+      })
+      .select('id')
+      .single();
+
+    if (dbError) {
+      console.error("DB insert error:", dbError);
+      // Still return success with URL even if DB fails
+      return res.status(200).json({
+        success: true,
+        url: fileUrl,
+      });
+    }
+
+    const recordId = dbRecord.id;
+    console.log(`[Upload] Created DB record ${recordId} for ${fileUrl}`);
+
+    // Start background processing
+    processQRInBackground(recordId);
 
     return res.status(200).json({
       success: true,
-      url: uploadResult.Location,
+      url: fileUrl,
+      id: recordId,
     });
 
   } catch (error) {

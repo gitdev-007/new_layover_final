@@ -430,16 +430,22 @@ uploadBtn.addEventListener('click', async () => {
             throw new Error(data.message || 'Upload failed');
         }
 
-        // ✅ Upload case (your backend returns url)
-if (data.success && data.url) {
-    console.log("Saving QR ID:", data.url);
-    localStorage.setItem('qr_id', data.url);
-    window.location.href = 'QR Processing State.html';
-    return;
-}
+        // Upload case (your backend returns url and id)
+        if (data.success && data.url) {
+            // Prefer DB id if available, otherwise store URL
+            if (data.id) {
+                console.log("Saving QR DB ID:", data.id);
+                localStorage.setItem('qr_id', String(data.id));
+            } else {
+                console.log("Saving QR URL:", data.url);
+                localStorage.setItem('qr_id', data.url);
+            }
+            window.location.href = 'QR Processing State.html';
+            return;
+        }
 
-//  fallback
-throw new Error('Invalid response from server');
+        // fallback
+        throw new Error('Invalid response from server');
     } catch (error) {
         console.error('Upload error:', error);
         alert('Something went wrong');

@@ -36,7 +36,7 @@ router.get('/qr-status', async (req, res) => {
       return res.json({
         success: true,
         status: "processing",
-        progress: 65,
+        progress: 0,
         id
       });
     }
@@ -46,9 +46,13 @@ router.get('/qr-status', async (req, res) => {
       qrData: data.qr_data,
       isValid: data.is_valid,
       isDuplicate: data.is_duplicate,
+      isFraud: data.is_fraud,
+      fraudScore: data.fraud_score,
       status: data.status,
+      progress: data.progress || 0,
       extractedInfo: data.extracted_info,
-      airline: data.airline
+      airline: data.airline,
+      id: data.id
     });
 
   } catch (err) {
@@ -56,7 +60,7 @@ router.get('/qr-status', async (req, res) => {
     res.json({
       success: true,
       status: "processing",
-      progress: 65,
+      progress: 0,
       id: req.query.id
     });
   }
