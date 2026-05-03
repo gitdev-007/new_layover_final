@@ -31,11 +31,11 @@ router.get('/qr-status', async (req, res) => {
     const { data, error } = await query.single();
 
     if (error || !data) {
-      // DB record not found — return processing status instead of error
-      console.log("QR upload not found in DB, returning processing status for ID:", id);
+      // DB record not found — return uploaded status
+      console.log("QR upload not found in DB, returning uploaded status for ID:", id);
       return res.json({
         success: true,
-        status: "processing",
+        status: "uploaded",
         progress: 0,
         id
       });
@@ -43,23 +43,23 @@ router.get('/qr-status', async (req, res) => {
 
     res.json({
       success: true,
+      status: data.status,
+      progress: data.progress,
+      id: data.id,
       qrData: data.qr_data,
       isValid: data.is_valid,
       isDuplicate: data.is_duplicate,
       isFraud: data.is_fraud,
       fraudScore: data.fraud_score,
-      status: data.status,
-      progress: data.progress || 0,
       extractedInfo: data.extracted_info,
-      airline: data.airline,
-      id: data.id
+      airline: data.airline
     });
 
   } catch (err) {
     console.error(err);
     res.json({
       success: true,
-      status: "processing",
+      status: "uploaded",
       progress: 0,
       id: req.query.id
     });

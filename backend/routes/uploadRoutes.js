@@ -25,100 +25,118 @@ const s3 = new AWS.S3({
 async function processQRInBackground(id) {
   try {
     console.log(`[Background] Starting processing for upload ${id}`);
-    
-    // Fetch the upload record
+
+    // Step 1: Start processing (10%)
+    await supabaseClient
+      .from('qr_uploads')
+      .update({ status: 'processing', progress: 10 })
+      .eq('id', id);
+
+    console.log(`[Background] Upload ${id} → processing (10%)`);
+    await new Promise(r => setTimeout(r, 1500));
+
+    // Step 2: Downloading from S3 (25%)
+    await supabaseClient
+      .from('qr_uploads')
+      .update({ status: 'downloading', progress: 25 })
+      .eq('id', id);
+
+    console.log(`[Background] Upload ${id} → downloading (25%)`);
+
+    // Fetch the upload record for S3 key
     const { data: upload, error: fetchError } = await supabaseClient
       .from('qr_uploads')
-      .select('*')
+      .select('file_url')
       .eq('id', id)
       .single();
 
-    if (fetchError || !upload) {
-      console.error(`[Background] Upload ${id} not found`);
-      return;
+    let qrData = null;
+    let extractedInfo = null;
+    let isValid = false;
+    let isDuplicate = false;
+    let isFraud = false;
+    let fraudReason = null;
+    let airlineCode = null;
+
+    if (!fetchError && upload && upload.file_url) {
+      // Download file from S3
+      const s3Key = upload.file_url.split('/').pop();
+      const s3Params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: s3Key,
+      };
+
+      try {
+        const s3Object = await s3.getObject(s3Params).promise();
+        const buffer = s3Object.Body;
+
+        // Scan QR code
+        qrData = await scanQR(buffer);
+      } catch (s3Err) {
+        console.error(`[Background] S3 download/scan error for ${id}:`, s3Err.message);
+      }
     }
 
-    // Step 1: Start processing (25%)
-    await supabaseClient
-      .from('qr_uploads')
-      .update({ status: 'processing', progress: 25 })
-      .eq('id', id);
+    await new Promise(r => setTimeout(r, 1500));
 
-    console.log(`[Background] Upload ${id} → processing (25%)`);
-    await new Promise(r => setTimeout(r, 2000));
-
-    // Download file from S3
-    const s3Key = upload.file_url.split('/').pop();
-    const s3Params = {
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: s3Key,
-    };
-    
-    const s3Object = await s3.getObject(s3Params).promise();
-    const buffer = s3Object.Body;
-
-    // Step 2: Scanning QR (50%)
-    const qrData = await scanQR(buffer);
-
+    // Step 3: Scanning (50%)
     await supabaseClient
       .from('qr_uploads')
       .update({ status: 'scanning', progress: 50, qr_data: qrData })
       .eq('id', id);
 
     console.log(`[Background] Upload ${id} → scanning (50%)`);
-    await new Promise(r => setTimeout(r, 2000));
 
-    // Check for duplicate QR data
-    const { data: existingUploads, error: duplicateError } = await supabaseClient
-      .from('qr_uploads')
-      .select('id')
-      .eq('qr_data', qrData)
-      .neq('id', id)
-      .limit(1);
+    if (qrData) {
+      // Check for duplicate
+      const { data: existingUploads } = await supabaseClient
+        .from('qr_uploads')
+        .select('id')
+        .eq('qr_data', qrData)
+        .neq('id', id)
+        .limit(1);
 
-    const isDuplicate = existingUploads && existingUploads.length > 0;
+      isDuplicate = existingUploads && existingUploads.length > 0;
 
-    // Check if QR data matches BCBP format (starts with M or S followed by digit)
-    const isBCBPFormat = /^[MS]\d/.test(qrData);
-    
-    // Parse QR data using appropriate parser
-    let extractedInfo;
-    if (isBCBPFormat) {
-      console.log(`[Background] Detected BCBP format for upload ${id}`);
-      extractedInfo = decodeBCBP(qrData);
-    } else {
-      console.log(`[Background] Using standard parser for upload ${id}`);
-      extractedInfo = parseQRData(qrData);
+      // Parse QR data
+      const isBCBPFormat = /^[MS]\d/.test(qrData);
+      if (isBCBPFormat) {
+        console.log(`[Background] Detected BCBP format for upload ${id}`);
+        extractedInfo = decodeBCBP(qrData);
+      } else {
+        console.log(`[Background] Using standard parser for upload ${id}`);
+        extractedInfo = parseQRData(qrData);
+      }
     }
 
-    // Step 3: Validating (75%)
+    await new Promise(r => setTimeout(r, 1500));
+
+    // Step 4: Validating (75%)
     await supabaseClient
       .from('qr_uploads')
       .update({ status: 'validating', progress: 75 })
       .eq('id', id);
 
     console.log(`[Background] Upload ${id} → validating (75%)`);
-    await new Promise(r => setTimeout(r, 2000));
 
-    const validationResult = validateQR(qrData);
-    const isValid = validationResult.isValid;
+    if (qrData) {
+      const validationResult = validateQR(qrData);
+      isValid = validationResult.isValid;
 
-    // Detect fraud
-    const fraudResult = await detectFraud(qrData, extractedInfo);
+      const fraudResult = await detectFraud(qrData, extractedInfo);
+      isFraud = fraudResult.isFraud;
+      fraudReason = fraudResult.reason;
 
-    // Determine status
-    let status = isValid ? 'verified' : 'failed';
-    if (isDuplicate) {
-      status = 'duplicate';
-    }
-    if (fraudResult.isFraud) {
-      status = 'fraud';
+      airlineCode = extractedInfo?.airlineCode || extractedInfo?.airline || null;
     }
 
-    // Step 4: Complete (100%)
-    // Handle both BCBP (airlineCode) and standard parser (airline) formats
-    const airlineCode = extractedInfo.airlineCode || extractedInfo.airline || null;
-    
+    await new Promise(r => setTimeout(r, 1500));
+
+    // Step 5: Complete (100%)
+    let status = qrData ? (isValid ? 'verified' : 'failed') : 'failed';
+    if (isDuplicate) status = 'duplicate';
+    if (isFraud) status = 'fraud';
+
     await supabaseClient
       .from('qr_uploads')
       .update({
@@ -127,8 +145,8 @@ async function processQRInBackground(id) {
         status: status,
         progress: 100,
         is_duplicate: isDuplicate,
-        is_fraud: fraudResult.isFraud,
-        fraud_reason: fraudResult.reason,
+        is_fraud: isFraud,
+        fraud_reason: fraudReason,
         extracted_info: extractedInfo,
         airline: airlineCode
       })
@@ -138,8 +156,7 @@ async function processQRInBackground(id) {
 
   } catch (error) {
     console.error(`[Background] Error processing upload ${id}:`, error);
-    
-    // Update status to failed
+
     await supabaseClient
       .from('qr_uploads')
       .update({

@@ -302,10 +302,16 @@
                     estTime.textContent = '~10 seconds';
                 } else if (status === 'processing') {
                     document.getElementById('statusTitle').textContent = 'Processing QR Code...';
-                    document.getElementById('statusMessage').textContent = 'Downloading and preparing your file...';
+                    document.getElementById('statusMessage').textContent = 'Initializing QR processing pipeline...';
                     document.getElementById('progressText').textContent = 'PROCESSING';
                     statusLabel.textContent = 'Processing';
                     estTime.textContent = '~8 seconds';
+                } else if (status === 'downloading') {
+                    document.getElementById('statusTitle').textContent = 'Downloading File...';
+                    document.getElementById('statusMessage').textContent = 'Retrieving your file from secure storage...';
+                    document.getElementById('progressText').textContent = 'DOWNLOADING';
+                    statusLabel.textContent = 'Downloading';
+                    estTime.textContent = '~6 seconds';
                 } else if (status === 'scanning') {
                     document.getElementById('statusTitle').textContent = 'Scanning QR Code...';
                     document.getElementById('statusMessage').textContent = 'Reading and decoding QR data...';
@@ -318,6 +324,12 @@
                     document.getElementById('progressText').textContent = 'VALIDATING';
                     statusLabel.textContent = 'Validating';
                     estTime.textContent = '~3 seconds';
+                } else if (status === 'finalizing') {
+                    document.getElementById('statusTitle').textContent = 'Finalizing Results...';
+                    document.getElementById('statusMessage').textContent = 'Preparing your verification report...';
+                    document.getElementById('progressText').textContent = 'FINALIZING';
+                    statusLabel.textContent = 'Finalizing';
+                    estTime.textContent = '~1 second';
                 } else if (status === 'verified') {
                     document.getElementById('statusTitle').textContent = 'Verification Complete!';
                     document.getElementById('statusMessage').textContent = 'Your QR code has been verified successfully.';
@@ -374,12 +386,23 @@
                     document.getElementById('progressPercent').textContent = '100%';
                     document.getElementById('progressText').textContent = 'COMPLETE';
 
-                    // Redirect based on status
-                    if (status === 'verified') {
-                        window.location.href = 'QR Verification State.html';
-                    } else {
-                        window.location.href = 'QR Final Result.html';
+                    // Update circle to full
+                    const circle = document.getElementById('progressCircle');
+                    if (circle) {
+                        const circumference = 2 * Math.PI * 84;
+                        circle.style.strokeDashoffset = circumference - (100 / 100) * circumference;
                     }
+
+                    console.log('Processing complete. Redirecting...');
+
+                    // Redirect after 800ms
+                    setTimeout(() => {
+                        if (status === 'verified') {
+                            window.location.href = 'QR Verification State.html?id=' + (data.id || qrId);
+                        } else {
+                            window.location.href = 'QR Final Result.html?id=' + (data.id || qrId);
+                        }
+                    }, 800);
                 } else {
                     // Still processing, continue polling
                     console.log(`Status: ${status}, Progress: ${progress}%, continuing to poll...`);
