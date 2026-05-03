@@ -38,11 +38,14 @@ async function processQRInBackground(id) {
       return;
     }
 
-    // Update status to processing (25%)
+    // Step 1: Start processing (25%)
     await supabaseClient
       .from('qr_uploads')
       .update({ status: 'processing', progress: 25 })
       .eq('id', id);
+
+    console.log(`[Background] Upload ${id} → processing (25%)`);
+    await new Promise(r => setTimeout(r, 2000));
 
     // Download file from S3
     const s3Key = upload.file_url.split('/').pop();
@@ -54,13 +57,16 @@ async function processQRInBackground(id) {
     const s3Object = await s3.getObject(s3Params).promise();
     const buffer = s3Object.Body;
 
-    // Scan QR code (50%)
+    // Step 2: Scanning QR (50%)
     const qrData = await scanQR(buffer);
 
     await supabaseClient
       .from('qr_uploads')
       .update({ status: 'scanning', progress: 50, qr_data: qrData })
       .eq('id', id);
+
+    console.log(`[Background] Upload ${id} → scanning (50%)`);
+    await new Promise(r => setTimeout(r, 2000));
 
     // Check for duplicate QR data
     const { data: existingUploads, error: duplicateError } = await supabaseClient
@@ -84,12 +90,15 @@ async function processQRInBackground(id) {
       console.log(`[Background] Using standard parser for upload ${id}`);
       extractedInfo = parseQRData(qrData);
     }
-    
-    // Validating (75%)
+
+    // Step 3: Validating (75%)
     await supabaseClient
       .from('qr_uploads')
       .update({ status: 'validating', progress: 75 })
       .eq('id', id);
+
+    console.log(`[Background] Upload ${id} → validating (75%)`);
+    await new Promise(r => setTimeout(r, 2000));
 
     const validationResult = validateQR(qrData);
     const isValid = validationResult.isValid;
@@ -106,7 +115,7 @@ async function processQRInBackground(id) {
       status = 'fraud';
     }
 
-    // Update DB with results (100%)
+    // Step 4: Complete (100%)
     // Handle both BCBP (airlineCode) and standard parser (airline) formats
     const airlineCode = extractedInfo.airlineCode || extractedInfo.airline || null;
     
@@ -125,7 +134,7 @@ async function processQRInBackground(id) {
       })
       .eq('id', id);
 
-    console.log(`[Background] Completed processing for upload ${id}. Status: ${status}, Fraud: ${fraudResult.isFraud}`);
+    console.log(`[Background] Upload ${id} → ${status} (100%)`);
 
   } catch (error) {
     console.error(`[Background] Error processing upload ${id}:`, error);
