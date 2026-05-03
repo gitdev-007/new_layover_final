@@ -62,6 +62,32 @@ router.get('/test', (req, res) => {
   res.json({ success: true, message: 'QR route working' });
 });
 
+// GET /qr-status - Poll for QR processing status
+router.get('/qr-status', async (req, res) => {
+  try {
+    const { url } = req.query;
+
+    if (!url) {
+      return res.status(400).json({
+        success: false,
+        message: "URL is required"
+      });
+    }
+
+    return res.json({
+      success: true,
+      status: "processing",
+      progress: 65
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+});
+
 // POST /scan - QR scan endpoint with real QR code detection
 router.post('/scan', upload.single('file'), async (req, res) => {
   try {

@@ -227,11 +227,13 @@
 
                 // Poll backend for status
                 // Poll backend for status
+                console.log("Calling API:", qrId);
 const response = await fetch(`https://layoverbackend.onrender.com/api/qr-status?url=${encodeURIComponent(qrId)}`, {
   method: 'GET'
 });
 
                 const data = await response.json();
+                console.log("API Response:", data);
 
                 if (!response.ok) {
                     throw new Error(data.message || 'Failed to check status');
