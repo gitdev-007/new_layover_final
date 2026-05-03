@@ -202,23 +202,23 @@
         const API_BASE = "http://localhost:5000";
         const POLL_INTERVAL = 2000; // 2 seconds
 
-        // Get qr_id from localStorage on page load
-        const qrId = localStorage.getItem("qr_id");
+        // Get qr_id from localStorage and extract the ID from the S3 URL
+        const fullUrl = localStorage.getItem("qr_id");
+        console.log("Full QR URL from localStorage:", fullUrl);
 
-        console.log("QR ID from localStorage:", qrId);
+        const fileName = fullUrl ? fullUrl.split('/').pop() : '';
+        console.log("Extracted filename:", fileName);
 
-        if (!qrId) {
-            alert("QR ID missing");
-            
+        const qrId = fileName ? fileName.split('-')[0] : null;
+        console.log("Final QR ID:", qrId);
+
+        if (!qrId || qrId === "null" || qrId === "undefined") {
+            alert("QR ID extraction failed");
+            throw new Error("Invalid QR ID");
         }
 
         // Poll for QR processing status
         async function pollStatus() {
-           if (!qrId || qrId === "null" || qrId === "undefined") {
-    console.error("QR ID missing:", qrId);
-    return; //  no alert, no redirect
-}
-
             try {
                 // Update UI to show processing
                 document.getElementById('statusTitle').textContent = 'Processing QR Code...';
@@ -226,14 +226,18 @@
                 document.getElementById('progressText').textContent = 'SCANNING';
 
                 // Poll backend for status
-                // Poll backend for status
-                console.log("Calling API:", qrId);
-const response = await fetch(`https://layoverbackend.onrender.com/api/qr-status?url=${encodeURIComponent(qrId)}`, {
-  method: 'GET'
-});
+                console.log("Calling API with ID:", qrId);
+                const response = await fetch(`https://layoverbackend.onrender.com/api/qr-status?id=${qrId}`, {
+                    method: 'GET'
+                });
 
                 const data = await response.json();
                 console.log("API Response:", data);
+
+                if (!data.success) {
+                    alert(data.message);
+                    return;
+                }
 
                 if (!response.ok) {
                     throw new Error(data.message || 'Failed to check status');

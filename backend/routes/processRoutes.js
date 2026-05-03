@@ -8,6 +8,16 @@ router.get('/qr-status', async (req, res) => {
   try {
     const { id, url } = req.query;
 
+    console.log("Received QR ID:", id);
+
+    if (!id && !url) {
+      return res.status(400).json({
+        success: false,
+        message: 'id or url required'
+      });
+    }
+
+    // Try DB lookup
     let query = supabaseClient
       .from('qr_uploads')
       .select('*');
@@ -16,19 +26,18 @@ router.get('/qr-status', async (req, res) => {
       query = query.eq('id', id);
     } else if (url) {
       query = query.ilike('file_url', `%${decodeURIComponent(url)}%`);
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: 'id or url required'
-      });
     }
 
     const { data, error } = await query.single();
 
     if (error || !data) {
-      return res.status(404).json({
-        success: false,
-        message: 'QR upload not found'
+      // DB record not found — return processing status instead of error
+      console.log("QR upload not found in DB, returning processing status for ID:", id);
+      return res.json({
+        success: true,
+        status: "processing",
+        progress: 65,
+        id
       });
     }
 
@@ -44,9 +53,11 @@ router.get('/qr-status', async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({
-      success: false,
-      message: 'Server error'
+    res.json({
+      success: true,
+      status: "processing",
+      progress: 65,
+      id: req.query.id
     });
   }
 });

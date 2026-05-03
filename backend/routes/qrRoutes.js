@@ -65,19 +65,20 @@ router.get('/test', (req, res) => {
 // GET /qr-status - Poll for QR processing status
 router.get('/qr-status', async (req, res) => {
   try {
-    const { url } = req.query;
+    const { id } = req.query;
 
-    if (!url) {
+    if (!id) {
       return res.status(400).json({
         success: false,
-        message: "URL is required"
+        message: "ID is required"
       });
     }
 
     return res.json({
       success: true,
       status: "processing",
-      progress: 65
+      progress: 65,
+      id
     });
 
   } catch (error) {
