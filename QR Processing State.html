@@ -25,6 +25,12 @@
         .animate-pulse {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+        /* Smooth circular progress animation */
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.8s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
     </style>
 </head>
 <body class="bg-slate-50 font-sans min-h-screen flex flex-col">
@@ -127,13 +133,19 @@
 
                 <!-- Animated Processing Visual -->
                 <div class="relative w-48 h-48 mb-8 flex items-center justify-center">
-                    <!-- Rotating Outer Ring -->
-                    <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
-                    <div class="absolute inset-0 border-4 border-blue-900 rounded-full border-t-transparent animate-spin"></div>
+                    <!-- SVG Circular Progress -->
+                    <svg class="absolute inset-0 w-48 h-48" viewBox="0 0 192 192">
+                        <!-- Background circle -->
+                        <circle cx="96" cy="96" r="84" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+                        <!-- Progress circle -->
+                        <circle id="progressCircle" class="progress-ring-circle" cx="96" cy="96" r="84" fill="none" stroke="#1e3a5f" stroke-width="8" stroke-linecap="round" stroke-dasharray="527.79" stroke-dashoffset="527.79"/>
+                    </svg>
+                    <!-- Rotating Outer Ring (decorative) -->
+                    <div class="absolute inset-0 border-4 border-blue-900 rounded-full border-t-transparent animate-spin opacity-20"></div>
                     <!-- Percentage Display -->
                     <div class="flex flex-col items-center">
-                        <span class="text-5xl font-bold text-blue-900 leading-none" id="progressPercent">65%</span>
-                        <span class="text-xs text-slate-400 tracking-widest mt-1 uppercase" id="progressText">SYNCING</span>
+                        <span class="text-5xl font-bold text-blue-900 leading-none" id="progressPercent">0%</span>
+                        <span class="text-xs text-slate-400 tracking-widest mt-1 uppercase" id="progressText">INITIALIZING</span>
                     </div>
                 </div>
 
@@ -141,15 +153,15 @@
                 <div class="w-full flex justify-center gap-8 mb-8">
                     <div class="flex flex-col items-center">
                         <span class="text-xs text-slate-400 uppercase">Status</span>
-                        <span class="flex items-center gap-1.5 text-base font-bold text-blue-600">
-                            <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                            Active Scan
+                        <span id="statusBadge" class="flex items-center gap-1.5 text-base font-bold text-blue-600">
+                            <span id="statusDot" class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                            <span id="statusLabel">Initializing</span>
                         </span>
                     </div>
                     <div class="w-px h-10 bg-slate-100"></div>
                     <div class="flex flex-col items-center">
                         <span class="text-xs text-slate-400 uppercase">Est. Time</span>
-                        <span class="text-base font-bold text-slate-700">5 seconds</span>
+                        <span id="estTime" class="text-base font-bold text-slate-700">Calculating...</span>
                     </div>
                 </div>
 
@@ -180,7 +192,7 @@
                     <span class="material-symbols-outlined text-lg">cancel</span>
                     Cancel / Re-upload
                 </button>
-                <p class="text-xs text-slate-400 text-center">Reference ID: <span id="refId">Loading...</span></p>
+                <p class="text-xs text-slate-400 text-center">Reference ID: <span id="refId">--</span></p>
             </div>
         </div>
     </main>
@@ -250,25 +262,94 @@
                     throw new Error(data.message || 'Failed to check status');
                 }
 
-                // Update progress UI
+                // Update progress UI dynamically
                 const progress = data.progress || 0;
                 const status = data.status || 'processing';
 
+                // Update percentage text
                 document.getElementById('progressPercent').textContent = progress + '%';
 
-                // Update status text based on stage
-                if (status === 'processing') {
+                // Update SVG circular progress
+                const circle = document.getElementById('progressCircle');
+                if (circle) {
+                    const radius = 84;
+                    const circumference = 2 * Math.PI * radius;
+                    const offset = circumference - (progress / 100) * circumference;
+                    circle.style.strokeDashoffset = offset;
+                }
+
+                // Update step progress bar width
+                const stepBar = document.querySelector('.h-full.bg-blue-900');
+                if (stepBar) {
+                    stepBar.style.width = progress + '%';
+                }
+
+                // Update reference ID
+                if (data.id) {
+                    document.getElementById('refId').textContent = data.id;
+                }
+
+                // Update status text and badge based on stage
+                const statusDot = document.getElementById('statusDot');
+                const statusLabel = document.getElementById('statusLabel');
+                const estTime = document.getElementById('estTime');
+
+                if (status === 'uploaded') {
+                    document.getElementById('statusTitle').textContent = 'Preparing Your File...';
+                    document.getElementById('statusMessage').textContent = 'Your upload is being queued for processing...';
+                    document.getElementById('progressText').textContent = 'QUEUED';
+                    statusLabel.textContent = 'Queued';
+                    estTime.textContent = '~10 seconds';
+                } else if (status === 'processing') {
                     document.getElementById('statusTitle').textContent = 'Processing QR Code...';
                     document.getElementById('statusMessage').textContent = 'Downloading and preparing your file...';
                     document.getElementById('progressText').textContent = 'PROCESSING';
+                    statusLabel.textContent = 'Processing';
+                    estTime.textContent = '~8 seconds';
                 } else if (status === 'scanning') {
                     document.getElementById('statusTitle').textContent = 'Scanning QR Code...';
                     document.getElementById('statusMessage').textContent = 'Reading and decoding QR data...';
                     document.getElementById('progressText').textContent = 'SCANNING';
+                    statusLabel.textContent = 'Scanning';
+                    estTime.textContent = '~5 seconds';
                 } else if (status === 'validating') {
                     document.getElementById('statusTitle').textContent = 'Validating QR Data...';
                     document.getElementById('statusMessage').textContent = 'Checking for duplicates and fraud...';
                     document.getElementById('progressText').textContent = 'VALIDATING';
+                    statusLabel.textContent = 'Validating';
+                    estTime.textContent = '~3 seconds';
+                } else if (status === 'verified') {
+                    document.getElementById('statusTitle').textContent = 'Verification Complete!';
+                    document.getElementById('statusMessage').textContent = 'Your QR code has been verified successfully.';
+                    document.getElementById('progressText').textContent = 'VERIFIED';
+                    statusLabel.textContent = 'Verified';
+                    statusDot.classList.remove('animate-pulse', 'bg-blue-600');
+                    statusDot.classList.add('bg-green-500');
+                    estTime.textContent = 'Done';
+                } else if (status === 'failed') {
+                    document.getElementById('statusTitle').textContent = 'Verification Failed';
+                    document.getElementById('statusMessage').textContent = 'We could not verify this QR code. Please try again.';
+                    document.getElementById('progressText').textContent = 'FAILED';
+                    statusLabel.textContent = 'Failed';
+                    statusDot.classList.remove('animate-pulse', 'bg-blue-600');
+                    statusDot.classList.add('bg-red-500');
+                    estTime.textContent = 'Done';
+                } else if (status === 'duplicate') {
+                    document.getElementById('statusTitle').textContent = 'Duplicate Detected';
+                    document.getElementById('statusMessage').textContent = 'This QR code has already been submitted.';
+                    document.getElementById('progressText').textContent = 'DUPLICATE';
+                    statusLabel.textContent = 'Duplicate';
+                    statusDot.classList.remove('animate-pulse', 'bg-blue-600');
+                    statusDot.classList.add('bg-amber-500');
+                    estTime.textContent = 'Done';
+                } else if (status === 'fraud') {
+                    document.getElementById('statusTitle').textContent = 'Fraud Detected';
+                    document.getElementById('statusMessage').textContent = 'This QR code has been flagged as potentially fraudulent.';
+                    document.getElementById('progressText').textContent = 'FRAUD';
+                    statusLabel.textContent = 'Fraud';
+                    statusDot.classList.remove('animate-pulse', 'bg-blue-600');
+                    statusDot.classList.add('bg-red-600');
+                    estTime.textContent = 'Done';
                 }
 
                 // Save response data
