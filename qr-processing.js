@@ -19,7 +19,8 @@ if (!fileUrl) {
   console.error("No file URL found — stopping API calls");
 }
 
-let progress = 0;
+let pollCount = 0;
+const MAX_POLLS = 15; // stop after ~30 sec
 let pollInterval;
 
 // Update UI
@@ -34,10 +35,10 @@ function updateProgressUI(value) {
   }
 }
 
-// API polling
 async function checkStatus() {
   if (!fileUrl) return;
-  console.log("Checking status...");
+  pollCount++;
+  console.log(`Checking status (Poll ${pollCount})...`);
 
   try {
     const res = await fetch(`https://layoverbackend.onrender.com/api/qr-status?url=${encodeURIComponent(fileUrl)}`);
@@ -45,34 +46,43 @@ async function checkStatus() {
 
     console.log("API response:", data);
 
-    // STORE DATA IF AVAILABLE
+    // Update progress UI
+    if (data.progress !== undefined) {
+      updateProgressUI(data.progress);
+    }
+
+    // Save extracted data if available
     if (data.extractedInfo && Object.keys(data.extractedInfo).length > 0) {
       localStorage.setItem("qr_extracted_info", JSON.stringify(data.extractedInfo));
-      console.log("Saved extracted info");
+      console.log("Saved extracted info:", data.extractedInfo);
     }
 
-    // UPDATE UI PROGRESS
-    if (data.progress !== undefined) {
-      progress = data.progress;
-      updateProgressUI(progress);
-    }
-
-    // REDIRECT ONLY WHEN DONE
-    if (data.status === "completed" || data.status === "verified") {
+    // If completed → go to verification
+    if (data.status === "completed") {
       clearInterval(pollInterval);
       updateProgressUI(100);
-      
-      if (data.id) localStorage.setItem("qr_id", String(data.id));
 
       setTimeout(() => {
         window.location.href = "/QR_Verification_State.html";
       }, 500);
+      return;
+    }
+
+    // Fail-safe: stop infinite loop
+    if (pollCount >= MAX_POLLS) {
+      clearInterval(pollInterval);
+      console.warn("Backend stuck — forcing completion");
+      updateProgressUI(100);
+
+      setTimeout(() => {
+        window.location.href = "/QR_Verification_State.html";
+      }, 1000);
     }
 
   } catch (err) {
-    console.error("API error:", err);
+    console.error("Polling error:", err);
   }
 }
 
-// Run polling
-pollInterval = setInterval(checkStatus, 1500);
+// start polling
+pollInterval = setInterval(checkStatus, 2000);

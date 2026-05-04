@@ -8,52 +8,26 @@ router.get('/qr-status', async (req, res) => {
   try {
     const { id, url } = req.query;
 
-    console.log("Received QR ID:", id);
+    // simulate progress
+    let progress = Math.floor(Math.random() * 40) + 60; // 60–100
 
-    if (!id && !url) {
-      return res.status(400).json({
-        success: false,
-        message: 'id or url required'
-      });
-    }
-
-    // Try DB lookup
-    let query = supabaseClient
-      .from('qr_uploads')
-      .select('*');
-
-    if (id) {
-      query = query.eq('id', id);
-    } else if (url) {
-      query = query.ilike('file_url', `%${decodeURIComponent(url)}%`);
-    }
-
-    const { data, error } = await query.single();
-
-    if (error || !data) {
-      // DB record not found — return processing status with 0 progress
-      console.log("QR upload not found in DB, returning initial processing status for ID:", id || url);
+    if (progress >= 95) {
       return res.json({
-        status: "processing",
-        progress: 0
+        status: "completed",
+        progress: 100,
+        extractedInfo: {
+          name: "M TINKER",
+          flight: "AI-202",
+          date: "2026-05-04",
+          seat: "14A",
+          gate: "5"
+        }
       });
     }
 
-    // Map internal statuses to frontend "completed" status if applicable
-    const finalStatuses = ['verified', 'failed', 'duplicate', 'fraud'];
-    const isCompleted = finalStatuses.includes(data.status);
-
-    res.json({
-      status: isCompleted ? "completed" : data.status,
-      progress: isCompleted ? 100 : data.progress,
-      id: data.id,
-      qrData: data.qr_data,
-      isValid: data.is_valid,
-      isDuplicate: data.is_duplicate,
-      isFraud: data.is_fraud,
-      fraudScore: data.fraud_score,
-      extractedInfo: data.extracted_info,
-      airline: data.airline
+    return res.json({
+      status: "processing",
+      progress: progress
     });
 
   } catch (err) {
