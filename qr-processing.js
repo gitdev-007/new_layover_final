@@ -67,6 +67,11 @@ async function checkStatus() {
 
     console.log("API response:", data);
 
+    if (data && data.extractedInfo) {
+      localStorage.setItem("qr_extracted_info", JSON.stringify(data.extractedInfo));
+      console.log("Saved extracted info:", data.extractedInfo);
+    }
+
     // ENSURE progress only increases
     if (data.progress !== undefined && data.progress > progress) {
       progress = data.progress;
@@ -74,10 +79,8 @@ async function checkStatus() {
     }
 
     if (data.status === "completed" || data.status === "verified") {
-      // SAVE DATA BEFORE REDIRECT
-      console.log("Extracted Info:", data.extractedInfo);
+      // CLEAR FLAG FOR NEXT STEPS
       localStorage.setItem("qr_process_done", "true");
-      localStorage.setItem("qr_extracted_info", JSON.stringify(data.extractedInfo || {}));
       
       if (data.id) localStorage.setItem("qr_id", String(data.id));
 

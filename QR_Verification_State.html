@@ -159,25 +159,31 @@
             const container = document.getElementById("extractedData");
             if (!container) return;
 
-            const storedInfo = localStorage.getItem("qr_extracted_info");
-            const data = JSON.parse(storedInfo || "{}");
+            function updateDisplay() {
+                const data = JSON.parse(localStorage.getItem("qr_extracted_info") || "{}");
+                console.log("Loaded extracted data:", data);
 
-            if (!data || Object.keys(data).length === 0) {
-                console.warn("No data yet — staying on page");
-                container.innerHTML = '<p class="text-slate-500 text-center">Processing not completed yet...</p>';
-                return;
+                if (!data || Object.keys(data).length === 0) {
+                    container.innerHTML = '<p class="text-slate-500 text-center">Waiting for scan data...</p>';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <div style="text-align:left; line-height:1.8">
+                      <p><strong>Name:</strong> ${data.passengerName || data.name || "-"}</p>
+                      <p><strong>Flight:</strong> ${data.flightNumber || data.flight || "-"}</p>
+                      <p><strong>Date:</strong> ${data.date || "-"}</p>
+                      <p><strong>Seat:</strong> ${data.seat || "-"}</p>
+                      <p><strong>Gate:</strong> ${data.gate || "-"}</p>
+                    </div>
+                `;
             }
 
-            // Display backend data ONLY
-            container.innerHTML = `
-                <div style="text-align:left; line-height:1.8">
-                  <p><strong>Name:</strong> ${data.passengerName || data.name || "-"}</p>
-                  <p><strong>Flight:</strong> ${data.flightNumber || data.flight || "-"}</p>
-                  <p><strong>Date:</strong> ${data.date || "-"}</p>
-                  <p><strong>Seat:</strong> ${data.seat || "-"}</p>
-                  <p><strong>Gate:</strong> ${data.gate || "-"}</p>
-                </div>
-            `;
+            // Initial load
+            updateDisplay();
+
+            // LIVE UPDATE (BEST UX)
+            setInterval(updateDisplay, 1000);
 
             const qrId = localStorage.getItem('qr_id');
             const refIdEl = document.getElementById('refId');
