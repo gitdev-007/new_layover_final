@@ -156,42 +156,33 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // AUTO REDIRECT IF NO DATA
-            if (!localStorage.getItem("qr_uploaded") && !localStorage.getItem("qr_raw_text")) {
-                window.location.href = "/QR_Upload_State.html";
-                return;
-            }
-
             const container = document.getElementById("extractedData");
             if (!container) return;
 
-            let data = JSON.parse(localStorage.getItem("qr_extracted_info") || "{}");
-            const rawText = localStorage.getItem("qr_raw_text");
-
-            if (Object.keys(data).length === 0) {
-                if (rawText) {
-                    data = { raw: rawText };
-                } else {
-                    container.innerHTML = '<p class="text-slate-500 text-center">No data found. Please go back and upload your QR code.</p>';
-                    return;
-                }
+            // ENSURE DATA EXISTS OR REDIRECT
+            const storedInfo = localStorage.getItem("qr_extracted_info");
+            if (!storedInfo) {
+                window.location.href = "/QR_Processing_State.html";
+                return;
             }
 
-            // structured data logic
-            if (data.name || data.pnr || data.flight) {
-                container.innerHTML = `
-                    <div style="text-align:left; line-height:1.8">
-                      <p><strong>Name:</strong> ${data.name || "-"}</p>
-                      <p><strong>PNR:</strong> ${data.pnr || "-"}</p>
-                      <p><strong>Flight:</strong> ${data.flight || "-"}</p>
-                      <p><strong>Date:</strong> ${data.date || "-"}</p>
-                      <p><strong>Seat:</strong> ${data.seat || "-"}</p>
-                      <p><strong>Gate:</strong> ${data.gate || "-"}</p>
-                    </div>
-                `;
-            } else if (data.raw) {
-                container.innerHTML = `<pre class="text-xs break-all whitespace-pre-wrap bg-slate-100 p-2 rounded">${data.raw}</pre>`;
+            const data = JSON.parse(storedInfo || "{}");
+
+            if (!data || Object.keys(data).length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-center">Processing not completed yet...</p>';
+                return;
             }
+
+            // Display backend data ONLY
+            container.innerHTML = `
+                <div style="text-align:left; line-height:1.8">
+                  <p><strong>Name:</strong> ${data.passengerName || data.name || "-"}</p>
+                  <p><strong>Flight:</strong> ${data.flightNumber || data.flight || "-"}</p>
+                  <p><strong>Date:</strong> ${data.date || "-"}</p>
+                  <p><strong>Seat:</strong> ${data.seat || "-"}</p>
+                  <p><strong>Gate:</strong> ${data.gate || "-"}</p>
+                </div>
+            `;
 
             const qrId = localStorage.getItem('qr_id');
             const refIdEl = document.getElementById('refId');

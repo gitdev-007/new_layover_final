@@ -69,7 +69,9 @@ async function checkStatus() {
 
     if (data.status === "completed" || data.status === "verified") {
       // SAVE DATA BEFORE REDIRECT
+      console.log("Extracted Info:", data.extractedInfo);
       localStorage.setItem("qr_extracted_info", JSON.stringify(data.extractedInfo || {}));
+      
       if (data.id) localStorage.setItem("qr_id", String(data.id));
 
       progress = 100;

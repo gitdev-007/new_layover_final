@@ -402,23 +402,8 @@ async function scanQR() {
             const qrText = data.data.raw;
             console.log('QR Code detected:', qrText);
 
-            // basic parser
-            const parts = qrText.split(/\s+/);
-            const extractedInfo = {
-                raw: qrText,
-                name: parts[0] || "",
-                pnr: parts[1] || "",
-                flight: parts[2] || "",
-                date: parts[3] || "",
-                seat: parts.includes("SEAT") ? parts[parts.indexOf("SEAT") + 1] : "",
-                gate: parts.includes("GATE") ? parts[parts.indexOf("GATE") + 1] : ""
-            };
-
-            // save raw QR text permanently
+            // save raw QR text for reference
             localStorage.setItem("qr_raw_text", qrText);
-
-            // save structured info for UI
-            localStorage.setItem("qr_extracted_info", JSON.stringify(extractedInfo));
 
             alert('QR Code detected: ' + qrText);
         } else {
