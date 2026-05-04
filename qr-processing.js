@@ -1,10 +1,5 @@
 console.log("Processing page loaded");
 
-if (localStorage.getItem("qr_process_done") === "true") {
-  console.log("Already processed — redirecting to verification");
-  window.location.href = "/QR_Verification_State.html";
-}
-
 const urlParams = new URLSearchParams(window.location.search);
 let fileUrl = urlParams.get("url");
 
@@ -26,8 +21,6 @@ if (!fileUrl) {
 
 let progress = 0;
 let pollInterval;
-let fallbackStarted = false;
-let redirected = false;
 
 // Update UI
 function updateProgressUI(value) {
@@ -41,14 +34,6 @@ function updateProgressUI(value) {
   }
 }
 
-// Fake progress (smooth UI)
-const fakeProgress = setInterval(() => {
-  if (progress < 90) {
-    progress += 8;
-    updateProgressUI(progress);
-  }
-}, 300);
-
 // API polling
 async function checkStatus() {
   if (!fileUrl) return;
@@ -56,71 +41,36 @@ async function checkStatus() {
 
   try {
     const res = await fetch(`https://layoverbackend.onrender.com/api/qr-status?url=${encodeURIComponent(fileUrl)}`);
-    
-    let data;
-    try {
-      data = await res.json();
-    } catch (e) {
-      console.error("Invalid JSON response");
-      return;
-    }
+    const data = await res.json();
 
     console.log("API response:", data);
 
-    if (data && data.extractedInfo) {
+    // STORE DATA IF AVAILABLE
+    if (data.extractedInfo && Object.keys(data.extractedInfo).length > 0) {
       localStorage.setItem("qr_extracted_info", JSON.stringify(data.extractedInfo));
-      console.log("Saved extracted info:", data.extractedInfo);
+      console.log("Saved extracted info");
     }
 
-    // ENSURE progress only increases
-    if (data.progress !== undefined && data.progress > progress) {
+    // UPDATE UI PROGRESS
+    if (data.progress !== undefined) {
       progress = data.progress;
       updateProgressUI(progress);
     }
 
+    // REDIRECT ONLY WHEN DONE
     if (data.status === "completed" || data.status === "verified") {
-      // CLEAR FLAG FOR NEXT STEPS
-      localStorage.setItem("qr_process_done", "true");
+      clearInterval(pollInterval);
+      updateProgressUI(100);
       
       if (data.id) localStorage.setItem("qr_id", String(data.id));
 
-      progress = 100;
-      updateProgressUI(100);
-
-      clearInterval(fakeProgress);
-      clearInterval(pollInterval);
-
-      if (!redirected) {
-        redirected = true;
-        setTimeout(() => {
-          window.location.href = `/QR_Verification_State.html?url=${encodeURIComponent(fileUrl)}`;
-        }, 1000);
-      }
+      setTimeout(() => {
+        window.location.href = "/QR_Verification_State.html";
+      }, 500);
     }
 
   } catch (err) {
     console.error("API error:", err);
-  }
-
-  // fallback force complete after 10 sec
-  if (!fallbackStarted) {
-    fallbackStarted = true;
-    setTimeout(() => {
-      if (progress < 100) {
-        progress = 100;
-        updateProgressUI(100);
-
-        clearInterval(fakeProgress);
-        clearInterval(pollInterval);
-
-        localStorage.setItem("qr_process_done", "true");
-
-        if (!redirected) {
-          redirected = true;
-          window.location.href = `/QR_Verification_State.html?url=${encodeURIComponent(fileUrl || "")}`;
-        }
-      }
-    }, 10000);
   }
 }
 

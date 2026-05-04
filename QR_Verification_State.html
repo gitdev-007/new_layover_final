@@ -159,15 +159,13 @@
             const container = document.getElementById("extractedData");
             if (!container) return;
 
-            function updateDisplay() {
-                const data = JSON.parse(localStorage.getItem("qr_extracted_info") || "{}");
-                console.log("Loaded extracted data:", data);
+            const storedInfo = localStorage.getItem("qr_extracted_info");
+            const data = JSON.parse(storedInfo || "{}");
+            console.log("Loaded extracted data:", data);
 
-                if (!data || Object.keys(data).length === 0) {
-                    container.innerHTML = '<p class="text-slate-500 text-center">Waiting for scan data...</p>';
-                    return;
-                }
-
+            if (!data || Object.keys(data).length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-center">No extracted data available.</p>';
+            } else {
                 container.innerHTML = `
                     <div style="text-align:left; line-height:1.8">
                       <p><strong>Name:</strong> ${data.passengerName || data.name || "-"}</p>
@@ -178,12 +176,6 @@
                     </div>
                 `;
             }
-
-            // Initial load
-            updateDisplay();
-
-            // LIVE UPDATE (BEST UX)
-            setInterval(updateDisplay, 1000);
 
             const qrId = localStorage.getItem('qr_id');
             const refIdEl = document.getElementById('refId');
