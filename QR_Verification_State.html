@@ -159,16 +159,11 @@
             const container = document.getElementById("extractedData");
             if (!container) return;
 
-            // ENSURE DATA EXISTS OR REDIRECT
             const storedInfo = localStorage.getItem("qr_extracted_info");
-            if (!storedInfo) {
-                window.location.href = "/QR_Processing_State.html";
-                return;
-            }
-
             const data = JSON.parse(storedInfo || "{}");
 
             if (!data || Object.keys(data).length === 0) {
+                console.warn("No data yet — staying on page");
                 container.innerHTML = '<p class="text-slate-500 text-center">Processing not completed yet...</p>';
                 return;
             }
@@ -202,6 +197,7 @@
                 localStorage.removeItem("qr_uploaded");
                 localStorage.removeItem("qr_url");
                 localStorage.removeItem("qr_id");
+                localStorage.removeItem("qr_process_done");
                 
                 window.location.href = "/QR_Upload_State.html";
             });

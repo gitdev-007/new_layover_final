@@ -1,5 +1,10 @@
 console.log("Processing page loaded");
 
+if (localStorage.getItem("qr_process_done") === "true") {
+  console.log("Already processed — redirecting to verification");
+  window.location.href = "/QR_Verification_State.html";
+}
+
 const urlParams = new URLSearchParams(window.location.search);
 let fileUrl = urlParams.get("url");
 
@@ -22,6 +27,7 @@ if (!fileUrl) {
 let progress = 0;
 let pollInterval;
 let fallbackStarted = false;
+let redirected = false;
 
 // Update UI
 function updateProgressUI(value) {
@@ -70,6 +76,7 @@ async function checkStatus() {
     if (data.status === "completed" || data.status === "verified") {
       // SAVE DATA BEFORE REDIRECT
       console.log("Extracted Info:", data.extractedInfo);
+      localStorage.setItem("qr_process_done", "true");
       localStorage.setItem("qr_extracted_info", JSON.stringify(data.extractedInfo || {}));
       
       if (data.id) localStorage.setItem("qr_id", String(data.id));
@@ -80,9 +87,12 @@ async function checkStatus() {
       clearInterval(fakeProgress);
       clearInterval(pollInterval);
 
-      setTimeout(() => {
-        window.location.href = `/QR_Verification_State.html?url=${encodeURIComponent(fileUrl)}`;
-      }, 1000);
+      if (!redirected) {
+        redirected = true;
+        setTimeout(() => {
+          window.location.href = `/QR_Verification_State.html?url=${encodeURIComponent(fileUrl)}`;
+        }, 1000);
+      }
     }
 
   } catch (err) {
@@ -100,7 +110,12 @@ async function checkStatus() {
         clearInterval(fakeProgress);
         clearInterval(pollInterval);
 
-        window.location.href = `/QR_Verification_State.html?url=${encodeURIComponent(fileUrl || "")}`;
+        localStorage.setItem("qr_process_done", "true");
+
+        if (!redirected) {
+          redirected = true;
+          window.location.href = `/QR_Verification_State.html?url=${encodeURIComponent(fileUrl || "")}`;
+        }
       }
     }, 10000);
   }
