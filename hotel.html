@@ -103,21 +103,27 @@
             background-image: radial-gradient(circle, #767586 1px, transparent 1px);
             background-size: 8px 8px;
         }
-        .hotel-layout {
+        .main-layout {
             display: flex;
+            justify-content: center;
+            align-items: flex-start;
             gap: 20px;
         }
-        .hotel-layout,
-        .hotel-layout * {
+        .main-layout.active {
+            justify-content: flex-start;
+        }
+        .main-layout,
+        .main-layout * {
             transition: none !important;
             transform: none !important;
             animation: none !important;
         }
         .level1 {
-            width: 40%;
+            width: 600px;
+            transition: none;
         }
         .level2 {
-            width: 60%;
+            width: 600px;
             display: none;
         }
         .hotel-item {
@@ -145,7 +151,7 @@
 </header>
 <main class="max-w-7xl mx-auto space-y-12">
 <!-- SITEMAP CANVAS -->
-<div class="hotel-layout">
+<div class="main-layout">
 <!-- LEVEL 1: HOTELS LISTING PAGE -->
 <div class="level1 space-y-6 relative z-10">
 <div class="flex items-center justify-between mb-4">
@@ -298,6 +304,7 @@
 </main>
 <script>
     const level2 = document.querySelector('.level2');
+    const mainLayout = document.querySelector('.main-layout');
     const hotelItems = document.querySelectorAll('.hotel-item');
     const hotelDetails = {
         'The Orchid Hotel': {
@@ -398,45 +405,77 @@
         }
     };
 
-    const setDetailText = (field, value) => {
-        const target = document.querySelector(`[data-detail-field="${field}"]`);
-        if (target) {
-            target.textContent = value;
-        }
-    };
-
-    const updateDetailsList = (details) => {
-        const detailsList = document.querySelector('[data-detail-field="details"]');
-        if (!detailsList) return;
-
-        detailsList.innerHTML = '';
-        details.forEach((detail) => {
-            const item = document.createElement('li');
-            item.className = 'flex items-center gap-2';
-            item.innerHTML = '<span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span>';
-            item.append(document.createTextNode(` ${detail}`));
-            detailsList.appendChild(item);
-        });
-    };
+    const renderLevel2 = (detail) => `
+<div class="flex items-center justify-between mb-4">
+<span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
+<span class="text-meta-label font-meta-label text-secondary font-bold">THEME: ORANGE</span>
+</div>
+<div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-node-title-md font-node-title-md text-secondary">Hotel Detail Page</h3>
+<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">In Progress</span>
+</div>
+<div class="space-y-4">
+<div class="border border-outline-variant p-3 bg-secondary/5">
+<p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
+<h4 class="text-node-title-md font-bold" data-detail-field="name">${detail.name}</h4>
+<div class="flex gap-2 mt-1">
+<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold" data-detail-field="rating">${detail.rating}</span>
+<span class="text-[10px] text-outline" data-detail-field="location">${detail.location}</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">grid_view</span>
+<p class="text-[10px] mt-1 font-bold">Media Gallery</p>
+</div>
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">bed</span>
+<p class="text-[10px] mt-1 font-bold">Room Options</p>
+</div>
+</div>
+<div class="border border-outline-variant p-3 bg-surface-container">
+<p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
+<ul class="text-[11px] space-y-1" data-detail-field="details">
+${detail.details.map((item) => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
+</ul>
+</div>
+<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
+<p class="text-meta-label text-secondary font-bold mb-2">HOURLY TIERED PRICING</p>
+<div class="grid grid-cols-4 gap-1 text-center">
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-2">${detail.prices.two}</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">4 HR</p><p class="font-bold text-[11px]" data-detail-field="price-4">${detail.prices.four}</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">8 HR</p><p class="font-bold text-[11px]" data-detail-field="price-8">${detail.prices.eight}</p></div>
+<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">FULL</p><p class="font-bold text-[11px]" data-detail-field="price-full">${detail.prices.full}</p></div>
+</div>
+<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide">PLAN LAYOVER</button>
+</div>
+<div class="grid grid-cols-2 gap-3 text-meta-label">
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">REVIEWS</p>
+<p class="font-semibold text-secondary" data-detail-field="reviews">${detail.reviews}</p>
+</div>
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">CONTACT</p>
+<p class="font-semibold text-secondary">Quick Inquiry</p>
+</div>
+</div>
+</div>
+</div>`;
 
     const updateLevel2 = (hotelName) => {
         const detail = hotelDetails[hotelName];
-        if (!detail) return;
+        if (!detail || !level2) return;
 
-        setDetailText('name', detail.name);
-        setDetailText('rating', detail.rating);
-        setDetailText('location', detail.location);
-        setDetailText('reviews', detail.reviews);
-        setDetailText('price-2', detail.prices.two);
-        setDetailText('price-4', detail.prices.four);
-        setDetailText('price-8', detail.prices.eight);
-        setDetailText('price-full', detail.prices.full);
-        updateDetailsList(detail.details);
+        level2.innerHTML = renderLevel2(detail);
     };
 
     hotelItems.forEach((hotelItem) => {
         const showLevel2 = () => {
             updateLevel2(hotelItem.textContent.trim());
+            if (mainLayout) {
+                mainLayout.classList.add('active');
+            }
             if (level2) {
                 level2.style.display = 'block';
             }
