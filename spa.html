@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spa & Wellness | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <style>
+        .main-layout { display: flex; justify-content: center; align-items: flex-start; gap: 20px; }
+        .main-layout.active { justify-content: flex-start; }
+        .level1 { width: 600px; }
+        .level2 { width: 600px; display: none; }
+        .listing-item { cursor: pointer; }
+    </style>
+</head>
+<body class="bg-white p-8">
+    <main class="max-w-7xl mx-auto main-layout">
+        <div class="level1 space-y-6">
+            <h1 class="text-xl font-bold">Spa & Wellness</h1>
+            <div class="border p-4">
+                <select class="filter-field" data-filter-field="duration" onchange="applyFilters()">
+                    <option value="">Duration</option>
+                    <option value="30min">30 min</option>
+                    <option value="1hr">1 hr</option>
+                </select>
+            </div>
+            <div id="listing-container">
+                <div class="listing-item p-4 border" data-duration="1hr" data-price-range="3960" data-distance="2">Jiva Spa</div>
+                <div class="listing-item p-4 border" data-duration="1hr" data-price-range="3520" data-distance="2">Quan Spa</div>
+            </div>
+        </div>
+        <div class="level2 border-2 border-secondary p-4">
+            <h2 class="text-lg font-bold" data-detail-field="name"></h2>
+            <p data-detail-field="location"></p>
+            <button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide" onclick="window.location.href='QR_Upload_State.html'">PLAN LAYOVER</button>
+        </div>
+    </main>
+    <script src="shared-layout.js"></script>
+    <script>
+        const spaDetails = {
+            'Jiva Spa': { name: 'Jiva Spa', location: '1.6 km' },
+            'Quan Spa': { name: 'Quan Spa', location: '1.8 km' }
+        };
+        initItems(spaDetails);
+    </script>
+</body>
+</html>
