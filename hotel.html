@@ -190,8 +190,18 @@
 <option value="4000-6000">₹4000 – ₹6000</option>
 <option value="6000+">₹6000+</option>
 </select>
-<input class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" placeholder="Distance" type="text" value="5 km" oninput="applyFilters()"/>
-<input class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="amenities" placeholder="Amenities" type="text" value="WiFi" oninput="applyFilters()"/>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" onchange="applyFilters()">
+<option value="1">Within 1 km</option>
+<option value="3">Within 3 km</option>
+<option selected value="5">Within 5 km</option>
+<option value="10">Within 10 km</option>
+</select>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="amenities" onchange="applyFilters()">
+<option selected value="wifi">WiFi</option>
+<option value="pool">Pool</option>
+<option value="spa">Spa</option>
+<option value="parking">Parking</option>
+</select>
 </div>
 </div>
 <!-- Grid Preview -->
@@ -290,7 +300,7 @@
     const filterDefaults = {
         duration: '2 hrs',
         priceRange: '0-2000',
-        distance: '5 km',
+        distance: '5',
         amenities: 'WiFi'
     };
     const filterState = {};
@@ -358,7 +368,15 @@
                 }
             }
 
-            // Distance + Amenities are soft/optional — do NOT hide hotels based on them
+            // Distance: strict AND filter (show hotels within range)
+            const filterDistance = filterState.distance || '';
+            if (strictMatch && filterDistance) {
+                const fd = parseInt(filterDistance, 10);
+                const id = parseInt(item.dataset.distance || '', 10);
+                if (!isNaN(fd) && !isNaN(id) && id > fd) strictMatch = false;
+            }
+
+            // Amenities: soft match (do NOT hide hotels based on amenities)
 
             if (strictMatch) {
                 visibleItems.push(item);
