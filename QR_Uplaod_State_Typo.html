@@ -394,7 +394,7 @@ if (data.success && data.url) {
         localStorage.setItem('qr_id', data.url);
     }
 
-    window.location.href = 'QR Processing State.html';
+    window.location.href = 'QR_Processing_State.html';
     return;
 }
 // Case 2: Scan API (returns message)
@@ -456,14 +456,14 @@ uploadBtn.addEventListener('click', async () => {
                 console.log("Saving QR URL:", data.url);
                 localStorage.setItem("qr_id", data.url);
             }
-            window.location.href = "QR Processing State.html";
+            window.location.href = "QR_Processing_State.html";
             return;
         }
 
         // Scan case (returns ID)
         if (data.success && data.data && data.data.id) {
             localStorage.setItem("qr_id", data.data.id);
-            window.location.href = "QR Processing State.html";
+            window.location.href = "QR_Processing_State.html";
             return;
         }
 
