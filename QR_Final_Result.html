@@ -28,7 +28,7 @@
             <span class="material-symbols-outlined text-slate-500 cursor-pointer">help</span>
             <span class="material-symbols-outlined text-slate-500 cursor-pointer">settings</span>
             <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
-                <img class="w-full h-full object-cover" src="https://via.placeholder.com/32">
+                <!-- Removed placeholder -->
             </div>
         </div>
     </header>
@@ -60,26 +60,14 @@
         <div class="w-full max-w-[600px]">
             <!-- Result Card -->
             <div id="resultCard" class="bg-white rounded-xl shadow-lg border p-8 text-center">
-                <!-- Icon and Status will be inserted here by JS -->
                 <div id="resultContent">
+                    <!-- Icon and Status will be inserted here by JS -->
                     <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-6">
                         <span class="material-symbols-outlined text-4xl text-slate-400">hourglass_empty</span>
                     </div>
                     <h1 class="text-2xl font-bold text-slate-700 mb-2">Loading...</h1>
                     <p class="text-slate-500">Please wait while we retrieve your verification status.</p>
                 </div>
-
-                <!-- QR Data Summary (if available) -->
-                <div id="qrSummary" class="hidden mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200 text-left">
-                    <h3 class="font-semibold text-slate-700 mb-2">Extracted Data:</h3>
-                    <p id="summaryText" class="text-slate-600 text-sm"></p>
-                </div>
-
-                <!-- Go Back Button -->
-                <button onclick="window.location.href='QR_Upload_State.html'" class="mt-8 w-full bg-blue-900 text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-800 transition-all flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined">arrow_back</span>
-                    Go Back
-                </button>
             </div>
 
             <!-- Reference ID -->
@@ -100,129 +88,56 @@
     </footer>
 
     <script>
-        // Get data from localStorage
-        const qrId = localStorage.getItem('qr_id');
-        const qrIsValid = localStorage.getItem('qr_is_valid');
-        const qrConfirmed = localStorage.getItem('qr_confirmed');
-        const qrIsDuplicate = localStorage.getItem('qr_is_duplicate');
-        const qrIsFraud = localStorage.getItem('qr_is_fraud');
-        const qrData = localStorage.getItem('qr_data');
-        
-        // Update reference ID display
-        if (qrId) {
-            document.getElementById('refId').textContent = 'QR-' + qrId.substring(0, 8).toUpperCase();
-        } else {
-            document.getElementById('refId').textContent = 'Not found';
-        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const verified = localStorage.getItem("qr_verified");
+            const resultContent = document.getElementById('resultContent');
+            const resultCard = document.getElementById('resultCard');
 
-        // Determine result and display appropriate message
-        const resultContent = document.getElementById('resultContent');
-        const resultCard = document.getElementById('resultCard');
-        const qrSummary = document.getElementById('qrSummary');
-        const summaryText = document.getElementById('summaryText');
+            if (!resultContent || !resultCard) return;
 
-        // Show QR data summary if available
-        if (qrData) {
-            qrSummary.classList.remove('hidden');
-            summaryText.textContent = qrData;
-        }
+            // SECURITY REDIRECT
+            if (verified !== "true") {
+                console.warn("Unverified access attempt");
+                window.location.href = "/QR_Upload_State.html";
+                return;
+            }
 
-        // Determine the result
-        let resultHTML = '';
+            // SHOW SUCCESS UI
+            const data = JSON.parse(localStorage.getItem("qr_final_data") || "{}");
 
-        // Case 1: Valid + Safe (Not Fraud) + Confirmed = Access Granted (Success)
-        if (qrIsValid === 'true' && qrConfirmed === 'true' && qrIsFraud !== 'true') {
             resultCard.classList.add('border-green-200');
-            resultHTML = `
+            resultContent.innerHTML = `
                 <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-                    <span class="material-symbols-outlined text-4xl text-green-600" style="font-variation-settings: 'FILL' 1;">lock_open</span>
+                    <span class="material-symbols-outlined text-4xl text-green-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
                 </div>
-                <h1 class="text-3xl font-bold text-green-700 mb-2">Access Granted</h1>
-                <p class="text-slate-600">Your flight QR code is verified, safe, and confirmed.</p>
-                <div class="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
-                    <p class="text-green-800 text-sm font-medium">Status: <span class="text-green-600">Verified, Safe & Confirmed</span></p>
-                    <p class="text-green-600 text-xs mt-1">Partner access unlocked successfully.</p>
-                </div>
-            `;
-        }
-        // Case 2: Valid + Fraud = Blocked (Suspicious)
-        else if (qrIsValid === 'true' && qrIsFraud === 'true') {
-            resultCard.classList.add('border-purple-200');
-            resultHTML = `
-                <div class="w-20 h-20 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-6">
-                    <span class="material-symbols-outlined text-4xl text-purple-600" style="font-variation-settings: 'FILL' 1;">block</span>
-                </div>
-                <h1 class="text-3xl font-bold text-purple-700 mb-2">Access Blocked (Suspicious)</h1>
-                <p class="text-slate-600">This QR code has been flagged as fraudulent.</p>
-                <div class="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                    <p class="text-purple-800 text-sm font-medium">Status: <span class="text-purple-600">Fraud Detected</span></p>
-                    <p class="text-purple-600 text-xs mt-1">Contact support if you believe this is an error.</p>
-                </div>
-            `;
-        }
-        // Case 3: Valid + Rejected by user (Not confirmed) = Failed
-        else if (qrIsValid === 'true' && qrConfirmed === 'false') {
-            resultCard.classList.add('border-red-200');
-            resultHTML = `
-                <div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6">
-                    <span class="material-symbols-outlined text-4xl text-red-600" style="font-variation-settings: 'FILL' 1;">cancel</span>
-                </div>
-                <h1 class="text-3xl font-bold text-red-700 mb-2">Verification Failed</h1>
-                <p class="text-slate-600">You rejected the extracted flight data.</p>
-                <div class="mt-4 p-3 bg-red-50 rounded-lg border border-red-200">
-                    <p class="text-red-800 text-sm font-medium">Status: <span class="text-red-600">Rejected by User</span></p>
-                    <p class="text-red-600 text-xs mt-1">Please upload a valid boarding pass if you made a mistake.</p>
-                </div>
-            `;
-        }
-        // Case 4: Invalid QR = Invalid
-        else if (qrIsValid === 'false') {
-            resultCard.classList.add('border-red-200');
-            resultHTML = `
-                <div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6">
-                    <span class="material-symbols-outlined text-4xl text-red-600" style="font-variation-settings: 'FILL' 1;">error</span>
-                </div>
-                <h1 class="text-3xl font-bold text-red-700 mb-2">Invalid QR Code</h1>
-                <p class="text-slate-600">The uploaded QR code does not contain valid flight information.</p>
-                <div class="mt-4 p-3 bg-red-50 rounded-lg border border-red-200">
-                    <p class="text-red-800 text-sm font-medium">Status: <span class="text-red-600">Verification Failed</span></p>
-                    <p class="text-red-600 text-xs mt-1">Please upload a valid boarding pass or flight ticket QR code.</p>
-                </div>
-            `;
-        }
-        // Case 5: Duplicate QR = Suspicious
-        else if (qrIsDuplicate === 'true') {
-            resultCard.classList.add('border-purple-200');
-            resultHTML = `
-                <div class="w-20 h-20 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-6">
-                    <span class="material-symbols-outlined text-4xl text-purple-600" style="font-variation-settings: 'FILL' 1;">report</span>
-                </div>
-                <h1 class="text-3xl font-bold text-purple-700 mb-2">Duplicate QR Detected</h1>
-                <p class="text-slate-600">This QR code has already been uploaded before.</p>
-                <div class="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                    <p class="text-purple-800 text-sm font-medium">Status: <span class="text-purple-600">Suspicious Activity</span></p>
-                    <p class="text-purple-600 text-xs mt-1">Multiple uploads of the same QR code are not allowed.</p>
-                </div>
-            `;
-        }
-        // Case 6: Missing data or incomplete process
-        else {
-            resultCard.classList.add('border-slate-200');
-            resultHTML = `
-                <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-6">
-                    <span class="material-symbols-outlined text-4xl text-slate-400" style="font-variation-settings: 'FILL' 1;">help</span>
-                </div>
-                <h1 class="text-3xl font-bold text-slate-700 mb-2">Incomplete Verification</h1>
-                <p class="text-slate-600">The verification process was not completed.</p>
-                <div class="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-200">
-                    <p class="text-slate-800 text-sm font-medium">Status: <span class="text-slate-600">Unknown</span></p>
-                    <p class="text-slate-500 text-xs mt-1">Please start the verification process again.</p>
-                </div>
-            `;
-        }
+                <h1 class="text-3xl font-bold text-green-700 mb-2">Verification Successful</h1>
+                <p class="text-slate-600">You are now a verified customer.</p>
 
-        // Update the result content
-        resultContent.innerHTML = resultHTML;
+                <div class="mt-6 p-6 bg-slate-50 rounded-lg border border-slate-200 text-left space-y-2">
+                    <p class="text-xs text-slate-400 uppercase font-bold mb-2">Flight Details</p>
+                    <p><strong>Name:</strong> ${data.name || "-"}</p>
+                    <p><strong>Flight:</strong> ${data.flight || "-"}</p>
+                    <p><strong>Date:</strong> ${data.date || "-"}</p>
+                    <p><strong>Seat:</strong> ${data.seat || "-"}</p>
+                    <p><strong>Gate:</strong> ${data.gate || "-"}</p>
+                </div>
+
+                <button onclick="startBooking()" class="mt-8 w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
+                    <span class="material-symbols-outlined">payments</span>
+                    Continue to Booking
+                </button>
+            `;
+
+            const qrId = localStorage.getItem('qr_id');
+            const refIdEl = document.getElementById('refId');
+            if (refIdEl) {
+                refIdEl.textContent = qrId ? 'QR-' + qrId.substring(0, 8).toUpperCase() : 'Not found';
+            }
+        });
+
+        function startBooking() {
+            window.location.href = "/Dashboard.html";
+        }
     </script>
 </body>
 </html>

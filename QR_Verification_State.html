@@ -184,10 +184,22 @@
             }
 
             document.getElementById("btnYes")?.addEventListener("click", () => {
+                // mark verification success
+                localStorage.setItem("qr_verified", "true");
+
+                // store final data
+                const data = localStorage.getItem("qr_extracted_info");
+                if (data) {
+                    localStorage.setItem("qr_final_data", data);
+                }
+
                 window.location.href = "/QR_Final_Result.html";
             });
 
             document.getElementById("btnNo")?.addEventListener("click", () => {
+                // mark verification failed/cleared
+                localStorage.removeItem("qr_verified");
+                
                 // Selective clear on NO
                 localStorage.removeItem("qr_image_preview");
                 localStorage.removeItem("qr_raw_text");
