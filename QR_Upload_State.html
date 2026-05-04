@@ -313,10 +313,21 @@
 // API Config
 const API_URL = "https://layoverbackend.onrender.com";
 
-// CLEAN OLD DATA BEFORE NEW SCAN
-document.addEventListener('DOMContentLoaded', () => {
-    localStorage.removeItem("qr_extracted_info");
-    localStorage.removeItem("qr_raw_text");
+// RESTORE QR IMAGE ON UPLOAD PAGE
+document.addEventListener("DOMContentLoaded", () => {
+  const preview = localStorage.getItem("qr_image_preview");
+
+  if (preview) {
+    const container = document.querySelector('.font-label-md.text-primary.italic')?.parentElement?.parentElement;
+    if (container) {
+      container.innerHTML = `
+        <div id="uploadPreview" class="flex flex-col items-center gap-2">
+            <img src="${preview}" style="max-width:200px;border-radius:8px;border:2px solid #e2e8f0;" />
+            <p class="text-xs text-slate-500">Selected File</p>
+        </div>
+      `;
+    }
+  }
 });
 
 // DOM Elements
@@ -324,21 +335,30 @@ const fileInput = document.getElementById('fileInput');
 const uploadBtn = document.getElementById('uploadBtn');
 
 let selectedFile = null;
-// File input change handler
+
+// File input change handler - STORE FILE PREVIEW
 fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
         selectedFile = file;
-        // Update UI to show selected file
-        const fileLabel = document.querySelector('.font-label-md.text-primary.italic');
-        if (fileLabel) {
-            fileLabel.textContent = file.name;
-        }
-        // Update progress bar
-        const progressBar = document.querySelector('.bg-primary.transition-all');
-        if (progressBar) {
-            progressBar.style.width = '100%';
-        }
+        
+        // Save image preview
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            localStorage.setItem("qr_image_preview", event.target.result);
+            
+            // Update UI to show selected file
+            const fileLabel = document.querySelector('.font-label-md.text-primary.italic');
+            if (fileLabel) {
+                fileLabel.textContent = file.name;
+            }
+            // Update progress bar
+            const progressBar = document.querySelector('.bg-primary.transition-all');
+            if (progressBar) {
+                progressBar.style.width = '100%';
+            }
+        };
+        reader.readAsDataURL(file);
     }
 });
 
@@ -359,24 +379,18 @@ async function scanQR() {
     const originalText = scanBtn.innerHTML;
     
     try {
-        // Get file from input
         const file = document.getElementById('fileInput').files[0];
-        
-        // Check if file is selected
         if (!file) {
             alert('Please select a file');
             return;
         }
         
-        // Disable button and show loading state
         scanBtn.disabled = true;
         scanBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Scanning...';
         
-        // Create FormData
         const formData = new FormData();
         formData.append('file', file);
         
-        // Send request to backend
         const response = await fetch(`${API_URL}/api/qr/scan`, {
             method: 'POST',
             body: formData
@@ -388,26 +402,22 @@ async function scanQR() {
             const qrText = data.data.raw;
             console.log('QR Code detected:', qrText);
 
-            // save raw QR text
+            // save raw QR text permanently
             localStorage.setItem("qr_raw_text", qrText);
 
             // save basic info for UI
-            const extractedInfo = { raw: qrText };
-            localStorage.setItem("qr_extracted_info", JSON.stringify(extractedInfo));
+            localStorage.setItem("qr_extracted_info", JSON.stringify({
+                raw: qrText
+            }));
 
-            // Success - display the scanned QR data
             alert('QR Code detected: ' + qrText);
         } else {
-            // Error from backend
             alert('Error: ' + (data.error || 'Failed to scan QR code'));
-            console.error('QR Scan error:', data.error);
         }
     } catch (error) {
-        // Network or other errors
         alert('Failed to scan QR code. Please try again.');
         console.error('Scan request failed:', error);
     } finally {
-        // Always re-enable button and restore original text
         scanBtn.disabled = false;
         scanBtn.innerHTML = originalText;
     }
@@ -420,7 +430,6 @@ uploadBtn.addEventListener('click', async () => {
         return;
     }
 
-    // Check file size (5MB = 5 * 1024 * 1024 bytes)
     if (selectedFile.size > 5 * 1024 * 1024) {
         alert('File size exceeds 5MB limit');
         return;
@@ -429,11 +438,9 @@ uploadBtn.addEventListener('click', async () => {
     setLoading(true);
 
     try {
-        // Create FormData
         const formData = new FormData();
         formData.append('file', selectedFile);
 
-        // Call backend API
         const response = await fetch(`${API_URL}/api/upload-qr`, {
             method: 'POST',
             body: formData
@@ -445,22 +452,17 @@ uploadBtn.addEventListener('click', async () => {
             throw new Error(data.message || 'Upload failed');
         }
 
-        // Upload case (your backend returns url and id)
         if (data.success && data.url) {
-            // Prefer DB id if available, otherwise store URL
+            // MARK AS UPLOADED
+            localStorage.setItem("qr_uploaded", "true");
             localStorage.setItem('qr_url', data.url);
-            if (data.id) {
-                console.log("Saving QR DB ID:", data.id);
-                localStorage.setItem('qr_id', String(data.id));
-            } else {
-                console.log("Saving QR URL:", data.url);
-                localStorage.setItem('qr_id', data.url);
-            }
+            
+            if (data.id) localStorage.setItem('qr_id', String(data.id));
+            
             window.location.href = `QR_Processing_State.html?url=${encodeURIComponent(data.url)}`;
             return;
         }
 
-        // fallback
         throw new Error('Invalid response from server');
     } catch (error) {
         console.error('Upload error:', error);

@@ -157,11 +157,24 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // AUTO REDIRECT IF NO DATA
+            if (!localStorage.getItem("qr_uploaded") && !localStorage.getItem("qr_raw_text")) {
+                window.location.href = "/QR_Upload_State.html";
+                return;
+            }
+
             const container = document.getElementById("extractedData");
             if (!container) return;
 
-            // Priority 1: Backend extracted info (structured)
-            // Priority 2: Local raw text (fallback)
+            // Show preview if exists
+            const preview = localStorage.getItem("qr_image_preview");
+            if (preview) {
+                const previewContainer = document.createElement('div');
+                previewContainer.className = "mb-6 flex justify-center";
+                previewContainer.innerHTML = `<img src="${preview}" id="qrPreviewImg" style="max-width:200px;border-radius:8px;border:2px solid #e2e8f0;" />`;
+                container.parentNode.insertBefore(previewContainer, container);
+            }
+
             let data = JSON.parse(localStorage.getItem("qr_extracted_info") || "{}");
             const rawText = localStorage.getItem("qr_raw_text");
 
@@ -174,22 +187,21 @@
                 }
             }
 
-            // If we have structured data, show it. Otherwise show raw lines.
-            if (data.passengerName || data.name || data.flightNumber || data.flight) {
+            // Always show at least the raw lines for reliability
+            if (data.raw) {
+                const lines = data.raw.split(/\s+/);
+                container.innerHTML = `
+                    <div class="text-left font-mono text-sm break-all space-y-1 bg-slate-100 p-4 rounded-lg border border-slate-200">
+                        <p class="text-xs text-slate-400 uppercase mb-2 font-sans">Raw Decoded Data</p>
+                        ${lines.map(line => `<p>${line}</p>`).join("")}
+                    </div>
+                `;
+            } else {
                 container.innerHTML = `
                     <div class="space-y-2">
                         <p><strong>Name:</strong> ${data.passengerName || data.name || "-"}</p>
                         <p><strong>Flight:</strong> ${data.flightNumber || data.flight || "-"}</p>
                         <p><strong>Date:</strong> ${data.date || "-"}</p>
-                        ${data.airline ? `<p><strong>Airline:</strong> ${data.airline}</p>` : ""}
-                        ${data.seat ? `<p><strong>Seat:</strong> ${data.seat}</p>` : ""}
-                    </div>
-                `;
-            } else if (data.raw) {
-                const lines = data.raw.split(/\s+/);
-                container.innerHTML = `
-                    <div class="text-left font-mono text-sm break-all space-y-1">
-                        ${lines.map(line => `<p>${line}</p>`).join("")}
                     </div>
                 `;
             }
@@ -205,7 +217,14 @@
             });
 
             document.getElementById("btnNo")?.addEventListener("click", () => {
-                localStorage.clear();
+                // Selective clear on NO
+                localStorage.removeItem("qr_image_preview");
+                localStorage.removeItem("qr_raw_text");
+                localStorage.removeItem("qr_extracted_info");
+                localStorage.removeItem("qr_uploaded");
+                localStorage.removeItem("qr_url");
+                localStorage.removeItem("qr_id");
+                
                 window.location.href = "/QR_Upload_State.html";
             });
         });
