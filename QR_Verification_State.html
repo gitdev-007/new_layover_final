@@ -158,18 +158,40 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.getElementById("extractedData");
-            const data = JSON.parse(localStorage.getItem("qr_extracted_info") || "{}");
+            if (!container) return;
 
-            if (container) {
-                if (Object.keys(data).length === 0) {
-                    container.innerHTML = "No data found";
+            // Priority 1: Backend extracted info (structured)
+            // Priority 2: Local raw text (fallback)
+            let data = JSON.parse(localStorage.getItem("qr_extracted_info") || "{}");
+            const rawText = localStorage.getItem("qr_raw_text");
+
+            if (Object.keys(data).length === 0 || (!data.passengerName && !data.name && !data.raw)) {
+                if (rawText) {
+                    data = { raw: rawText };
                 } else {
-                    container.innerHTML = `
-                        <p class="mb-2"><strong>Name:</strong> ${data.passengerName || data.name || "-"}</p>
-                        <p class="mb-2"><strong>Flight:</strong> ${data.flightNumber || data.flight || "-"}</p>
-                        <p><strong>Date:</strong> ${data.date || "-"}</p>
-                    `;
+                    container.innerHTML = '<p class="text-slate-500 text-center">No data found. Please go back and upload your QR code.</p>';
+                    return;
                 }
+            }
+
+            // If we have structured data, show it. Otherwise show raw lines.
+            if (data.passengerName || data.name || data.flightNumber || data.flight) {
+                container.innerHTML = `
+                    <div class="space-y-2">
+                        <p><strong>Name:</strong> ${data.passengerName || data.name || "-"}</p>
+                        <p><strong>Flight:</strong> ${data.flightNumber || data.flight || "-"}</p>
+                        <p><strong>Date:</strong> ${data.date || "-"}</p>
+                        ${data.airline ? `<p><strong>Airline:</strong> ${data.airline}</p>` : ""}
+                        ${data.seat ? `<p><strong>Seat:</strong> ${data.seat}</p>` : ""}
+                    </div>
+                `;
+            } else if (data.raw) {
+                const lines = data.raw.split(/\s+/);
+                container.innerHTML = `
+                    <div class="text-left font-mono text-sm break-all space-y-1">
+                        ${lines.map(line => `<p>${line}</p>`).join("")}
+                    </div>
+                `;
             }
 
             const qrId = localStorage.getItem('qr_id');
@@ -183,8 +205,7 @@
             });
 
             document.getElementById("btnNo")?.addEventListener("click", () => {
-                localStorage.removeItem("qr_url");
-                localStorage.removeItem("qr_extracted_info");
+                localStorage.clear();
                 window.location.href = "/QR_Upload_State.html";
             });
         });

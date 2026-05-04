@@ -313,6 +313,12 @@
 // API Config
 const API_URL = "https://layoverbackend.onrender.com";
 
+// CLEAN OLD DATA BEFORE NEW SCAN
+document.addEventListener('DOMContentLoaded', () => {
+    localStorage.removeItem("qr_extracted_info");
+    localStorage.removeItem("qr_raw_text");
+});
+
 // DOM Elements
 const fileInput = document.getElementById('fileInput');
 const uploadBtn = document.getElementById('uploadBtn');
@@ -379,9 +385,18 @@ async function scanQR() {
         const data = await response.json();
         
         if (data.success) {
+            const qrText = data.data.raw;
+            console.log('QR Code detected:', qrText);
+
+            // save raw QR text
+            localStorage.setItem("qr_raw_text", qrText);
+
+            // save basic info for UI
+            const extractedInfo = { raw: qrText };
+            localStorage.setItem("qr_extracted_info", JSON.stringify(extractedInfo));
+
             // Success - display the scanned QR data
-            alert('QR Code detected:\n' + data.data.raw);
-            console.log('QR Scan successful:', data.data);
+            alert('QR Code detected: ' + qrText);
         } else {
             // Error from backend
             alert('Error: ' + (data.error || 'Failed to scan QR code'));
@@ -433,6 +448,7 @@ uploadBtn.addEventListener('click', async () => {
         // Upload case (your backend returns url and id)
         if (data.success && data.url) {
             // Prefer DB id if available, otherwise store URL
+            localStorage.setItem('qr_url', data.url);
             if (data.id) {
                 console.log("Saving QR DB ID:", data.id);
                 localStorage.setItem('qr_id', String(data.id));
@@ -440,7 +456,7 @@ uploadBtn.addEventListener('click', async () => {
                 console.log("Saving QR URL:", data.url);
                 localStorage.setItem('qr_id', data.url);
             }
-            window.location.href = 'QR_Processing_State.html';
+            window.location.href = `QR_Processing_State.html?url=${encodeURIComponent(data.url)}`;
             return;
         }
 
