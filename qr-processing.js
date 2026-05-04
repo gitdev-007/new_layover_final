@@ -37,8 +37,8 @@ function updateProgressUI(value) {
 
 // Fake progress (smooth UI)
 const fakeProgress = setInterval(() => {
-  if (progress < 85) {
-    progress += 10;
+  if (progress < 90) {
+    progress += 8;
     updateProgressUI(progress);
   }
 }, 300);
@@ -61,12 +61,17 @@ async function checkStatus() {
 
     console.log("API response:", data);
 
-    if (data.progress !== undefined) {
+    // ENSURE progress only increases
+    if (data.progress !== undefined && data.progress > progress) {
       progress = data.progress;
       updateProgressUI(progress);
     }
 
     if (data.status === "completed" || data.status === "verified") {
+      // SAVE DATA BEFORE REDIRECT
+      localStorage.setItem("qr_extracted_info", JSON.stringify(data.extractedInfo || {}));
+      if (data.id) localStorage.setItem("qr_id", String(data.id));
+
       progress = 100;
       updateProgressUI(100);
 
