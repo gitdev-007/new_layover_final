@@ -129,6 +129,15 @@
         .hotel-item {
             cursor: pointer;
         }
+        .filter-field {
+            cursor: pointer;
+            min-height: 32px;
+            width: 100%;
+            outline: none;
+        }
+        .filter-field:focus {
+            box-shadow: 0 0 0 2px rgba(74, 68, 255, 0.18);
+        }
     </style>
 </head>
 <body class="bg-white text-on-background font-node-description antialiased p-8">
@@ -156,7 +165,6 @@
 <div class="level1 space-y-6 relative z-10">
 <div class="flex items-center justify-between mb-4">
 <span class="bg-primary text-white text-meta-label px-3 py-1 font-bold">LEVEL 1: LISTING</span>
-<span class="text-meta-label font-meta-label text-primary font-bold">THEME: BLUE/PURPLE</span>
 </div>
 <!-- Main Card Container -->
 <div class="bg-white border-2 border-primary-container p-node-padding rounded shadow-sm">
@@ -166,36 +174,30 @@
 </div>
 <!-- Component Blocks -->
 <div class="space-y-4">
-<!-- Navigation Block -->
-<div class="border border-outline-variant p-3 bg-surface">
-<p class="text-meta-label text-outline mb-1">GLOBAL NAVIGATION</p>
-<p class="text-node-description font-node-description">Logo | Explore | Partner With Us | About | Contact | Sign In</p>
-</div>
-<!-- Header Block -->
-<div class="border border-outline-variant p-3 bg-primary/5">
-<p class="text-meta-label text-primary mb-1">HERO SECTION</p>
-<p class="text-node-description font-node-description font-semibold">"Hotels Near Mumbai Airport"</p>
-<p class="text-[11px] text-on-surface-variant">Dynamic subtitle based on search parameters.</p>
-</div>
 <!-- Filter Block -->
 <div class="border border-outline-variant p-3">
 <p class="text-meta-label text-outline mb-1">SEARCH &amp; FILTERS</p>
 <div class="grid grid-cols-2 gap-2 text-node-description">
-<span class="bg-surface-container-high px-2 py-1 rounded">Duration (2, 4, 8h)</span>
-<span class="bg-surface-container-high px-2 py-1 rounded">Price Range</span>
-<span class="bg-surface-container-high px-2 py-1 rounded">Distance</span>
-<span class="bg-surface-container-high px-2 py-1 rounded">Amenities</span>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="duration">
+<option value="">Duration (2, 4, 8h)</option>
+<option selected value="2 hrs">2 hrs</option>
+<option value="4 hours">4 hours</option>
+<option value="8 hours">8 hours</option>
+</select>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="priceRange">
+<option value="">Price Range</option>
+<option selected value="₹1000–₹5000">₹1000–₹5000</option>
+<option value="₹1500 - ₹3000">₹1500 - ₹3000</option>
+<option value="₹3000+">₹3000+</option>
+</select>
+<input class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" placeholder="Distance" type="text" value="5 km"/>
+<input class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="amenities" placeholder="Amenities" type="text" value="WiFi"/>
 </div>
 </div>
 <!-- Grid Preview -->
 <div class="border-2 border-dashed border-outline-variant p-3">
 <p class="text-meta-label text-outline mb-2">HOTEL INVENTORY (12 HOTELS FOUND)</p>
 <div class="rounded-lg flex gap-3"><div class="space-y-4 w-full"><div><p class="text-[10px] font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">workspace_premium</span> PREMIUM HOTELS (8)</p><div class="grid grid-cols-2 gap-2"><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" role="button" tabindex="0">The Orchid Hotel</div><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" role="button" tabindex="0">Hotel Sahara Star</div><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" role="button" tabindex="0">Taj Santacruz</div><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" role="button" tabindex="0">JW Marriott Sahar</div><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" role="button" tabindex="0">ITC Maratha</div><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" role="button" tabindex="0">The Leela Mumbai</div><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" role="button" tabindex="0">Aurika Mumbai</div><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" role="button" tabindex="0">Grand Hyatt</div></div></div><div class="pt-2 border-t border-outline-variant/30"> <p class="text-[10px] font-bold text-outline mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">hotel</span> STANDARD HOTELS (4)</p><div class="grid grid-cols-2 gap-2"><div class="hotel-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" role="button" tabindex="0">Hotel Bawa Intl.</div><div class="hotel-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" role="button" tabindex="0">Hotel Midland</div><div class="hotel-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" role="button" tabindex="0">Lemon Tree Premier</div><div class="hotel-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" role="button" tabindex="0">Holiday Inn</div></div></div></div></div>
-</div>
-<!-- Footer Actions -->
-<div class="flex justify-between items-center text-meta-label pt-2">
-<span class="text-outline">SORT: Price, Rating, Popularity</span>
-<span class="text-primary font-bold">Pagination / Load More</span>
 </div>
 </div>
 </div>
@@ -204,7 +206,6 @@
 <div class="level2 space-y-6 relative z-10">
 <div class="flex items-center justify-between mb-4">
 <span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
-<span class="text-meta-label font-meta-label text-secondary font-bold">THEME: ORANGE</span>
 </div>
 <!-- Main Card Container -->
 <div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
@@ -279,33 +280,38 @@
 <li class="flex gap-2"><strong>[3]</strong> Shuttle availability is a primary filter for layover users.</li>
 </ul>
 </div>
-<div class="md:col-span-2 border-t-2 border-outline-variant pt-4">
-<h5 class="text-meta-label font-bold text-outline uppercase mb-3">Sitemap Legend</h5>
-<div class="flex flex-wrap gap-6">
-<div class="flex items-center gap-2">
-<span class="w-3 h-3 bg-primary"></span>
-<span class="text-xs font-semibold">Discovery (Blue)</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="w-3 h-3 bg-secondary"></span>
-<span class="text-xs font-semibold">Decision (Orange)</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="w-3 h-3 bg-green-500 rounded-full"></span>
-<span class="text-xs">Finalized UI</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="w-3 h-3 bg-purple-500 rounded-full"></span>
-<span class="text-xs">In Wireframe</span>
-</div>
-</div>
-</div>
 </section>
 </main>
 <script>
     const level2 = document.querySelector('.level2');
     const mainLayout = document.querySelector('.main-layout');
     const hotelItems = document.querySelectorAll('.hotel-item');
+    const filterFields = document.querySelectorAll('[data-filter-field]');
+    const filterDefaults = {
+        duration: '2 hrs',
+        priceRange: '₹1000–₹5000',
+        distance: '5 km',
+        amenities: 'WiFi'
+    };
+    const filterState = {};
+
+    const updateFilterState = (field) => {
+        const key = field.dataset.filterField;
+        const fallback = filterDefaults[key] || '';
+        const value = field.value.trim() || fallback;
+
+        if (!field.value.trim()) {
+            field.value = fallback;
+        }
+
+        filterState[key] = value;
+    };
+
+    filterFields.forEach((field) => {
+        updateFilterState(field);
+        field.addEventListener('change', () => updateFilterState(field));
+        field.addEventListener('input', () => updateFilterState(field));
+    });
     const hotelDetails = {
         'The Orchid Hotel': {
             name: 'The Orchid Hotel, Mumbai',
@@ -408,7 +414,6 @@
     const renderLevel2 = (detail) => `
 <div class="flex items-center justify-between mb-4">
 <span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
-<span class="text-meta-label font-meta-label text-secondary font-bold">THEME: ORANGE</span>
 </div>
 <div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
 <div class="flex justify-between items-start mb-6">
