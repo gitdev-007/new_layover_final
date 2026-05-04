@@ -22,6 +22,7 @@ if (!fileUrl) {
 let pollCount = 0;
 const MAX_POLLS = 15; // stop after ~30 sec
 let pollInterval;
+let lastProgress = 0;
 
 // Update UI
 function updateProgressUI(value) {
@@ -46,9 +47,12 @@ async function checkStatus() {
 
     console.log("API response:", data);
 
-    // Update progress UI
+    // Update progress UI - ONLY INCREASE
     if (data.progress !== undefined) {
-      updateProgressUI(data.progress);
+      if (data.progress > lastProgress) {
+        lastProgress = data.progress;
+      }
+      updateProgressUI(lastProgress);
     }
 
     // Save extracted data if available

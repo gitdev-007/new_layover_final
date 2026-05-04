@@ -3,15 +3,24 @@ import supabaseClient from '../supabaseClient.js';
 
 const router = Router();
 
+let progressStore = {}; // simple memory store
+
 // GET /qr-status - Poll for processing status (supports id or url query param)
 router.get('/qr-status', async (req, res) => {
   try {
     const { id, url } = req.query;
+    const key = url || id || "default";
 
-    // simulate progress
-    let progress = Math.floor(Math.random() * 40) + 60; // 60–100
+    if (!progressStore[key]) {
+      progressStore[key] = 0;
+    }
 
-    if (progress >= 95) {
+    // increment slowly
+    progressStore[key] += Math.floor(Math.random() * 10) + 5;
+
+    if (progressStore[key] >= 100) {
+      progressStore[key] = 100;
+
       return res.json({
         status: "completed",
         progress: 100,
@@ -27,7 +36,7 @@ router.get('/qr-status', async (req, res) => {
 
     return res.json({
       status: "processing",
-      progress: progress
+      progress: progressStore[key]
     });
 
   } catch (err) {
