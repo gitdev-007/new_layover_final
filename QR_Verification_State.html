@@ -99,33 +99,33 @@
                 <p class="text-slate-600">Please confirm that the extracted information matches your flight ticket.</p>
             </div>
 
-            <!-- QR Data Display Card -->
+            <!-- QR Data Display Area -->
             <section class="bg-white rounded-xl shadow-lg border border-slate-100 p-8">
                 <div class="flex items-center gap-3 mb-6">
                     <span class="material-symbols-outlined text-blue-900 text-2xl">confirmation_number</span>
                     <h2 class="text-xl font-semibold text-blue-900">Extracted Flight Data</h2>
                 </div>
                 
-                <!-- Display Area -->
-                <div id="extractedData" class="bg-slate-50 rounded-lg p-6 border border-slate-200 mb-6">
+                <!-- Display Area for Group -->
+                <div id="passengerCards" class="flex flex-col gap-6 mb-8">
+                    <!-- Passenger cards will be injected here -->
                 </div>
 
-                <!-- Confirmation Question -->
-                <div class="text-center mb-8">
-                    <p class="text-lg font-medium text-slate-800 mb-2">Is this information correct?</p>
-                    <p class="text-sm text-slate-500">Please verify all details match your official boarding pass</p>
-                </div>
-
-                <!-- Yes/No Buttons -->
-                <div class="flex flex-col md:flex-row gap-4">
-                    <button id="btnYes" class="flex-1 bg-green-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-green-700 transition-all flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined">check_circle</span>
-                        YES, Correct
-                    </button>
-                    <button id="btnNo" class="flex-1 bg-red-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-red-700 transition-all flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined">cancel</span>
-                        NO, Incorrect
-                    </button>
+                <!-- Confirmation Question (Below cards) -->
+                <div id="verificationQuestion" class="hidden text-center pt-8 border-t border-slate-100">
+                    <p class="text-lg font-medium text-slate-800 mb-6">Is all passenger information correct?</p>
+                    
+                    <!-- Yes/No Buttons -->
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <button id="btnYes" class="flex-1 bg-green-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-green-700 transition-all flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            YES, ALL CORRECT
+                        </button>
+                        <button id="btnNo" class="flex-1 bg-red-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-red-700 transition-all flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">cancel</span>
+                            SOME INCORRECT
+                        </button>
+                    </div>
                 </div>
             </section>
 
@@ -156,59 +156,57 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("extractedData");
-            if (!container) return;
+            const container = document.getElementById("passengerCards");
+            const questionSection = document.getElementById("verificationQuestion");
+            
+            // Try to get group data, fallback to single data structure
+            let groupData = localStorage.getItem("qr_group_extracted_info");
+            let passengers = [];
 
-            const storedInfo = localStorage.getItem("qr_extracted_info");
-            const data = JSON.parse(storedInfo || "{}");
-            console.log("Loaded extracted data:", data);
-
-            if (!data || Object.keys(data).length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-center">No extracted data available.</p>';
+            if (groupData) {
+                passengers = JSON.parse(groupData);
             } else {
-                container.innerHTML = `
-                    <div style="text-align:left; line-height:1.8">
-                      <p><strong>Name:</strong> ${data.name || "-"}</p>
-                      <p><strong>Flight:</strong> ${data.flight || "-"}</p>
-                      <p><strong>Date:</strong> ${data.date || "-"}</p>
-                      <p><strong>Seat:</strong> ${data.seat || "-"}</p>
-                      <p><strong>Gate:</strong> ${data.gate || "-"}</p>
+                // Fallback for legacy single-passenger data
+                const singleData = JSON.parse(localStorage.getItem("qr_extracted_info") || "{}");
+                if (Object.keys(singleData).length > 0) {
+                    passengers = [{ ...singleData, index: 1, status: "valid" }];
+                }
+            }
+
+            if (passengers.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-center">No passenger data available.</p>';
+            } else {
+                container.innerHTML = passengers.map((p, i) => `
+                    <div class="p-6 bg-slate-50 rounded-lg border border-slate-200">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg text-blue-900">Passenger ${p.index || i + 1}</h3>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase ${p.status === 'valid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                ${p.status === 'valid' ? '✔ Valid' : '❌ Invalid'}
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-y-3 text-sm">
+                            <p><span class="text-slate-500">Name:</span> ${p.name || "-"}</p>
+                            <p><span class="text-slate-500">Flight:</span> ${p.flight || "-"}</p>
+                            <p><span class="text-slate-500">Date:</span> ${p.date || "-"}</p>
+                            <p><span class="text-slate-500">Seat:</span> ${p.seat || "-"}</p>
+                            <p><span class="text-slate-500">Gate:</span> ${p.gate || "-"}</p>
+                        </div>
                     </div>
-                `;
+                `).join('');
+                
+                questionSection.classList.remove('hidden');
             }
 
             const qrId = localStorage.getItem('qr_id');
             const refIdEl = document.getElementById('refId');
-            if (refIdEl) {
-                refIdEl.textContent = qrId ? 'QR-' + qrId.substring(0, 8).toUpperCase() : 'Not found';
-            }
+            if (refIdEl) refIdEl.textContent = qrId ? 'QR-' + qrId.substring(0, 8).toUpperCase() : 'Not found';
 
             document.getElementById("btnYes")?.addEventListener("click", () => {
-                // mark verification success
                 localStorage.setItem("qr_verified", "true");
-
-                // store final data
-                const data = localStorage.getItem("qr_extracted_info");
-                if (data) {
-                    localStorage.setItem("qr_final_data", data);
-                }
-
                 window.location.href = "/QR_Final_Result.html";
             });
 
             document.getElementById("btnNo")?.addEventListener("click", () => {
-                // mark verification failed/cleared
-                localStorage.removeItem("qr_verified");
-                
-                // Selective clear on NO
-                localStorage.removeItem("qr_image_preview");
-                localStorage.removeItem("qr_raw_text");
-                localStorage.removeItem("qr_extracted_info");
-                localStorage.removeItem("qr_uploaded");
-                localStorage.removeItem("qr_url");
-                localStorage.removeItem("qr_id");
-                localStorage.removeItem("qr_process_done");
-                
                 window.location.href = "/QR_Upload_State.html";
             });
         });
