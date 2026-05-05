@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCheck - Layover Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .service-card {
+            transition: all 0.2s ease;
+        }
+        .service-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white border-b border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3">
+            <span class="text-xl font-bold tracking-tight text-blue-900">SkyCheck</span>
+        </div>
+        <nav class="hidden md:flex items-center gap-8">
+            <a class="font-manrope text-sm font-medium text-slate-500 hover:text-blue-700" href="#">Verification</a>
+            <a class="font-manrope text-sm font-medium text-blue-700 font-bold" href="#">Layover Planner</a>
+            <a class="font-manrope text-sm font-medium text-slate-500 hover:text-blue-700" href="#">Summary</a>
+        </nav>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-slate-500 cursor-pointer">help</span>
+            <span class="material-symbols-outlined text-slate-500 cursor-pointer">settings</span>
+            <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
+            </div>
+        </div>
+    </header>
+
+    <!-- SideNavBar -->
+    <aside class="hidden md:flex flex-col w-24 h-screen pt-20 pb-8 fixed left-0 top-0 bg-slate-50 border-r border-slate-200 z-40">
+        <div class="flex flex-col items-center gap-6 px-2">
+            <div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+                <span class="material-symbols-outlined mb-1">verified</span>
+                <span class="font-manrope text-xs font-semibold">Verified</span>
+            </div>
+            <div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+                <span class="material-symbols-outlined mb-1">directions_car</span>
+                <span class="font-manrope text-xs font-semibold">Transport</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-blue-50 text-blue-900 rounded-lg p-2">
+                <span class="material-symbols-outlined mb-1">map</span>
+                <span class="font-manrope text-xs font-semibold">Plan</span>
+            </div>
+            <div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+                <span class="material-symbols-outlined mb-1">receipt_long</span>
+                <span class="font-manrope text-xs font-semibold">Summary</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-grow pt-20 pb-12 px-4 md:ml-24 flex gap-6 flex-col lg:flex-row">
+        <!-- Left Column: Services -->
+        <div class="flex-grow flex flex-col gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h1 class="text-2xl font-bold text-blue-900 mb-4">Layover Setup</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Layover Duration (Hours)</label>
+                        <input type="number" id="layoverHours" value="6" min="3" max="24" class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" onchange="recalculateTime()">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Transport Selected</label>
+                        <div class="w-full bg-slate-100 border border-slate-200 rounded-lg px-4 py-2 font-medium text-slate-700" id="displayTransport">
+                            Loading...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex-grow">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-slate-800">Add Services</h2>
+                    <select id="categoryFilter" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-blue-500" onchange="renderServices()">
+                        <option value="All">All Services</option>
+                        <option value="Hotel">Hotels</option>
+                        <option value="Restaurant">Restaurants</option>
+                        <option value="Spa">Wellness</option>
+                        <option value="Entertainment">Entertainment</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="servicesContainer">
+                    <!-- Services injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Itinerary & Time Tracker -->
+        <div class="w-full lg:w-96 flex flex-col gap-6">
+            <!-- Time Tracker -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 sticky top-24">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-600">timer</span> Time Tracker
+                </h3>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500 font-medium">Total Layover:</span>
+                        <span class="font-bold text-slate-800" id="lblTotalLayover">6h 0m</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500 font-medium">Safe Buffer (Required):</span>
+                        <span class="font-bold text-amber-600">2h 0m</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500 font-medium">Max Usable Time:</span>
+                        <span class="font-bold text-slate-800" id="lblMaxUsable">4h 0m</span>
+                    </div>
+                    
+                    <div class="h-px bg-slate-200 w-full my-2"></div>
+
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-600 font-bold">Time Used:</span>
+                        <span class="font-bold text-lg text-blue-600" id="lblTimeUsed">0h 0m</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-600 font-bold">Remaining:</span>
+                        <span class="font-bold text-lg text-green-600" id="lblTimeRemaining">4h 0m</span>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden flex mt-2 border border-slate-200" id="timeProgressBar">
+                        <div class="h-full bg-blue-500 transition-all duration-300" id="barUsed" style="width: 0%"></div>
+                        <div class="h-full bg-amber-400" id="barBuffer" style="width: 33.33%"></div>
+                    </div>
+
+                    <!-- Warning Alert -->
+                    <div id="warningAlert" class="hidden mt-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg flex items-start gap-2">
+                        <span class="material-symbols-outlined text-red-600">warning</span>
+                        <span id="warningMsg">Cannot add this item. Exceeds your layover time.</span>
+                    </div>
+                </div>
+
+                <!-- Itinerary List -->
+                <div class="mt-8">
+                    <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 border-b border-slate-100 pb-2">Your Itinerary</h4>
+                    <div id="itineraryList" class="space-y-3 min-h-[100px] max-h-[300px] overflow-y-auto pr-2">
+                        <p class="text-sm text-slate-400 italic text-center mt-4">No services added yet.</p>
+                    </div>
+                </div>
+
+                <button onclick="proceedToSummary()" class="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2">
+                    Proceed to Summary
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const speedMap = {
+            'Sedan': 40,
+            'SUV': 38,
+            'XL': 35,
+            'Luxury': 45,
+            'Shuttle': 30
+        };
+
+        const allServices = [
+            { id: 1, type: 'Hotel', name: 'Taj Santacruz', durationMins: 120, distanceKm: 1.6, icon: 'hotel' },
+            { id: 2, type: 'Hotel', name: 'Hotel Sahara Star', durationMins: 120, distanceKm: 1.1, icon: 'hotel' },
+            { id: 3, type: 'Restaurant', name: 'Thai Naam', durationMins: 90, distanceKm: 1.8, icon: 'restaurant' },
+            { id: 4, type: 'Restaurant', name: 'Cafe Coffee Day', durationMins: 45, distanceKm: 0.4, icon: 'restaurant' },
+            { id: 5, type: 'Spa', name: 'Jiva Spa', durationMins: 60, distanceKm: 1.6, icon: 'spa' },
+            { id: 6, type: 'Entertainment', name: 'Zero Latency VR', durationMins: 90, distanceKm: 16.5, icon: 'sports_esports' },
+            { id: 7, type: 'Entertainment', name: 'Terminal Lounge', durationMins: 60, distanceKm: 0.1, icon: 'weekend' }
+        ];
+
+        let selectedItems = [];
+        let transportType = 'Sedan';
+        let transportSpeed = 40;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTransport = localStorage.getItem("transportType");
+            if (savedTransport && speedMap[savedTransport]) {
+                transportType = savedTransport;
+                transportSpeed = speedMap[transportType];
+            }
+            document.getElementById("displayTransport").textContent = `${transportType} (~${transportSpeed} km/h)`;
+            
+            // Restore previous selections if any
+            const savedItinerary = localStorage.getItem("layover_itinerary");
+            if(savedItinerary) {
+                try { selectedItems = JSON.parse(savedItinerary); } catch(e){}
+            }
+
+            renderServices();
+            recalculateTime();
+        });
+
+        function getTravelTimeMins(distanceKm) {
+            return (distanceKm / transportSpeed) * 60;
+        }
+
+        function renderServices() {
+            const container = document.getElementById("servicesContainer");
+            const filter = document.getElementById("categoryFilter").value;
+            
+            let filtered = allServices;
+            if (filter !== 'All') {
+                filtered = allServices.filter(s => s.type === filter);
+            }
+
+            // Smart Sort: prioritize closer and shorter items
+            filtered.sort((a, b) => {
+                const scoreA = a.distanceKm + (a.durationMins / 60);
+                const scoreB = b.distanceKm + (b.durationMins / 60);
+                return scoreA - scoreB;
+            });
+
+            container.innerHTML = filtered.map(s => {
+                const estTravel = Math.round(getTravelTimeMins(s.distanceKm));
+                const added = selectedItems.some(i => i.id === s.id);
+                return `
+                <div class="service-card border ${added ? 'border-blue-500 bg-blue-50' : 'border-slate-200 bg-white'} p-4 rounded-xl flex flex-col justify-between">
+                    <div class="flex gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-blue-600 shrink-0">
+                            <span class="material-symbols-outlined">${s.icon}</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">${s.name}</h4>
+                            <p class="text-xs text-slate-500">${s.type} • ${s.distanceKm} km</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-lg">
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> ${s.durationMins}m stay</span>
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">directions_car</span> ~${estTravel}m travel (1-way)</span>
+                    </div>
+                    <button onclick="${added ? `removeItem(${s.id})` : `addItem(${s.id})`}" class="w-full py-2 rounded-lg text-sm font-semibold transition-colors ${added ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'bg-slate-900 text-white hover:bg-slate-800'}">
+                        ${added ? 'Remove' : 'Add to List'}
+                    </button>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function formatTime(mins) {
+            const h = Math.floor(mins / 60);
+            const m = Math.round(mins % 60);
+            return `${h}h ${m}m`;
+        }
+
+        function calculateItinerary() {
+            let totalMins = 0;
+            let travelMins = 0;
+            let serviceMins = 0;
+            let currentDist = 0; // Starts at airport (0 km)
+
+            selectedItems.forEach(item => {
+                // travel from previous location to this location
+                // for simplicity, we approximate distance between stops as |dist1 - dist2| or just direct distance from airport
+                // we'll use a conservative estimate: returning to airport or direct distance
+                const distToNext = Math.abs(item.distanceKm - currentDist);
+                const tTime = getTravelTimeMins(distToNext);
+                
+                travelMins += tTime;
+                serviceMins += item.durationMins;
+                totalMins += (tTime + item.durationMins);
+                
+                currentDist = item.distanceKm;
+            });
+
+            // Add return trip to airport
+            if (selectedItems.length > 0) {
+                const returnTime = getTravelTimeMins(currentDist);
+                travelMins += returnTime;
+                totalMins += returnTime;
+            }
+
+            return { totalMins, travelMins, serviceMins };
+        }
+
+        function recalculateTime() {
+            const layoverHours = parseFloat(document.getElementById("layoverHours").value) || 6;
+            const totalLayoverMins = layoverHours * 60;
+            const bufferMins = 120; // 2 hours safe time
+            const maxUsableMins = totalLayoverMins - bufferMins;
+
+            document.getElementById("lblTotalLayover").textContent = formatTime(totalLayoverMins);
+            document.getElementById("lblMaxUsable").textContent = formatTime(maxUsableMins);
+
+            const { totalMins } = calculateItinerary();
+            
+            // Check if valid
+            const isExceeded = totalMins > maxUsableMins;
+            const warningAlert = document.getElementById("warningAlert");
+            const lblTimeRemaining = document.getElementById("lblTimeRemaining");
+
+            if (isExceeded) {
+                warningAlert.classList.remove("hidden");
+                lblTimeRemaining.textContent = "Exceeded!";
+                lblTimeRemaining.className = "font-bold text-lg text-red-600";
+            } else {
+                warningAlert.classList.add("hidden");
+                lblTimeRemaining.textContent = formatTime(maxUsableMins - totalMins);
+                
+                // Color coding (green -> yellow)
+                if ((maxUsableMins - totalMins) < 30) {
+                    lblTimeRemaining.className = "font-bold text-lg text-amber-500";
+                } else {
+                    lblTimeRemaining.className = "font-bold text-lg text-green-600";
+                }
+            }
+
+            document.getElementById("lblTimeUsed").textContent = formatTime(totalMins);
+
+            // Progress bar update
+            const totalPct = Math.min(100, (totalMins / totalLayoverMins) * 100);
+            const bufferPct = (bufferMins / totalLayoverMins) * 100;
+            
+            const barUsed = document.getElementById("barUsed");
+            const barBuffer = document.getElementById("barBuffer");
+            
+            barBuffer.style.width = `${bufferPct}%`;
+            barUsed.style.width = `${totalPct}%`;
+            
+            if (totalMins > maxUsableMins) {
+                barUsed.className = "h-full bg-red-500 transition-all duration-300";
+            } else if (totalMins > maxUsableMins - 30) {
+                barUsed.className = "h-full bg-amber-500 transition-all duration-300";
+            } else {
+                barUsed.className = "h-full bg-blue-500 transition-all duration-300";
+            }
+
+            renderItineraryList();
+            localStorage.setItem("layover_itinerary", JSON.stringify(selectedItems));
+            localStorage.setItem("layover_total_used", totalMins);
+            localStorage.setItem("layover_total_avail", maxUsableMins);
+            localStorage.setItem("layover_hours", layoverHours);
+        }
+
+        function addItem(id) {
+            const item = allServices.find(s => s.id === id);
+            if (!item) return;
+
+            // Temp add to check if it exceeds
+            selectedItems.push(item);
+            
+            const layoverHours = parseFloat(document.getElementById("layoverHours").value) || 6;
+            const maxUsableMins = (layoverHours * 60) - 120;
+            
+            const { totalMins } = calculateItinerary();
+            
+            if (totalMins > maxUsableMins) {
+                // Reject
+                selectedItems.pop();
+                const warningAlert = document.getElementById("warningAlert");
+                warningAlert.classList.remove("hidden");
+                
+                // Shake effect on warning
+                warningAlert.animate([
+                    { transform: 'translateX(0)' },
+                    { transform: 'translateX(-5px)' },
+                    { transform: 'translateX(5px)' },
+                    { transform: 'translateX(0)' }
+                ], { duration: 300 });
+
+                setTimeout(() => {
+                    if(calculateItinerary().totalMins <= maxUsableMins) {
+                        warningAlert.classList.add("hidden");
+                    }
+                }, 3000);
+            } else {
+                renderServices();
+                recalculateTime();
+            }
+        }
+
+        function removeItem(id) {
+            selectedItems = selectedItems.filter(s => s.id !== id);
+            renderServices();
+            recalculateTime();
+        }
+
+        function renderItineraryList() {
+            const list = document.getElementById("itineraryList");
+            if (selectedItems.length === 0) {
+                list.innerHTML = '<p class="text-sm text-slate-400 italic text-center mt-4">No services added yet.</p>';
+                return;
+            }
+
+            list.innerHTML = selectedItems.map((item, index) => `
+                <div class="flex items-start gap-3 bg-slate-50 p-3 rounded-lg border border-slate-100 relative group">
+                    <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                        ${index + 1}
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-sm font-bold text-slate-800">${item.name}</p>
+                        <p class="text-xs text-slate-500">${item.durationMins}m stay</p>
+                    </div>
+                    <button onclick="removeItem(${item.id})" class="text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+                        <span class="material-symbols-outlined text-sm">close</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function proceedToSummary() {
+            if (selectedItems.length === 0) {
+                alert("Please add at least one service to your itinerary.");
+                return;
+            }
+            window.location.href = "/itinerary-summary.html";
+        }
+    </script>
+</body>
+</html>

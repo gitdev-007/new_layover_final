@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCheck - Itinerary Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white border-b border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3">
+            <span class="text-xl font-bold tracking-tight text-blue-900">SkyCheck</span>
+        </div>
+        <nav class="hidden md:flex items-center gap-8">
+            <a class="font-manrope text-sm font-medium text-slate-500 hover:text-blue-700" href="#">Verification</a>
+            <a class="font-manrope text-sm font-medium text-slate-500 hover:text-blue-700" href="#">Layover Planner</a>
+            <a class="font-manrope text-sm font-medium text-blue-700 font-bold" href="#">Summary</a>
+        </nav>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-slate-500 cursor-pointer">help</span>
+            <span class="material-symbols-outlined text-slate-500 cursor-pointer">settings</span>
+            <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
+            </div>
+        </div>
+    </header>
+
+    <!-- SideNavBar -->
+    <aside class="hidden md:flex flex-col w-24 h-screen pt-20 pb-8 fixed left-0 top-0 bg-slate-50 border-r border-slate-200 z-40">
+        <div class="flex flex-col items-center gap-6 px-2">
+            <div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+                <span class="material-symbols-outlined mb-1">verified</span>
+                <span class="font-manrope text-xs font-semibold">Verified</span>
+            </div>
+            <div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+                <span class="material-symbols-outlined mb-1">directions_car</span>
+                <span class="font-manrope text-xs font-semibold">Transport</span>
+            </div>
+            <div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+                <span class="material-symbols-outlined mb-1">map</span>
+                <span class="font-manrope text-xs font-semibold">Plan</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-blue-50 text-blue-900 rounded-lg p-2">
+                <span class="material-symbols-outlined mb-1">receipt_long</span>
+                <span class="font-manrope text-xs font-semibold">Summary</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-grow pt-24 pb-12 px-6 md:ml-24 flex justify-center items-start">
+        <div class="w-full max-w-[800px] flex flex-col gap-8">
+            <div class="text-center md:text-left">
+                <h1 class="text-3xl font-bold text-blue-900 mb-2">Itinerary Summary</h1>
+                <p class="text-slate-600">Review your final plan before confirming.</p>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm text-center">
+                    <span class="material-symbols-outlined text-blue-500 text-3xl mb-2">directions_car</span>
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Transport</p>
+                    <p class="text-lg font-bold text-slate-800" id="summaryTransport">Sedan</p>
+                </div>
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm text-center">
+                    <span class="material-symbols-outlined text-amber-500 text-3xl mb-2">hourglass_empty</span>
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Time Used</p>
+                    <p class="text-lg font-bold text-slate-800" id="summaryTimeUsed">0h 0m</p>
+                </div>
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm text-center">
+                    <span class="material-symbols-outlined text-green-500 text-3xl mb-2">verified</span>
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Remaining Time</p>
+                    <p class="text-lg font-bold text-slate-800" id="summaryRemaining">0h 0m</p>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+                <h3 class="text-xl font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">Your Stops</h3>
+                
+                <div class="relative border-l-2 border-slate-200 ml-4 space-y-8" id="timelineContainer">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="window.location.href='/layover-planner.html'" class="flex-1 bg-slate-100 text-slate-700 py-4 rounded-lg font-bold hover:bg-slate-200 transition-all">
+                    Edit Plan
+                </button>
+                <button onclick="alert('Booking Confirmed! Enjoy your layover.')" class="flex-1 bg-green-600 text-white py-4 rounded-lg font-bold hover:bg-green-700 transition-all shadow-lg shadow-green-200">
+                    Confirm Booking
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full py-6 px-8 flex flex-col md:flex-row justify-between items-center gap-4 mt-auto bg-slate-50 border-t border-slate-200 ml-0 md:ml-24">
+        <div class="text-slate-600 text-xs">
+            © 2024 SkyCheck Aviation Security. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        const speedMap = {
+            'Sedan': 40,
+            'SUV': 38,
+            'XL': 35,
+            'Luxury': 45,
+            'Shuttle': 30
+        };
+
+        function formatTime(mins) {
+            const h = Math.floor(mins / 60);
+            const m = Math.round(mins % 60);
+            return `${h}h ${m}m`;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const transportType = localStorage.getItem("transportType") || "Sedan";
+            const transportSpeed = speedMap[transportType] || 40;
+            
+            const totalUsed = parseFloat(localStorage.getItem("layover_total_used")) || 0;
+            const totalAvail = parseFloat(localStorage.getItem("layover_total_avail")) || 0;
+            let itinerary = [];
+            try {
+                itinerary = JSON.parse(localStorage.getItem("layover_itinerary")) || [];
+            } catch(e) {}
+
+            document.getElementById("summaryTransport").textContent = transportType;
+            document.getElementById("summaryTimeUsed").textContent = formatTime(totalUsed);
+            document.getElementById("summaryRemaining").textContent = formatTime(Math.max(0, totalAvail - totalUsed));
+
+            const container = document.getElementById("timelineContainer");
+            
+            if (itinerary.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 pl-6">No stops scheduled. You will stay at the airport.</p>';
+                return;
+            }
+
+            let html = `
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full border-4 border-white bg-blue-500 shadow"></div>
+                    <p class="font-bold text-slate-800">Airport (Start)</p>
+                    <p class="text-xs text-slate-500">Departure point</p>
+                </div>
+            `;
+
+            let currentDist = 0;
+            
+            itinerary.forEach((item, i) => {
+                const distToNext = Math.abs(item.distanceKm - currentDist);
+                const travelTime = (distToNext / transportSpeed) * 60;
+                
+                html += `
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-4 w-4 h-4 rounded-full border-4 border-white bg-slate-300"></div>
+                    <div class="mb-4">
+                        <span class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">
+                            <span class="material-symbols-outlined text-[14px]">directions_car</span>
+                            ${formatTime(travelTime)} travel (${distToNext.toFixed(1)} km)
+                        </span>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 p-4 rounded-xl">
+                        <h4 class="font-bold text-slate-800 text-lg mb-1">${item.name}</h4>
+                        <div class="flex gap-4 text-sm text-slate-600">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">category</span> ${item.type}</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> ${formatTime(item.durationMins)}</span>
+                        </div>
+                    </div>
+                </div>
+                `;
+                currentDist = item.distanceKm;
+            });
+
+            // Return to airport
+            const returnTravelTime = (currentDist / transportSpeed) * 60;
+            html += `
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-4 w-4 h-4 rounded-full border-4 border-white bg-blue-500 shadow"></div>
+                    <div class="mb-4">
+                        <span class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">
+                            <span class="material-symbols-outlined text-[14px]">directions_car</span>
+                            ${formatTime(returnTravelTime)} return to Airport
+                        </span>
+                    </div>
+                    <p class="font-bold text-slate-800">Airport (End)</p>
+                    <p class="text-xs text-slate-500">Arrive for safe 2-hour buffer</p>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCheck - Transport Selection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .transport-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .transport-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6; /* blue-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white border-b border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3">
+            <span class="text-xl font-bold tracking-tight text-blue-900">SkyCheck</span>
+        </div>
+        <nav class="hidden md:flex items-center gap-8">
+            <a class="font-manrope text-sm font-medium text-slate-500 hover:text-blue-700" href="#">Verification</a>
+            <a class="font-manrope text-sm font-medium text-slate-500 hover:text-blue-700" href="#">Flights</a>
+            <a class="font-manrope text-sm font-medium text-blue-700 font-bold" href="#">Layover Planner</a>
+        </nav>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-slate-500 cursor-pointer">help</span>
+            <span class="material-symbols-outlined text-slate-500 cursor-pointer">settings</span>
+            <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
+            </div>
+        </div>
+    </header>
+
+    <!-- SideNavBar -->
+    <aside class="hidden md:flex flex-col w-24 h-screen pt-20 pb-8 fixed left-0 top-0 bg-slate-50 border-r border-slate-200">
+        <div class="flex flex-col items-center gap-6 px-2">
+            <div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+                <span class="material-symbols-outlined mb-1">verified</span>
+                <span class="font-manrope text-xs font-semibold">Verified</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-blue-50 text-blue-900 rounded-lg p-2">
+                <span class="material-symbols-outlined mb-1">directions_car</span>
+                <span class="font-manrope text-xs font-semibold">Transport</span>
+            </div>
+            <div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+                <span class="material-symbols-outlined mb-1">map</span>
+                <span class="font-manrope text-xs font-semibold">Plan</span>
+            </div>
+            <div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+                <span class="material-symbols-outlined mb-1">receipt_long</span>
+                <span class="font-manrope text-xs font-semibold">Summary</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-24 pb-12 px-6 md:ml-24 flex justify-center items-start">
+        <div class="w-full max-w-[800px] flex flex-col gap-8">
+            
+            <div class="text-center md:text-left">
+                <h1 class="text-3xl font-bold text-blue-900 mb-2">Select Your Transport</h1>
+                <p class="text-slate-600">Choose a vehicle for your layover journey. This affects travel times and available services.</p>
+            </div>
+
+            <!-- Transport Options -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="transportOptions">
+                <!-- Injected via JS -->
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-6 px-8 flex flex-col md:flex-row justify-between items-center gap-4 mt-auto bg-slate-50 border-t border-slate-200 ml-0 md:ml-24">
+        <div class="text-slate-600 text-xs">
+            © 2024 SkyCheck Aviation Security. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        const transports = [
+            { id: 'Sedan', name: 'Sedan', capacity: '4 Seats', speed: 40, price: '$$', icon: 'directions_car' },
+            { id: 'SUV', name: 'SUV', capacity: '6 Seats', speed: 38, price: '$$$', icon: 'airport_shuttle' },
+            { id: 'XL', name: 'XL', capacity: '8 Seats', speed: 35, price: '$$$$', icon: 'airport_shuttle' },
+            { id: 'Luxury', name: 'Luxury', capacity: '4 Seats', speed: 45, price: '$$$$$', icon: 'car_rental' },
+            { id: 'Shuttle', name: 'Shuttle', capacity: '15 Seats', speed: 30, price: '$', icon: 'directions_bus' }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("transportOptions");
+            container.innerHTML = transports.map(t => `
+                <div class="transport-card bg-white rounded-xl shadow border border-slate-200 p-6 flex flex-col items-center text-center" onclick="selectTransport('${t.id}')">
+                    <span class="material-symbols-outlined text-5xl text-blue-600 mb-4">${t.icon}</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-1">${t.name}</h3>
+                    <div class="text-sm text-slate-500 mb-3 flex flex-col gap-1">
+                        <span><span class="font-semibold text-slate-700">Capacity:</span> ${t.capacity}</span>
+                        <span><span class="font-semibold text-slate-700">Avg Speed:</span> ${t.speed} km/h</span>
+                    </div>
+                    <span class="mt-auto px-4 py-1 bg-green-100 text-green-800 font-bold rounded-full text-xs">${t.price}</span>
+                </div>
+            `).join('');
+        });
+
+        function selectTransport(type) {
+            localStorage.setItem("transportType", type);
+            window.location.href = "/layover-planner.html";
+        }
+    </script>
+</body>
+</html>

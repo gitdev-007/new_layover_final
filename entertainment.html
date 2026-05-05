@@ -1,47 +1,227 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entertainment | LayoverX</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-    <style>
-        .main-layout { display: flex; justify-content: center; align-items: flex-start; gap: 20px; }
-        .main-layout.active { justify-content: flex-start; }
-        .level1 { width: 600px; }
-        .level2 { width: 600px; display: none; }
-        .listing-item { cursor: pointer; }
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LayoverX Entertainment Sitemap</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#9d4300",
+                        "inverse-primary": "#c0c1ff",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "on-primary-container": "#fffbff",
+                        "tertiary-container": "#007cb1",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#07006c",
+                        "surface-dim": "#cbdbf5",
+                        "tertiary": "#00628d",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-secondary-fixed-variant": "#783200",
+                        "inverse-on-surface": "#eaf1ff",
+                        "primary-fixed": "#e1e0ff",
+                        "surface": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#001e2f",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-background": "#0b1c30",
+                        "secondary-fixed": "#ffdbca",
+                        "surface-variant": "#d3e4fe",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-fixed-variant": "#004c6e",
+                        "surface-container": "#e5eeff",
+                        "primary-container": "#6063ee",
+                        "primary": "#4648d4",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#464554",
+                        "on-secondary-container": "#5c2400",
+                        "on-tertiary-container": "#fcfcff",
+                        "tertiary-fixed": "#c9e6ff",
+                        "on-secondary-fixed": "#341100",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "tertiary-fixed-dim": "#89ceff",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f8f9ff",
+                        "outline": "#767586",
+                        "background": "#f8f9ff",
+                        "outline-variant": "#c7c4d7",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#494bd6",
+                        "inverse-surface": "#213145",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fd761a",
+                        "surface-container-high": "#dce9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "connector-thickness": "2px",
+                        "stack-gap": "2rem",
+                        "level-indent": "4rem",
+                        "node-padding": "1.25rem",
+                        "grid-size": "8px"
+                    },
+                    "fontFamily": {
+                        "node-title-lg": ["Manrope"],
+                        "node-title-md": ["Manrope"],
+                        "meta-label": ["Inter"],
+                        "node-description": ["Inter"],
+                        "connector-text": ["Inter"]
+                    },
+                    "fontSize": {
+                        "node-title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "node-title-md": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "meta-label": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "node-description": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "connector-text": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            font-size: 1.25rem;
+        }
+        .main-layout {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .main-layout.active {
+            justify-content: flex-start;
+        }
+        .level1 {
+            width: 600px;
+        }
+        .level2 {
+            width: 600px;
+            display: none;
+        }
+        .item-item {
+            cursor: pointer;
+        }
+        .filter-field {
+            cursor: pointer;
+            min-height: 32px;
+            width: 100%;
+            outline: none;
+        }
     </style>
 </head>
-<body class="bg-white p-8">
-    <main class="max-w-7xl mx-auto main-layout">
-        <div class="level1 space-y-6">
-            <h1 class="text-xl font-bold">Entertainment</h1>
-            <div class="border p-4">
-                <select class="filter-field" data-filter-field="duration" onchange="applyFilters()">
-                    <option value="">Duration</option>
-                    <option value="1hr">1 hr</option>
-                    <option value="2hr">2 hr</option>
-                </select>
-            </div>
-            <div id="listing-container">
-                <div class="listing-item p-4 border" data-duration="1hr" data-price-range="500" data-distance="1">Gaming Lounge A</div>
-                <div class="listing-item p-4 border" data-duration="2hr" data-price-range="1000" data-distance="2">Cinema B</div>
-            </div>
-        </div>
-        <div class="level2 border-2 border-secondary p-4">
-            <h2 class="text-lg font-bold" data-detail-field="name"></h2>
-            <p data-detail-field="location"></p>
-            <button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide" onclick="window.location.href='QR_Upload_State.html'">PLAN LAYOVER</button>
-        </div>
-    </main>
-    <script src="shared-layout.js"></script>
-    <script>
-        const entDetails = {
-            'Gaming Lounge A': { name: 'Gaming Lounge A', location: '1.0 km' },
-            'Cinema B': { name: 'Cinema B', location: '2.0 km' }
-        };
-        initItems(entDetails);
-    </script>
-</body>
-</html>
+<body class="bg-white text-on-background font-node-description antialiased p-8">
+<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center w-full px-8 py-3 max-w-full mx-auto mb-12">
+<div class="flex items-center gap-4">
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">StayMarket</h1>
+<span class="text-xs bg-primary-container text-on-primary-container px-2 py-0.5 font-bold">LAYOVERX SYSTEM</span>
+</div>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 pb-1 font-semibold font-manrope text-sm" href="#">Browse</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Deals</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">My Bookings</a>
+</nav>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-slate-500">notifications</span>
+<span class="material-symbols-outlined text-slate-500">account_circle</span>
+</div>
+</header>
+<main class="max-w-7xl mx-auto space-y-12">
+<div class="main-layout">
+<div class="level1 space-y-6 relative z-10">
+<div class="flex items-center justify-between mb-4">
+<span class="bg-primary text-white text-meta-label px-3 py-1 font-bold">LEVEL 1: LISTING</span>
+</div>
+<div class="bg-white border-2 border-primary-container p-node-padding rounded shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-node-title-md font-node-title-md text-primary">Entertainment Listing Page</h3>
+</div>
+<div class="space-y-4">
+<div class="border border-outline-variant p-3">
+<p class="text-meta-label text-outline mb-1">SEARCH &amp; FILTERS</p>
+<div class="grid grid-cols-2 gap-2 text-node-description">
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="duration" onchange="applyFilters()">
+<option value="">Duration (All)</option>
+<option value="1">1 hr</option>
+<option value="2">2 hr</option>
+<option value="4">4 hr</option>
+</select>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="type" onchange="applyFilters()">
+<option value="">Type (All)</option>
+<option value="Kids Play Zone">Kids Play Zone</option>
+<option value="Edutainment Park">Edutainment Park</option>
+<option value="Escape Room">Escape Room</option>
+<option value="Arcade">Arcade</option>
+<option value="Bowling & VR">Bowling & VR</option>
+<option value="VR Arena">VR Arena</option>
+<option value="Sports Gaming">Sports Gaming</option>
+<option value="Snow Park">Snow Park</option>
+</select>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" onchange="applyFilters()">
+<option value="999">Distance (All)</option>
+<option value="5">Within 5 km</option>
+<option value="10">Within 10 km</option>
+<option value="20">Within 20 km</option>
+</select>
+</div>
+</div>
+<div class="border-2 border-dashed border-outline-variant p-3">
+<p class="text-meta-label text-outline mb-2">ENTERTAINMENT INVENTORY</p>
+<div class="rounded-lg flex gap-3"><div class="space-y-4 w-full">
+<div class="grid grid-cols-2 gap-2">
+    <div class="item-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="1" data-type="Kids Play Zone" data-distance="3.9" data-price="₹500">JUMPP</div>
+    <div class="item-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="4" data-type="Edutainment Park" data-distance="7.9" data-price="₹1500">KidZania</div>
+    <div class="item-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="2" data-type="Escape Room" data-distance="8.3" data-price="₹1800">Clue Hunt</div>
+    <div class="item-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="2" data-type="Arcade" data-distance="8.5" data-price="₹500">Timezone</div>
+    <div class="item-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="2" data-type="Bowling & VR" data-distance="8.6" data-price="₹400">Shott Gaming</div>
+    <div class="item-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="2" data-type="VR Arena" data-distance="16.5" data-price="₹1200">Zero Latency</div>
+    <div class="item-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="4" data-type="Sports Gaming" data-distance="16.8" data-price="₹800">SMAAASH</div>
+    <div class="item-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="2" data-type="Snow Park" data-distance="17.8" data-price="₹800">Snow Kingdom</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="level2 space-y-6 relative z-10">
+</div>
+</div>
+</main>
+<script>
+    const filterFields = document.querySelectorAll('[data-filter-field]');
+    const items = document.querySelectorAll('.item-item');
+
+    function applyFilters() {
+        const durationVal = document.querySelector('[data-filter-field="duration"]').value;
+        const typeVal = document.querySelector('[data-filter-field="type"]').value;
+        const distanceVal = document.querySelector('[data-filter-field="distance"]').value;
+
+        items.forEach((item) => {
+            const iDur = item.dataset.duration;
+            const iType = item.dataset.type;
+            const iDist = parseFloat(item.dataset.distance);
+            
+            let isVisible = true;
+            if (durationVal && iDur !== durationVal) isVisible = false;
+            if (isVisible && typeVal && iType !== typeVal) isVisible = false;
+            if (isVisible && distanceVal && iDist > parseFloat(distanceVal)) isVisible = false;
+            
+            item.style.display = isVisible ? 'block' : 'none';
+        });
+    }
+</script>
+</body></html>

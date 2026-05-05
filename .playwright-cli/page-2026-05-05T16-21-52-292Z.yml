@@ -1,0 +1,591 @@
+- generic [active] [ref=e1]:
+  - generic:
+    - generic:
+      - link "Skip to main content" [ref=e2] [cursor=pointer]
+      - link "Accessibility help" [ref=e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=en-IN
+      - link "Accessibility feedback" [ref=e4] [cursor=pointer]
+  - generic [ref=e9]:
+    - search [ref=e10]:
+      - generic [ref=e12]:
+        - link "Go to Google Home" [ref=e14] [cursor=pointer]:
+          - /url: https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQPAgJ
+          - img [ref=e15]
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - combobox "Search" [ref=e26]: cicada cicada
+            - generic [ref=e27]:
+              - button "Clear" [ref=e29] [cursor=pointer]:
+                - img [ref=e31]
+              - generic [ref=e34]:
+                - button "Search by voice" [ref=e35] [cursor=pointer]:
+                  - img [ref=e36]
+                - button "Search by image" [ref=e38] [cursor=pointer]:
+                  - img [ref=e39]
+          - button "Search" [ref=e41] [cursor=pointer]:
+            - img [ref=e44]
+    - generic [ref=e46]:
+      - button "Settings" [ref=e48] [cursor=pointer]:
+        - img [ref=e51]
+      - generic [ref=e54]:
+        - button "Google apps" [ref=e56] [cursor=pointer]:
+          - img [ref=e57]
+        - link "Sign in" [ref=e61] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/search%3Fq%3Dcicada%26sca_esv%3D89d14285035c4550%26source%3Dhp%26ei%3DBBn6aZfnKpDQ2roPmM7KiQo%26iflsig%3DAFdpzrgAAAAAafonFMxFiQR032oqEhuXiBqcWogGhxIK%26ved%3D0ahUKEwiX-f-Bx6KUAxUQqFYBHRinMqEQ4dUDCBY%26uact%3D5%26oq%3Dcicada%26gs_lp%3DEgdnd3Mtd2l6IgZjaWNhZGFIGVAAWABwAHgAkAEAmAEAoAEAqgEAuAEDyAEA-AEBmAIAoAIAmAMAkgcAoAcAsgcAuAcAwgcAyAcAgAgB%26sclient%3Dgws-wiz%26sei%3DHRn6aeyAKcKG4-EPwI2WuAQ&ec=futura_srp_og_si_72236_p
+  - generic [ref=e63]:
+    - navigation [ref=e69]:
+      - generic [ref=e75]:
+        - list [ref=e76]:
+          - listitem [ref=e77]:
+            - link "AI Mode" [ref=e80] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&udm=50&source=hp&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3o6iwGk6Iv1tRbZIBNIVs-5-bUj3iBl-UxHsANYwOkWWQqZAJJdwuRaSoLHfELMHATYTDBMk2XzbZAOBRVVl6a_Haoqx1aV3dfifBSufaHnEIPNVX9VBHhGrl3Be4EN1kzu7qgK_8pmwEXvXTPnwj0XvJHYUAOCuujVN4Cu3hiplyBsirQ&aep=1&ntc=1&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ2J8OegQIDRAD
+              - generic [ref=e83]: AI Mode
+          - listitem [ref=e84]:
+            - link "All" [disabled] [ref=e85]:
+              - generic [ref=e87]: All
+          - listitem [ref=e88]:
+            - link "Images" [ref=e89] [cursor=pointer]:
+              - /url: /search?sca_esv=89d14285035c4550&udm=2&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3o6iwGk6Iv1tRbZIBNIVs-5-bUj3iBl-UxHsANYwOkWWQqZAJJdwuRaSoLHfELMHATYTDBMk2XzbZAOBRVVl6a_Haoqx1aV3dfifBSufaHnEIPNVX9VBHhGrl3Be4EN1kzu7qgK_8pmwEXvXTPnwj0XvJHYUAOCuujVN4Cu3hiplyBsirQ&q=cicada&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQtKgLegQIFRAB
+              - generic [ref=e91]: Images
+          - listitem [ref=e92]:
+            - link "Shopping" [ref=e93] [cursor=pointer]:
+              - /url: /search?sca_esv=89d14285035c4550&udm=28&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3o6iwGk6Iv1tRbZIBNIVs-5-bUj3iBl-UxHsANYwOkWWQqZAJJdwuRaSoLHfELMHATYTDBMk2XzbZAOBRVVl6a_Haoqx1aV3dfifBSufaHnEIPNVX9VBHhGrl3Be4EN1kzu7qgK_8pmwEXvXTPnwj0XvJHYUAOCuujVN4Cu3hiplyBsirQ&q=cicada&ved=1t:220175&ictx=111
+              - generic [ref=e95]: Shopping
+          - listitem [ref=e96]:
+            - link "Videos" [ref=e97] [cursor=pointer]:
+              - /url: /search?sca_esv=89d14285035c4550&udm=7&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3o6iwGk6Iv1tRbZIBNIVs-5-bUj3iBl-UxHsANYwOkWWQqZAJJdwuRaSoLHfELMHATYTDBMk2XzbZAOBRVVl6a_Haoqx1aV3dfifBSufaHnEIPNVX9VBHhGrl3Be4EN1kzu7qgK_8pmwEXvXTPnwj0XvJHYUAOCuujVN4Cu3hiplyBsirQ&q=cicada&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQtKgLegQIERAB
+              - generic [ref=e99]: Videos
+          - listitem [ref=e100]:
+            - link "Short videos" [ref=e101] [cursor=pointer]:
+              - /url: /search?sca_esv=89d14285035c4550&udm=39&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3o6iwGk6Iv1tRbZIBNIVs-5-bUj3iBl-UxHsANYwOkWWQqZAJJdwuRaSoLHfELMHATYTDBMk2XzbZAOBRVVl6a_Haoqx1aV3dfifBSufaHnEIPNVX9VBHhGrl3Be4EN1kzu7qgK_8pmwEXvXTPnwj0XvJHYUAOCuujVN4Cu3hiplyBsirQ&q=cicada&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQs6gLegQIDxAB
+              - generic [ref=e103]: Short videos
+          - listitem [ref=e104]:
+            - link "News" [ref=e105] [cursor=pointer]:
+              - /url: /search?sca_esv=89d14285035c4550&q=cicada&tbm=nws&source=lnms&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3o6iwGk6Iv1tRbZIBNIVs-5-bUj3iBl-UxHsANYwOkWWQqZAJJdwuRaSoLHfELMHATYTDBMk2XzbZAOBRVVl6a_Haoqx1aV3dfifBSufaHnEIPNVX9VBHhGrl3Be4EN1kzu7qgK_8pmwEXvXTPnwj0XvJHYUAOCuujVN4Cu3hiplyBsirQ&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ0pQJegQIEBAB
+              - generic [ref=e107]: News
+          - listitem [ref=e108]:
+            - button "More filters" [ref=e109] [cursor=pointer]:
+              - generic "More filters" [ref=e110]:
+                - generic [ref=e111]:
+                  - generic [ref=e112]: More
+                  - img [ref=e114]
+        - button "Tools" [ref=e117] [cursor=pointer]:
+          - generic [ref=e119]:
+            - generic [ref=e120]: Tools
+            - img [ref=e122]
+    - heading "Search Results" [level=1] [ref=e124]
+    - generic [ref=e129]:
+      - generic [ref=e137]:
+        - button "Play sound for Cicadas" [ref=e142] [cursor=pointer]
+        - generic [ref=e147]:
+          - heading "Cicadas" [level=2] [ref=e150]
+          - generic [ref=e151]:
+            - generic [ref=e153]: Insect
+            - button "More options for Cicadas" [ref=e159] [cursor=pointer]:
+              - img "More options for Cicadas" [ref=e160]:
+                - img [ref=e162]
+      - complementary "Featured results" [ref=e173]:
+        - generic [ref=e175]:
+          - list [ref=e178]:
+            - listitem [ref=e179]:
+              - 'button "Image of The Earth Is About to Feast on Dead Cicadas | WIRED Source: WIRED" [ref=e182] [cursor=pointer]':
+                - generic [ref=e183]:
+                  - img "Image of The Earth Is About to Feast on Dead Cicadas | WIRED" [ref=e185]
+                  - generic: "Source: WIRED"
+            - listitem [ref=e186]:
+              - button "Image of Cicada | Sound, Shell, Life Cycle, Map, & Facts | Britannica" [ref=e189] [cursor=pointer]:
+                - img "Image of Cicada | Sound, Shell, Life Cycle, Map, & Facts | Britannica" [ref=e192]
+            - listitem [ref=e193]:
+              - button "Image of Periodical Cicadas | National Wildlife Federation" [ref=e196] [cursor=pointer]:
+                - img "Image of Periodical Cicadas | National Wildlife Federation" [ref=e199]
+            - listitem [ref=e200]:
+              - link [ref=e204] [cursor=pointer]:
+                - /url: /search?sca_esv=89d14285035c4550&q=cicada&udm=2&source=univ&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQnN8JegQIGxAD
+                - img [ref=e207]
+          - generic [ref=e211] [cursor=pointer]:
+            - button "Amazing World of Cicadas by Next Generation Science on YouTube. Play on Google. 3:30" [ref=e213]:
+              - generic [ref=e220]:
+                - generic [ref=e221]:
+                  - img [ref=e222]
+                  - generic [ref=e224]: 3:30
+                - img [ref=e227]
+            - link "YouTube • Next Generation Science Amazing World of Cicadas Cicas are insects best known for the buzzing or chirping sounds they make on warm days. 24 Feb 2025" [ref=e230]:
+              - /url: https://www.youtube.com/watch?v=d4nYZs4bXa4
+              - generic [ref=e231]:
+                - generic [ref=e234]: YouTube • Next Generation Science
+                - generic [ref=e236]: Amazing World of Cicadas
+                - generic [ref=e238]: Cicas are insects best known for the buzzing or chirping sounds they make on warm days.
+                - generic [ref=e239]: 24 Feb 2025
+          - link "Lifespan 2 – 17 years In the wild" [ref=e244] [cursor=pointer]:
+            - /url: /search?sca_esv=89d14285035c4550&q=cicadas+lifespan&stick=H4sIAAAAAAAAAOPgE-LWT9c3NDLIyCsyytXSyU620k_KzM_JT6_Uzy9KT8zLLM6NT85JLC7OTMtMTizJzM-zyslMSy0uSMxbxCqQDBRLSSxWgAkBALaGRuVQAAAA&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ18AJegQIHxAB
+            - generic [ref=e245]:
+              - generic [ref=e246]: Lifespan
+              - generic [ref=e250]:
+                - generic [ref=e251]: 2 – 17 years
+                - generic [ref=e252]: In the wild
+          - link "Scientific name Cicadoidea" [ref=e257] [cursor=pointer]:
+            - /url: /search?sca_esv=89d14285035c4550&q=cicadas+scientific+name&stick=H4sIAAAAAAAAAOPgE-LWT9c3NDLIyCsyytWyz0620k_KzM_JT6_Uzy9KT8zLLM6NT85JLC7OTMtMTizJzM-zKk7OTM0rAfEV8hJzUxUS81IUclOBSvPSF7GKJwOVpSQWK6CpAgA7feEeagAAAA&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ18AJegQIIRAB
+            - generic [ref=e258]:
+              - generic [ref=e259]: Scientific name
+              - generic [ref=e264]: Cicadoidea
+          - generic [ref=e266] [cursor=pointer]:
+            - link "National Geographic Cicadas, facts and photos | National Geographic Cicadas belong to the Cicadoidea superfamily. They have distinct physical features, including stout bodies, broad heads, clear-membraned wings, and large... 23 May 2025" [ref=e267]:
+              - /url: https://www.nationalgeographic.com/animals/invertebrates/facts/cicadas
+            - generic [ref=e271]:
+              - generic [ref=e274]: National Geographic
+              - generic [ref=e276]: Cicadas, facts and photos | National Geographic
+              - generic [ref=e278]: Cicadas belong to the Cicadoidea superfamily. They have distinct physical features, including stout bodies, broad heads, clear-membraned wings, and large...
+              - generic [ref=e280]: 23 May 2025
+      - main [ref=e285]:
+        - generic [ref=e289]:
+          - generic [ref=e292]:
+            - heading "Web results" [level=2] [ref=e293]
+            - generic [ref=e294]:
+              - generic [ref=e297]:
+                - link "Cicada Wikipedia https://en.wikipedia.org › wiki › Cicada" [ref=e299] [cursor=pointer]:
+                  - /url: https://en.wikipedia.org/wiki/Cicada
+                  - heading "Cicada" [level=3] [ref=e300]
+                  - generic [ref=e305]:
+                    - generic [ref=e307]: Wikipedia
+                    - generic [ref=e309]: https://en.wikipedia.org › wiki › Cicada
+                - button "About this result" [ref=e310] [cursor=pointer]:
+                  - img [ref=e313]
+              - generic [ref=e316]:
+                - generic [ref=e317]:
+                  - text: The cicadas are a superfamily, the Cic
+                  - emphasis [ref=e318]: ado
+                  - text: idea, of insects in the order Hemiptera (true bugs). They are in the suborder Auchenorrhyncha, along with smaller ...
+                - link "Read more" [ref=e319] [cursor=pointer]:
+                  - /url: https://en.wikipedia.org/wiki/Cicada#:~:text=The%20cicadas%20(%2Fs%C9%AA%CB%88k%C9%91%CB%90d%C9%99z%2C%20%2D%CB%88ke%C9%AA%2D%2F)%20are&text=are%20a%20superfamily%2C%20the%20Cicadoidea%2C,such%20as%20leafhoppers%20and%20froghoppers.
+              - link "cicada from en.wikipedia.org" [ref=e322] [cursor=pointer]:
+                - /url: https://en.wikipedia.org/wiki/Cicada
+                - img "cicada from en.wikipedia.org" [ref=e324]
+          - generic [ref=e326]:
+            - generic [ref=e332]:
+              - heading "About" [level=3] [ref=e335]
+              - generic [ref=e340]:
+                - generic [ref=e344]:
+                  - heading "Description" [level=3] [ref=e345]
+                  - generic [ref=e346]: The cicadas are a superfamily, the Cicadoidea, of insects in the order Hemiptera. They are in the suborder Auchenorrhyncha, along with smaller jumping bugs such as leafhoppers and froghoppers.
+                  - link "Wikipedia" [ref=e348] [cursor=pointer]:
+                    - /url: https://en.wikipedia.org/wiki/Cicada
+                - generic [ref=e351]:
+                  - generic [ref=e355]:
+                    - generic [ref=e356]: Lifespan
+                    - generic [ref=e358]: 2 – 17 years (In the wild)
+                  - generic [ref=e362]:
+                    - generic [ref=e363]: Scientific name
+                    - generic [ref=e365]: Cicadoidea
+              - button "Feedback" [ref=e368] [cursor=pointer]:
+                - generic [ref=e369]: Feedback
+            - generic [ref=e372]:
+              - heading "People also ask" [level=2] [ref=e374]
+              - generic [ref=e375]:
+                - button "Are cicadas harmful to anything?" [ref=e381] [cursor=pointer]:
+                  - generic [ref=e383]: Are cicadas harmful to anything?
+                  - img [ref=e386]
+                - button "Why does cicada take 17 years?" [ref=e395] [cursor=pointer]:
+                  - generic [ref=e397]: Why does cicada take 17 years?
+                  - img [ref=e400]
+                - button "Why is cicadas so loud?" [ref=e409] [cursor=pointer]:
+                  - generic [ref=e411]: Why is cicadas so loud?
+                  - img [ref=e414]
+                - button "Do cicadas bite or sting?" [ref=e423] [cursor=pointer]:
+                  - generic [ref=e425]: Do cicadas bite or sting?
+                  - img [ref=e428]
+          - generic [ref=e432]:
+            - generic [ref=e435]:
+              - heading "People also search for" [level=3] [ref=e437]
+              - generic [ref=e442]:
+                - list [ref=e443]:
+                  - listitem [ref=e445]:
+                    - generic [ref=e446]:
+                      - link "Cicadidae":
+                        - /url: /search?sca_esv=89d14285035c4550&si=AL3DRZELanY_V96Y0q8q1FLKlfOvH_NlT58VxGyuYFaMYKzFM_kdB_a3-XjG7UXNpb-LH4cQzWMgWwGvF5d3Tz0le9zs9QamUn2MJR4MRbOOmDc037XWThsolAKcxlyyIblt5Bf03HZSGuQCFZW2x5LMcrHVa-KtY9gM6eEccDX6zlC6AEBSGz2lkHubYXupTVAbmdpbsABAEpSVKDj94AotxBlVsxoE2Q%3D%3D&q=Cicadidae&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQs9oBKAB6BAgUEAY
+                      - heading [level=3] [ref=e451]:
+                        - generic [ref=e452]: Cicadidae
+                  - listitem [ref=e454]:
+                    - generic [ref=e455]:
+                      - link "Large brown cicada":
+                        - /url: /search?sca_esv=89d14285035c4550&si=AL3DRZGDMkmBg1SB5TH8o8Xeh03tgmwpgZCgiYi5BFB_ELNOTFOUtNH2pbUE0bPiLw6kFpM7wdorNIEDUpWA-m8WqGeuQabNmfCEwDKvLYRBLqNQ774dK4CgGQylMV1DI9xKBPdTPjLZE9drYyd6rqc-lbQGG28scGkAqzMYbIys-_ALtINbhdGio7AopjIsBDoIXcM7SEtaRuEFK1Uz5IX9pUujT0Mnk_QZGMjQw7fVa0Zgev2BB3w%3D&q=Graptopsaltria+nigrofuscata&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQs9oBKAB6BAgUEAo
+                      - heading [level=3] [ref=e460]:
+                        - generic [ref=e461]: Large brown cicada
+                  - listitem [ref=e463]:
+                    - generic [ref=e464]:
+                      - link "True crickets":
+                        - /url: /search?sca_esv=89d14285035c4550&si=AL3DRZHmwLjWhgnaPB3UTu10R6S5qNLXiQiKMeezfKyB1FMsRlVakNLaoJpE9-vcQf2XM1v-d9AsWqWe1cKDVZtzL1bj0Sie2H5aTtt2f6LxfHU2qObp0r5Z46ZiCw1yCa0ADPRrsQskWWjXqB-RXj2-oupbYp6QyfGJM2gbTGSBMqcF32OjgJYiH9zPkBzZ0ZRhP17DUhXi&q=Gryllidae&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQs9oBKAB6BAgUEA4
+                      - heading [level=3] [ref=e469]:
+                        - generic [ref=e470]: True crickets
+                  - listitem [ref=e472]:
+                    - generic [ref=e473]:
+                      - link "Periodical cicadas":
+                        - /url: /search?sca_esv=89d14285035c4550&si=AL3DRZEaipurC9pse1xO2aCwuJWfKA_Njx1c7Qs8ap9rx81jmqztUNr9xyfuvqsBLJfyYHeXWb2NokuWrV8imktVb37lD1O-UTRFUkUL5C7G3v57pAA2hfRUTTokBVYtJWAe_-h8jP1mdUm8nSW9klFt4lloKiiVi8GyOkxzE6YRsDmKxwDH_eRDr8r5SkxN0DoV7NyF16ipAwhLcf-huXk4-7fjwCIB7A%3D%3D&q=Periodical+cicadas&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQs9oBKAB6BAgUEBI
+                      - heading [level=3] [ref=e478]:
+                        - generic [ref=e479]: Periodical cicadas
+                - link "See more" [ref=e481] [cursor=pointer]:
+                  - /url: /search?sca_esv=89d14285035c4550&q=Cicadas&stick=H4sIAAAAAAAAAONgFuLWT9c3NDLIyCsyylVC5mgJBmempJYnVhb7pVaUBJekFhT_YhQLSM0vyElVSMwpzlcoTk0sSs5QSMsvWsTK7pyZnJiSWHyLTZJhqfJt_mehGQtjK449UZ717vm0pj6rFammeQBe6FdRbgAAAA&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQzO0BKAR6BAgUEBQ
+                  - generic [ref=e482]:
+                    - generic [ref=e483]: See more
+                    - img [ref=e485]
+            - generic [ref=e488]:
+              - generic [ref=e490]:
+                - heading "Videos" [level=2] [ref=e491]
+                - button "About this result" [ref=e492] [cursor=pointer]:
+                  - img [ref=e495]
+              - generic [ref=e498]:
+                - generic [ref=e504]:
+                  - generic [ref=e505]:
+                    - generic [ref=e506]:
+                      - link "Amazing World of Cicadas YouTube Next Generation Science 24 Feb 2025" [ref=e508] [cursor=pointer]:
+                        - /url: https://www.youtube.com/watch?v=d4nYZs4bXa4
+                        - heading "Amazing World of Cicadas YouTube Next Generation Science 24 Feb 2025" [level=3] [ref=e509]:
+                          - generic [ref=e512]: Amazing World of Cicadas
+                          - generic [ref=e514]:
+                            - generic [ref=e515]:
+                              - text: YouTube
+                              - generic [ref=e516]: · Next Generation Science
+                            - generic [ref=e517]: 24 Feb 2025
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - text: YouTube
+                                - generic: · Next Generation Science
+                          - button "About this result" [ref=e518] [cursor=pointer]:
+                            - img [ref=e521]
+                    - button "Amazing World of Cicadas by Next Generation Science on YouTube. Play on Google. 3:30" [ref=e523] [cursor=pointer]:
+                      - generic [ref=e524]:
+                        - img [ref=e530]
+                        - generic [ref=e533]:
+                          - generic [ref=e535]: 3:30
+                          - img [ref=e538]
+                  - button "Cicadas are harmless insects known for their buzzing sounds. They spend most of their lives underground as nymphs before emerging with wings." [ref=e541] [cursor=pointer]:
+                    - generic [ref=e545]: Cicadas are harmless insects known for their buzzing sounds. They spend most of their lives underground as nymphs before emerging with wings.
+                - generic [ref=e551]:
+                  - generic [ref=e552]:
+                    - generic [ref=e553]:
+                      - link "How Do Cicadas Make Noise? (In Slow Motion) - Smarter ... YouTube SmarterEveryDay 2 Jun 2024" [ref=e555] [cursor=pointer]:
+                        - /url: https://www.youtube.com/watch?v=TWc48iVC8u8
+                        - heading "How Do Cicadas Make Noise? (In Slow Motion) - Smarter ... YouTube SmarterEveryDay 2 Jun 2024" [level=3] [ref=e556]:
+                          - generic [ref=e559]: How Do Cicadas Make Noise? (In Slow Motion) - Smarter ...
+                          - generic [ref=e561]:
+                            - generic [ref=e562]:
+                              - text: YouTube
+                              - generic [ref=e563]: · SmarterEveryDay
+                            - generic [ref=e564]: 2 Jun 2024
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - text: YouTube
+                                - generic: · SmarterEveryDay
+                          - button "About this result" [ref=e565] [cursor=pointer]:
+                            - img [ref=e568]
+                    - button "How Do Cicadas Make Noise? (In Slow Motion) - Smarter ... by SmarterEveryDay on YouTube. Play on Google. 23:14" [ref=e570] [cursor=pointer]:
+                      - generic [ref=e571]:
+                        - img [ref=e577]
+                        - generic [ref=e580]:
+                          - generic [ref=e582]: 23:14
+                          - img [ref=e585]
+                  - button "Phil is going to explain to us what exactly is causing that noise." [ref=e588] [cursor=pointer]:
+                    - generic [ref=e591]: Phil is going to explain to us what exactly is causing that noise.
+                - generic [ref=e596]:
+                  - generic [ref=e597]:
+                    - generic [ref=e598]:
+                      - link "How do cicadas make so much noise? YouTube Mystery Science 6 May 2024" [ref=e600] [cursor=pointer]:
+                        - /url: https://www.youtube.com/watch?v=H5e04CnAbrc
+                        - heading "How do cicadas make so much noise? YouTube Mystery Science 6 May 2024" [level=3] [ref=e601]:
+                          - generic [ref=e604]: How do cicadas make so much noise?
+                          - generic [ref=e606]:
+                            - generic [ref=e607]:
+                              - text: YouTube
+                              - generic [ref=e608]: · Mystery Science
+                            - generic [ref=e609]: 6 May 2024
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - text: YouTube
+                                - generic: · Mystery Science
+                          - button "About this result" [ref=e610] [cursor=pointer]:
+                            - img [ref=e613]
+                    - button "How do cicadas make so much noise? by Mystery Science on YouTube. Play on Google. 6:58" [ref=e615] [cursor=pointer]:
+                      - generic [ref=e616]:
+                        - img [ref=e619]
+                        - generic [ref=e622]:
+                          - generic [ref=e624]: 6:58
+                          - img [ref=e627]
+                  - button "Cicadas make noise by flexing muscles that move special body parts called timbals back and forth 300-400 times per second." [ref=e630] [cursor=pointer]:
+                    - generic [ref=e634]: Cicadas make noise by flexing muscles that move special body parts called timbals back and forth 300-400 times per second.
+              - link "View all videos" [ref=e637] [cursor=pointer]:
+                - /url: /search?sca_esv=89d14285035c4550&udm=7&q=cicada&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8ccDKAJ6BAheEAQ
+                - separator [ref=e638]
+                - generic [ref=e639]:
+                  - generic [ref=e640]: View all
+                  - img [ref=e642]
+          - generic [ref=e646]:
+            - heading "Web results" [level=2] [ref=e647]
+            - generic [ref=e648]:
+              - generic [ref=e651]:
+                - link "Cicada | Sound, Shell, Life Cycle, Map, & Facts Britannica https://www.britannica.com › ... › Branches of Biology" [ref=e653] [cursor=pointer]:
+                  - /url: https://www.britannica.com/animal/cicada
+                  - heading "Cicada | Sound, Shell, Life Cycle, Map, & Facts" [level=3] [ref=e654]
+                  - generic [ref=e659]:
+                    - generic [ref=e661]: Britannica
+                    - generic [ref=e663]: https://www.britannica.com › ... › Branches of Biology
+                - button "About this result" [ref=e664] [cursor=pointer]:
+                  - img [ref=e667]
+              - generic [ref=e670]:
+                - generic [ref=e671]: 12 Apr 2026 —
+                - generic [ref=e672]:
+                  - emphasis [ref=e673]: Cicadas
+                  - text: are a family of about 3000 species of sound-producing insects. Male
+                  - emphasis [ref=e674]: cicadas
+                  - text: produce loud noises by vibrating membranes (tymbals) ...
+              - link "cicada from www.britannica.com" [ref=e677] [cursor=pointer]:
+                - /url: https://www.britannica.com/animal/cicada
+                - img "cicada from www.britannica.com" [ref=e679]
+          - generic [ref=e683]:
+            - generic [ref=e686]:
+              - link "Periodical Cicadas National Museum of Natural History https://naturalhistory.si.edu › education › life-science › p..." [ref=e688] [cursor=pointer]:
+                - /url: https://naturalhistory.si.edu/education/teaching-resources/life-science/periodical-cicadas
+                - heading "Periodical Cicadas" [level=3] [ref=e689]
+                - generic [ref=e694]:
+                  - generic [ref=e696]: National Museum of Natural History
+                  - generic [ref=e698]: https://naturalhistory.si.edu › education › life-science › p...
+              - button "About this result" [ref=e699] [cursor=pointer]:
+                - img [ref=e702]
+            - generic [ref=e705]:
+              - generic [ref=e706]:
+                - emphasis [ref=e707]: Periodical cicadas are insects that spend most of their lives underground as nymphs
+                - text: ", feeding off the sap of tree roots. They emerge to transform into adults ..."
+              - link "Read more" [ref=e708] [cursor=pointer]:
+                - /url: https://naturalhistory.si.edu/education/teaching-resources/life-science/periodical-cicadas#:~:text=Periodical%20cicadas%20are%20insects%20that,transform%20into%20adults%20and%20mate.
+            - link "cicada from naturalhistory.si.edu" [ref=e711] [cursor=pointer]:
+              - /url: https://naturalhistory.si.edu/education/teaching-resources/life-science/periodical-cicadas
+              - img "cicada from naturalhistory.si.edu" [ref=e713]
+          - generic [ref=e717]:
+            - generic [ref=e720]:
+              - 'link "Cicada Mania: Cicada Photos, Sounds, News & Facts Cicada Mania https://www.cicadamania.com" [ref=e722] [cursor=pointer]':
+                - /url: https://www.cicadamania.com/
+                - 'heading "Cicada Mania: Cicada Photos, Sounds, News & Facts" [level=3] [ref=e723]'
+                - generic [ref=e728]:
+                  - generic [ref=e730]: Cicada Mania
+                  - generic [ref=e732]: https://www.cicadamania.com
+              - button "About this result" [ref=e733] [cursor=pointer]:
+                - img [ref=e736]
+            - generic [ref=e739]:
+              - generic [ref=e740]:
+                - text: "Cicadas (Insecta: Hemiptera: Cicadidae) are \"true bug\""
+                - emphasis [ref=e741]: insects
+                - text: ", best known for the songs sung by most, but not all, male cicadas."
+              - link "Read more" [ref=e742] [cursor=pointer]:
+                - /url: https://www.cicadamania.com/#:~:text=Cicadas%20(Insecta%3A%20Hemiptera%3A%20Cicadidae)%20are,but%20not%20all%2C%20male%20cicadas.
+            - link "cicada from www.cicadamania.com" [ref=e745] [cursor=pointer]:
+              - /url: https://www.cicadamania.com/
+              - img "cicada from www.cicadamania.com" [ref=e747]
+          - generic [ref=e751]:
+            - generic [ref=e754]:
+              - link "Everything You Need to Know About Periodical Cicadas The Nature Conservancy https://www.nature.org › how-to-help › animals-we-protect" [ref=e756] [cursor=pointer]:
+                - /url: https://www.nature.org/en-us/get-involved/how-to-help/animals-we-protect/what-to-know-about-brood-x-cicadas/
+                - heading "Everything You Need to Know About Periodical Cicadas" [level=3] [ref=e757]
+                - generic [ref=e762]:
+                  - generic [ref=e764]: The Nature Conservancy
+                  - generic [ref=e766]: https://www.nature.org › how-to-help › animals-we-protect
+              - button "About this result" [ref=e767] [cursor=pointer]:
+                - img [ref=e770]
+            - generic [ref=e773]:
+              - generic [ref=e774]: 14 Apr 2025 —
+              - generic [ref=e775]:
+                - text: The periodical cicada
+                - emphasis [ref=e776]: spends the vast majority of its life underground
+                - text: ", emerging after 13 or 17 years (depending on the species) to transform, reproduce and ..."
+              - link "Read more" [ref=e777] [cursor=pointer]:
+                - /url: https://www.nature.org/en-us/get-involved/how-to-help/animals-we-protect/what-to-know-about-brood-x-cicadas/#:~:text=The%20periodical%20cicada%20spends%20the,of%20just%20a%20few%20days.
+            - link "cicada from www.nature.org" [ref=e780] [cursor=pointer]:
+              - /url: https://www.nature.org/en-us/get-involved/how-to-help/animals-we-protect/what-to-know-about-brood-x-cicadas/
+              - img "cicada from www.nature.org" [ref=e782]
+          - generic [ref=e786]:
+            - generic [ref=e789]:
+              - link "Cicadas | US EPA U.S. Environmental Protection Agency (.gov) https://www.epa.gov › safepestcontrol › cicadas" [ref=e791] [cursor=pointer]:
+                - /url: https://www.epa.gov/safepestcontrol/cicadas
+                - heading "Cicadas | US EPA" [level=3] [ref=e792]
+                - generic [ref=e797]:
+                  - generic [ref=e799]: U.S. Environmental Protection Agency (.gov)
+                  - generic [ref=e801]: https://www.epa.gov › safepestcontrol › cicadas
+              - button "About this result" [ref=e802] [cursor=pointer]:
+                - img [ref=e805]
+            - generic [ref=e808]:
+              - generic [ref=e809]: 27 May 2025 —
+              - generic [ref=e810]:
+                - text: Cicadas are not harmful to humans, pets, household gardens, or crops.
+                - emphasis [ref=e811]: Periodical cicada adults are about 1-1.5 inches long
+                - text: and have a wingspan ...
+              - link "Read more" [ref=e812] [cursor=pointer]:
+                - /url: https://www.epa.gov/safepestcontrol/cicadas#:~:text=Cicadas%20are%20not%20harmful%20to,a%20wingspan%20twice%20that%20length.
+            - link "cicada from www.epa.gov" [ref=e815] [cursor=pointer]:
+              - /url: https://www.epa.gov/safepestcontrol/cicadas
+              - img "cicada from www.epa.gov" [ref=e817]
+          - generic [ref=e821]:
+            - generic [ref=e824]:
+              - link "Emergence of the 17-Year Cicada - Extension Entomology Purdue University https://extension.entm.purdue.edu › cicadas" [ref=e826] [cursor=pointer]:
+                - /url: https://extension.entm.purdue.edu/cicadas/
+                - heading "Emergence of the 17-Year Cicada - Extension Entomology" [level=3] [ref=e827]
+                - generic [ref=e832]:
+                  - generic [ref=e834]: Purdue University
+                  - generic [ref=e836]: https://extension.entm.purdue.edu › cicadas
+              - button "About this result" [ref=e837] [cursor=pointer]:
+                - img [ref=e840]
+            - generic [ref=e843]:
+              - generic [ref=e844]:
+                - text: This spring Indiana will see the emergence of the
+                - emphasis [ref=e845]: 17-year cicadas
+                - text: (Brood X). Once every 17 years they emerge en masse, climb up trees, sing.
+              - link "Read more" [ref=e846] [cursor=pointer]:
+                - /url: https://extension.entm.purdue.edu/cicadas/#:~:text=This%20spring%20Indiana%20will%20see,the%20tips%20of%20tree%20branches.
+            - link "cicada from extension.entm.purdue.edu" [ref=e849] [cursor=pointer]:
+              - /url: https://extension.entm.purdue.edu/cicadas/
+              - img "cicada from extension.entm.purdue.edu" [ref=e851]
+          - generic [ref=e855]:
+            - generic [ref=e858]:
+              - 'link "Cicadas of SEQ: The Song of Summer Land for Wildlife https://www.lfwseq.org.au › Articles" [ref=e860] [cursor=pointer]':
+                - /url: https://www.lfwseq.org.au/cicadas-seq-song-summer/
+                - 'heading "Cicadas of SEQ: The Song of Summer" [level=3] [ref=e861]'
+                - generic [ref=e866]:
+                  - generic [ref=e868]: Land for Wildlife
+                  - generic [ref=e870]: https://www.lfwseq.org.au › Articles
+              - button "About this result" [ref=e871] [cursor=pointer]:
+                - img [ref=e874]
+            - generic [ref=e877]:
+              - generic [ref=e878]:
+                - emphasis [ref=e879]: Cicadas are commonly eaten and are considered easy to prepare
+                - text: . Apparently all you have to do is pull the wings and legs off and then drop them in a wok of hot ...
+              - link "Read more" [ref=e880] [cursor=pointer]:
+                - /url: https://www.lfwseq.org.au/cicadas-seq-song-summer/#:~:text=cicadas%20are%20commonly%20eaten%20and,in%20a%20wok%20of%20hot
+            - link "cicada from www.lfwseq.org.au" [ref=e883] [cursor=pointer]:
+              - /url: https://www.lfwseq.org.au/cicadas-seq-song-summer/
+              - img "cicada from www.lfwseq.org.au" [ref=e885]
+          - generic [ref=e889]:
+            - generic [ref=e892]:
+              - 'link "Periodical Cicadas: You Can''t Make This Stuff Up Irvine Nature Center https://www.explorenature.org › Latest Blog" [ref=e894] [cursor=pointer]':
+                - /url: https://www.explorenature.org/blog/periodical-cicadas-you-cant-make-this-stuff-up/
+                - 'heading "Periodical Cicadas: You Can''t Make This Stuff Up" [level=3] [ref=e895]'
+                - generic [ref=e900]:
+                  - generic [ref=e902]: Irvine Nature Center
+                  - generic [ref=e904]: https://www.explorenature.org › Latest Blog
+              - button "About this result" [ref=e905] [cursor=pointer]:
+                - img [ref=e908]
+            - generic [ref=e911]:
+              - generic [ref=e912]:
+                - emphasis [ref=e913]: Cicadas have small hooks on their legs
+                - text: ", which enable them to cling to vertical surfaces–like the tree trunks on which they tend to shed their exoskeleton for ..."
+              - link "Read more" [ref=e914] [cursor=pointer]:
+                - /url: https://www.explorenature.org/blog/periodical-cicadas-you-cant-make-this-stuff-up/#:~:text=Cicadas%20have%20small%20hooks%20on,when%20you%20least%20expect%20it!
+            - link "cicada images from www.explorenature.org" [ref=e916] [cursor=pointer]:
+              - /url: https://www.explorenature.org/blog/periodical-cicadas-you-cant-make-this-stuff-up/
+        - generic [ref=e926]:
+          - generic [ref=e931]:
+            - heading "People also search for" [level=2] [ref=e933]
+            - generic [ref=e935]:
+              - generic [ref=e936]:
+                - link "Cicada pronunciation" [ref=e940] [cursor=pointer]:
+                  - /url: /search?sca_esv=89d14285035c4550&q=Cicada+pronunciation&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ1QJ6BAhUEAE
+                  - generic [ref=e941]:
+                    - generic [ref=e946]: Cicada pronunciation
+                    - img [ref=e950]
+                - link "Cicada sound" [ref=e955] [cursor=pointer]:
+                  - /url: /search?sca_esv=89d14285035c4550&q=Cicada+sound&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ1QJ6BAhpEAE
+                  - generic [ref=e956]:
+                    - generic [ref=e961]: Cicada sound
+                    - img [ref=e965]
+                - link "Cicada virus" [ref=e970] [cursor=pointer]:
+                  - /url: /search?sca_esv=89d14285035c4550&q=Cicada+virus&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ1QJ6BAhkEAE
+                  - generic [ref=e971]:
+                    - generic [ref=e976]: Cicada virus
+                    - img [ref=e980]
+                - link "Are cicadas dangerous" [ref=e985] [cursor=pointer]:
+                  - /url: /search?sca_esv=89d14285035c4550&q=Are+cicadas+dangerous&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ1QJ6BAhhEAE
+                  - generic [ref=e986]:
+                    - generic [ref=e991]: Are cicadas dangerous
+                    - img [ref=e995]
+              - generic [ref=e997]:
+                - link "Cicada insect" [ref=e1001] [cursor=pointer]:
+                  - /url: /search?sca_esv=89d14285035c4550&q=Cicada+insect&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ1QJ6BAhgEAE
+                  - generic [ref=e1002]:
+                    - generic [ref=e1007]: Cicada insect
+                    - img [ref=e1011]
+                - link "Cicada in India" [ref=e1016] [cursor=pointer]:
+                  - /url: /search?sca_esv=89d14285035c4550&q=Cicada+in+India&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ1QJ6BAhbEAE
+                  - generic [ref=e1017]:
+                    - generic [ref=e1022]: Cicada in India
+                    - img [ref=e1026]
+                - link "Cicada life cycle" [ref=e1031] [cursor=pointer]:
+                  - /url: /search?sca_esv=89d14285035c4550&q=Cicada+life+cycle&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ1QJ6BAhZEAE
+                  - generic [ref=e1032]:
+                    - generic [ref=e1037]: Cicada life cycle
+                    - img [ref=e1041]
+                - link "Cicada lifespan" [ref=e1046] [cursor=pointer]:
+                  - /url: /search?sca_esv=89d14285035c4550&q=Cicada+lifespan&sa=X&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ1QJ6BAhVEAE
+                  - generic [ref=e1047]:
+                    - generic [ref=e1052]: Cicada lifespan
+                    - img [ref=e1056]
+          - navigation [ref=e1058]:
+            - heading "Page navigation" [level=1] [ref=e1059]
+            - text: "1"
+            - link "Page 2" [ref=e1062] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=10&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8tMDegQIRRAE
+              - text: "2"
+            - link "Page 3" [ref=e1064] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=20&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8tMDegQIRRAG
+              - text: "3"
+            - link "Page 4" [ref=e1066] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=30&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8tMDegQIRRAI
+              - text: "4"
+            - link "Page 5" [ref=e1068] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=40&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8tMDegQIRRAK
+              - text: "5"
+            - link "Page 6" [ref=e1070] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=50&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8tMDegQIRRAM
+              - text: "6"
+            - link "Page 7" [ref=e1072] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=60&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8tMDegQIRRAO
+              - text: "7"
+            - link "Page 8" [ref=e1074] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=70&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8tMDegQIRRAQ
+              - text: "8"
+            - link "Page 9" [ref=e1076] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=80&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8tMDegQIRRAS
+              - text: "9"
+            - link "Page 10" [ref=e1078] [cursor=pointer]:
+              - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=90&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8tMDegQIRRAU
+              - text: "10"
+            - heading "Next" [level=2] [ref=e1080]:
+              - link "Next" [ref=e1081] [cursor=pointer]:
+                - /url: /search?q=cicada&sca_esv=89d14285035c4550&ei=HRn6aaneOeGZ4-EP2saLgA8&start=10&sa=N&sstk=Af77f_fYXyaFKrwQMCZ_o0FU82GUxcadE0dbq_SgYP9CwKK9lfcPswFx6U243zP3elstSLjaZxuZ_FvWskRU6iZDUqZwX9-9vN7iXQ&ved=2ahUKEwjp4ISOx6KUAxXhzDgGHVrjAvAQ8NMDegQIRRAW
+                - generic [ref=e1083]: Next
+        - navigation
+    - contentinfo [ref=e1086]:
+      - heading "Footer links" [level=1] [ref=e1087]
+      - generic [ref=e1091]:
+        - generic [ref=e1093]:
+          - text: India
+          - generic [ref=e1095]:
+            - button "Brahampuri, Jaipur, Rajasthan - From your IP address" [ref=e1097] [cursor=pointer]:
+              - generic [ref=e1098]: Brahampuri, Jaipur, Rajasthan
+              - generic [ref=e1100]:
+                - text: "-"
+                - generic [ref=e1101]: From your IP address
+            - text: "-"
+            - button "Update location" [ref=e1103] [cursor=pointer]: Update location
+        - generic [ref=e1106]:
+          - link "Help" [ref=e1107] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=en-IN&fg=1
+          - link "Send feedback" [ref=e1108] [cursor=pointer]:
+            - /url: "#"
+          - link "Privacy" [ref=e1109] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=en-IN&fg=1
+          - link "Terms" [ref=e1110] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=en-IN&fg=1
