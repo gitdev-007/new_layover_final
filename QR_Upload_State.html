@@ -248,20 +248,18 @@
         Scan QR
     </button>
 </div>
-<!-- Preview Placeholder (Hidden until upload) -->
-<div class="mt-8 p-4 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+<!-- Preview Placeholder -->
+<div id="preview-container" class="mt-8 p-4 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
 <div class="flex items-center gap-4">
 <div class="w-12 h-12 bg-white rounded border border-slate-200 flex items-center justify-center text-slate-400">
-<span class="material-symbols-outlined">image</span>
+<img id="preview" src="" alt="Preview" style="display:none; max-width: 40px; height: auto;" />
+<span id="placeholder-icon" class="material-symbols-outlined">image</span>
 </div>
 <div>
-<p class="font-label-md text-label-md text-primary italic">No file selected...</p>
-<div class="w-32 h-2 bg-slate-200 rounded-full mt-1 overflow-hidden">
-<div class="w-0 h-full bg-primary transition-all duration-500"></div>
+<p id="file-name-display" class="font-label-md text-label-md text-primary italic">No file selected...</p>
 </div>
 </div>
-</div>
-<button class="text-slate-400 hover:text-red-500 transition-colors">
+<button id="delete-btn" class="text-slate-400 hover:text-red-500 transition-colors">
 <span class="material-symbols-outlined">delete</span>
 </button>
 </div>
@@ -313,65 +311,49 @@
 // API Config
 const API_URL = "https://layoverbackend.onrender.com";
 
-// RESTORE QR IMAGE ON UPLOAD PAGE
-document.addEventListener("DOMContentLoaded", () => {
-  const preview = localStorage.getItem("qr_image_preview");
+// DOM Elements
+const fileInput = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
+const deleteBtn = document.getElementById("delete-btn");
+const uploadBtn = document.getElementById('uploadBtn');
+const fileNameDisplay = document.getElementById('file-name-display');
 
-  if (preview) {
-    const container = document.querySelector('.font-label-md.text-primary.italic')?.parentElement?.parentElement;
-    if (container) {
-      container.innerHTML = `
-        <div id="uploadPreview" class="flex flex-col items-center gap-2">
-            <img src="${preview}" style="max-width:200px;border-radius:8px;border:2px solid #e2e8f0;" />
-            <p class="text-xs text-slate-500">Selected File</p>
-        </div>
-      `;
-    }
+// Page Load: Restore
+window.addEventListener("load", () => {
+  const savedQR = localStorage.getItem("uploadedQR");
+  if (savedQR) {
+    preview.src = savedQR;
+    preview.style.display = "block";
+    document.getElementById('placeholder-icon').style.display = 'none';
+    fileNameDisplay.textContent = "Uploaded File";
   }
 });
 
-// DOM Elements
-const fileInput = document.getElementById('fileInput');
-const uploadBtn = document.getElementById('uploadBtn');
+// Upload Logic
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (!file) return;
 
-let selectedFile = null;
-
-// File input change handler - STORE FILE PREVIEW
-fileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        selectedFile = file;
-        
-        // Save image preview
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            localStorage.setItem("qr_image_preview", event.target.result);
-            
-            // Update UI to show selected file
-            const fileLabel = document.querySelector('.font-label-md.text-primary.italic');
-            if (fileLabel) {
-                fileLabel.textContent = file.name;
-            }
-            // Update progress bar
-            const progressBar = document.querySelector('.bg-primary.transition-all');
-            if (progressBar) {
-                progressBar.style.width = '100%';
-            }
-        };
-        reader.readAsDataURL(file);
-    }
+  const reader = new FileReader();
+  reader.onload = function () {
+    localStorage.setItem("uploadedQR", reader.result);
+    preview.src = reader.result;
+    preview.style.display = "block";
+    document.getElementById('placeholder-icon').style.display = 'none';
+    fileNameDisplay.textContent = file.name;
+  };
+  reader.readAsDataURL(file);
 });
 
-// Loading UI helper
-function setLoading(isLoading) {
-    if (isLoading) {
-        uploadBtn.disabled = true;
-        uploadBtn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">refresh</span>Uploading...';
-    } else {
-        uploadBtn.disabled = false;
-        uploadBtn.textContent = 'Verify QR';
-    }
-}
+// Delete Button Logic
+deleteBtn.addEventListener("click", () => {
+  localStorage.removeItem("uploadedQR");
+  preview.src = "";
+  preview.style.display = "none";
+  document.getElementById('placeholder-icon').style.display = 'block';
+  fileInput.value = "";
+  fileNameDisplay.textContent = "No file selected...";
+});
 
 // Scan QR function
 async function scanQR() {
@@ -420,6 +402,7 @@ async function scanQR() {
 
 // Upload button click handler
 uploadBtn.addEventListener('click', async () => {
+    const selectedFile = fileInput.files[0];
     if (!selectedFile) {
         alert('Please select a file first');
         return;
@@ -430,7 +413,9 @@ uploadBtn.addEventListener('click', async () => {
         return;
     }
 
-    setLoading(true);
+    // Set Loading UI
+    uploadBtn.disabled = true;
+    uploadBtn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">refresh</span>Uploading...';
 
     try {
         const formData = new FormData();
@@ -462,7 +447,8 @@ uploadBtn.addEventListener('click', async () => {
     } catch (error) {
         console.error('Upload error:', error);
         alert('Something went wrong');
-        setLoading(false);
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Verify QR';
     }
 });
 </script>
