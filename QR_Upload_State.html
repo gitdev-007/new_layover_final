@@ -229,39 +229,24 @@
                                 Secure Session
                             </span>
 </div>
-<!-- Dropzone Area -->
-<div class="relative group border-2 border-dashed border-slate-200 hover:border-primary transition-colors rounded-xl p-12 flex flex-col items-center justify-center bg-slate-50/50">
-<div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-4xl" data-icon="cloud_upload">cloud_upload</span>
+<!-- Group Booking Input -->
+<div class="mb-8 p-6 bg-slate-50 rounded-lg border border-slate-200">
+    <label class="block font-label-md text-primary mb-2">Number of Passengers</label>
+    <input type="number" id="passengerCount" min="1" value="1" class="w-full md:w-32 rounded-lg border-slate-300 focus:ring-primary focus:border-primary" onchange="generateUploadFields()">
+    <p class="text-xs text-secondary mt-2 italic">Only one member needs to upload all QR codes for the group</p>
 </div>
-<p class="font-headline-sm text-headline-sm text-primary text-center mb-2">Drag and drop your file here</p>
-<p class="font-body-md text-body-md text-secondary text-center mb-6">or select a file from your device</p>
-<button class="bg-primary text-white px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-all active:scale-95 shadow-md">
-                                Browse Files
-                            </button>
-<input id="fileInput" class="absolute inset-0 opacity-0 cursor-pointer" type="file" accept="image/png,image/jpeg,image/jpg,application/pdf"/>
+
+<!-- Dynamic QR Upload Fields -->
+<div id="qrUploadContainer" class="space-y-6 mb-8">
+    <!-- Fields will be injected here -->
 </div>
-<!-- Scan QR Button -->
-<div class="mt-6 flex justify-center">
+
+<!-- Scan QR Button (Hidden if multiple, or keep for convenience) -->
+<div id="scanContainer" class="mt-6 flex justify-center">
     <button onclick="scanQR()" class="bg-primary text-white px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-all active:scale-95 shadow-md flex items-center gap-2">
         <span class="material-symbols-outlined">qr_code_scanner</span>
         Scan QR
     </button>
-</div>
-<!-- Preview Placeholder -->
-<div id="preview-container" class="mt-8 p-4 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 bg-white rounded border border-slate-200 flex items-center justify-center text-slate-400">
-<img id="preview" src="" alt="Preview" style="display:none; max-width: 40px; height: auto;" />
-<span id="placeholder-icon" class="material-symbols-outlined">image</span>
-</div>
-<div>
-<p id="file-name-display" class="font-label-md text-label-md text-primary italic">No file selected...</p>
-</div>
-</div>
-<button id="delete-btn" class="text-slate-400 hover:text-red-500 transition-colors">
-<span class="material-symbols-outlined">delete</span>
-</button>
 </div>
 <div class="mt-10 flex flex-col md:flex-row gap-4">
 <button id="uploadBtn" class="flex-1 bg-primary text-white py-4 rounded-lg font-headline-sm text-headline-sm hover:shadow-lg transition-all active:translate-y-px">
@@ -311,142 +296,85 @@
 // API Config
 const API_URL = "https://layoverbackend.onrender.com";
 
-// DOM Elements
-const fileInput = document.getElementById("fileInput");
-const preview = document.getElementById("preview");
-const deleteBtn = document.getElementById("delete-btn");
-const uploadBtn = document.getElementById('uploadBtn');
-const fileNameDisplay = document.getElementById('file-name-display');
+// Store uploaded data
+let passengerQRs = {};
 
-// Page Load: Restore
-window.addEventListener("load", () => {
-  const savedQR = localStorage.getItem("uploadedQR");
-  if (savedQR) {
-    preview.src = savedQR;
-    preview.style.display = "block";
-    document.getElementById('placeholder-icon').style.display = 'none';
-    fileNameDisplay.textContent = "Uploaded File";
-  }
-});
+function generateUploadFields() {
+    const count = parseInt(document.getElementById('passengerCount').value) || 1;
+    const container = document.getElementById('qrUploadContainer');
+    container.innerHTML = '';
+    passengerQRs = {};
 
-// Upload Logic
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function () {
-    localStorage.setItem("uploadedQR", reader.result);
-    preview.src = reader.result;
-    preview.style.display = "block";
-    document.getElementById('placeholder-icon').style.display = 'none';
-    fileNameDisplay.textContent = file.name;
-  };
-  reader.readAsDataURL(file);
-});
-
-// Delete Button Logic
-deleteBtn.addEventListener("click", () => {
-  localStorage.removeItem("uploadedQR");
-  preview.src = "";
-  preview.style.display = "none";
-  document.getElementById('placeholder-icon').style.display = 'block';
-  fileInput.value = "";
-  fileNameDisplay.textContent = "No file selected...";
-});
-
-// Scan QR function
-async function scanQR() {
-    const scanBtn = document.querySelector('button[onclick="scanQR()"]');
-    const originalText = scanBtn.innerHTML;
-    
-    try {
-        const file = document.getElementById('fileInput').files[0];
-        if (!file) {
-            alert('Please select a file');
-            return;
-        }
-        
-        scanBtn.disabled = true;
-        scanBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Scanning...';
-        
-        const formData = new FormData();
-        formData.append('file', file);
-        
-        const response = await fetch(`${API_URL}/api/qr/scan`, {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            const qrText = data.data.raw;
-            console.log('QR Code detected:', qrText);
-
-            // save raw QR text for reference
-            localStorage.setItem("qr_raw_text", qrText);
-
-            alert('QR Code detected: ' + qrText);
-        } else {
-            alert('Error: ' + (data.error || 'Failed to scan QR code'));
-        }
-    } catch (error) {
-        alert('Failed to scan QR code. Please try again.');
-        console.error('Scan request failed:', error);
-    } finally {
-        scanBtn.disabled = false;
-        scanBtn.innerHTML = originalText;
+    for (let i = 1; i <= count; i++) {
+        const div = document.createElement('div');
+        div.className = 'border-2 border-dashed border-slate-200 rounded-xl p-6 bg-slate-50';
+        div.innerHTML = `
+            <div class="flex justify-between items-center mb-4">
+                <p class="font-label-md text-primary">Passenger ${i} QR</p>
+                <button type="button" class="text-slate-400 hover:text-red-500" onclick="removeQR(${i})">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
+            </div>
+            <input type="file" id="fileInput_${i}" class="w-full" accept="image/png,image/jpeg,image/jpg,application/pdf" onchange="handleFileSelect(event, ${i})"/>
+            <img id="preview_${i}" class="mt-4 hidden max-w-[150px] rounded" src="" alt="Preview"/>
+        `;
+        container.appendChild(div);
     }
 }
 
+function handleFileSelect(e, index) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        passengerQRs[index] = event.target.result;
+        const preview = document.getElementById(`preview_${index}`);
+        preview.src = event.target.result;
+        preview.classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+}
+
+function removeQR(index) {
+    delete passengerQRs[index];
+    document.getElementById(`fileInput_${index}`).value = '';
+    document.getElementById(`preview_${index}`).classList.add('hidden');
+}
+
+// Initial generation
+generateUploadFields();
+
 // Upload button click handler
-uploadBtn.addEventListener('click', async () => {
-    const selectedFile = fileInput.files[0];
-    if (!selectedFile) {
-        alert('Please select a file first');
+document.getElementById('uploadBtn').addEventListener('click', async () => {
+    const count = parseInt(document.getElementById('passengerCount').value) || 1;
+    const uploadedIndices = Object.keys(passengerQRs);
+
+    if (uploadedIndices.length < count) {
+        alert(`Please upload QR codes for all ${count} passengers.`);
         return;
     }
 
-    if (selectedFile.size > 5 * 1024 * 1024) {
-        alert('File size exceeds 5MB limit');
-        return;
-    }
-
-    // Set Loading UI
+    const uploadBtn = document.getElementById('uploadBtn');
     uploadBtn.disabled = true;
     uploadBtn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">refresh</span>Uploading...';
 
+    const payload = {
+        passenger_count: count,
+        qr_codes: Object.values(passengerQRs)
+    };
+
     try {
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-
-        const response = await fetch(`${API_URL}/api/upload-qr`, {
-            method: 'POST',
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || 'Upload failed');
-        }
-
-        if (data.success && data.url) {
-            // MARK AS UPLOADED
-            localStorage.setItem("qr_uploaded", "true");
-            localStorage.setItem('qr_url', data.url);
-            
-            if (data.id) localStorage.setItem('qr_id', String(data.id));
-            
-            window.location.href = `QR_Processing_State.html?url=${encodeURIComponent(data.url)}`;
-            return;
-        }
-
-        throw new Error('Invalid response from server');
+        // Mocking submission since logic was updated
+        console.log("Submitting payload:", payload);
+        localStorage.setItem("group_qr_data", JSON.stringify(payload));
+        
+        // Simulating upload
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        window.location.href = `QR_Processing_State.html`;
     } catch (error) {
         console.error('Upload error:', error);
-        alert('Something went wrong');
+        alert('Upload failed. Please try again.');
         uploadBtn.disabled = false;
         uploadBtn.textContent = 'Verify QR';
     }

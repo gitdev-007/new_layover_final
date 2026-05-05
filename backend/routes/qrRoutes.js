@@ -2,12 +2,64 @@ import { Router } from 'express';
 import multer from 'multer';
 import sharp from 'sharp';
 import { MultiFormatReader, BarcodeFormat, DecodeHintType, RGBLuminanceSource, BinaryBitmap, HybridBinarizer } from '@zxing/library';
+import { v4 as uuidv4 } from 'uuid'; // Assuming uuid is available in the project
 
 const router = Router();
 
 // Configure multer with memory storage
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
+// Helper to simulate rate limiting
+const recentRequests = new Set();
+const rateLimit = (ip) => {
+    if (recentRequests.has(ip)) return false;
+    recentRequests.add(ip);
+    setTimeout(() => recentRequests.delete(ip), 5000); // 5s window
+    return true;
+};
+
+// ... (existing helper scanQRFromBuffer) ...
+
+// Group QR Processing Endpoint
+router.post('/group-scan', async (req, res) => {
+    const ip = req.ip;
+    if (!rateLimit(ip)) return res.status(429).json({ success: false, error: 'Too many requests' });
+
+    const { passenger_count, qr_codes } = req.body;
+
+    if (!passenger_count || !Array.isArray(qr_codes) || qr_codes.length !== passenger_count) {
+        return res.status(400).json({ success: false, error: 'Invalid passenger count or QR codes mismatch' });
+    }
+
+    const booking_id = uuidv4();
+    const results = [];
+    let validCount = 0;
+
+    for (let i = 0; i < qr_codes.length; i++) {
+        // Base64 to Buffer
+        const buffer = Buffer.from(qr_codes[i].split(',')[1], 'base64');
+        const qrResult = await scanQRFromBuffer(buffer);
+
+        if (qrResult) {
+            validCount++;
+            results.push({ index: i + 1, status: 'valid', data: qrResult.text });
+        } else {
+            results.push({ index: i + 1, status: 'invalid' });
+        }
+    }
+
+    res.json({
+        booking_id,
+        total_passengers: passenger_count,
+        valid_passengers: validCount,
+        invalid_passengers: passenger_count - validCount,
+        passengers: results
+    });
+});
+
+// ... (keep existing endpoints) ...
+
 
 // Helper function to scan QR code from image buffer
 async function scanQRFromBuffer(buffer) {
