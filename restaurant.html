@@ -145,7 +145,7 @@
 <div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-2">–</p></div>
 <div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">3 HR</p><p class="font-bold text-[11px]" data-detail-field="price-3">–</p></div>
 </div>
-<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide">RESERVE TABLE</button>
+<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200" onclick="window.addToList && window.addToList(this, '${detail.name}', 'Restaurant', '1.5h')">Add to List</button>
 </div>
 <div class="grid grid-cols-2 gap-3 text-meta-label">
 <div class="border border-outline-variant p-2 rounded">
@@ -405,7 +405,7 @@ ${detail.details.map((item) => `<li class="flex items-center gap-2"><span class=
 <div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-2">${detail.prices.two}</p></div>
 <div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">3 HR</p><p class="font-bold text-[11px]" data-detail-field="price-3">${detail.prices.three}</p></div>
 </div>
-<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide">RESERVE TABLE</button>
+<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200" onclick="window.addToList && window.addToList(this, '${detail.name}', 'Restaurant', '1.5h')">Add to List</button>
 </div>
 <div class="grid grid-cols-2 gap-3 text-meta-label">
 <div class="border border-outline-variant p-2 rounded">
