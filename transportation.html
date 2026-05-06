@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 
-<html class="dark" lang="en"><head>
+<html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>AETHER | Transportation Selection</title>
+<title>Transport Selection - Layover Planner</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
@@ -13,72 +14,85 @@
             theme: {
                 extend: {
                     "colors": {
-                        "surface-container": "#1e2020",
-                        "surface-container-lowest": "#0c0f0e",
-                        "on-surface-variant": "#ccc3d7",
-                        "primary-fixed-dim": "#d3bbff",
-                        "primary-container": "#6d28d9",
-                        "primary": "#d3bbff",
-                        "surface-tint": "#d3bbff",
-                        "on-primary": "#3f008d",
-                        "surface-container-low": "#1a1c1c",
-                        "tertiary-container": "#8f4200",
+                        "on-background": "#1c1b1b",
+                        "primary-fixed-dim": "#c6c6c7",
+                        "on-secondary-container": "#636262",
+                        "surface-container": "#f1edec",
+                        "primary-fixed": "#e2e2e2",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e5e2e1",
+                        "outline": "#747878",
+                        "on-surface-variant": "#444748",
+                        "tertiary": "#625e5a",
+                        "surface-container-high": "#ebe7e7",
+                        "inverse-on-surface": "#f4f0ef",
+                        "surface-container-low": "#f6f3f2",
+                        "inverse-surface": "#313030",
+                        "surface-dim": "#ddd9d9",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#76716e",
+                        "on-tertiary-fixed-variant": "#494643",
                         "secondary-fixed-dim": "#c8c6c5",
-                        "tertiary-fixed-dim": "#ffb68b",
-                        "outline": "#4a4455",
-                        "on-secondary-fixed-variant": "#474646",
-                        "tertiary-fixed": "#ffdbc8",
-                        "on-secondary-fixed": "#1c1b1b",
-                        "on-tertiary": "#522300",
-                        "surface-bright": "#383939",
-                        "on-secondary": "#313030",
-                        "surface-dim": "#121414",
-                        "on-primary-fixed-variant": "#5b00c5",
-                        "on-tertiary-fixed-variant": "#743400",
-                        "primary-fixed": "#ebddff",
-                        "outline-variant": "#333535",
-                        "surface-container-highest": "#333535",
-                        "background": "#121414",
-                        "surface-container-high": "#282a2a",
-                        "error": "#ffb4ab",
-                        "inverse-primary": "#7331df",
-                        "inverse-surface": "#e2e2e2",
-                        "secondary": "#c8c6c5",
-                        "tertiary": "#ffb68b",
-                        "surface-variant": "#333535",
-                        "on-primary-fixed": "#250059",
-                        "on-tertiary-fixed": "#321300",
-                        "inverse-on-surface": "#2f3130",
-                        "on-secondary-container": "#bab8b7",
+                        "primary": "#5d5f5f",
+                        "tertiary-container": "#fff8f3",
+                        "on-primary-fixed-variant": "#454747",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-bright": "#fcf8f8",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#c6c6c7",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c4c7c8",
+                        "on-primary-container": "#717273",
+                        "secondary-container": "#e2dfde",
+                        "secondary": "#5f5e5e",
+                        "surface-tint": "#5d5f5f",
+                        "tertiary-fixed-dim": "#cbc5c1",
                         "secondary-fixed": "#e5e2e1",
-                        "on-background": "#e2e2e2",
-                        "on-tertiary-container": "#ffc19e",
-                        "on-surface": "#e2e2e2",
-                        "surface": "#121414",
-                        "on-error-container": "#ffdad6",
-                        "on-primary-container": "#dac5ff",
-                        "on-error": "#690005",
-                        "error-container": "#93000a",
-                        "secondary-container": "#4a4949"
+                        "on-primary-fixed": "#1a1c1c",
+                        "surface": "#fcf8f8",
+                        "tertiary-fixed": "#e8e1dc",
+                        "primary-container": "#f9f9f9",
+                        "on-tertiary-fixed": "#1d1b18",
+                        "background": "#fcf8f8",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "brand-purple": "#5D3FD3"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.25rem",
                         "lg": "0.5rem",
                         "xl": "0.75rem",
+                        "2xl": "16px",
                         "full": "9999px"
                     },
                     "spacing": {
-                        "sm": "8px",
-                        "gutter": "16px",
-                        "container-margin": "32px",
-                        "unit": "4px",
-                        "md": "16px",
-                        "xs": "4px",
-                        "lg": "24px",
-                        "xl": "40px"
+                        "stack-lg": "24px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "gutter": "12px",
+                        "margin-page": "20px",
+                        "card-padding": "16px"
                     },
                     "fontFamily": {
-                        "sans": ["Inter", "sans-serif"]
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-main": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h3": ["17px", {"lineHeight": "1.4", "letterSpacing": "0em", "fontWeight": "500"}],
+                        "h1": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "body-main": ["15px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "h2": ["20px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
                     }
                 },
             },
@@ -86,190 +100,206 @@
     </script>
 <style>
         body {
+            background-color: #fcf8f8;
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
         }
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
+        .matte-shadow {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
         }
-        .matte-card {
-            background: #1a1c1c;
-            border: 1px solid #333535;
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
     </style>
-</head>
-<body class="bg-background text-on-surface min-h-screen pb-40">
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface">
 <!-- TopAppBar -->
-<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-background/80 backdrop-blur-md border-b border-outline-variant">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-xl" data-icon="flight_takeoff">flight_takeoff</span>
-<h1 class="font-semibold text-lg tracking-[0.15em] text-on-surface uppercase">AETHER</h1>
+<nav class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant flex justify-between items-center h-16 px-margin-page">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 transition-transform hover:opacity-80">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<span class="font-h3 text-h3 font-bold text-primary">Transport</span>
 </div>
-<div class="w-8 h-8 rounded-full overflow-hidden border border-outline">
-<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABUrWwb1NrhIW0rZD7zwFqjcZIMrYx8D9wXWMQDSxcCa774JZEqKB7IEftSIwFCWG1hdUg1CdMuHFSEvbTFkkRO7YZfRSq3s-5zv6Vd2osm40YFZfxZAReVkZluif9jVOzLvhVu10LgHXXVEF_Jul0on-ZMiYwfwZuByTFUx_kb7v7bLWUK1T4PYBOSkurwmTbPdM-X1GTOe5CiQQ9uGTGoc9t4LSN1mkN3quNNq0AT8Ya0isgqjie1tEUNQBLxSoG729kvL41uw"/>
+<div class="h-8 w-8 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional studio portrait of a traveler with a friendly expression, set against a soft, neutral-toned background. The lighting is bright and clean, following the modern minimalist light-mode aesthetic. The individual wears high-end casual attire, reflecting the quiet luxury and competence of a premium concierge service user. High-key lighting ensures clarity and a serene, reliable atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPrPRIeWzr4KN-CKBoWfD29I8QfiddJxklRHbNz5Zbf_vyyipV0sBawIid1EgPy0gkO0NrfvhX6jBf5ia6mjRExsJ_ENgqv9Ao6RaK8dn-SNHXB5Vnt9VOg-KRxL-ulaJgMDhPegQDYAegslQ5BVOTDpXHm3JwCMHcAmhu5idk5ARRJbBNtxZMpCcjuF6dazwHOfepRm-73E-wxx_8sgv9BF7oY29jHbZfc8oBtC4wxWao8uJD38O1sqTX2_06_msG8-TH4i4zy8EV"/>
 </div>
-</header>
-<main class="pt-24 px-6 max-w-screen-md mx-auto space-y-10">
-<!-- Hero: Layover Verification -->
-<section class="matte-card rounded-2xl p-6">
-<div class="space-y-6">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
-<span class="text-[11px] font-medium uppercase tracking-widest text-on-surface-variant">Intelligence Confirmed</span>
+</nav>
+<main class="pt-20 pb-32 px-margin-page">
+<!-- Hero Section -->
+<section class="mb-stack-lg">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-card-padding matte-shadow">
+<h1 class="font-h1 text-h1 text-on-surface mb-1">Choose Your Transportation</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">Select a vehicle to bridge your airport transition with absolute comfort.</p>
+<div class="grid grid-cols-3 gap-gutter">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-secondary-container mb-1">LAYOVER</span>
+<span class="font-h2 text-h2 text-primary">8h 30m</span>
 </div>
-<h2 class="text-2xl font-semibold leading-tight">Your layover has been verified</h2>
-<div class="grid grid-cols-3 gap-4 border-t border-outline-variant pt-6">
-<div class="space-y-1">
-<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">Layover</p>
-<p class="text-base font-medium">6h 30m</p>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-secondary-container mb-1">DEPARTURE</span>
+<span class="font-h2 text-h2 text-primary">22:45</span>
 </div>
-<div class="space-y-1">
-<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">Departure</p>
-<p class="text-base font-medium">19:45</p>
-</div>
-<div class="space-y-1">
-<p class="text-[10px] uppercase tracking-wider text-primary">Window</p>
-<p class="text-base font-medium text-primary">4h 15m</p>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-secondary-container mb-1">REMAINING</span>
+<span class="font-h2 text-h2 text-brand-purple">5h 15m</span>
 </div>
 </div>
 </div>
 </section>
-<!-- AI Recommendation -->
-<section class="space-y-4">
-<div class="flex justify-between items-baseline">
-<h3 class="text-sm font-semibold uppercase tracking-wider">AI Selection</h3>
-<span class="text-[11px] text-on-surface-variant">Recommended for you</span>
+<!-- Smart Info Section -->
+<section class="mb-stack-lg flex gap-gutter overflow-x-auto no-scrollbar py-1">
+<div class="flex-shrink-0 flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-[16px] text-brand-purple" style="font-variation-settings: 'FILL' 1;">speed</span>
+<span class="font-label-caps text-label-caps text-on-surface">Efficiency: 94%</span>
 </div>
-<div class="matte-card rounded-2xl overflow-hidden">
-<div class="aspect-[16/9] w-full bg-surface-container overflow-hidden">
-<img alt="Tesla Model S Plaid" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArv8rg0otqO5ZTHUaivoIabI8ysb_VhH5sQAkdg0TdbnDLNd8YfvQ_XH-MjIx190aCGSvXKkHexdOby9NiutZVmTNr0mR4UItC84gfnHLhaieuDQ7Ix6c1-JveNondQIq2NHfInkAJ_4I1_niHJDuuWyOkG3NCz6h7d8oM6I-253fKfh4kovdE47GY5YGCKYR1BZ7ktwgWdgvIkohP-O7sHV3Cf1z7DwT-W1dmAVR4-3sG-9T2fnrbVs64sLvAinB9nLbA8h0BPg"/>
+<div class="flex-shrink-0 flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-[16px] text-brand-purple" style="font-variation-settings: 'FILL' 1;">traffic</span>
+<span class="font-label-caps text-label-caps text-on-surface">Traffic Adapt: High</span>
 </div>
-<div class="p-6 space-y-4">
+<div class="flex-shrink-0 flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-[16px] text-brand-purple" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-caps text-label-caps text-on-surface">Reliability: 99.9%</span>
+</div>
+</section>
+<!-- Transportation List -->
+<section class="space-y-stack-md">
+<!-- Sedan (Active) -->
+<div class="bg-surface-container-lowest border-2 border-brand-purple rounded-2xl p-card-padding matte-shadow relative overflow-hidden flex gap-4 items-center">
+<div class="absolute top-2 right-2 bg-brand-purple text-white px-2 py-0.5 rounded-full font-label-caps text-[9px]">SELECTED</div>
+<div class="w-28 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+<img alt="Premium Sedan" class="w-full h-full object-cover" data-alt="A side view of a high-end, sleek metallic charcoal sedan parked in a minimalist, bright airport terminal garage. The vehicle is polished to a mirror finish, reflecting the clean white overhead studio lighting. The aesthetic is modern and professional, focusing on the refined lines of the car. The environment is calm and organized, emphasizing quiet luxury and premium business class comfort." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpGmTG3Rd-JBr0414JUI08UQkZsIC9Eb2EQZxZ3vzw_Y-kk215GX33o_pzQ6Edb8M8gkjlU_N96uWPBskHB_Mbpz40111ZvOjOh8CmTwktVWy-B89Rl_UZKWlvydLjrE0FCsaZspsnJYj2jAFeTA5oAutYiJjXZqZrcDzO07Xg9MPkqPYeSUvqIxmxYrKc-jBg2DpUbCl5cyrST2gXQ_uwJW05NEHUrn4cqd9y08MzrLSVgf_gzhHjR3wEMblcUfHW_JM3ydV942_1"/>
+</div>
+<div class="flex-grow">
 <div class="flex justify-between items-start">
 <div>
-<h4 class="text-lg font-semibold">Tesla Model S Plaid</h4>
-<div class="flex gap-4 mt-1">
-<div class="flex items-center gap-1 text-on-surface-variant text-xs">
-<span class="material-symbols-outlined text-[14px]" data-icon="chair">chair</span>
-<span>Ultra Comfort</span>
+<h3 class="font-h3 text-h3 text-on-surface">Sedan</h3>
+<p class="font-body-sm text-body-sm text-brand-purple font-medium">Business Class Comfort</p>
 </div>
-<div class="flex items-center gap-1 text-on-surface-variant text-xs">
-<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
-<span>8 min ETA</span>
+<span class="font-h3 text-h3 font-bold text-on-surface">$45</span>
 </div>
-</div>
-</div>
-<span class="text-lg font-medium">$85.00</span>
-</div>
-<button class="w-full py-4 rounded-xl bg-primary text-on-primary text-[12px] font-bold uppercase tracking-widest hover:opacity-90 transition-opacity">
-                        Select Premium
-                    </button>
-</div>
-</div>
-</section>
-<!-- Vehicle Categories -->
-<section class="space-y-4">
-<h3 class="text-sm font-semibold uppercase tracking-wider">Explore Fleet</h3>
-<div class="flex overflow-x-auto gap-4 pb-4 hide-scrollbar snap-x -mx-6 px-6">
-<!-- Category Card: SUV -->
-<div class="flex-none w-56 snap-start matte-card rounded-2xl overflow-hidden flex flex-col">
-<div class="aspect-square bg-surface-container overflow-hidden">
-<img alt="Grand SUV" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQJZXm2djf51P0rWkMVxolVA2GVksaQssW5lB-5KqjAFbXWcjbDlirLDtN7426TTTTqt34xo6SZ-kEEOF1OacIMybJ8yOvJ3SQW_dwthhAwLGw1xOumJK6ZiTLRrPNmvXjmPAje1NWodP_67aQXyTCM_qz8uaqV_ZYLVuBaU7EsEHwIKGpOuxioZ35sgAcpK9v56D-4LAtABEvFA4pcYwae3QOT5EJTRBzL0EIXaRtmb6Om1Xs8E8maRBEynUCM28V0PXyQSae2Q"/>
-</div>
-<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
-<div class="space-y-1">
-<div class="flex justify-between items-center">
-<h5 class="text-sm font-semibold">Grand SUV</h5>
-<span class="text-[10px] text-on-surface-variant">6 Seats</span>
-</div>
-<p class="text-[11px] text-on-surface-variant">Luxury for groups</p>
-</div>
-<button class="w-full py-2 bg-surface-container-highest border border-outline-variant rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-surface-bright transition-colors">Select</button>
-</div>
-</div>
-<!-- Category Card: Executive -->
-<div class="flex-none w-56 snap-start matte-card rounded-2xl overflow-hidden flex flex-col">
-<div class="aspect-square bg-surface-container overflow-hidden">
-<img alt="Executive" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNnLddf_K-t-9we5TcTSKN7m13ze3nWCDvJZyPvBrE-3DJCC3MFu1PBnUKOI_wPUD0gYZknel2sO1kWKXGGBnpgFxl_K8PZDaiW2bo8K7-FptGKeN0K2SAJx1jgItBzYai1h3NZMJMNC9c_1YwTcqohYqP3YD97TBB42pG6Gza6OtDCOTK0NWyhI_IVCzXtDzoWfYQkeSxney6XA53pOSGlv6pA121rj3zgEkbA9d_809a8HJTa7IkJbytisrhmN71T0XghxXIPg"/>
-</div>
-<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
-<div class="space-y-1">
-<div class="flex justify-between items-center">
-<h5 class="text-sm font-semibold">Executive</h5>
-<span class="text-[10px] text-on-surface-variant">3 Seats</span>
-</div>
-<p class="text-[11px] text-on-surface-variant">Business class travel</p>
-</div>
-<button class="w-full py-2 bg-surface-container-highest border border-outline-variant rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-surface-bright transition-colors">Select</button>
-</div>
-</div>
-<!-- Category Card: Chauffeur -->
-<div class="flex-none w-56 snap-start matte-card rounded-2xl overflow-hidden flex flex-col">
-<div class="aspect-square bg-surface-container overflow-hidden">
-<img alt="Chauffeur" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0ibgNcYoodor-ZHHBya1kBAPmecetacxYfMy5rzNxSYfaDDY_rQjbKvk3CzoTKZaKABiK1VAaUiGLQvZUJWkhrytu1pfWB0vpdHpUBOo_YG4qICtEWtPmJTvfc-3xdcEkVHaO0JIssIE5cccKTQRm4vwCc4ksHary2a9MWTXzcz_Fm9Nx_6y78CsNK3_zppwNmtw1SKENUmybQac2XUBOdr1-PhGqVlUZWL3diS-SNnhlw6Q4olfJO-G9CmH14ZDMQ6zKqmqu6A"/>
-</div>
-<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
-<div class="space-y-1">
-<div class="flex justify-between items-center">
-<h5 class="text-sm font-semibold">Chauffeur</h5>
-<span class="text-[10px] text-on-surface-variant">4 Seats</span>
-</div>
-<p class="text-[11px] text-on-surface-variant">Unrivaled luxury</p>
-</div>
-<button class="w-full py-2 bg-surface-container-highest border border-outline-variant rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-surface-bright transition-colors">Select</button>
+<div class="flex gap-3 mt-2 text-on-secondary-container">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span><span class="text-[12px]">4</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="text-[12px]">2</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span><span class="text-[12px]">5 min</span></div>
 </div>
 </div>
 </div>
-</section>
-<!-- Intelligence Widget -->
-<section class="matte-card rounded-2xl p-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant">
-<span class="material-symbols-outlined text-primary text-xl" data-icon="auto_awesome">auto_awesome</span>
+<!-- SUV -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-card-padding matte-shadow flex gap-4 items-center hover:bg-surface-container-lowest transition-colors">
+<div class="w-28 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+<img alt="Premium SUV" class="w-full h-full object-cover" data-alt="A powerful, modern white luxury SUV captured from a three-quarter angle in a high-key, minimalist setting. The car's design is spacious and reliable, with tinted windows and polished chrome details. The background is a clean, bright, and serene architectural space with soft daylight. The image conveys a sense of safety, premium comfort, and readiness for group travel in a sophisticated manner." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiXStTYl6LP_i__3Hy2cJeGbjgVtaV9zylc6wQRIrHU4JWjSo1Buh2z7w-FuKUBYun3ry0eS9Se-CuI_VKkm4KYrh5hNw31BZOfB41mB3FsfjZ5SJHdkxdq_IeT0wBeq4VKiC24tgOAMpk2jpw-zI6o-P-SFFio1WzToaDS9KLtCgR3uUntFb4rtLyt8XyOptTWwhzO2atKSV0NuIwb6hhWVdwnrqeyZtDI-KBu7j0k8X4OiX8y6CWttCAI-aooAT-zIq2w96lLaIY"/>
 </div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
 <div>
-<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">Traffic Efficiency</p>
-<p class="text-sm font-medium">82% (Light Conditions)</p>
+<h3 class="font-h3 text-h3 text-on-surface">SUV</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Spacious &amp; Reliable</p>
+</div>
+<span class="font-h3 text-h3 font-bold text-on-surface">$65</span>
+</div>
+<div class="flex gap-3 mt-2 text-on-secondary-container">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span><span class="text-[12px]">6</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="text-[12px]">4</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span><span class="text-[12px]">8 min</span></div>
 </div>
 </div>
-<div class="space-y-2">
-<div class="flex justify-between text-[10px] uppercase tracking-wider text-on-surface-variant">
-<span>AI Route Optimization</span>
-<span class="text-primary">94%</span>
 </div>
-<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full w-[94%]"></div>
+<!-- XL -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-card-padding matte-shadow flex gap-4 items-center">
+<div class="w-28 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+<img alt="Large Van" class="w-full h-full object-cover" data-alt="A professional silver passenger van designed for group transfers, shown in a bright, modern airport environment. The lighting is even and soft, emphasizing the vehicle's large capacity and practical design. The overall mood is reliable and efficient, set against a background of minimalist architecture. The clean lines and pristine condition of the vehicle reflect high-quality transport standards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmDC5eouruKZ6VaDx-uH6rjAlRDR7fv4okL0HZrnd0zLdSbhVvyV4VGPMhATfDYvwdh54iUQ9ohe51FqdFvjLmKg8eEuj0_c1YFkjSSVfABt94TZCsHdTraEnouzJLhSKv6Z8rB-Um0MKVR6WmIBu_WZudHWYYASHR0pUIdPN1FP8512ZygFsketuqFydz6Gj_Opvokg0naPvNvWSVuJdEh9fpxh2GGZTZj5KJg7Z5A7nhauQVheb8RwuDicDtUI-bzG0H2FMCrYS8"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-h3 text-h3 text-on-surface">XL</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Group Travel</p>
+</div>
+<span class="font-h3 text-h3 font-bold text-on-surface">$80</span>
+</div>
+<div class="flex gap-3 mt-2 text-on-secondary-container">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span><span class="text-[12px]">7</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="text-[12px]">5</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span><span class="text-[12px]">10 min</span></div>
+</div>
+</div>
+</div>
+<!-- Luxury -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-card-padding matte-shadow flex gap-4 items-center">
+<div class="w-28 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+<img alt="First Class Car" class="w-full h-full object-cover" data-alt="A deep black, high-end luxury limousine sedan with a matte finish, parked under soft, dramatic lighting that highlights its elegant silhouette. The setting is an ultra-modern, quiet luxury terminal with minimalist design. The atmosphere is one of exclusive first-class experience, tranquility, and prestige. The color palette is composed of deep blacks and soft whites, creating a serene, high-end visual." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYceQXXhyNvCvtNFRlFLUNXyEECzU1KTZMzQXQ5PUhKdnFe8e7sLjUHIzuO2qJKVxubzUyqVbUrM3Mw-l97shxVdiy0SX6s8S_QVQHQRxXf2gg1ZEMBb93LfRtkIezq8WZGYAovuhPY158pjyJA5TySi1Pm3Pd5A_w2iLVfeGheahTLk5flhEyN9v_em3bY9WuTe7lzXmSaq5VwXN18m6a-uk9p1Z__HwvMwfuPazQgff6GTTDb_6huBgAEfbYY15nT7VV7193n-w6"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-h3 text-h3 text-on-surface">Luxury</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">First Class Experience</p>
+</div>
+<span class="font-h3 text-h3 font-bold text-on-surface">$120</span>
+</div>
+<div class="flex gap-3 mt-2 text-on-secondary-container">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span><span class="text-[12px]">3</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="text-[12px]">2</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span><span class="text-[12px]">12 min</span></div>
+</div>
+</div>
+</div>
+<!-- Electric -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-card-padding matte-shadow flex gap-4 items-center">
+<div class="w-28 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+<img alt="Electric Vehicle" class="w-full h-full object-cover" data-alt="A cutting-edge, minimalist electric sedan in a clean, high-tech charging station environment. The vehicle's paint is a soft, pearl white, shimmering under bright, diffused daylight. The design is sleek, sustainable, and quiet, conveying modern environmental consciousness and high comfort. The setting is pristine, with a color palette of whites, light grays, and soft blues, creating a peaceful, futuristic mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJAmzPdb8JbEx0moJuszBEePVQ9lmefzrdC1daKG7sub2yW0uipo9Iew-dJnEsYAtaqXr33b1573QisFpUfMj348Xy_ygvUx74fSnGyogaK-p7Jv1qOGFL9GSywj2Ea2g9CiNlBdQikuTESAIvrUWcJGPC5AyiXNsH1JkenO3uDna8VUfrDpBESP3i7j7J7mgu9xt_SDsFK3K7yZEGX3Trz68p7t2RIILBbgyDT5MncNbaCZbWSGqQFJEp53jjjefg42S5lEC74-0G"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-h3 text-h3 text-on-surface">Electric</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sustainable &amp; Quiet</p>
+</div>
+<span class="font-h3 text-h3 font-bold text-on-surface">$50</span>
+</div>
+<div class="flex gap-3 mt-2 text-on-secondary-container">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span><span class="text-[12px]">4</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="text-[12px]">2</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span><span class="text-[12px]">6 min</span></div>
+</div>
+</div>
+</div>
+<!-- Shuttle -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-card-padding matte-shadow flex gap-4 items-center mb-10">
+<div class="w-28 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+<img alt="Airport Shuttle" class="w-full h-full object-cover" data-alt="A bright, modern airport shuttle bus waiting at a clean, well-lit transfer terminal. The lighting is natural and airy, creating a professional and efficient transfer atmosphere. The vehicle is clean and well-maintained, representing reliability for larger groups. The architectural background is minimalist and organized, aligning with the quiet luxury and hyper-organized theme of the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDSY6eaebcMBoNjLXB6wFmy9iop4EyGX2stBfqG9JfgCZBwk535usP6I79g-Vk22TeTOnTWgXDBYAARuZ67DhX10_fpkFKyPBp63OPsvu4OGCZNdiPmwJ-QmsyYPwvL1sHDG7TujAdfBw7lc6anvvYWMVzQOVOvnTA7Dp-DHVb1Kw459v_YzSaSrbWISN2xsqshlSDIQqEuAFZzRIJ6iv5Ph-ZMre0KwkbmhmOkDJ0LZTCfhr5ejJd52jSO6UH8pah2ynWTcLrfg0X"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-h3 text-h3 text-on-surface">Shuttle</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Efficient Transfer</p>
+</div>
+<span class="font-h3 text-h3 font-bold text-on-surface">$25</span>
+</div>
+<div class="flex gap-3 mt-2 text-on-secondary-container">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span><span class="text-[12px]">12</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="text-[12px]">12</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span><span class="text-[12px]">15 min</span></div>
+</div>
 </div>
 </div>
 </section>
 </main>
-<!-- Sticky Footer CTA -->
-<div class="fixed bottom-24 left-0 w-full px-6 z-40">
-<button class="w-full max-w-screen-md mx-auto py-5 rounded-2xl bg-on-surface text-background font-bold text-[12px] uppercase tracking-[0.2em] shadow-lg border border-outline transition-transform active:scale-95">
-            Continue to Experience Selection
-        </button>
+<!-- Bottom Action Button -->
+<div class="fixed bottom-0 w-full bg-surface/90 backdrop-blur-md px-margin-page py-6 pb-safe border-t border-outline-variant z-50">
+<button class="w-full h-14 bg-brand-purple text-white rounded-2xl font-h3 text-h3 font-semibold active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+            Continue to Experiences
+            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
 </div>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 bg-background/95 backdrop-blur-xl border-t border-outline-variant">
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined text-xl" data-icon="explore">explore</span>
-<span class="text-[10px] font-medium mt-1 uppercase tracking-tighter">Explore</span>
-</a>
-<a class="flex flex-col items-center justify-center text-primary" href="#">
-<span class="material-symbols-outlined text-xl" data-icon="schedule" style="font-variation-settings: 'FILL' 1;">schedule</span>
-<span class="text-[10px] font-medium mt-1 uppercase tracking-tighter">Schedule</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined text-xl" data-icon="smart_toy">smart_toy</span>
-<span class="text-[10px] font-medium mt-1 uppercase tracking-tighter">Concierge</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined text-xl" data-icon="person">person</span>
-<span class="text-[10px] font-medium mt-1 uppercase tracking-tighter">Profile</span>
-</a>
-</nav>
 </body></html>
