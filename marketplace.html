@@ -132,31 +132,8 @@
 </div>
 </header>
 <main class="px-container-margin mt-lg space-y-lg max-w-2xl mx-auto">
-<!-- Hero Card -->
-<section class="relative rounded-xl overflow-hidden border border-outline-variant bg-white">
-<div class="h-48 w-full overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A sleek black Tesla Model S parked elegantly in front of a modern, minimalist glass airport terminal at dusk. The warm golden hour light reflects off the car's polished surface, creating a sophisticated and luxurious atmosphere. The composition is clean and centered, emphasizing premium airport transit services with high-end photographic quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkv8gfE96yXFJsbeP16_fc1pxGabZ8YCFPUR0DH1paVrenyLsgzby9dSA_mIe7-JgQbUVCDlWAMlwTQ407xiXcxyqj3Q_N99_FbKw6sZaw8EtjzC2cNHsp7KAq9hMG3BQHLqNzjYsSNqG5Kp_OnWU4T6ZZCNuXsmT_jz4gq98BtK88ycWQwEg_ZqHtcz9uMV4f8heWxGXkjApLboUIoF7riYQMAHIlkKzpEYdQ0MHW8749WCMyOYFb9jVOBLgx8SXS-NivNzWwyiUl"/>
-</div>
-<div class="p-md space-y-base">
-<div class="flex justify-between items-start">
-<div>
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Premium Transport</span>
-<h2 class="font-h1 text-h1 mt-base">Tesla Model S</h2>
-</div>
-<div class="text-right">
-<span class="font-label-sm text-label-sm text-secondary">Departure</span>
-<p class="font-h3 text-h3">8:45 PM</p>
-</div>
-</div>
-<div class="flex items-center gap-xs mt-sm text-emerald-600">
-<span class="material-symbols-outlined text-[18px]" data-icon="timer">timer</span>
-<p class="font-body-md text-body-md font-medium">Safe Time: 4h 15m remaining</p>
-</div>
-<p class="font-body-md text-body-md text-secondary mt-base">Plan your ideal layover experience.</p>
-</div>
-</section>
 <!-- Smart Time Panel -->
-<section class="grid grid-cols-2 md:grid-cols-4 gap-gutter bg-surface-container-low p-md rounded-xl border border-outline-variant">
+<section class="grid grid-cols-3 gap-gutter bg-surface-container-low p-md rounded-xl border border-outline-variant items-center">
 <div class="space-y-base">
 <p class="font-label-sm text-label-sm text-secondary">Total Layover</p>
 <p class="font-h2 text-h2">8h</p>
@@ -165,22 +142,17 @@
 <p class="font-label-sm text-label-sm text-secondary">Buffer</p>
 <p class="font-h2 text-h2">2h</p>
 </div>
-<div class="space-y-base">
-<p class="font-label-sm text-label-sm text-secondary">Travel</p>
-<p class="font-h2 text-h2">45m</p>
-</div>
-<div class="bg-emerald-50 p-sm rounded-lg border border-emerald-100 col-span-2 md:col-span-1">
+<div class="bg-emerald-50 p-sm rounded-lg border border-emerald-100">
 <p class="font-label-sm text-label-sm text-emerald-800">Remaining</p>
-<p class="font-h2 text-h2 text-emerald-700 font-bold">4h 15m</p>
+<p class="font-h2 text-h2 text-emerald-700 font-bold">6h</p>
 </div>
 </section>
 <!-- Category Pills -->
 <section class="flex gap-sm overflow-x-auto no-scrollbar py-base -mx-container-margin px-container-margin">
-<button class="bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap">Hotels</button>
-<button class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low">Restaurants</button>
-<button class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low">Spa</button>
-<button class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low">Gaming</button>
-<button class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low">Entertainment</button>
+<button onclick="window.location.href='hotel.html'" class="bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform duration-150 shadow-sm">Hotels</button>
+<button onclick="window.location.href='restaurant.html'" class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Restaurants</button>
+<button onclick="window.location.href='spa.html'" class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Spa</button>
+<button onclick="window.location.href='entertainment.html'" class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Gaming &amp; Entertainment</button>
 </section>
 <!-- Experience Cards -->
 <section class="space-y-md">
@@ -263,48 +235,8 @@
 </div>
 </div>
 </section>
-<!-- Route Timeline -->
-<section class="py-xl">
-<h4 class="font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-lg">Planned Itinerary</h4>
-<div class="relative flex flex-col gap-xl ml-xs pl-lg border-l-2 border-outline-variant">
-<div class="relative">
-<div class="absolute -left-[33px] top-0 w-4 h-4 rounded-full bg-primary ring-4 ring-surface"></div>
-<p class="font-h3 text-h3">Airport Arrival</p>
-<p class="font-label-sm text-label-sm text-secondary">Gate B12 • 12:45 PM</p>
-</div>
-<div class="relative flex items-center justify-between bg-surface-container-low p-sm rounded-lg border border-outline-variant">
-<div class="flex items-center gap-sm">
-<span class="material-symbols-outlined text-secondary" data-icon="directions_car">directions_car</span>
-<p class="font-body-md text-body-md">15m private transit</p>
-</div>
-<span class="font-label-sm text-label-sm font-medium text-primary">Tesla S-Series</span>
-</div>
-<div class="relative">
-<div class="absolute -left-[33px] top-0 w-4 h-4 rounded-full border-2 border-primary bg-surface ring-4 ring-surface"></div>
-<p class="font-h3 text-h3">The Grand Hyatt</p>
-<p class="font-label-sm text-label-sm text-secondary">Check-in • 1:15 PM</p>
-</div>
-<div class="relative flex items-center justify-between bg-surface-container-low p-sm rounded-lg border border-outline-variant">
-<div class="flex items-center gap-sm">
-<span class="material-symbols-outlined text-secondary" data-icon="directions_car">directions_car</span>
-<p class="font-body-md text-body-md">20m return drive</p>
-</div>
-<span class="font-label-sm text-label-sm font-medium text-primary">Priority Route</span>
-</div>
-<div class="relative">
-<div class="absolute -left-[33px] top-0 w-4 h-4 rounded-full bg-primary ring-4 ring-surface"></div>
-<p class="font-h3 text-h3">Airport Return</p>
-<p class="font-label-sm text-label-sm text-secondary">Security Fast-track • 5:00 PM</p>
-</div>
-</div>
-</section>
+
 </main>
-<!-- Bottom Sticky CTA -->
-<div class="fixed bottom-[64px] left-0 w-full px-container-margin pb-lg pt-base bg-gradient-to-t from-surface via-surface to-transparent z-40">
-<button class="w-full bg-brand-accent text-white py-md rounded-xl font-h3 text-h3 shadow-lg active:scale-[0.98] transition-transform">
-            Continue Planning
-        </button>
-</div>
 <!-- BottomNavBar -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-xs py-sm bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline">
 <button class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary font-semibold hover:text-primary dark:hover:text-inverse-primary transition-colors active:scale-95 transition-transform duration-150">
