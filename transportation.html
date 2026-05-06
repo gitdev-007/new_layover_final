@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER | Transportation Selection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1e2020",
+                        "surface-container-lowest": "#0c0f0e",
+                        "on-surface-variant": "#ccc3d7",
+                        "primary-fixed-dim": "#d3bbff",
+                        "primary-container": "#6d28d9",
+                        "primary": "#d3bbff",
+                        "surface-tint": "#d3bbff",
+                        "on-primary": "#3f008d",
+                        "surface-container-low": "#1a1c1c",
+                        "tertiary-container": "#8f4200",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "tertiary-fixed-dim": "#ffb68b",
+                        "outline": "#4a4455",
+                        "on-secondary-fixed-variant": "#474646",
+                        "tertiary-fixed": "#ffdbc8",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-tertiary": "#522300",
+                        "surface-bright": "#383939",
+                        "on-secondary": "#313030",
+                        "surface-dim": "#121414",
+                        "on-primary-fixed-variant": "#5b00c5",
+                        "on-tertiary-fixed-variant": "#743400",
+                        "primary-fixed": "#ebddff",
+                        "outline-variant": "#333535",
+                        "surface-container-highest": "#333535",
+                        "background": "#121414",
+                        "surface-container-high": "#282a2a",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#7331df",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary": "#c8c6c5",
+                        "tertiary": "#ffb68b",
+                        "surface-variant": "#333535",
+                        "on-primary-fixed": "#250059",
+                        "on-tertiary-fixed": "#321300",
+                        "inverse-on-surface": "#2f3130",
+                        "on-secondary-container": "#bab8b7",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-background": "#e2e2e2",
+                        "on-tertiary-container": "#ffc19e",
+                        "on-surface": "#e2e2e2",
+                        "surface": "#121414",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#dac5ff",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "secondary-container": "#4a4949"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "container-margin": "32px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .matte-card {
+            background: #1a1c1c;
+            border: 1px solid #333535;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-40">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-background/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="flight_takeoff">flight_takeoff</span>
+<h1 class="font-semibold text-lg tracking-[0.15em] text-on-surface uppercase">AETHER</h1>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABUrWwb1NrhIW0rZD7zwFqjcZIMrYx8D9wXWMQDSxcCa774JZEqKB7IEftSIwFCWG1hdUg1CdMuHFSEvbTFkkRO7YZfRSq3s-5zv6Vd2osm40YFZfxZAReVkZluif9jVOzLvhVu10LgHXXVEF_Jul0on-ZMiYwfwZuByTFUx_kb7v7bLWUK1T4PYBOSkurwmTbPdM-X1GTOe5CiQQ9uGTGoc9t4LSN1mkN3quNNq0AT8Ya0isgqjie1tEUNQBLxSoG729kvL41uw"/>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-screen-md mx-auto space-y-10">
+<!-- Hero: Layover Verification -->
+<section class="matte-card rounded-2xl p-6">
+<div class="space-y-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-[11px] font-medium uppercase tracking-widest text-on-surface-variant">Intelligence Confirmed</span>
+</div>
+<h2 class="text-2xl font-semibold leading-tight">Your layover has been verified</h2>
+<div class="grid grid-cols-3 gap-4 border-t border-outline-variant pt-6">
+<div class="space-y-1">
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">Layover</p>
+<p class="text-base font-medium">6h 30m</p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">Departure</p>
+<p class="text-base font-medium">19:45</p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] uppercase tracking-wider text-primary">Window</p>
+<p class="text-base font-medium text-primary">4h 15m</p>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Recommendation -->
+<section class="space-y-4">
+<div class="flex justify-between items-baseline">
+<h3 class="text-sm font-semibold uppercase tracking-wider">AI Selection</h3>
+<span class="text-[11px] text-on-surface-variant">Recommended for you</span>
+</div>
+<div class="matte-card rounded-2xl overflow-hidden">
+<div class="aspect-[16/9] w-full bg-surface-container overflow-hidden">
+<img alt="Tesla Model S Plaid" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArv8rg0otqO5ZTHUaivoIabI8ysb_VhH5sQAkdg0TdbnDLNd8YfvQ_XH-MjIx190aCGSvXKkHexdOby9NiutZVmTNr0mR4UItC84gfnHLhaieuDQ7Ix6c1-JveNondQIq2NHfInkAJ_4I1_niHJDuuWyOkG3NCz6h7d8oM6I-253fKfh4kovdE47GY5YGCKYR1BZ7ktwgWdgvIkohP-O7sHV3Cf1z7DwT-W1dmAVR4-3sG-9T2fnrbVs64sLvAinB9nLbA8h0BPg"/>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-lg font-semibold">Tesla Model S Plaid</h4>
+<div class="flex gap-4 mt-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-[14px]" data-icon="chair">chair</span>
+<span>Ultra Comfort</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+<span>8 min ETA</span>
+</div>
+</div>
+</div>
+<span class="text-lg font-medium">$85.00</span>
+</div>
+<button class="w-full py-4 rounded-xl bg-primary text-on-primary text-[12px] font-bold uppercase tracking-widest hover:opacity-90 transition-opacity">
+                        Select Premium
+                    </button>
+</div>
+</div>
+</section>
+<!-- Vehicle Categories -->
+<section class="space-y-4">
+<h3 class="text-sm font-semibold uppercase tracking-wider">Explore Fleet</h3>
+<div class="flex overflow-x-auto gap-4 pb-4 hide-scrollbar snap-x -mx-6 px-6">
+<!-- Category Card: SUV -->
+<div class="flex-none w-56 snap-start matte-card rounded-2xl overflow-hidden flex flex-col">
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img alt="Grand SUV" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQJZXm2djf51P0rWkMVxolVA2GVksaQssW5lB-5KqjAFbXWcjbDlirLDtN7426TTTTqt34xo6SZ-kEEOF1OacIMybJ8yOvJ3SQW_dwthhAwLGw1xOumJK6ZiTLRrPNmvXjmPAje1NWodP_67aQXyTCM_qz8uaqV_ZYLVuBaU7EsEHwIKGpOuxioZ35sgAcpK9v56D-4LAtABEvFA4pcYwae3QOT5EJTRBzL0EIXaRtmb6Om1Xs8E8maRBEynUCM28V0PXyQSae2Q"/>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<h5 class="text-sm font-semibold">Grand SUV</h5>
+<span class="text-[10px] text-on-surface-variant">6 Seats</span>
+</div>
+<p class="text-[11px] text-on-surface-variant">Luxury for groups</p>
+</div>
+<button class="w-full py-2 bg-surface-container-highest border border-outline-variant rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-surface-bright transition-colors">Select</button>
+</div>
+</div>
+<!-- Category Card: Executive -->
+<div class="flex-none w-56 snap-start matte-card rounded-2xl overflow-hidden flex flex-col">
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img alt="Executive" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNnLddf_K-t-9we5TcTSKN7m13ze3nWCDvJZyPvBrE-3DJCC3MFu1PBnUKOI_wPUD0gYZknel2sO1kWKXGGBnpgFxl_K8PZDaiW2bo8K7-FptGKeN0K2SAJx1jgItBzYai1h3NZMJMNC9c_1YwTcqohYqP3YD97TBB42pG6Gza6OtDCOTK0NWyhI_IVCzXtDzoWfYQkeSxney6XA53pOSGlv6pA121rj3zgEkbA9d_809a8HJTa7IkJbytisrhmN71T0XghxXIPg"/>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<h5 class="text-sm font-semibold">Executive</h5>
+<span class="text-[10px] text-on-surface-variant">3 Seats</span>
+</div>
+<p class="text-[11px] text-on-surface-variant">Business class travel</p>
+</div>
+<button class="w-full py-2 bg-surface-container-highest border border-outline-variant rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-surface-bright transition-colors">Select</button>
+</div>
+</div>
+<!-- Category Card: Chauffeur -->
+<div class="flex-none w-56 snap-start matte-card rounded-2xl overflow-hidden flex flex-col">
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img alt="Chauffeur" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0ibgNcYoodor-ZHHBya1kBAPmecetacxYfMy5rzNxSYfaDDY_rQjbKvk3CzoTKZaKABiK1VAaUiGLQvZUJWkhrytu1pfWB0vpdHpUBOo_YG4qICtEWtPmJTvfc-3xdcEkVHaO0JIssIE5cccKTQRm4vwCc4ksHary2a9MWTXzcz_Fm9Nx_6y78CsNK3_zppwNmtw1SKENUmybQac2XUBOdr1-PhGqVlUZWL3diS-SNnhlw6Q4olfJO-G9CmH14ZDMQ6zKqmqu6A"/>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<h5 class="text-sm font-semibold">Chauffeur</h5>
+<span class="text-[10px] text-on-surface-variant">4 Seats</span>
+</div>
+<p class="text-[11px] text-on-surface-variant">Unrivaled luxury</p>
+</div>
+<button class="w-full py-2 bg-surface-container-highest border border-outline-variant rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-surface-bright transition-colors">Select</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Intelligence Widget -->
+<section class="matte-card rounded-2xl p-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">Traffic Efficiency</p>
+<p class="text-sm font-medium">82% (Light Conditions)</p>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] uppercase tracking-wider text-on-surface-variant">
+<span>AI Route Optimization</span>
+<span class="text-primary">94%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[94%]"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Footer CTA -->
+<div class="fixed bottom-24 left-0 w-full px-6 z-40">
+<button class="w-full max-w-screen-md mx-auto py-5 rounded-2xl bg-on-surface text-background font-bold text-[12px] uppercase tracking-[0.2em] shadow-lg border border-outline transition-transform active:scale-95">
+            Continue to Experience Selection
+        </button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 bg-background/95 backdrop-blur-xl border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="explore">explore</span>
+<span class="text-[10px] font-medium mt-1 uppercase tracking-tighter">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="schedule" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<span class="text-[10px] font-medium mt-1 uppercase tracking-tighter">Schedule</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="smart_toy">smart_toy</span>
+<span class="text-[10px] font-medium mt-1 uppercase tracking-tighter">Concierge</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="person">person</span>
+<span class="text-[10px] font-medium mt-1 uppercase tracking-tighter">Profile</span>
+</a>
+</nav>
+</body></html>

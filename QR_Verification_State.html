@@ -201,9 +201,17 @@
             const refIdEl = document.getElementById('refId');
             if (refIdEl) refIdEl.textContent = qrId ? 'QR-' + qrId.substring(0, 8).toUpperCase() : 'Not found';
 
-            document.getElementById("btnYes")?.addEventListener("click", () => {
+            document.getElementById("btnYes")?.addEventListener("click", (e) => {
+                const btn = e.currentTarget;
+                btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> REDIRECTING...';
+                btn.disabled = true;
+                btn.classList.add('opacity-80', 'cursor-not-allowed');
+
                 localStorage.setItem("qr_verified", "true");
-                window.location.href = "/transport-selection.html";
+                
+                setTimeout(() => {
+                    window.location.href = "/transportation.html";
+                }, 400);
             });
 
             document.getElementById("btnNo")?.addEventListener("click", () => {

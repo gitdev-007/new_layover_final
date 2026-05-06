@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1e2020",
+                        "surface-container-lowest": "#0c0f0e",
+                        "on-surface-variant": "#ccc3d7",
+                        "primary-fixed-dim": "#d3bbff",
+                        "primary-container": "#6d28d9",
+                        "primary": "#d3bbff",
+                        "surface-tint": "#d3bbff",
+                        "on-primary": "#3f008d",
+                        "surface-container-low": "#1a1c1c",
+                        "tertiary-container": "#8f4200",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "tertiary-fixed-dim": "#ffb68b",
+                        "outline": "#958da1",
+                        "on-secondary-fixed-variant": "#474646",
+                        "tertiary-fixed": "#ffdbc8",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-tertiary": "#522300",
+                        "surface-bright": "#383939",
+                        "on-secondary": "#313030",
+                        "surface-dim": "#121414",
+                        "on-primary-fixed-variant": "#5b00c5",
+                        "on-tertiary-fixed-variant": "#743400",
+                        "primary-fixed": "#ebddff",
+                        "outline-variant": "#4a4455",
+                        "surface-container-highest": "#333535",
+                        "background": "#121414",
+                        "surface-container-high": "#282a2a",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#7331df",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary": "#c8c6c5",
+                        "tertiary": "#ffb68b",
+                        "surface-variant": "#333535",
+                        "on-primary-fixed": "#250059",
+                        "on-tertiary-fixed": "#321300",
+                        "inverse-on-surface": "#2f3130",
+                        "on-secondary-container": "#bab8b7",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-background": "#e2e2e2",
+                        "on-tertiary-container": "#ffc19e",
+                        "on-surface": "#e2e2e2",
+                        "surface": "#121414",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#dac5ff",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "secondary-container": "#4a4949"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "container-margin": "32px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h1": ["24px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "1", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "h3": ["16px", {"lineHeight": "1.2", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "h2": ["20px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            min-height: 100dvh;
+            background-color: #121414;
+        }
+        .luxury-card {
+            background: #1a1c1c;
+            border: 1px solid #333535;
+            transition: all 0.3s ease;
+        }
+        .luxury-card:hover {
+            border-color: #4a4455;
+            background: #1e2020;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Navigation -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface-dim/80 backdrop-blur-xl border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="flight_takeoff">flight_takeoff</span>
+<span class="font-h2 text-h2 tracking-widest uppercase">AETHER</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-primary font-label-md text-label-md" href="#">Explore</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface" href="#">Schedule</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface" href="#">Concierge</a>
+</div>
+<div class="w-8 h-8 rounded-full border border-outline-variant overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJR5-8EKET06Up9t0h55qkwewf2GsbiAZqNObn0aGIq8RkcNtldGheH8jp_rm5R1GqRtOxv400NvFMyT-h-4hg2vWda1NAwTOVNh7XikpXX5BkwYwgzKVV_1B9xEtinQldH7FlRag1Mz269XthoaZChMslCAeavAFnUiIfkoqRcWcH5P-Fb-2tYlQGZxcLWLMqtkoh4F7YD9ivLTiGLC4_8HoPtKwWC2tc8JT7Sg4HP7BKd8dHOLaUB2SFnrqdDNQfLZaXBD6IEg"/>
+</div>
+</header>
+<main class="pt-24 pb-32 px-md max-w-5xl mx-auto space-y-xl">
+<!-- Hero Section -->
+<section class="space-y-lg">
+<div class="space-y-sm">
+<h1 class="font-h1 text-h1">Personalize your layover</h1>
+<p class="text-on-surface-variant text-body-lg max-w-xl">Curating your transition between flights. A chauffeured Tesla is ready for your 4h 12m window.</p>
+</div>
+<div class="flex flex-wrap gap-md">
+<div class="luxury-card flex-1 min-w-[200px] p-md rounded-xl flex items-center gap-md">
+<div class="p-sm bg-surface-container-high rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="electric_car">electric_car</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase mb-1">Selected Vehicle</p>
+<p class="font-h3 text-h3">Tesla Model S</p>
+</div>
+</div>
+<div class="luxury-card flex-1 min-w-[200px] p-md rounded-xl flex items-center gap-md">
+<div class="p-sm bg-surface-container-high rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="timer">timer</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase mb-1">Time Window</p>
+<p class="font-h3 text-h3">4h 12m</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Time Intelligence -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<div class="lg:col-span-2 luxury-card p-lg rounded-xl">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Layover Analysis</h3>
+<div class="flex items-center gap-2 px-2 py-1 bg-surface-container-high rounded-full">
+<span class="w-2 h-2 rounded-full bg-green-400"></span>
+<span class="text-[10px] font-bold text-on-surface uppercase">Reliable Route</span>
+</div>
+</div>
+<div class="flex items-center justify-between relative px-xs">
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-outline-variant -translate-y-1/2"></div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-surface-container p-1 rounded-full">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-sm" data-icon="flight_takeoff">flight_takeoff</span>
+</div>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-surface-container p-1 rounded-full">
+<div class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center bg-surface-container-low">
+<span class="material-symbols-outlined text-on-surface text-sm" data-icon="spa">spa</span>
+</div>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-surface-container p-1 rounded-full">
+<div class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center bg-surface-container-low">
+<span class="material-symbols-outlined text-on-surface text-sm" data-icon="restaurant">restaurant</span>
+</div>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-surface-container p-1 rounded-full">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface text-sm" data-icon="flight_land">flight_land</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between mt-sm px-xs">
+<span class="text-[10px] font-medium text-on-surface-variant">AIRPORT</span>
+<span class="text-[10px] font-medium text-on-surface-variant">SPA</span>
+<span class="text-[10px] font-medium text-on-surface-variant">DINING</span>
+<span class="text-[10px] font-medium text-on-surface-variant">RETURN</span>
+</div>
+</div>
+<div class="luxury-card p-lg rounded-xl space-y-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Time Deduction</h3>
+<div class="space-y-sm">
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Mandatory Buffer</span>
+<span class="font-medium text-error">-2h 00m</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Est. Transit</span>
+<span class="font-medium text-on-surface">-45m</span>
+</div>
+<div class="pt-sm border-t border-outline-variant flex justify-between items-baseline">
+<span class="text-label-md text-on-surface-variant">SAFE WINDOW</span>
+<span class="text-h2 font-h2 text-primary">2h 12m</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Categories -->
+<section class="space-y-md">
+<div class="flex justify-between items-end">
+<h2 class="font-h2 text-h2">Explore Categories</h2>
+<a class="text-primary text-label-md font-label-md flex items-center gap-1" href="#">VIEW ALL <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<div class="group relative h-48 rounded-2xl overflow-hidden cursor-pointer">
+<img alt="Hotels" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJP86JO7W8y3oPW7adgHzzX804ydq9jdZYIfKRiD76PiTK-E5tTs86OZZGG15ZM9q-ZHMWM-lwRYw6YOpuSTiJmXH6F6E70FKUVov-LdnL_B9OQJsgzQ8yzTVocwQMxPB6SzL-5hcSdxlhThECbgx0vePWuFAiKBLwDA08QvBujCw0ZCt7io9aV_C6ZPx3bZ6-FixkXrYdNcwRLJZvOSw8xSR5ie9mwzEh2V6107vzsTo8trTUchOU3M8ofzHt9vk0rxk9-aHMuQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="font-h3 text-h3 text-white">Hotels</span>
+</div>
+</div>
+<div class="group relative h-48 rounded-2xl overflow-hidden cursor-pointer">
+<img alt="Dining" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAsK8ZebGEeHjsamFBxk_HfwrYWGxNlzriAfop0g4wUzsRjzaMbJKspBR0M6Dx8G_fkrqzU-Hy58c9MAeHPkhvQmvC5ItYMhpmYg79FqN7OLDDZQ5sZK5wrqR4cXtPPPr6frE2yxnrNwK86cIyKOAJPyMZXZzUl9O065QPQqyy3bCmP9De0L7Anh8J5MXyScXU0bU1odtRe7FsDikeuDnm3uwYhRgt2qVkX662Yd3jr8dI1vn9iQ3Ist-zP22k4o0C-wHwmeuHSg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="font-h3 text-h3 text-white">Dining</span>
+</div>
+</div>
+<div class="group relative h-48 rounded-2xl overflow-hidden cursor-pointer">
+<img alt="Spa" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW4JsxQ5qEY3oBfT5nz2k663fh2I51orzK5tck_85j0WLpKgvVVsjrVNQ9pgCClTMPZTLAmGLF1Tb3d9h_WhKHRxEPpLBLtA9u9SjZb6tnwfNikjQlIitt4SdkP2OHLFuZO4G3vhQN2FJ6X6SgRUfhzXjPLBmU7rnMeqBkLstBmwVFjh02i1aRJG6H1WOttdt_QYOdXG5hNLYLTBgD2y_HDu4RRehP0qDdrk_gClPgKQth8aXOBaS9nlUAF8i3IX9WfuD-OkCf3Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="font-h3 text-h3 text-white">Spa</span>
+</div>
+</div>
+<div class="group relative h-48 rounded-2xl overflow-hidden cursor-pointer">
+<img alt="Entertainment" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCl7tmtZ57Yw6IeeVwC_CGiH8anEGVXPKFQyhZOHTArzGsVsbvT9uLuN6HVYynYJolUWYPjnAMXFUyWj4LSQx7hc9-bJ-n232wgUYqRoJanHdwOmytoS_UHITfuxZdCpaLu0mzy0Ce37VEov39B5hMd0eAu732CwK5-Afns2ujS8_1NXkR0CUX8PjkUOcgI2QGs46SIRkR5u5MZppxxhCg7nUMfyQJWyTeYZOrCbUJTPCmVMThYYqF80YcpvekKALldOiM9mva_rw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="font-h3 text-h3 text-white">Lounge</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Experiences -->
+<section class="space-y-md">
+<h2 class="font-h2 text-h2">Curated for Your Window</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Card 1 -->
+<div class="luxury-card rounded-2xl overflow-hidden group">
+<div class="h-44 overflow-hidden relative">
+<img alt="Zen Garden Spa" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmGq7DfgMSzE-FhvTEM0_V3n3kHf5TavQpvPq5qUXuYA8qsEUgM76F6xblEFtW0UR3stEqnbDiHIrWhCnxNqXt5HD6TtT7Ay7J9BWfy08NuBDfQ-bxn_1LH8MpLMGat_6g-lJU6IE-SWhGc8BOhxMILSSYFq3J40Cu_xQfFEMSmCxFkiBu_hUj4sMYGrqInDMMytWF31fzZMR7I9F2vrKHeM4T-KLS1JPtnEhMIiXWxKxlEKg2kMkKRYXjJ8sBb0lWBRC_e3zZ8A"/>
+<div class="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10">
+<span class="text-[10px] font-bold text-primary uppercase">90% Match</span>
+</div>
+</div>
+<div class="p-lg space-y-md">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-h3 text-h3 mb-1">The Zen Garden Spa</h3>
+<p class="text-body-md text-on-surface-variant line-clamp-1">Hyperbaric rejuvenation and deep tissue therapy.</p>
+</div>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:border-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+</button>
+</div>
+<div class="flex items-center gap-lg border-t border-outline-variant pt-md">
+<div class="flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase">Time Impact</span>
+<span class="text-body-md font-medium">90m stay</span>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase">Est. Cost</span>
+<span class="text-body-md font-medium text-primary">$340</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="luxury-card rounded-2xl overflow-hidden group">
+<div class="h-44 overflow-hidden relative">
+<img alt="Skyline Lounge" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoHR9d0IlwRfYfihdKIGGov6pD6kTYGn56xALAMb9cumN-9cKbnOwq--9-CbxDXROsdBH_FwEl_a_DLYXxSdCJ1gIohYHfX5eJiXhHi6cDWl3wnpuTT1YN2ETdtzcEVN8R8hH4vYgJiz7mQZZOZ4HV2d78Bf-mPlEWPGV-dj5UfQJ7BHfwmmDlq2WRU39Y9SBdN8GRn4YjHMpQZCIPPu8Mgytg_zuL7dsrf0rbdJR06iCdPxL2DqJi_BcN8z0kGxLLZL-Vv2XJ9Q"/>
+<div class="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10">
+<span class="text-[10px] font-bold text-primary uppercase">84% Match</span>
+</div>
+</div>
+<div class="p-lg space-y-md">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-h3 text-h3 mb-1">Skyline Lounge</h3>
+<p class="text-body-md text-on-surface-variant line-clamp-1">Exclusive rooftop dining with metropolitan views.</p>
+</div>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:border-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+</button>
+</div>
+<div class="flex items-center gap-lg border-t border-outline-variant pt-md">
+<div class="flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase">Time Impact</span>
+<span class="text-body-md font-medium">60m stay</span>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase">Est. Cost</span>
+<span class="text-body-md font-medium text-primary">$180</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Action -->
+<footer class="fixed bottom-0 left-0 w-full z-50 px-lg py-4 bg-surface-container-lowest/90 backdrop-blur-xl border-t border-outline-variant/30 flex justify-between items-center">
+<div class="hidden md:flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Total Duration</span>
+<span class="text-h3 font-h3">3h 22m <span class="text-body-md text-on-surface-variant font-normal">est.</span></span>
+</div>
+<button class="bg-primary text-on-primary px-10 h-12 rounded-full font-h3 text-body-lg hover:brightness-110 active:scale-95 transition-all flex items-center gap-3">
+            Confirm Itinerary
+            <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</footer>
+<!-- Mobile Navigation -->
+<nav class="md:hidden fixed bottom-16 left-0 w-full z-40 px-4 py-2 bg-surface-container-low/80 backdrop-blur-lg border-t border-outline-variant/30 flex justify-around items-center">
+<div class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="text-[10px] font-medium mt-0.5">Explore</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="text-[10px] font-medium mt-0.5">Schedule</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span class="text-[10px] font-medium mt-0.5">Concierge</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-medium mt-0.5">Profile</span>
+</div>
+</nav>
+</body></html>
