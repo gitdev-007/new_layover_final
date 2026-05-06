@@ -296,10 +296,86 @@
 </section>
 </main>
 <!-- Bottom Action Button -->
-<div class="fixed bottom-0 w-full bg-surface/90 backdrop-blur-md px-margin-page py-6 pb-safe border-t border-outline-variant z-50">
-<button class="w-full h-14 bg-brand-purple text-white rounded-2xl font-h3 text-h3 font-semibold active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+<div class="fixed bottom-0 w-full bg-surface/90 backdrop-blur-md px-margin-page py-6 pb-safe border-t border-outline-variant z-50 flex flex-col gap-2">
+<div id="validationMsg" class="hidden text-center text-error font-label-caps text-label-caps tracking-wide transition-opacity">
+    Please select a transportation option to continue.
+</div>
+<button id="continueBtn" class="w-full h-14 bg-brand-purple text-white rounded-2xl font-h3 text-h3 font-semibold active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
             Continue to Experiences
             <span class="material-symbols-outlined">arrow_forward</span>
 </button>
 </div>
+
+<style>
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const transportCards = document.querySelectorAll('main section.space-y-stack-md > div');
+    const continueBtn = document.getElementById('continueBtn');
+    const validationMsg = document.getElementById('validationMsg');
+    
+    // Determine initial selection based on DOM state
+    let selectedTransport = null;
+    transportCards.forEach(card => {
+        if (card.classList.contains('border-brand-purple')) {
+            const titleEl = card.querySelector('h3');
+            if (titleEl) selectedTransport = titleEl.textContent.trim();
+        }
+        
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+            // Deselect all
+            transportCards.forEach(c => {
+                c.classList.remove('border-2', 'border-brand-purple');
+                c.classList.add('border', 'border-outline-variant');
+                const badge = c.querySelector('.selected-badge');
+                if (badge) badge.remove();
+            });
+            
+            // Select current
+            card.classList.remove('border', 'border-outline-variant');
+            card.classList.add('border-2', 'border-brand-purple', 'relative');
+            
+            const badgeHtml = '<div class="absolute top-2 right-2 bg-brand-purple text-white px-2 py-0.5 rounded-full font-label-caps text-[9px] selected-badge z-10">SELECTED</div>';
+            card.insertAdjacentHTML('afterbegin', badgeHtml);
+            
+            const titleEl = card.querySelector('h3');
+            if (titleEl) selectedTransport = titleEl.textContent.trim();
+            
+            // Hide validation warning if shown
+            validationMsg.classList.add('hidden');
+        });
+    });
+
+    continueBtn.addEventListener('click', (e) => {
+        if (!selectedTransport) {
+            validationMsg.classList.remove('hidden');
+            validationMsg.style.opacity = '0.5';
+            setTimeout(() => validationMsg.style.opacity = '1', 100);
+            return;
+        }
+
+        const btn = e.currentTarget;
+        btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Routing...';
+        btn.disabled = true;
+        btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+        // Save selection to localStorage
+        localStorage.setItem("transportType", selectedTransport);
+
+        // Smooth transition redirect
+        setTimeout(() => {
+            window.location.href = "marketplace.html";
+        }, 400);
+    });
+});
+</script>
 </body></html>
