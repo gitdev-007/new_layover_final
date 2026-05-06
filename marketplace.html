@@ -273,13 +273,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.layoverList = [];
 
-window.addToList = function(btn, itemName) {
-    if (!window.layoverList.includes(itemName)) {
-        window.layoverList.push(itemName);
+window.addToList = function(btn, itemName, category, duration, image) {
+    const existing = window.layoverList.find(i => i.name === itemName);
+    if (!existing) {
+        window.layoverList.push({
+            name: itemName,
+            category: category || 'Experience',
+            duration: duration || '',
+            image: image || ''
+        });
     }
 
     // Subtle visual feedback
-    const originalHTML = btn.innerHTML;
     btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Added';
     // Remove background colors and add subtle green
     btn.classList.remove('bg-primary', 'bg-secondary', 'text-white', 'hover:bg-indigo-700', 'bg-slate-900');
@@ -289,44 +294,107 @@ window.addToList = function(btn, itemName) {
     updateListIndicator();
 };
 
-function updateListIndicator() {
+window.removeFromList = function(itemName) {
+    window.layoverList = window.layoverList.filter(i => i.name !== itemName);
+    renderListDrawer();
+    updateListIndicator();
+};
+
+window.toggleListDrawer = function() {
+    let drawer = document.getElementById('list-drawer');
+    if (!drawer) {
+        drawer = document.createElement('div');
+        drawer.id = 'list-drawer';
+        drawer.className = 'fixed bottom-[140px] left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] bg-white rounded-xl shadow-2xl border border-outline-variant z-[100] transition-all duration-300 transform scale-95 opacity-0 pointer-events-none flex flex-col max-h-[300px]';
+        document.body.appendChild(drawer);
+    }
+    
+    if (drawer.classList.contains('opacity-0')) {
+        renderListDrawer();
+        drawer.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+        drawer.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+    } else {
+        drawer.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+        drawer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+    }
+};
+
+window.renderListDrawer = function() {
+    let drawer = document.getElementById('list-drawer');
+    if (!drawer) return;
+    
+    let html = `
+        <div class="px-4 py-3 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest rounded-t-xl">
+            <h4 class="font-bold text-sm text-primary flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">list_alt</span> Selected Experiences</h4>
+            <button onclick="window.toggleListDrawer()" class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">close</span></button>
+        </div>
+        <div class="p-4 overflow-y-auto flex-1 space-y-3">
+    `;
+    
+    if (window.layoverList.length === 0) {
+        html += `<p class="text-xs text-secondary text-center py-4">No items added yet.</p>`;
+    } else {
+        window.layoverList.forEach(item => {
+            html += `
+                <div class="flex gap-3 items-center bg-surface p-2 rounded-lg border border-outline-variant">
+                    ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded object-cover">` : `<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-[16px]">image</span></div>`}
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-[11px] text-primary truncate">${item.name}</p>
+                        <p class="text-[9px] text-secondary flex gap-1 items-center mt-0.5"><span>${item.category}</span> ${item.duration ? `&bull; <span>${item.duration}</span>` : ''}</p>
+                    </div>
+                    <button onclick="window.removeFromList('${item.name}')" class="p-1.5 text-secondary hover:text-error transition-colors rounded-md hover:bg-error-container">
+                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                    </button>
+                </div>
+            `;
+        });
+    }
+    
+    html += `</div>`;
+    drawer.innerHTML = html;
+};
+
+window.updateListIndicator = function() {
     let indicator = document.getElementById('global-list-indicator');
     if (!indicator) {
         indicator = document.createElement('div');
         indicator.id = 'global-list-indicator';
-        indicator.className = 'fixed bottom-[80px] left-1/2 -translate-x-1/2 bg-primary text-on-primary px-5 py-3 rounded-full font-label-sm shadow-xl z-[100] flex items-center gap-3 cursor-pointer hover:scale-105 transition-all duration-300';
-
-        indicator.onclick = (e) => {
-            if (window.layoverList.length === 0) {
-                const originalHtml = indicator.innerHTML;
-                indicator.innerHTML = '<span class="font-bold tracking-wide px-2 whitespace-nowrap">Add at least one experience to continue.</span>';
-                setTimeout(() => { indicator.innerHTML = originalHtml; }, 2000);
-                return;
-            }
-
-            const btn = e.currentTarget;
-            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px]">refresh</span> <span class="font-bold tracking-wide whitespace-nowrap">Preparing Plan...</span>';
-            btn.style.pointerEvents = 'none';
-            btn.classList.add('opacity-90');
-
-            setTimeout(() => {
-                window.location.href = 'yourplan.html';
-            }, 400);
-        };
-
+        indicator.className = 'fixed bottom-[75px] left-1/2 -translate-x-1/2 bg-white border border-outline-variant p-1.5 rounded-full shadow-lg z-[90] flex items-center gap-2 transition-all duration-300';
         document.body.appendChild(indicator);
     }
 
     if (window.layoverList.length > 0) {
         indicator.innerHTML = `
-            <span class="bg-white text-primary w-5 h-5 flex items-center justify-center rounded-full font-bold text-[11px]">${window.layoverList.length}</span>
-            <span class="font-bold tracking-wide">Selected</span>
-            <span class="border-l border-white/30 pl-3 ml-1 font-bold flex items-center gap-1">Plan My List <span class="material-symbols-outlined text-[16px]">arrow_forward</span></span>
+            <button onclick="window.toggleListDrawer()" class="flex items-center gap-2 bg-surface-container-low hover:bg-surface-container-highest text-primary px-4 py-2 rounded-full font-label-sm transition-colors border border-outline-variant/50">
+                <span class="bg-primary text-white w-4 h-4 flex items-center justify-center rounded-full font-bold text-[9px]">${window.layoverList.length}</span>
+                <span class="font-semibold tracking-wide text-xs">View List</span>
+            </button>
+            <button onclick="window.proceedToPlan(this)" class="flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-full font-label-sm transition-colors shadow-sm">
+                <span class="font-semibold tracking-wide text-xs">Plan My List</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </button>
         `;
         indicator.style.display = 'flex';
     } else {
         indicator.style.display = 'none';
+        let drawer = document.getElementById('list-drawer');
+        if (drawer) {
+            drawer.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+            drawer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+        }
     }
-}
+};
+
+window.proceedToPlan = function(btn) {
+    if (window.layoverList.length === 0) return;
+    
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[14px]">refresh</span> <span class="font-semibold tracking-wide text-xs">Routing...</span>';
+    btn.classList.add('opacity-90', 'cursor-wait');
+    
+    setTimeout(() => {
+        window.location.href = 'yourplan.html';
+    }, 400);
+};
 </script>
 </body></html>

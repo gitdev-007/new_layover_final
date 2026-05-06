@@ -2,7 +2,7 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>StayMarket | Discovery Hub</title>
+<title>StayMarket | Hotels</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -25,60 +25,25 @@
 <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; font-size: 1.25rem; }
         .main-layout { display: flex; justify-content: center; align-items: flex-start; gap: 20px; }
-        .main-layout.side-by-side { justify-content: flex-start; }
+        .main-layout.active { justify-content: flex-start; }
         .main-layout, .main-layout * { transition: none !important; transform: none !important; animation: none !important; }
         .level1 { width: 600px; transition: none; }
         .level2 { width: 600px; display: none; }
-        .item-card { cursor: pointer; }
-        .item-card:hover { background-color: rgba(70, 72, 212, 0.1); }
-        .nav-link { cursor: pointer; }
-        .category-tab { cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; padding-bottom: 4px; }
+        .hotel-item { cursor: pointer; }
         .filter-field { cursor: pointer; min-height: 32px; width: 100%; outline: none; }
         .filter-field:focus { box-shadow: 0 0 0 2px rgba(74, 68, 255, 0.18); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        /* Modal */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-        }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { background: white; padding: 12px; border-radius: 8px; max-width: 90%; position: relative; }
 </style>
 </head>
 <body class="bg-white text-on-background font-node-description antialiased p-8">
-
-<!-- REUSABLE MEDIA MODAL -->
-<div id="media-modal" class="modal-overlay" onclick="closeMediaModal(event)">
-    <div class="modal-content text-center shadow-2xl" onclick="event.stopPropagation()">
-        <button class="absolute -top-12 right-0 text-white flex items-center gap-2 font-bold tracking-widest hover:text-indigo-400 transition-colors" onclick="closeMediaModal()">
-            <span class="material-symbols-outlined">close</span> CLOSE
-        </button>
-        <div class="relative w-[700px] h-[450px] bg-slate-900 rounded flex items-center justify-center overflow-hidden">
-            <button class="absolute left-4 bg-white/10 hover:bg-white/25 text-white p-4 rounded-full transition-all" onclick="changeImage(-1)">
-                <span class="material-symbols-outlined">arrow_back_ios</span>
-            </button>
-            <div id="modal-image-container" class="w-full h-full flex flex-col items-center justify-center p-12">
-                <span class="material-symbols-outlined text-slate-800 text-[120px]">photo_camera</span>
-                <p id="modal-caption" class="mt-6 text-slate-500 text-xs font-bold uppercase tracking-widest">Cinematic Preview 1.0X</p>
-            </div>
-            <button class="absolute right-4 bg-white/10 hover:bg-white/25 text-white p-4 rounded-full transition-all" onclick="changeImage(1)">
-                <span class="material-symbols-outlined">arrow_forward_ios</span>
-            </button>
-        </div>
-    </div>
-</div>
-
 <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center w-full px-8 py-3 max-w-full mx-auto mb-12">
 <div class="flex items-center gap-4">
 <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">StayMarket</h1>
 <span class="text-xs bg-primary-container text-on-primary-container px-2 py-0.5 font-bold">LAYOVERX SYSTEM</span>
 </div>
 <nav class="hidden md:flex gap-6 items-center">
-<a id="nav-browse" class="text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 pb-1 font-semibold font-manrope text-sm nav-link active" onclick="setUIState('browse')">Browse</a>
-<a id="nav-deals" class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium nav-link" onclick="setUIState('deals')">Deals</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Reservations</a>
+<a class="text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 pb-1 font-semibold font-manrope text-sm" href="#">Browse</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Deals</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">My Bookings</a>
 <a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Support</a>
 </nav>
 <div class="flex gap-4 items-center">
@@ -86,259 +51,336 @@
 <span class="material-symbols-outlined text-slate-500">account_circle</span>
 </div>
 </header>
-
 <main class="max-w-7xl mx-auto space-y-12">
-<div id="main-layout" class="main-layout">
-    <!-- LEVEL 1: DISCOVERY -->
-    <div id="level1" class="level1 space-y-6 relative z-10">
-        <div class="flex items-center justify-between mb-4">
-            <span class="bg-primary text-white text-meta-label px-3 py-1 font-bold">LEVEL 1: LISTING</span>
-        </div>
-        <div class="bg-white border-2 border-primary-container p-node-padding rounded shadow-sm">
-            <div class="flex justify-between items-start mb-6">
-                <h3 id="category-title" class="text-node-title-md font-node-title-md text-primary">All Experiences</h3>
-                <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Terminal Hub</span>
-            </div>
-
-            <!-- Category Bar -->
-            <div class="flex gap-6 border-b border-outline-variant mb-6 overflow-x-auto text-meta-label no-scrollbar">
-                <span class="category-tab active text-primary font-bold border-b-2 border-primary" onclick="setCategory('All Experiences')">ALL</span>
-                <span class="category-tab text-outline border-b-2 border-transparent" onclick="setCategory('Hotels')">HOTELS</span>
-                <span class="category-tab text-outline border-b-2 border-transparent" onclick="setCategory('Dining')">DINING</span>
-                <span class="category-tab text-outline border-b-2 border-transparent" onclick="setCategory('Wellness')">WELLNESS</span>
-                <span class="category-tab text-outline border-b-2 border-transparent" onclick="setCategory('Gaming')">GAMING</span>
-            </div>
-
-            <div class="space-y-4">
-                <div class="border border-outline-variant p-3">
-                    <p class="text-meta-label text-outline mb-1">SEARCH &amp; FILTERS</p>
-                    <div class="grid grid-cols-2 gap-2 text-node-description">
-                        <select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="duration" onchange="applyFilters()">
-                            <option value="">Any Duration</option>
-                            <option value="2">2 Hours</option>
-                            <option value="4">4 Hours</option>
-                            <option value="8">8 Hours</option>
-                        </select>
-                        <select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="priceClass" onchange="applyFilters()">
-                            <option value="">All Tiers</option>
-                            <option value="Luxury">Luxury</option>
-                            <option value="Premium">Premium</option>
-                            <option value="Budget">Budget</option>
-                        </select>
-                        <select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" onchange="applyFilters()">
-                            <option value="999">Within Global</option>
-                            <option value="1">Within 1 km</option>
-                            <option value="5">Within 5 km</option>
-                            <option value="10">Within 10 km</option>
-                        </select>
-                        <label class="flex items-center gap-2 bg-surface-container-high px-2 py-1 rounded text-node-description cursor-pointer border-0">
-                            <input type="checkbox" id="sort-nearest" class="w-3 h-3 rounded text-primary focus:ring-primary border-outline" onchange="applyFilters()">
-                            <span>Nearest First</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="border-2 border-dashed border-outline-variant p-3">
-                    <p class="text-meta-label text-outline mb-2">INVENTORY</p>
-                    <div id="inventory-container" class="space-y-4 w-full"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LEVEL 2: SELECTION -->
-    <div id="level2" class="level2 space-y-6 relative z-10"></div>
+<div class="main-layout">
+<!-- LEVEL 1: HOTELS LISTING PAGE -->
+<div class="level1 space-y-6 relative z-10">
+<div class="flex items-center justify-between mb-4">
+<span class="bg-primary text-white text-meta-label px-3 py-1 font-bold">LEVEL 1: LISTING</span>
 </div>
-</main>
-
-<script>
-    // --- DATA ENGINE ---
-    const allData = {
-        'Hotels': [
-            { name: 'Taj Santacruz', category: 'Luxury', distance: 1.6, duration: '2', rating: '4.9', type: 'Luxury Hotel', price: '₹2200 - ₹8200', location: 'Santacruz', icon: 'hotel', options: [{label: 'King Suite', desc: 'Pool view with butler.'}, {label: 'Grand Club', desc: 'Lounge access included.'}] },
-            { name: 'JW Marriott Sahar', category: 'Luxury', distance: 1.8, duration: '2', rating: '4.8', type: 'Resort Stay', price: '₹2100 - ₹7800', location: 'Andheri East', icon: 'hotel', options: [{label: 'Studio Room', desc: 'Integrated workspace.'}, {label: 'Executive', desc: 'Premium city view.'}] },
-            { name: 'Hotel Sahara Star', category: 'Premium', distance: 1.1, duration: '2', rating: '4.7', type: 'Transit Hub', price: '₹1400 - ₹5200', location: 'Domestic Airport', icon: 'hotel', options: [{label: 'Mercury Room', desc: 'Modern styling.'}, {label: 'Earth Room', desc: 'Garden view.'}] },
-            { name: 'The Orchid Hotel', category: 'Budget', distance: 0.9, duration: '2', rating: '4.8', type: 'Eco Stay', price: '₹1200 - ₹4500', location: 'Vile Parle', icon: 'hotel', options: [{label: 'Business Room', desc: 'Focused on efficiency.'}] }
-        ],
-        'Dining': [
-            { name: "Thai Naam", category: "Luxury", distance: 1.8, duration: '2', rating: '4.8', type: 'Premium Thai', price: "₹3800 - ₹7500", location: 'Sahar', icon: 'restaurant', options: [{label: 'Chef Tasting', desc: '7-course signature menu.'}, {label: 'Set Lunch', desc: 'Quick premium bites.'}] },
-            { name: "JW Cafe", category: "Premium", distance: 1.8, duration: '2', rating: '4.7', type: 'Global Buffet', price: "₹1800 - ₹3000", location: 'JW Marriott', icon: 'restaurant', options: [{label: 'Sunday Brunch', desc: 'Extensive food spread.'}] },
-            { name: "Cafe Coffee Day", category: "Budget", distance: 0.4, duration: '2', rating: '4.2', type: 'Quick Bites', price: "₹150 - ₹550", location: 'T1 Terminal', icon: 'restaurant', options: [{label: 'Combo Deal', desc: 'Snack and coffee pack.'}] }
-        ],
-        'Wellness': [
-            { name: "Jiva Spa", category: "Luxury", distance: 1.6, duration: '2', rating: '4.9', type: 'Ayurvedic', price: "₹3500 - ₹28000", location: 'Taj Santacruz', icon: 'spa', options: [{label: 'Vishudhi', desc: 'Full body detox.'}, {label: 'Sushupti', desc: 'Deep sleep therapy.'}] }
-        ],
-        'Gaming': [
-            { name: "Zero Latency", category: "Premium", distance: 16.5, duration: '2', rating: '4.9', type: 'VR Arena', price: "₹1200 - ₹2000", location: 'Todi Mills', icon: 'sports_esports', options: [{label: 'Outbreak', desc: 'Zombie survival mode.'}, {label: 'Singularity', desc: 'Space exploration.'}] }
-        ]
-    };
-
-    let uiState = {
-        activeTab: "browse",
-        selectedItem: null,
-        currentCategory: 'All Experiences',
-        currentImageIndex: 0
-    };
-
-    // --- REUSABLE COMPONENTS ---
-    function openMediaModal() { uiState.currentImageIndex = 0; document.getElementById('media-modal').classList.add('active'); updateModalContent(); }
-    function closeMediaModal() { document.getElementById('media-modal').classList.remove('active'); }
-    function changeImage(dir) { uiState.currentImageIndex = (uiState.currentImageIndex + dir + 3) % 3; updateModalContent(); }
-    function updateModalContent() { document.getElementById('modal-caption').textContent = `PERSPECTIVE ANGLE ${uiState.currentImageIndex + 1}.0X`; }
-
-    // --- RENDER LOGIC ---
-    function renderInventory(dur = '', cat = '', maxDist = 999, sortNearest = false) {
-        const container = document.getElementById('inventory-container');
-        let items = [];
-        if (uiState.currentCategory === 'All Experiences') {
-            Object.values(allData).forEach(catItems => items = [...items, ...catItems]);
-        } else {
-            items = allData[uiState.currentCategory] || [];
-        }
-
-        let filtered = items.filter(item => {
-            if (dur && item.duration !== dur) return false;
-            if (cat && item.category !== cat) return false;
-            if (item.distance > parseFloat(maxDist)) return false; 
-            return true;
-        });
-
-        if (sortNearest) filtered.sort((a, b) => a.distance - b.distance);
-
-        let html = '';
-        ['Luxury', 'Premium', 'Budget'].forEach(tier => {
-            const group = filtered.filter(i => i.category === tier);
-            if (group.length === 0) return;
-            html += `
-                <div class="mb-4">
-                    <p class="text-[10px] font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">workspace_premium</span> ${tier.toUpperCase()} OPTIONS (${group.length})</p>
-                    <div class="grid grid-cols-2 gap-2">
-                        ${group.map(item => `
-                            <div class="item-card p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface flex justify-between items-center" onclick="selectItem('${item.name}')">
-                                <div>
-                                    <p>${item.name}</p>
-                                    <p class="text-[9px] text-outline">${item.type}</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="material-symbols-outlined text-[14px] text-primary">${item.icon}</span>
-                                    <p class="text-[9px] text-outline">${item.distance} KM</p>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        });
-        container.innerHTML = html || '<div class="py-10 text-center text-outline font-bold uppercase text-xs">0 Results Found</div>';
-    }
-
-    const renderLevel2 = (detail) => {
-        const optionLabel = { 'Hotels': 'Room Options', 'Dining': 'Menu Selection', 'Wellness': 'Therapy List', 'Gaming': 'Mission Packs' }[uiState.currentCategory] || 'Discovery Options';
-
-        return `
+<div class="bg-white border-2 border-primary-container p-node-padding rounded shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-node-title-md font-node-title-md text-primary">Hotels Listing Page</h3>
+<span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Finalized</span>
+</div>
+<div class="space-y-4">
+<div class="border border-outline-variant p-3">
+<p class="text-meta-label text-outline mb-1">SEARCH &amp; FILTERS</p>
+<div class="grid grid-cols-2 gap-2 text-node-description">
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="duration" onchange="applyFilters()">
+<option value="">Duration (2, 4, 8h)</option>
+<option selected value="2">2 hr</option>
+<option value="4">4 hr</option>
+<option value="8">8 hr</option>
+</select>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="priceRange" onchange="applyFilters()">
+<option selected value="0-5000">₹0 – ₹5000</option>
+<option value="5000-10000">₹5000 – ₹10000</option>
+<option value="10000+">₹10000+</option>
+</select>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" onchange="applyFilters()">
+<option selected value="0-2">0 – 2 km</option>
+<option value="2-5">2 – 5 km</option>
+<option value="5+">5+ km</option>
+</select>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="type" onchange="applyFilters()">
+<option selected value="">All Types</option>
+<option value="luxury">Luxury</option>
+<option value="transit">Transit Hub</option>
+<option value="eco">Eco Stay</option>
+</select>
+</div>
+</div>
+<div class="border-2 border-dashed border-outline-variant p-3">
+<p class="text-meta-label text-outline mb-2">HOTEL INVENTORY (4 HOTELS FOUND)</p>
+<div class="rounded-lg flex gap-3"><div class="space-y-4 w-full"><div><p class="text-[10px] font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">workspace_premium</span> LUXURY HOTELS (2)</p><div class="grid grid-cols-2 gap-2"><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="2" data-price="8200" data-distance="1.6" data-type="luxury" role="button" tabindex="0">Taj Santacruz</div><div class="hotel-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="2" data-price="7800" data-distance="1.8" data-type="luxury" role="button" tabindex="0">JW Marriott Sahar</div></div></div><div><p class="text-[10px] font-bold text-outline mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">hotel</span> PREMIUM & BUDGET (2)</p><div class="grid grid-cols-2 gap-2"><div class="hotel-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" data-duration="2" data-price="5200" data-distance="1.1" data-type="transit" role="button" tabindex="0">Hotel Sahara Star</div><div class="hotel-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" data-duration="2" data-price="4500" data-distance="0.9" data-type="eco" role="button" tabindex="0">The Orchid Hotel</div></div></div></div></div>
+</div>
+</div>
+</div>
+</div>
+<!-- LEVEL 2: HOTEL DETAIL PAGE -->
+<div class="level2 space-y-6 relative z-10">
 <div class="flex items-center justify-between mb-4">
 <span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
 </div>
 <div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
 <div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-secondary">Detail Page</h3>
+<h3 class="text-node-title-md font-node-title-md text-secondary">Hotel Detail Page</h3>
+<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">In Progress</span>
+</div>
+<div class="space-y-4">
+<div class="border border-outline-variant p-3 bg-secondary/5">
+<p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
+<h4 class="text-node-title-md font-bold" data-detail-field="name">Select a hotel</h4>
+<div class="flex gap-2 mt-1">
+<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold" data-detail-field="rating">–</span>
+<span class="text-[10px] text-outline" data-detail-field="location">–</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">grid_view</span>
+<p class="text-[10px] mt-1 font-bold">Media Gallery</p>
+</div>
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">hotel</span>
+<p class="text-[10px] mt-1 font-bold">Room Options</p>
+</div>
+</div>
+<div class="border border-outline-variant p-3 bg-surface-container">
+<p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
+<ul class="text-[11px] space-y-1" data-detail-field="details">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> Click a hotel to view details</li>
+</ul>
+</div>
+<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
+<p class="text-meta-label text-secondary font-bold mb-2">DURATION-BASED PRICING</p>
+<div class="grid grid-cols-3 gap-1 text-center">
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-1">–</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">4 HR</p><p class="font-bold text-[11px]" data-detail-field="price-2">–</p></div>
+<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">8 HR</p><p class="font-bold text-[11px]" data-detail-field="price-3">–</p></div>
+</div>
+<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200">Add to List</button>
+</div>
+<div class="grid grid-cols-2 gap-3 text-meta-label">
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">REVIEWS</p>
+<p class="font-semibold text-secondary" data-detail-field="reviews">–</p>
+</div>
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">CONTACT</p>
+<p class="font-semibold text-secondary">Quick Inquiry</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+    const level2 = document.querySelector('.level2');
+    const mainLayout = document.querySelector('.main-layout');
+    const hotelItems = document.querySelectorAll('.hotel-item');
+    const filterFields = document.querySelectorAll('[data-filter-field]');
+    const filterDefaults = {
+        duration: '2',
+        priceRange: '0-5000',
+        distance: '0-2',
+        type: ''
+    };
+    const filterState = {};
+
+    const updateFilterState = (field) => {
+        const key = field.dataset.filterField;
+        const fallback = filterDefaults[key] || '';
+        const value = field.value.trim() || fallback;
+        if (!field.value.trim()) {
+            field.value = fallback;
+        }
+        filterState[key] = value;
+    };
+
+    filterFields.forEach((field) => {
+        updateFilterState(field);
+    });
+
+    function applyFilters() {
+        filterFields.forEach((field) => {
+            updateFilterState(field);
+        });
+
+        hotelItems.forEach((item) => {
+            item.style.display = 'block';
+        });
+
+        const visibleItems = [];
+        const hiddenItems = [];
+
+        hotelItems.forEach((item) => {
+            const duration = item.dataset.duration || '';
+            const price = item.dataset.price || '';
+            const p = parseInt(price, 10);
+            const distance = parseFloat(item.dataset.distance || '0');
+
+            let strictMatch = true;
+
+            const filterDuration = filterState.duration || '';
+            if (filterDuration) {
+                const fd = parseInt(filterDuration, 10);
+                const id = parseInt(duration, 10);
+                if (!isNaN(fd) && !isNaN(id) && id !== fd) strictMatch = false;
+            }
+
+            const filterPrice = filterState.priceRange || '';
+            if (strictMatch && filterPrice) {
+                if (filterPrice.endsWith('+')) {
+                    const min = parseInt(filterPrice, 10);
+                    if (!isNaN(min) && !isNaN(p) && p < min) strictMatch = false;
+                } else {
+                    const parts = filterPrice.split('-');
+                    if (parts.length === 2) {
+                        const min = parseInt(parts[0], 10);
+                        const max = parseInt(parts[1], 10);
+                        if (!isNaN(min) && !isNaN(max) && !isNaN(p) && (p < min || p > max)) strictMatch = false;
+                    }
+                }
+            }
+
+            const filterDistance = filterState.distance || '';
+            if (strictMatch && filterDistance) {
+                if (filterDistance.endsWith('+')) {
+                    const min = parseFloat(filterDistance);
+                    if (!isNaN(min) && !isNaN(distance) && distance < min) strictMatch = false;
+                } else {
+                    const parts = filterDistance.split('-');
+                    if (parts.length === 2) {
+                        const dMin = parseFloat(parts[0]);
+                        const dMax = parseFloat(parts[1]);
+                        if (!isNaN(dMin) && !isNaN(dMax) && !isNaN(distance) && (distance < dMin || distance > dMax)) strictMatch = false;
+                    }
+                }
+            }
+
+            if (strictMatch) {
+                visibleItems.push(item);
+            } else {
+                hiddenItems.push({ item, price: p });
+            }
+        });
+
+        if (visibleItems.length === 0 && hiddenItems.length > 0) {
+            const filterPrice = filterState.priceRange || '';
+            let targetPrice = 0;
+            if (filterPrice.endsWith('+')) {
+                targetPrice = parseInt(filterPrice, 10);
+            } else {
+                const parts = filterPrice.split('-');
+                targetPrice = parseInt(parts[0], 10) || 0;
+            }
+            hiddenItems.sort((a, b) => Math.abs(a.price - targetPrice) - Math.abs(b.price - targetPrice));
+            hiddenItems.slice(0, 4).forEach((h) => {
+                h.item.style.display = 'block';
+            });
+        } else {
+            hiddenItems.forEach((h) => {
+                h.item.style.display = 'none';
+            });
+        }
+    }
+
+    const hotelDetails = {
+        'Taj Santacruz': {
+            name: 'Taj Santacruz',
+            rating: '4.9 ★',
+            location: '1.6 km from Airport',
+            reviews: '500+ Verified',
+            prices: { one: '₹2200', two: '₹5000', three: '₹8200' },
+            details: ['King Suite with Pool view', 'Butler service included', 'Grand Club Lounge access']
+        },
+        'JW Marriott Sahar': {
+            name: 'JW Marriott Sahar',
+            rating: '4.8 ★',
+            location: '1.8 km from Airport',
+            reviews: '450+ Verified',
+            prices: { one: '₹2100', two: '₹4800', three: '₹7800' },
+            details: ['Studio Room with workspace', 'Executive Premium city view', 'Resort Stay features']
+        },
+        'Hotel Sahara Star': {
+            name: 'Hotel Sahara Star',
+            rating: '4.7 ★',
+            location: '1.1 km from Airport',
+            reviews: '300+ Verified',
+            prices: { one: '₹1400', two: '₹3000', three: '₹5200' },
+            details: ['Mercury Room - Modern styling', 'Earth Room - Garden view', 'Transit Hub convenience']
+        },
+        'The Orchid Hotel': {
+            name: 'The Orchid Hotel',
+            rating: '4.8 ★',
+            location: '0.9 km from Airport',
+            reviews: '400+ Verified',
+            prices: { one: '₹1200', two: '₹2500', three: '₹4500' },
+            details: ['Business Room', 'Eco Stay environment', 'Focused on efficiency']
+        }
+    };
+
+    const renderLevel2 = (detail) => `
+<div class="flex items-center justify-between mb-4">
+<span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
+</div>
+<div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-node-title-md font-node-title-md text-secondary">Hotel Detail Page</h3>
 <span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Active Analysis</span>
 </div>
 <div class="space-y-4">
 <div class="border border-outline-variant p-3 bg-secondary/5">
 <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-<h4 class="text-node-title-md font-bold">${detail.name}</h4>
+<h4 class="text-node-title-md font-bold" data-detail-field="name">${detail.name}</h4>
 <div class="flex gap-2 mt-1">
-<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold">${detail.rating} ★</span>
-<span class="text-[10px] text-outline">${detail.location} • ${detail.type}</span>
+<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold" data-detail-field="rating">${detail.rating}</span>
+<span class="text-[10px] text-outline" data-detail-field="location">${detail.location}</span>
 </div>
 </div>
 <div class="grid grid-cols-2 gap-3">
-<div class="border border-outline-variant p-2 text-center bg-surface cursor-pointer hover:bg-surface-dim transition-colors" onclick="openMediaModal()">
+<div class="border border-outline-variant p-2 text-center bg-surface">
 <span class="material-symbols-outlined text-secondary">grid_view</span>
 <p class="text-[10px] mt-1 font-bold">Media Gallery</p>
 </div>
 <div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">${detail.icon}</span>
-<p class="text-[10px] mt-1 font-bold">${optionLabel}</p>
+<span class="material-symbols-outlined text-secondary">hotel</span>
+<p class="text-[10px] mt-1 font-bold">Room Options</p>
 </div>
 </div>
 <div class="border border-outline-variant p-3 bg-surface-container">
 <p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
-<ul class="text-[11px] space-y-1">
-${detail.options.map(opt => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> <b>${opt.label}:</b> ${opt.desc}</li>`).join('')}
+<ul class="text-[11px] space-y-1" data-detail-field="details">
+${detail.details.map((item) => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
 </ul>
 </div>
 <div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
-<p class="text-meta-label text-secondary font-bold mb-2">DISCOVERY PRICING</p>
-<div class="bg-white p-2 rounded border border-secondary-fixed text-center">
-<p class="font-bold text-[14px]">${detail.price}</p>
+<p class="text-meta-label text-secondary font-bold mb-2">DURATION-BASED PRICING</p>
+<div class="grid grid-cols-3 gap-1 text-center">
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-1">${detail.prices.one}</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">4 HR</p><p class="font-bold text-[11px]" data-detail-field="price-2">${detail.prices.two}</p></div>
+<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">8 HR</p><p class="font-bold text-[11px]" data-detail-field="price-3">${detail.prices.three}</p></div>
 </div>
-<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200" onclick="window.addToList && window.addToList(this, '${detail.name}')">Add to List</button>
+<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200" onclick="window.addToList && window.addToList(this, '${detail.name}', 'Hotel', '2h')">Add to List</button>
+</div>
+<div class="grid grid-cols-2 gap-3 text-meta-label">
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">REVIEWS</p>
+<p class="font-semibold text-secondary" data-detail-field="reviews">${detail.reviews}</p>
+</div>
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">CONTACT</p>
+<p class="font-semibold text-secondary">Quick Inquiry</p>
+</div>
 </div>
 </div>
 </div>`;
+
+    const updateLevel2 = (hotelName) => {
+        const detail = hotelDetails[hotelName];
+        if (!detail || !level2) return;
+        level2.innerHTML = renderLevel2(detail);
     };
 
-    // --- UI FLOW ACTIONS ---
-    function setCategory(cat) {
-        uiState.currentCategory = cat;
-        uiState.activeTab = "browse";
-        
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            const isActive = tab.textContent === cat.toUpperCase() || (cat === 'All Experiences' && tab.textContent === 'ALL');
-            if (isActive) {
-                tab.className = 'category-tab active text-primary font-bold border-b-2 border-primary';
-            } else {
-                tab.className = 'category-tab text-outline border-b-2 border-transparent';
+    hotelItems.forEach((hotelItem) => {
+        const showLevel2 = () => {
+            updateLevel2(hotelItem.textContent.trim());
+            if (mainLayout) mainLayout.classList.add('active');
+            if (level2) level2.style.display = 'block';
+        };
+        hotelItem.addEventListener('click', showLevel2);
+        hotelItem.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                showLevel2();
             }
         });
-        
-        document.getElementById('category-title').textContent = cat === 'All Experiences' ? 'All Experiences' : cat;
-        applyFilters();
-        updateUI();
-    }
+    });
 
-    function selectItem(name) {
-        let item = null;
-        Object.values(allData).forEach(catItems => { const found = catItems.find(i => i.name === name); if (found) item = found; });
-        if (item) { uiState.selectedItem = item; uiState.activeTab = 'deals'; updateUI(); }
-    }
-
-    function setUIState(tab) {
-        if (tab === 'browse') { uiState.activeTab = 'browse'; } 
-        else if (tab === 'deals' && uiState.selectedItem) { uiState.activeTab = 'deals'; }
-        else if (tab === 'deals') { alert("Please select an item first."); return; }
-        updateUI();
-    }
-
-    function updateUI() {
-        const layout = document.getElementById('main-layout');
-        const level2 = document.getElementById('level2');
-        
-        document.getElementById('nav-browse').className = uiState.activeTab === 'browse' ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 pb-1 font-semibold font-manrope text-sm nav-link active' : 'text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium nav-link';
-        document.getElementById('nav-deals').className = uiState.activeTab === 'deals' ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 pb-1 font-semibold font-manrope text-sm nav-link active' : 'text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium nav-link';
-
-        if (uiState.activeTab === 'browse') {
-            level2.style.display = 'none';
-            layout.classList.remove('side-by-side');
-        } else {
-            level2.innerHTML = renderLevel2(uiState.selectedItem);
-            level2.style.display = 'block';
-            layout.classList.add('side-by-side');
-        }
-    }
-
-    function applyFilters() {
-        const dur = document.querySelector('[data-filter-field="duration"]').value;
-        const cat = document.querySelector('[data-filter-field="priceClass"]').value;
-        const dist = document.querySelector('[data-filter-field="distance"]').value;
-        const sort = document.getElementById('sort-nearest').checked;
-        renderInventory(dur, cat, dist, sort);
-    }
-
-    // --- INITIALIZE ---
-    setCategory('All Experiences');
+    applyFilters();
 </script>
 <footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 mt-20 w-full">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full px-8 py-12 max-w-7xl mx-auto">
