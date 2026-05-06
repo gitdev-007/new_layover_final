@@ -133,18 +133,26 @@
 </header>
 <main class="px-container-margin mt-lg space-y-lg max-w-2xl mx-auto">
 <!-- Smart Time Panel -->
-<section class="grid grid-cols-3 gap-gutter bg-surface-container-low p-md rounded-xl border border-outline-variant items-center">
-<div class="space-y-base">
-<p class="font-label-sm text-label-sm text-secondary">Total Layover</p>
-<p class="font-h2 text-h2">8h</p>
+<section class="flex justify-between gap-1 bg-surface-container-low p-3 rounded-xl border border-outline-variant items-center text-center overflow-x-auto no-scrollbar">
+<div class="flex-1 flex flex-col justify-center">
+<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Layover</p>
+<p class="font-h3 text-sm font-bold mt-1" id="time-total">8h</p>
 </div>
-<div class="space-y-base">
-<p class="font-label-sm text-label-sm text-secondary">Buffer</p>
-<p class="font-h2 text-h2">2h</p>
+<div class="flex-1 flex flex-col justify-center border-l border-outline-variant/30">
+<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Buffer</p>
+<p class="font-h3 text-sm font-bold mt-1" id="time-buffer">2h</p>
 </div>
-<div class="bg-emerald-50 p-sm rounded-lg border border-emerald-100">
-<p class="font-label-sm text-label-sm text-emerald-800">Remaining</p>
-<p class="font-h2 text-h2 text-emerald-700 font-bold">6h</p>
+<div class="flex-1 flex flex-col justify-center border-l border-outline-variant/30">
+<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Travel</p>
+<p class="font-h3 text-sm font-bold mt-1" id="time-travel">0m</p>
+</div>
+<div class="flex-1 flex flex-col justify-center border-l border-outline-variant/30">
+<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Stops</p>
+<p class="font-h3 text-sm font-bold mt-1" id="time-exp">0m</p>
+</div>
+<div class="bg-emerald-50 py-1.5 px-3 rounded-lg border border-emerald-100 flex flex-col justify-center min-w-[70px] ml-1 transition-colors" id="rem-container">
+<p class="font-label-sm text-[10px] text-emerald-800 leading-tight uppercase tracking-wider" id="rem-label">Remaining</p>
+<p class="font-h3 text-sm text-emerald-700 font-bold mt-0.5" id="time-remaining">6h</p>
 </div>
 </section>
 <!-- Category Pills -->
@@ -273,13 +281,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.layoverList = [];
 
-window.addToList = function(btn, itemName, category, duration, image) {
+window.addToList = function(btn, itemName, category, duration, distance, image) {
     const existing = window.layoverList.find(i => i.name === itemName);
     if (!existing) {
         window.layoverList.push({
             name: itemName,
             category: category || 'Experience',
             duration: duration || '',
+            distance: parseFloat(distance) || 0,
             image: image || ''
         });
     }
@@ -292,12 +301,74 @@ window.addToList = function(btn, itemName, category, duration, image) {
     btn.disabled = true;
 
     updateListIndicator();
+    updateTimeCalculations();
 };
 
 window.removeFromList = function(itemName) {
     window.layoverList = window.layoverList.filter(i => i.name !== itemName);
     renderListDrawer();
     updateListIndicator();
+    updateTimeCalculations();
+};
+
+window.updateTimeCalculations = function() {
+    let totalLayoverMins = 8 * 60;
+    let bufferMins = 2 * 60;
+    
+    let expMins = 0;
+    let maxDistance = 0;
+    
+    window.layoverList.forEach(item => {
+        let mins = 0;
+        const durStr = item.duration.toLowerCase();
+        if (durStr.includes('h')) {
+            mins = parseFloat(durStr) * 60;
+        } else if (durStr.includes('m')) {
+            mins = parseFloat(durStr);
+        }
+        expMins += mins;
+        
+        if (item.distance > maxDistance) {
+            maxDistance = item.distance;
+        }
+    });
+    
+    // Worst-case travel: return trip to the furthest location. 
+    // Assuming approx 3 mins per km in city traffic + 15 mins base overhead for each leg (30m total)
+    let travelMins = 0;
+    if (window.layoverList.length > 0) {
+        travelMins = Math.round((maxDistance * 3 * 2) + 30);
+    }
+    
+    let remainingMins = totalLayoverMins - bufferMins - travelMins - expMins;
+    
+    // Format helpers
+    const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+    
+    document.getElementById('time-travel').textContent = formatTime(travelMins);
+    document.getElementById('time-exp').textContent = formatTime(expMins);
+    
+    let remEl = document.getElementById('time-remaining');
+    let remContainer = document.getElementById('rem-container');
+    let remLabel = document.getElementById('rem-label');
+    
+    if (remainingMins < 0) {
+        remEl.textContent = 'Risk';
+        remContainer.className = 'bg-red-50 py-1.5 px-3 rounded-lg border border-red-200 flex flex-col justify-center min-w-[70px] ml-1 transition-colors';
+        remEl.className = 'font-h3 text-sm text-red-700 font-bold mt-0.5';
+        remLabel.className = 'font-label-sm text-[10px] text-red-800 leading-tight uppercase tracking-wider';
+    } else {
+        remEl.textContent = formatTime(remainingMins);
+        if (remainingMins < 60) {
+            remContainer.className = 'bg-amber-50 py-1.5 px-3 rounded-lg border border-amber-200 flex flex-col justify-center min-w-[70px] ml-1 transition-colors';
+            remEl.className = 'font-h3 text-sm text-amber-700 font-bold mt-0.5';
+            remLabel.className = 'font-label-sm text-[10px] text-amber-800 leading-tight uppercase tracking-wider';
+        } else {
+            remContainer.className = 'bg-emerald-50 py-1.5 px-3 rounded-lg border border-emerald-100 flex flex-col justify-center min-w-[70px] ml-1 transition-colors';
+            remEl.className = 'font-h3 text-sm text-emerald-700 font-bold mt-0.5';
+            remLabel.className = 'font-label-sm text-[10px] text-emerald-800 leading-tight uppercase tracking-wider';
+        }
+    }
 };
 
 window.toggleListDrawer = function() {
@@ -334,13 +405,18 @@ window.renderListDrawer = function() {
     if (window.layoverList.length === 0) {
         html += `<p class="text-xs text-secondary text-center py-4">No items added yet.</p>`;
     } else {
+        let maxDist = 0;
+        window.layoverList.forEach(item => { if(item.distance > maxDist) maxDist = item.distance; });
+        let totalTravel = Math.round((maxDist * 3 * 2) + 30);
+        const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+
         window.layoverList.forEach(item => {
             html += `
                 <div class="flex gap-3 items-center bg-surface p-2 rounded-lg border border-outline-variant">
                     ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded object-cover">` : `<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-[16px]">image</span></div>`}
                     <div class="flex-1 min-w-0">
                         <p class="font-bold text-[11px] text-primary truncate">${item.name}</p>
-                        <p class="text-[9px] text-secondary flex gap-1 items-center mt-0.5"><span>${item.category}</span> ${item.duration ? `&bull; <span>${item.duration}</span>` : ''}</p>
+                        <p class="text-[9px] text-secondary flex gap-1 items-center mt-0.5"><span>${item.category}</span> ${item.duration ? `&bull; <span>${item.duration} stay</span>` : ''}</p>
                     </div>
                     <button onclick="window.removeFromList('${item.name}')" class="p-1.5 text-secondary hover:text-error transition-colors rounded-md hover:bg-error-container">
                         <span class="material-symbols-outlined text-[16px]">delete</span>
@@ -348,6 +424,13 @@ window.renderListDrawer = function() {
                 </div>
             `;
         });
+
+        html += `
+            <div class="mt-4 pt-3 border-t border-outline-variant flex justify-between items-center text-[10px] text-secondary font-medium">
+                <span>Est. Worst-Case Travel Overhead:</span>
+                <span class="font-bold text-primary">${formatTime(totalTravel)}</span>
+            </div>
+        `;
     }
     
     html += `</div>`;
