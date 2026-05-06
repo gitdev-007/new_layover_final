@@ -147,7 +147,7 @@
 <p class="font-h3 text-sm font-bold mt-1" id="time-travel">0m</p>
 </div>
 <div class="flex-1 flex flex-col justify-center border-l border-outline-variant/30">
-<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Stops</p>
+<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Experience Time</p>
 <p class="font-h3 text-sm font-bold mt-1" id="time-exp">0m</p>
 </div>
 <div class="bg-emerald-50 py-1.5 px-3 rounded-lg border border-emerald-100 flex flex-col justify-center min-w-[70px] ml-1 transition-colors" id="rem-container">
@@ -311,13 +311,8 @@ window.removeFromList = function(itemName) {
     updateTimeCalculations();
 };
 
-window.updateTimeCalculations = function() {
-    let totalLayoverMins = 8 * 60;
-    let bufferMins = 2 * 60;
-    
+window.calculateTiming = function() {
     let expMins = 0;
-    let maxDistance = 0;
-    
     window.layoverList.forEach(item => {
         let mins = 0;
         const durStr = item.duration.toLowerCase();
@@ -327,25 +322,55 @@ window.updateTimeCalculations = function() {
             mins = parseFloat(durStr);
         }
         expMins += mins;
-        
-        if (item.distance > maxDistance) {
-            maxDistance = item.distance;
-        }
     });
-    
-    // Worst-case travel: return trip to the furthest location. 
-    // Assuming approx 3 mins per km in city traffic + 15 mins base overhead for each leg (30m total)
-    let travelMins = 0;
+
+    let worstTravelMins = 0;
     if (window.layoverList.length > 0) {
-        travelMins = Math.round((maxDistance * 3 * 2) + 30);
+        const getPermutations = (arr) => {
+            if (arr.length <= 1) return [arr];
+            const result = [];
+            for (let i = 0; i < arr.length; i++) {
+                const current = arr[i];
+                const remaining = arr.slice(0, i).concat(arr.slice(i + 1));
+                const remainingPerms = getPermutations(remaining);
+                for (let j = 0; j < remainingPerms.length; j++) {
+                    result.push([current].concat(remainingPerms[j]));
+                }
+            }
+            return result;
+        };
+
+        const permutations = getPermutations(window.layoverList);
+        permutations.forEach(seq => {
+            let seqTravelMins = 0;
+            let currentDist = 0;
+            seq.forEach(item => {
+                let legDistance = (currentDist === 0) ? item.distance : (currentDist + item.distance);
+                seqTravelMins += Math.round((legDistance * 3) + 15);
+                currentDist = item.distance;
+            });
+            seqTravelMins += Math.round((currentDist * 3) + 15);
+            if (seqTravelMins > worstTravelMins) {
+                worstTravelMins = seqTravelMins;
+            }
+        });
     }
+
+    return { expMins, worstTravelMins };
+};
+
+window.updateTimeCalculations = function() {
+    let totalLayoverMins = 8 * 60;
+    let bufferMins = 2 * 60;
     
-    let remainingMins = totalLayoverMins - bufferMins - travelMins - expMins;
+    let { expMins, worstTravelMins } = window.calculateTiming();
+    
+    let remainingMins = totalLayoverMins - bufferMins - worstTravelMins - expMins;
     
     // Format helpers
     const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
     
-    document.getElementById('time-travel').textContent = formatTime(travelMins);
+    document.getElementById('time-travel').textContent = formatTime(worstTravelMins);
     document.getElementById('time-exp').textContent = formatTime(expMins);
     
     let remEl = document.getElementById('time-remaining');
@@ -405,18 +430,21 @@ window.renderListDrawer = function() {
     if (window.layoverList.length === 0) {
         html += `<p class="text-xs text-secondary text-center py-4">No items added yet.</p>`;
     } else {
-        let maxDist = 0;
-        window.layoverList.forEach(item => { if(item.distance > maxDist) maxDist = item.distance; });
-        let totalTravel = Math.round((maxDist * 3 * 2) + 30);
+        let { expMins, worstTravelMins } = window.calculateTiming();
         const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
 
         window.layoverList.forEach(item => {
+            let indTravel = Math.round((item.distance * 3 * 2) + 30);
             html += `
                 <div class="flex gap-3 items-center bg-surface p-2 rounded-lg border border-outline-variant">
                     ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded object-cover">` : `<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-[16px]">image</span></div>`}
                     <div class="flex-1 min-w-0">
                         <p class="font-bold text-[11px] text-primary truncate">${item.name}</p>
-                        <p class="text-[9px] text-secondary flex gap-1 items-center mt-0.5"><span>${item.category}</span> ${item.duration ? `&bull; <span>${item.duration} stay</span>` : ''}</p>
+                        <p class="text-[9px] text-secondary flex gap-1 items-center mt-0.5">
+                            <span>${item.category}</span>
+                            ${item.duration ? `&bull; <span>${item.duration} stay</span>` : ''}
+                            &bull; <span>Est ${formatTime(indTravel)} overhead</span>
+                        </p>
                     </div>
                     <button onclick="window.removeFromList('${item.name}')" class="p-1.5 text-secondary hover:text-error transition-colors rounded-md hover:bg-error-container">
                         <span class="material-symbols-outlined text-[16px]">delete</span>
@@ -426,9 +454,15 @@ window.renderListDrawer = function() {
         });
 
         html += `
-            <div class="mt-4 pt-3 border-t border-outline-variant flex justify-between items-center text-[10px] text-secondary font-medium">
-                <span>Est. Worst-Case Travel Overhead:</span>
-                <span class="font-bold text-primary">${formatTime(totalTravel)}</span>
+            <div class="mt-4 pt-3 border-t border-outline-variant flex flex-col gap-1 text-[10px] text-secondary font-medium">
+                <div class="flex justify-between">
+                    <span>Total Experience Time:</span>
+                    <span class="font-bold text-primary">${formatTime(expMins)}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Est. Worst-Case Travel Overhead:</span>
+                    <span class="font-bold text-primary">${formatTime(worstTravelMins)}</span>
+                </div>
             </div>
         `;
     }
