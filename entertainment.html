@@ -256,16 +256,13 @@
 
                 <!-- CTAs -->
                 <div class="flex flex-col gap-3">
-                    <button id="btn-add-plan" onclick="addToPlan()" class="w-full bg-primary text-white py-3.5 rounded-lg font-bold hover:bg-indigo-700 transition-colors shadow-md shadow-indigo-200 flex items-center justify-center gap-2">
+                    <button id="btn-add-plan" onclick="window.addToList && window.addToList(this, currentSelectedVenue.name)" class="w-full bg-primary text-white py-3.5 rounded-lg font-bold hover:bg-indigo-700 transition-all duration-200 shadow-md shadow-indigo-200 flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined">add_task</span>
-                        Add to Layover Plan
+                        Add to List
                     </button>
                     <div class="flex gap-3">
                         <button onclick="window.location.href='transport-selection.html'" class="flex-1 border border-slate-300 text-slate-700 py-2.5 rounded-lg font-semibold hover:bg-slate-50 transition-colors text-sm">
                             View Transport
-                        </button>
-                        <button class="flex-1 bg-slate-900 text-white py-2.5 rounded-lg font-semibold hover:bg-slate-800 transition-colors text-sm">
-                            Book Now
                         </button>
                     </div>
                 </div>

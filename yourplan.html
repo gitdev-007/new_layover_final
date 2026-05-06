@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Plan My Layover - Itinerary Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9f9;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#301400",
+                        "inverse-surface": "#2f3131",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "primary-fixed": "#e1e0ff",
+                        "secondary": "#5f5e5e",
+                        "surface-tint": "#494bd6",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface": "#f9f9f9",
+                        "surface-container-high": "#e8e8e8",
+                        "primary-container": "#6063ee",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e2e2e2",
+                        "on-surface": "#1a1c1c",
+                        "secondary-fixed": "#e5e2e1",
+                        "outline": "#767586",
+                        "background": "#f9f9f9",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "surface-dim": "#dadada",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "on-background": "#1a1c1c",
+                        "on-primary-container": "#fffbff",
+                        "inverse-primary": "#c0c1ff",
+                        "tertiary": "#904900",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "on-primary-fixed": "#07006c",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eeeeee",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#464554",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f1f1f1",
+                        "secondary-container": "#e2dfde",
+                        "primary": "#4648d4",
+                        "on-secondary-container": "#636262",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "outline-variant": "#c7c4d7",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "tertiary-container": "#b55d00",
+                        "on-secondary-fixed-variant": "#474746",
+                        "tertiary-fixed": "#ffdcc5",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "gutter": "12px",
+                        "container_margin": "20px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "sm": "8px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "display": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Inter"],
+                        "status": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h2": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "h1": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "status": ["13px", {"lineHeight": "18px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim shadow-sm flex justify-between items-center px-container_margin py-md w-full sticky top-0 z-50">
+<div class="flex items-center gap-sm cursor-pointer active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="flight_takeoff">flight_takeoff</span>
+<h1 class="font-display text-h1 font-bold text-primary dark:text-primary-fixed-dim">Plan My Layover</h1>
+</div>
+<div class="hidden md:flex gap-lg items-center">
+<span class="text-on-surface-variant dark:text-outline-variant font-medium hover:text-primary-container transition-colors cursor-pointer">Explore</span>
+<span class="text-primary dark:text-primary-fixed-dim font-medium hover:text-primary-container transition-colors cursor-pointer">Plan</span>
+<span class="text-on-surface-variant dark:text-outline-variant font-medium hover:text-primary-container transition-colors cursor-pointer">Support</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden cursor-pointer active:scale-95 duration-200">
+<img alt="User Profile" data-alt="A professional headshot of a business traveler with a clean, minimalist background. The lighting is soft and even, highlighting a confident yet calm expression. The overall aesthetic is corporate-modern with high-key lighting and a muted, sophisticated color palette of whites and soft greys." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQyFTlg2jhaOAbMBeCKp0UGqkJs_GHU0_MSSxqvCl7mF9Qq69DrDVq6_VynoIrd13wsx-Nje3ARFjXi1cXNr-VJ9K5i_y67Calm_eAauNHu8J2l5G3cXTLBQ8IVTzPQcy66K3Q7A1yyQNWddQZ2Q0RzySwW-qAwKzFrb2dU91FAIrRThzw5AYwX_-cL6K5JK6iviaVWdQwWhqpXXUxbuIGOWHT0ZsKXwEPDROhTaiPWPAEKIflJ_l1yrg5j-vDuAWonQRFtEvGjuPP"/>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-container_margin py-xl space-y-lg pb-32">
+<!-- Layover Summary Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-lg">
+<div>
+<h2 class="font-display text-h1 text-on-surface">Heathrow Transit</h2>
+<p class="font-body-md text-secondary">Flight BA203 → QR008 • Nov 24, 2024</p>
+</div>
+<div class="flex gap-sm">
+<span class="bg-primary-container text-on-primary-container px-md py-xs rounded-full font-label-caps text-label-caps">OPTIMIZED</span>
+<span class="bg-surface-container-high text-on-surface-variant px-md py-xs rounded-full font-label-caps text-label-caps">LHR - T5</span>
+</div>
+</div>
+<!-- Time Management System: Bento Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<div class="p-md bg-surface-container rounded-lg flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-secondary">TOTAL DURATION</span>
+<span class="font-display text-h2 text-on-surface">8h 45m</span>
+</div>
+<div class="p-md bg-surface-container rounded-lg flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-secondary">AIRPORT BUFFER</span>
+<span class="font-display text-h2 text-on-surface">2h 30m</span>
+</div>
+<div class="p-md bg-surface-container rounded-lg flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-secondary">JOURNEY TIME</span>
+<span class="font-display text-h2 text-on-surface">3h 15m</span>
+</div>
+<div class="p-md bg-primary-container/10 border border-primary/20 rounded-lg flex flex-col gap-xs relative overflow-hidden">
+<span class="font-label-caps text-label-caps text-primary">SAFE TIME REMAINING</span>
+<span class="font-display text-h2 text-primary">3h 00m</span>
+<div class="absolute bottom-0 left-0 h-1 bg-primary w-full opacity-30"></div>
+</div>
+</div>
+</section>
+<!-- AI Optimization Suggestion -->
+<div class="bg-tertiary-fixed border border-tertiary-container/30 rounded-xl p-md flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-h2 text-on-tertiary-fixed text-status">Optimized route available</h4>
+<p class="font-body-md text-on-tertiary-fixed-variant">Swapping "Windsor Visit" with "Lounge Access" saves 45 mins in transit time.</p>
+</div>
+<button class="bg-tertiary-container text-on-tertiary-container px-md py-sm rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-opacity">APPLY</button>
+</div>
+<!-- Selected Experiences List -->
+<section class="space-y-sm">
+<div class="flex justify-between items-center mb-sm">
+<h3 class="font-display text-h2 text-on-surface">Planned Itinerary</h3>
+<span class="text-secondary font-body-md">3 activities scheduled</span>
+</div>
+<!-- Activity Item 1 (Safe) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md group hover:border-primary/40 transition-colors">
+<div class="cursor-grab text-outline-variant group-hover:text-primary">
+<span class="material-symbols-outlined" data-icon="drag_indicator">drag_indicator</span>
+</div>
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist photo of a luxury airport lounge with plush seating and floor-to-ceiling windows overlooking a runway at sunset. The lighting is warm and inviting, emphasizing a calm and premium atmosphere. The color palette consists of soft beiges, deep blues, and golden light, maintaining a sophisticated corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3XjW84jwffsxZnYJZjKYg-os3t3VY6bcIxv-w4CSzQkiFelu2nwJtU2YreNguXoTIAAkpdJ5usssCMFbZGo6t-m7_mviO8xyM7dTk8ZI4OsD94ucb7z6M3U6yUiFYJV7aLY4CYgHZjFTa1sBCj0ewzBrxUD8rayO1hYU4d5xpfUEuc-0sfCt1VLIVoahf3fcmE01dLX_fPjWWHzUuR_SjVmUvbrZ1X-M3-a1HOBnBmZM_saSsLqjF-p2TRjTFI08kuaGNYSZhQt8T"/>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-sm">
+<h4 class="font-h2 text-body-lg font-semibold">Premium Plaza Lounge</h4>
+<span class="bg-green-100 text-green-700 px-sm py-[2px] rounded text-[10px] font-bold uppercase tracking-wider">Safe</span>
+</div>
+<p class="font-body-md text-secondary">10:30 AM — 12:00 PM • Terminal 5</p>
+</div>
+<div class="text-right hidden sm:block">
+<p class="font-status text-primary">Priority: High</p>
+<span class="font-label-caps text-[10px] text-outline">CONFIRMED</span>
+</div>
+</div>
+<!-- Activity Item 2 (Tight) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md group hover:border-primary/40 transition-colors">
+<div class="cursor-grab text-outline-variant group-hover:text-primary">
+<span class="material-symbols-outlined" data-icon="drag_indicator">drag_indicator</span>
+</div>
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-key shot of a historic castle facade against a bright blue sky. The stone architecture is crisp and detailed, bathed in natural, bright daylight. The style is professional and clean, with a minimalist composition that focuses on the textures and scale of the monument, evoking a sense of discovery and history." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2OnO3PLQ-_11mCCBvgMrN7_rone8vZHHeoyX4lg4jjnuJwOdrqtRv1HIg749g1nAur9-mugKfiIkrQ-6jIrOVq5YnarlzL9_OdSiLo7hMgT1dV6tZfoOkqWEgXOnQ2dQIioSXXB4w1nH9Mbow_aHmjiAkYsy4kPLPizW9QMviX_8pz9K2wSBdDSjowxLJyaHxYUgFIIM5NU9fLRAIl3Qx0EePGotEdmx3QQCOqqX5NwwCaHyhPNuAL2Qq07XJ5J1N7hxGruPb7z79"/>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-sm">
+<h4 class="font-h2 text-body-lg font-semibold">Windsor Castle Express</h4>
+<span class="bg-amber-100 text-amber-700 px-sm py-[2px] rounded text-[10px] font-bold uppercase tracking-wider">Tight</span>
+</div>
+<p class="font-body-md text-secondary">12:30 PM — 02:45 PM • 20m Transfer</p>
+</div>
+<div class="text-right hidden sm:block">
+<p class="font-status text-on-surface-variant">Priority: Med</p>
+<span class="font-label-caps text-[10px] text-outline">RESERVING...</span>
+</div>
+</div>
+<!-- Activity Item 3 (Risky) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md group hover:border-primary/40 transition-colors">
+<div class="cursor-grab text-outline-variant group-hover:text-primary">
+<span class="material-symbols-outlined" data-icon="drag_indicator">drag_indicator</span>
+</div>
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of a gourmet dessert being plated in a high-end restaurant. The focus is sharp on the food, with a shallow depth of field blurring the background of a modern, minimalist kitchen. The lighting is dramatic yet clean, with high contrast and a palette of rich chocolate tones and vibrant fruit accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB9n9bArwGsUE_CK9YrY6e8V2gFxvCqGZVjoBBPYpvgTiziHLWdnBMMiXcsUJnmryHPJMUhDHdErke2-XbUig4Krt7o8Loj6jQl_vB2xtiX2Kis3xODiI-rpzFb6erf4h2zFkcBGBTmflPw3o_DsLICjWb8XknXgqCOMW6nJWRR9hLXs6jEK8PbMA_U8AvgbR3LRIbMEKKYkS6b4m-A2adit6CVpB5sMHudJpZRIiJry55AkI--1KvIHcMj69d0VqfC4k9J-5atlxG"/>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-sm">
+<h4 class="font-h2 text-body-lg font-semibold">Heston’s Dining Transit</h4>
+<span class="bg-error-container text-error px-sm py-[2px] rounded text-[10px] font-bold uppercase tracking-wider">Risky</span>
+</div>
+<p class="font-body-md text-secondary">03:15 PM — 04:30 PM • Final Stop</p>
+</div>
+<div class="text-right hidden sm:block">
+<p class="font-status text-on-surface-variant">Priority: Low</p>
+<span class="font-label-caps text-[10px] text-error">TIME OVERLAP</span>
+</div>
+</div>
+<!-- Add Experience Placeholder -->
+<button class="w-full border-2 border-dashed border-outline-variant rounded-xl py-lg flex flex-col items-center justify-center text-secondary hover:text-primary hover:border-primary transition-all group">
+<span class="material-symbols-outlined text-display" data-icon="add_circle">add_circle</span>
+<span class="font-label-caps text-label-caps mt-xs">ADD EXPERIENCE</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-lg py-sm pb-safe bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-lg">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps text-label-caps">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="event_note" style="font-variation-settings: 'FILL' 1;">event_note</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</div>
+</nav>
+<!-- Footer (Web Only) -->
+<footer class="hidden md:flex w-full py-xl px-container_margin flex-row justify-between items-center gap-md bg-surface-container dark:bg-surface-dim">
+<div class="flex flex-col gap-xs">
+<span class="font-display text-h2 font-semibold text-on-surface">Plan My Layover</span>
+<p class="font-body-md text-secondary dark:text-secondary-fixed">© 2024 Plan My Layover. Calm Efficiency for the modern traveler.</p>
+</div>
+<div class="flex gap-lg">
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-body-md" href="#">Privacy</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-body-md" href="#">Terms</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-body-md" href="#">API</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-body-md" href="#">Careers</a>
+</div>
+</footer>
+<!-- Operational Action FAB -->
+<button class="fixed bottom-24 right-container_margin md:bottom-12 md:right-12 bg-primary text-on-primary shadow-lg rounded-full flex items-center gap-sm pl-md pr-lg py-md active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+<span class="font-label-caps text-label-caps">FINALIZE ITINERARY</span>
+</button>
+</body></html>

@@ -274,7 +274,7 @@ ${detail.options.map(opt => `<li class="flex items-center gap-2"><span class="ma
 <div class="bg-white p-2 rounded border border-secondary-fixed text-center">
 <p class="font-bold text-[14px]">${detail.price}</p>
 </div>
-<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide" onclick="window.location.href='QR_Upload_State.html'">INITIALIZE BOOKING</button>
+<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200" onclick="window.addToList && window.addToList(this, '${detail.name}')">Add to List</button>
 </div>
 </div>
 </div>`;

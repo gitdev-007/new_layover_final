@@ -149,90 +149,18 @@
 </section>
 <!-- Category Pills -->
 <section class="flex gap-sm overflow-x-auto no-scrollbar py-base -mx-container-margin px-container-margin">
-<button onclick="window.location.href='hotel.html'" class="bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform duration-150 shadow-sm">Hotels</button>
-<button onclick="window.location.href='restaurant.html'" class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Restaurants</button>
-<button onclick="window.location.href='spa.html'" class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Spa</button>
-<button onclick="window.location.href='entertainment.html'" class="bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Gaming &amp; Entertainment</button>
+<button onclick="loadCategory('recommended.html', this)" class="category-pill bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform duration-150 shadow-sm">Recommended For You</button>
+<button onclick="loadCategory('hotel.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Hotels</button>
+<button onclick="loadCategory('restaurant.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Restaurants</button>
+<button onclick="loadCategory('spa.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Spa</button>
+<button onclick="loadCategory('entertainment.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Gaming &amp; Entertainment</button>
 </section>
-<!-- Experience Cards -->
-<section class="space-y-md">
-<!-- The Grand Hyatt -->
-<div class="flex gap-md bg-white border border-outline-variant rounded-xl p-sm hover:shadow-sm transition-shadow">
-<div class="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A luxurious, minimalist hotel room suite with floor-to-ceiling windows overlooking a city skyline. The interior features soft neutral tones, high-thread-count white linens, and warm ambient lighting. The atmosphere is serene and exclusive, capturing the essence of high-end hospitality and tranquil comfort for a luxury transit traveler." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwNzfcRJjijBDZgGuN06liNWs1qWY_wilvYW59m7gAyeP-YnTLGypLGymQixUFn5Cl-iK8NMX1dgWIFpJnzahNQQxXNJGudjm4hMIvyw3DPBsySLCSsZrbWDM_09zFL3iJO7BydG5JqCAILjaTw_zRDZFP3qrpcTHnTQw6cN1aNngn8O9_qo_APqOyNQEnYvIbQD00kNj6KSkpuZCUV22YVMhtQ0Il3NMEJAUovV1-m0Z0NjZtsrsEHqDdN6hCunHxeHg9jt5arWQy"/>
-</div>
-<div class="flex-grow flex flex-col justify-between py-base">
-<div>
-<div class="flex justify-between items-start">
-<h3 class="font-h3 text-h3">The Grand Hyatt</h3>
-<div class="flex items-center gap-[2px] bg-emerald-50 px-base rounded">
-<span class="material-symbols-outlined text-[14px] text-emerald-700" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="font-label-sm text-label-sm text-emerald-700">4.8</span>
-</div>
-</div>
-<div class="flex gap-xs text-secondary mt-base">
-<span class="font-label-sm text-label-sm">15 min away</span>
-<span class="text-outline-variant">•</span>
-<span class="font-label-sm text-label-sm">2h stay</span>
-</div>
-</div>
-<div class="flex justify-between items-center">
-<span class="text-emerald-600 font-label-sm text-label-sm font-semibold px-sm py-[2px] bg-emerald-50 rounded-full">High Compatibility</span>
-<button class="text-brand-accent font-label-sm text-label-sm font-bold uppercase tracking-wider">Book</button>
-</div>
-</div>
-</div>
-<!-- Sake & Stone -->
-<div class="flex gap-md bg-white border border-outline-variant rounded-xl p-sm hover:shadow-sm transition-shadow">
-<div class="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A beautifully presented, minimalist Japanese dish with fresh sashimi and delicate garnishes on a dark stone plate. The background is a clean, modern restaurant setting with soft, focused lighting on the food. The aesthetic is extremely high-end, focusing on precision, quality, and culinary elegance, consistent with a premium layover experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEHVvr-KaB3u9h4V-312uBZ5YCpyIPs7kZEuC15dMwLgEFEdf-Go7ztOhHMKjxdVRtEFFehrI-V1C078nB0nQJajGjAjmVUwj4MIV63prrEH0xqpHwo1tfqmdvNjVl1EIpu7KJTT6QwIKAIMh9Ic1AF_clXq1ZzSqhjrQgJ4exxuwih9Hk3FW6x-99ZZJIKQayUPI9bKBp7sinvN0a9K63ak3SX0xQKRugYBmQFD0oMMtTayp4jRp0xdS1YlKUrFOB-aWZKObVv2Sz"/>
-</div>
-<div class="flex-grow flex flex-col justify-between py-base">
-<div>
-<div class="flex justify-between items-start">
-<h3 class="font-h3 text-h3">Sake &amp; Stone</h3>
-<div class="flex items-center gap-[2px] bg-emerald-50 px-base rounded">
-<span class="material-symbols-outlined text-[14px] text-emerald-700" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="font-label-sm text-label-sm text-emerald-700">4.9</span>
-</div>
-</div>
-<div class="flex gap-xs text-secondary mt-base">
-<span class="font-label-sm text-label-sm">20 min away</span>
-<span class="text-outline-variant">•</span>
-<span class="font-label-sm text-label-sm">1.5h stay</span>
-</div>
-</div>
-<div class="flex justify-between items-center">
-<span class="text-emerald-600 font-label-sm text-label-sm font-semibold px-sm py-[2px] bg-emerald-50 rounded-full">High Compatibility</span>
-<button class="text-brand-accent font-label-sm text-label-sm font-bold uppercase tracking-wider">Reserve</button>
-</div>
-</div>
-</div>
-<!-- Aura Wellness -->
-<div class="flex gap-md bg-white border border-outline-variant rounded-xl p-sm hover:shadow-sm transition-shadow">
-<div class="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A tranquil and calm spa environment featuring warm wooden textures, smooth river stones, and a single flickering candle. The lighting is low and warm, creating an atmosphere of absolute peace and relaxation. The image communicates luxury wellness and rejuvenation, perfect for a stressed traveler looking for a quick, high-end refresh during a layover." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCnlikk1QQwO6H7p5wmjMMSTz3-coe_ACFYTs9AmXRKI-nJwpTolWRuFhAe7t4GMI-483U8N39X5yzgNhajjHVvzKatotYftMWFMLAObmgqxr9aX65t-9aunRgOJvJGCv_4jvAPtInQjt_oMCnBkU-Ls9aTJE2aPf1n03vV7lSh3CdaAq_53sISit2fSaiOSGNOLIWb3uBb1a45HXz40We1lfxL3r2H7tlpJIOdyOM7CLuZzN5Pn2qcXPm9t05bkMfXCaYGh8S4xp1"/>
-</div>
-<div class="flex-grow flex flex-col justify-between py-base">
-<div>
-<div class="flex justify-between items-start">
-<h3 class="font-h3 text-h3">Aura Wellness</h3>
-<div class="flex items-center gap-[2px] bg-emerald-50 px-base rounded">
-<span class="material-symbols-outlined text-[14px] text-emerald-700" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="font-label-sm text-label-sm text-emerald-700">4.7</span>
-</div>
-</div>
-<div class="flex gap-xs text-secondary mt-base">
-<span class="font-label-sm text-label-sm">10 min away</span>
-<span class="text-outline-variant">•</span>
-<span class="font-label-sm text-label-sm">1h stay</span>
-</div>
-</div>
-<div class="flex justify-between items-center">
-<span class="text-emerald-600 font-label-sm text-label-sm font-semibold px-sm py-[2px] bg-emerald-50 rounded-full">High Compatibility</span>
-<button class="text-brand-accent font-label-sm text-label-sm font-bold uppercase tracking-wider">Book</button>
-</div>
-</div>
+
+<!-- Dynamic Experience Container -->
+<section class="space-y-md min-h-[400px]" id="marketplace-content">
+<!-- Initial Loading State -->
+<div class="flex items-center justify-center h-48">
+    <span class="material-symbols-outlined animate-spin text-primary text-3xl">refresh</span>
 </div>
 </section>
 
@@ -256,4 +184,149 @@
 <span class="font-label-sm text-label-sm">Profile</span>
 </button>
 </nav>
+
+<style>
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.animate-spin { animation: spin 1s linear infinite; }
+
+/* Responsive overrides to ensure injected modules fit properly */
+#marketplace-content .level1, #marketplace-content .level2 { width: 100% !important; max-width: 600px !important; }
+#marketplace-content .main-layout { flex-direction: column !important; align-items: center !important; }
+@media (min-width: 1024px) {
+    #marketplace-content .main-layout.side-by-side { flex-direction: row !important; align-items: flex-start !important; }
+}
+
+/* Strip duplicate layout elements from fetched pages */
+#marketplace-content header, #marketplace-content footer { display: none !important; }
+#marketplace-content main { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+#marketplace-content .bg-primary.text-white.text-meta-label { display: none !important; }
+</style>
+
+<script>
+async function loadCategory(url, btn) {
+    // 1. Update active tab UI
+    document.querySelectorAll('.category-pill').forEach(p => {
+        p.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+        p.classList.add('bg-white', 'border', 'text-on-surface');
+    });
+    if (btn) {
+        btn.classList.remove('bg-white', 'border', 'text-on-surface');
+        btn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+    }
+
+    const container = document.getElementById('marketplace-content');
+    
+    // Smooth fade out transition
+    container.style.transition = 'opacity 0.2s ease-out';
+    container.style.opacity = '0.3';
+
+    try {
+        const response = await fetch(url);
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Extract body content but exclude redundant headers, footers, and scripts (we'll process scripts separately)
+        let contentHTML = '';
+        Array.from(doc.body.children).forEach(child => {
+            const tag = child.tagName.toLowerCase();
+            if (tag !== 'header' && tag !== 'footer' && tag !== 'script') {
+                contentHTML += child.outerHTML;
+            }
+        });
+
+        setTimeout(() => {
+            container.innerHTML = contentHTML;
+
+            // Extract and execute scripts inline
+            const scripts = doc.querySelectorAll('script:not([id="tailwind-config"]):not([src])');
+            scripts.forEach(script => {
+                let code = script.textContent;
+                
+                // Safely convert top-level const/let to var to prevent redeclaration errors when swapping categories
+                code = code.replace(/\bconst\s+/g, 'var ');
+                code = code.replace(/\blet\s+/g, 'var ');
+                
+                // Automatically unwrap DOMContentLoaded events so they execute immediately upon injection
+                code = code.replace(/document\.addEventListener\(['"]DOMContentLoaded['"][^\{]+\{([\s\S]+?)\}\);/g, '$1');
+                
+                const newScript = document.createElement('script');
+                newScript.textContent = code;
+                document.body.appendChild(newScript);
+            });
+
+            container.style.opacity = '1';
+        }, 200);
+
+    } catch (e) {
+        console.error('Failed to load category:', e);
+        container.innerHTML = '<div class="p-8 text-center text-error font-medium">Failed to load experiences. Please check your connection.</div>';
+        container.style.opacity = '1';
+    }
+}
+
+// Auto-load Recommended For You category on initial page visit
+document.addEventListener('DOMContentLoaded', () => {
+    const firstTab = document.querySelector('.category-pill');
+    if (firstTab) loadCategory('recommended.html', firstTab);
+});
+
+window.layoverList = [];
+
+window.addToList = function(btn, itemName) {
+    if (!window.layoverList.includes(itemName)) {
+        window.layoverList.push(itemName);
+    }
+
+    // Subtle visual feedback
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Added';
+    // Remove background colors and add subtle green
+    btn.classList.remove('bg-primary', 'bg-secondary', 'text-white', 'hover:bg-indigo-700', 'bg-slate-900');
+    btn.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-200', 'cursor-default');
+    btn.disabled = true;
+
+    updateListIndicator();
+};
+
+function updateListIndicator() {
+    let indicator = document.getElementById('global-list-indicator');
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'global-list-indicator';
+        indicator.className = 'fixed bottom-[80px] left-1/2 -translate-x-1/2 bg-primary text-on-primary px-5 py-3 rounded-full font-label-sm shadow-xl z-[100] flex items-center gap-3 cursor-pointer hover:scale-105 transition-all duration-300';
+
+        indicator.onclick = (e) => {
+            if (window.layoverList.length === 0) {
+                const originalHtml = indicator.innerHTML;
+                indicator.innerHTML = '<span class="font-bold tracking-wide px-2 whitespace-nowrap">Add at least one experience to continue.</span>';
+                setTimeout(() => { indicator.innerHTML = originalHtml; }, 2000);
+                return;
+            }
+
+            const btn = e.currentTarget;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px]">refresh</span> <span class="font-bold tracking-wide whitespace-nowrap">Preparing Plan...</span>';
+            btn.style.pointerEvents = 'none';
+            btn.classList.add('opacity-90');
+
+            setTimeout(() => {
+                window.location.href = 'yourplan.html';
+            }, 400);
+        };
+
+        document.body.appendChild(indicator);
+    }
+
+    if (window.layoverList.length > 0) {
+        indicator.innerHTML = `
+            <span class="bg-white text-primary w-5 h-5 flex items-center justify-center rounded-full font-bold text-[11px]">${window.layoverList.length}</span>
+            <span class="font-bold tracking-wide">Selected</span>
+            <span class="border-l border-white/30 pl-3 ml-1 font-bold flex items-center gap-1">Plan My List <span class="material-symbols-outlined text-[16px]">arrow_forward</span></span>
+        `;
+        indicator.style.display = 'flex';
+    } else {
+        indicator.style.display = 'none';
+    }
+}
+</script>
 </body></html>
