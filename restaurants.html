@@ -5,7 +5,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>LayoverX | Restaurants Sitemap</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
@@ -72,7 +71,7 @@
         <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
             <div class="flex items-center justify-between mb-4">
                 <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
-                <span class="text-meta-label text-primary uppercase">Theme: Blue/Purple</span>
+                
             </div>
 
             <!-- Main Card Container -->
@@ -132,14 +131,14 @@
         </div>
 
         <!-- LEVEL 2: DETAIL -->
-        <div id="level2" class="layout-transition hidden opacity-0 w-full lg:w-[45%] flex-shrink-0 z-20 relative">
+        <div id="level2" class="layout-transition hidden opacity-0 w-full flex-shrink-0 z-20 relative">
             <div class="flex items-center justify-between mb-4">
                 <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
-                <span class="text-meta-label text-secondary uppercase">Theme: Orange</span>
+                
             </div>
 
             <!-- Main Card Container -->
-            <div class="bg-white border-2 border-secondary p-6 shadow-sm h-full max-h-[85vh] sticky top-28 overflow-hidden flex flex-col">
+            <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
                 <div class="flex justify-between items-start mb-6 shrink-0">
                     <h3 class="text-node-title-md text-secondary uppercase">RESTAURANT DETAIL PAGE</h3>
                     <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
@@ -181,8 +180,8 @@
 
                     <!-- Plan Layover Block -->
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
-                        <button onclick="openVerificationModal()" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
-                            PLAN EXPERIENCE
+                        <button onclick="window.location.href='qr_upload_state.html'" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
+                            PLAN LAYOVER
                         </button>
                     </div>
 
@@ -201,52 +200,6 @@
             </div>
         </div>
     </main>
-
-    <!-- VERIFICATION MODAL -->
-    <div id="verification-modal" class="fixed inset-0 bg-primary/80 backdrop-blur-sm z-[100] hidden flex justify-center items-center opacity-0 transition-opacity duration-300 p-4">
-        <div class="wireframe-box rounded-none w-full max-w-md shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300 border-2 border-primary flex flex-col max-h-[90vh]" id="modal-content">
-            <div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container shrink-0">
-                <h3 class="text-node-title-md text-primary uppercase">QR Verification</h3>
-                <button onclick="closeVerificationModal()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
-            </div>
-            <div class="p-6 space-y-4 overflow-y-auto hide-scrollbar flex-grow">
-                <p class="text-[12px] text-on-surface-variant font-medium mb-4">Please upload or scan your flight QR code to verify your layover details.</p>
-                
-                <div class="bg-surface-container p-4 border border-outline-variant mb-4">
-                    <label class="block text-meta-label text-on-surface-variant mb-1">Number of Passengers</label>
-                    <input type="number" id="passengerCount" min="1" value="1" class="w-full bg-white border border-outline-variant px-3 py-2 text-[12px] outline-none focus:border-primary rounded-none" onchange="generateUploadFields()">
-                    <p class="text-[10px] text-on-surface-variant mt-2 italic">Only one member needs to upload all QR codes for the group</p>
-                </div>
-
-                <div id="qrUploadContainer" class="space-y-4">
-                    <!-- Fields will be injected here -->
-                </div>
-
-                <div id="scanContainer" class="mt-4 flex justify-center">
-                    <button onclick="scanQR()" class="bg-surface border-2 border-outline-variant text-on-surface-variant w-full py-2 text-[12px] font-bold uppercase hover:bg-surface-container transition-colors flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined text-[16px]">qr_code_scanner</span>
-                        Scan QR
-                    </button>
-                </div>
-
-                <button id="uploadBtn" onclick="submitQRVerification(event)" class="w-full mt-4 bg-primary text-white font-bold py-3 text-[12px] tracking-widest uppercase hover:bg-blue-800 transition-colors flex justify-center items-center gap-2">
-                    Verify QR &amp; Continue
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scanner Modal -->
-    <div id="scannerModal" class="fixed inset-0 z-[110] hidden flex-col items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="wireframe-box rounded-none w-full max-w-md shadow-2xl overflow-hidden p-4 relative border-2 border-primary">
-            <button onclick="closeScanner()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            <h3 class="text-node-title-md text-primary uppercase mb-4 text-center mt-2">Scan QR Code</h3>
-            <div id="qr-reader" class="w-full bg-surface-container border border-outline-variant min-h-[250px]"></div>
-            <p id="scannerStatus" class="text-[12px] text-center mt-4 text-on-surface-variant">Requesting camera permissions...</p>
-        </div>
-    </div>
 
     <script>
 
@@ -344,10 +297,14 @@ function openLevel2(id) {
 
     const l1 = document.getElementById('level1');
     const l2 = document.getElementById('level2');
-    l1.classList.remove('max-w-4xl', 'mx-auto');
-    l1.classList.add('lg:w-[55%]');
+    
     l2.classList.remove('hidden');
-    requestAnimationFrame(() => { l2.classList.remove('opacity-0'); });
+        requestAnimationFrame(() => { 
+        l2.classList.remove('opacity-0'); 
+        setTimeout(() => {
+            l2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    });
 }
 
 function closeLevel2() {
@@ -358,192 +315,14 @@ function closeLevel2() {
     l2.classList.add('opacity-0');
     setTimeout(() => {
         l2.classList.add('hidden');
-        l1.classList.remove('lg:w-[55%]');
-        l1.classList.add('max-w-4xl', 'mx-auto');
+        
     }, 300);
 }
 
 // Ensure alias exists for legacy html code
 function renderHotels() { renderItems(); }
 
-        function openVerificationModal() {
-            const modal = document.getElementById('verification-modal');
-            const content = document.getElementById('modal-content');
-            
-            modal.classList.remove('hidden');
-            void modal.offsetWidth;
-            
-            modal.classList.remove('opacity-0');
-            content.classList.remove('scale-95');
-            content.classList.add('scale-100');
-        }
-
-        function closeVerificationModal() {
-            const modal = document.getElementById('verification-modal');
-            const content = document.getElementById('modal-content');
-            
-            modal.classList.add('opacity-0');
-            content.classList.remove('scale-100');
-            content.classList.add('scale-95');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
-
-        // QR Verification Logic
-        let passengerQRs = {};
-        let html5QrcodeScanner;
-
-        function generateUploadFields() {
-            const count = parseInt(document.getElementById('passengerCount').value) || 1;
-            const container = document.getElementById('qrUploadContainer');
-            container.innerHTML = '';
-            passengerQRs = {};
-
-            for (let i = 1; i <= count; i++) {
-                const div = document.createElement('div');
-                div.className = 'border border-dashed border-outline-variant p-4 bg-surface';
-                div.innerHTML = `
-                    <div class="flex justify-between items-center mb-2">
-                        <p class="text-meta-label text-primary">Passenger ${i} QR</p>
-                        <button type="button" class="text-on-surface-variant hover:text-secondary" onclick="removeQR(${i})">
-                            <span class="material-symbols-outlined text-[16px]">delete</span>
-                        </button>
-                    </div>
-                    <input type="file" id="fileInput_${i}" class="w-full text-[11px]" accept="image/png,image/jpeg,image/jpg,application/pdf" onchange="handleFileSelect(event, ${i})"/>
-                    <img id="preview_${i}" class="mt-2 hidden max-w-[100px] border border-outline-variant" src="" alt="Preview"/>
-                `;
-                container.appendChild(div);
-            }
-        }
-
-        function handleFileSelect(e, index) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                passengerQRs[index] = event.target.result;
-                const preview = document.getElementById(`preview_${index}`);
-                preview.src = event.target.result;
-                preview.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeQR(index) {
-            delete passengerQRs[index];
-            document.getElementById(`fileInput_${index}`).value = '';
-            document.getElementById(`preview_${index}`).classList.add('hidden');
-        }
-
-        function scanQR() {
-            const modal = document.getElementById('scannerModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            const statusEl = document.getElementById('scannerStatus');
-            statusEl.textContent = 'Initializing scanner...';
-
-            if (html5QrcodeScanner) {
-                try { html5QrcodeScanner.clear(); } catch(e) {}
-            }
-
-            try {
-                html5QrcodeScanner = new Html5QrcodeScanner(
-                    "qr-reader",
-                    { fps: 10, qrbox: {width: 250, height: 250}, aspectRatio: 1.0 },
-                    false
-                );
-
-                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-                statusEl.textContent = 'Point your camera at a QR code.';
-            } catch(err) {
-                console.error("Scanner init failed:", err);
-                statusEl.textContent = 'Failed to load scanner. Please check permissions.';
-            }
-        }
-
-        function closeScanner() {
-            const modal = document.getElementById('scannerModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            if (html5QrcodeScanner) {
-                html5QrcodeScanner.clear().catch(e => console.error(e));
-            }
-        }
-
-        function onScanSuccess(decodedText, decodedResult) {
-            closeScanner();
-            
-            const count = parseInt(document.getElementById('passengerCount').value) || 1;
-            let targetIndex = 1;
-            for (let i = 1; i <= count; i++) {
-                if (!passengerQRs[i]) {
-                    targetIndex = i;
-                    break;
-                }
-            }
-            
-            passengerQRs[targetIndex] = decodedText;
-            
-            const preview = document.getElementById(`preview_${targetIndex}`);
-            preview.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='30'><rect width='100' height='30' fill='%23bfdbfe' stroke='%231d4ed8'/><text x='15' y='20' font-family='sans-serif' font-size='10' font-weight='bold' fill='%231d4ed8'>SCANNED</text></svg>";
-            preview.classList.remove('hidden');
-            
-            const fileInput = document.getElementById(`fileInput_${targetIndex}`);
-            if (fileInput) fileInput.value = '';
-            
-            alert(`QR code successfully scanned for Passenger ${targetIndex}`);
-        }
-
-        function onScanFailure(error) {}
-
-        async function submitQRVerification(event) {
-            const btn = event.currentTarget;
-            const count = parseInt(document.getElementById('passengerCount').value) || 1;
-            const uploadedIndices = Object.keys(passengerQRs);
-
-            if (uploadedIndices.length < count) {
-                alert(`Please upload QR codes for all ${count} passengers.`);
-                return;
-            }
-
-            const original = btn.innerHTML;
-            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px]">refresh</span> Verifying...';
-            btn.style.pointerEvents = 'none';
-            btn.classList.add('opacity-90');
-            
-            const payload = {
-                passenger_count: count,
-                qr_codes: Object.values(passengerQRs)
-            };
-            
-            try {
-                localStorage.setItem("group_qr_data", JSON.stringify(payload));
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                closeVerificationModal();
-                btn.innerHTML = original;
-                btn.style.pointerEvents = 'auto';
-                btn.classList.remove('opacity-90');
-                
-                setTimeout(() => {
-                    alert("QR Verification complete. Redirecting to booking confirmation.");
-                }, 400);
-            } catch(e) {
-                alert('Verification failed. Please try again.');
-                btn.innerHTML = original;
-                btn.style.pointerEvents = 'auto';
-                btn.classList.remove('opacity-90');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderHotels();
-            // Initialize upload fields inside modal if it is opened, but it's safe to do here
-            generateUploadFields();
-        });
+        document.addEventListener('DOMContentLoaded', renderHotels);
     </script>
 </body>
 </html>
