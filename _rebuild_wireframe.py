@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+import codecs
+
+html = """<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -396,3 +398,7 @@
     </script>
 </body>
 </html>
+"""
+
+with codecs.open('hotel.html', 'w', encoding='utf-8') as f:
+    f.write(html)
