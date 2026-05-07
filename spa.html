@@ -24,15 +24,25 @@
 <p class="text-meta-label text-outline mb-1">SEARCH &amp; FILTERS</p>
 <div class="grid grid-cols-2 gap-2 text-node-description">
 <select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="duration" onchange="applyFilters()">
-<option value="" disabled selected hidden>Select Spa Duration</option>
+<option value="" disabled selected hidden>Select Stay Duration</option>
 <option value="1">1 hr</option>
 <option value="1.5">1.5 hr</option>
 <option value="2">2 hr</option>
+</select>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="priceRange" onchange="applyFilters()">
+<option selected value="0-2000">₹0 – ₹2000</option>
+<option value="2000-5000">₹2000 – ₹5000</option>
+<option value="5000+">₹5000+</option>
 </select>
 <select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" onchange="applyFilters()">
 <option selected value="0-5">0 – 5 km</option>
 <option value="5-10">5 – 10 km</option>
 <option value="10+">10+ km</option>
+</select>
+<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="type" onchange="applyFilters()">
+<option selected value="">All Types</option>
+<option value="Ayurvedic">Ayurvedic</option>
+<option value="Holistic">Holistic</option>
 </select>
 </div>
 </div>
@@ -62,7 +72,7 @@
     var level2 = document.querySelector('.level2');
     var mainLayout = document.querySelector('.main-layout');
     var filterFields = document.querySelectorAll('[data-filter-field]');
-    var filterState = { distance: '0-5' };
+    var filterState = { distance: '0-5', priceRange: '0-2000', type: '', duration: '' };
 
     var updateFilterState = (field) => {
         filterState[field.dataset.filterField] = field.value.trim();
@@ -92,6 +102,25 @@
                         if (item.distance < parseFloat(parts[0]) || item.distance > parseFloat(parts[1])) strictMatch = false;
                     }
                 }
+            }
+
+            var filterPrice = filterState.priceRange || '';
+            if (strictMatch && filterPrice) {
+                var p = item.price || 0;
+                if (filterPrice.endsWith('+')) {
+                    var min = parseInt(filterPrice, 10);
+                    if (p < min) strictMatch = false;
+                } else {
+                    var parts = filterPrice.split('-');
+                    if (parts.length === 2) {
+                        if (p < parseInt(parts[0], 10) || p > parseInt(parts[1], 10)) strictMatch = false;
+                    }
+                }
+            }
+
+            var filterType = filterState.type || '';
+            if (strictMatch && filterType) {
+                if (item.type !== filterType) strictMatch = false;
             }
 
             if (strictMatch) {
@@ -134,7 +163,6 @@
         if (!detail || !level2) return;
         
         var durFilter = filterState.duration || '';
-        var durText = durFilter ? `${durFilter}h` : '';
         
         var content = document.getElementById('level2-content');
         content.innerHTML = `
@@ -152,8 +180,30 @@
 ${detail.details.map((item) => `<li class="flex items-center gap-2 text-secondary"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
 </ul>
 </div>
+<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20 mt-4">
+<p class="text-meta-label text-secondary font-bold mb-2">DURATION-BASED PRICING</p>
+<div class="grid grid-cols-3 gap-1 text-center">
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">1 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.one ? detail.prices.one : '-'}</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.two ? detail.prices.two : '-'}</p></div>
+<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">4 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.three ? detail.prices.three : '-'}</p></div>
+</div>
+</div>
 <div class="mt-6 border-t border-outline-variant pt-4">
-<button onclick="window.addToList && window.addToList(this, '${detail.name}', '${detail.category}', '${durText}', ${detail.distance}, '${detail.image}')" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200 shadow-md">Add to List</button>
+    <div class="flex flex-col gap-2 w-full mb-3">
+        <label class="block text-[9px] font-bold text-secondary uppercase">Select Stay Duration</label>
+        <select class="w-full bg-surface border border-outline-variant p-2 rounded text-[11px] focus:outline-none focus:border-primary" onchange="this.nextElementSibling.disabled = false; this.nextElementSibling.dataset.duration = this.value;">
+            <option value="" disabled selected hidden>Select Duration</option>
+            <option value="30m">30 mins</option>
+            <option value="1h" ${durFilter === '1' ? 'selected' : ''}>1 hour</option>
+            <option value="1.5h" ${durFilter === '1.5' ? 'selected' : ''}>1.5 hours</option>
+            <option value="2h" ${durFilter === '2' ? 'selected' : ''}>2 hours</option>
+            <option value="3h" ${durFilter === '3' ? 'selected' : ''}>3 hours</option>
+            <option value="4h" ${durFilter === '4' ? 'selected' : ''}>4 hours</option>
+            <option value="6h" ${durFilter === '6' ? 'selected' : ''}>6 hours</option>
+            <option value="8h" ${durFilter === '8' ? 'selected' : ''}>8 hours</option>
+        </select>
+        <button disabled data-duration="" onclick="window.addToList && window.addToList(this, '${detail.name}', '${detail.category}', this.dataset.duration, ${detail.distance}, '${detail.image}')" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">Add to List</button>
+    </div>
 </div>
         `;
         if (mainLayout) mainLayout.classList.add('active');

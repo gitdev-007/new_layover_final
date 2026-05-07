@@ -56,11 +56,20 @@
                         </div>
                     </div>
                     <div class="flex gap-2 text-secondary mt-1 text-[10px]">
-                        <span>Est ${Math.round(estTravel/2)}m away</span>
+                        <span>Est ${Math.round(window.calculateDynamicTravelMins(item.distance))}m travel (one way)</span>
                     </div>
-                    <div class="flex justify-between items-center mt-3">
-                        <span class="text-emerald-600 font-bold text-[9px] px-2 py-0.5 bg-emerald-50 rounded-full uppercase tracking-wider">High Compatibility</span>
-                        <button onclick="window.addToList && window.addToList(this, '${item.name}', '${item.category}', '2h', ${item.distance}, '${item.image}')" class="bg-primary text-white text-[10px] font-bold px-4 py-2 rounded-md hover:shadow-md active:scale-95 transition-all duration-200 flex items-center justify-center">Add to List</button>
+                    <div class="mt-3 flex flex-col gap-2 w-full">
+                        <label class="block text-[9px] font-bold text-secondary uppercase">Select Stay Duration</label>
+                        <select class="w-full bg-surface border border-outline-variant p-1.5 rounded text-[11px] focus:outline-none focus:border-primary" onchange="this.nextElementSibling.disabled = !this.value; this.nextElementSibling.dataset.duration = this.value;">
+                            <option value="" disabled selected hidden>Select Duration</option>
+                            <option value="30m">30 mins</option>
+                            <option value="1h">1 hour</option>
+                            <option value="2h">2 hours</option>
+                            <option value="3h">3 hours</option>
+                            <option value="4h">4 hours</option>
+                            <option value="6h">6 hours</option>
+                        </select>
+                        <button disabled data-duration="" onclick="window.addToList && window.addToList(this, '${item.name}', '${item.category}', this.dataset.duration, ${item.distance}, '${item.image}')" class="w-full bg-primary text-white text-[10px] font-bold px-4 py-2 rounded-md hover:shadow-md active:scale-95 transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">Add to List</button>
                     </div>
                 </div>
             </div>
