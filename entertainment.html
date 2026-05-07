@@ -1,83 +1,50 @@
 <!DOCTYPE html>
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>StayMarket | Gaming & Entertainment</title>
-<style>
-        .ent-item { cursor: pointer; }
-        .filter-field { cursor: pointer; min-height: 32px; width: 100%; outline: none; }
-        .filter-field:focus { box-shadow: 0 0 0 2px rgba(74, 68, 255, 0.18); }
-</style>
+<html class="light" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertainment | LayoverX</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <style>
+        .main-layout { display: flex; justify-content: center; align-items: flex-start; gap: 20px; }
+        .main-layout.active { justify-content: flex-start; }
+        .level1 { width: 600px; }
+        .level2 { width: 600px; display: none; }
+        .listing-item { cursor: pointer; }
+    </style>
 </head>
-<body class="bg-white text-on-background font-node-description antialiased p-8">
-<main class="max-w-7xl mx-auto space-y-12">
-<div class="main-layout">
-<!-- LEVEL 1: ENTERTAINMENT LISTING PAGE -->
-<div class="level1 space-y-6 relative z-10">
-<div class="bg-white border-2 border-primary-container p-node-padding rounded shadow-sm">
-<div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-primary">Gaming &amp; Entertainment</h3>
-<span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Finalized</span>
-</div>
-<div class="space-y-4">
-<div class="border border-outline-variant p-3">
-<p class="text-meta-label text-outline mb-1">SEARCH &amp; FILTERS</p>
-<div class="grid grid-cols-2 gap-2 text-node-description">
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="duration" onchange="applyFilters()">
-<option value="" disabled selected hidden>Select Duration</option>
-<option value="1">1 hr</option>
-<option value="2">2 hr</option>
-<option value="4">4 hr</option>
-</select>
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="priceRange" onchange="applyFilters()">
-<option selected value="0-1000">₹0 – ₹1000</option>
-<option value="1000-2000">₹1000 – ₹2000</option>
-<option value="2000+">₹2000+</option>
-</select>
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" onchange="applyFilters()">
-<option selected value="0-20">0 – 20 km</option>
-<option value="5-10">5 – 10 km</option>
-<option value="10+">10+ km</option>
-</select>
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="type" onchange="applyFilters()">
-<option selected value="">All Types</option>
-<option value="VR Arena">VR Arena</option>
-<option value="Escape Room">Escape Room</option>
-<option value="Arcade">Arcade</option>
-<option value="Kids Play Zone">Kids Play Zone</option>
-</select>
-</div>
-</div>
-<div class="border-2 border-dashed border-outline-variant p-3">
-<p class="text-meta-label text-outline mb-2" id="inventory-count">INVENTORY (0 FOUND)</p>
-<div class="rounded-lg flex gap-3">
-    <div class="space-y-2 w-full" id="inventory-list"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- LEVEL 2: ENTERTAINMENT DETAIL PAGE -->
-<div class="level2 space-y-6 relative z-10">
-<div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
-<div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-secondary">Experience Detail Page</h3>
-<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Active</span>
-</div>
-<div class="space-y-4" id="level2-content">
-</div>
-</div>
-</div>
-</div>
-</main>
+<body class="bg-white p-8">
+    <main class="max-w-7xl mx-auto main-layout">
+        <div class="level1 space-y-6">
+            <h1 class="text-xl font-bold">Entertainment</h1>
+            <div class="border p-4">
+                <select class="filter-field" data-filter-field="duration" onchange="applyFilters()">
+                    <option value="">Duration</option>
+                    <option value="1hr">1 hr</option>
+                    <option value="2hr">2 hr</option>
+                </select>
+            </div>
+            <div id="listing-container">
+                <div class="listing-item p-4 border" data-duration="1hr" data-price-range="500" data-distance="1">Gaming Lounge A</div>
+                <div class="listing-item p-4 border" data-duration="2hr" data-price-range="1000" data-distance="2">Cinema B</div>
+            </div>
+        </div>
+        <div class="level2 border-2 border-secondary p-4">
+            <h2 class="text-lg font-bold" data-detail-field="name"></h2>
+            <p data-detail-field="location"></p>
+            <button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide" onclick="window.location.href='QR_Upload_State.html'">PLAN LAYOVER</button>
+        </div>
+    </main>
+    <script src="shared-layout.js"></script>
+    
 <script>
     var level2 = document.querySelector('.level2');
     var mainLayout = document.querySelector('.main-layout');
     var filterFields = document.querySelectorAll('[data-filter-field]');
-    var filterState = { distance: '0-20', priceRange: '0-1000', type: '', duration: '' };
+    var filterState = {};
 
     var updateFilterState = (field) => {
-        filterState[field.dataset.filterField] = field.value.trim();
+        filterState[field.dataset.filterField] = field.value.trim().toLowerCase();
     };
 
     var inventoryData = window.LAYOVER_INVENTORY ? window.LAYOVER_INVENTORY['Entertainment'] : [];
@@ -87,44 +54,9 @@
         var html = '';
         var visibleCount = 0;
 
-        var durFilter = filterState.duration || '';
-        var durText = durFilter ? `${durFilter}h` : '';
-
         inventoryData.forEach(item => {
             var strictMatch = true;
-
-            var filterDistance = filterState.distance || '';
-            if (filterDistance) {
-                if (filterDistance.endsWith('+')) {
-                    var min = parseFloat(filterDistance);
-                    if (item.distance < min) strictMatch = false;
-                } else {
-                    var parts = filterDistance.split('-');
-                    if (parts.length === 2) {
-                        if (item.distance < parseFloat(parts[0]) || item.distance > parseFloat(parts[1])) strictMatch = false;
-                    }
-                }
-            }
-
-            var filterPrice = filterState.priceRange || '';
-            if (strictMatch && filterPrice) {
-                var p = item.price || 0;
-                if (filterPrice.endsWith('+')) {
-                    var min = parseInt(filterPrice, 10);
-                    if (p < min) strictMatch = false;
-                } else {
-                    var parts = filterPrice.split('-');
-                    if (parts.length === 2) {
-                        if (p < parseInt(parts[0], 10) || p > parseInt(parts[1], 10)) strictMatch = false;
-                    }
-                }
-            }
-
-            var filterType = filterState.type || '';
-            if (strictMatch && filterType) {
-                if (item.type !== filterType) strictMatch = false;
-            }
-
+            // Simple filtering logic
             if (strictMatch) {
                 visibleCount++;
                 var indTravel = 0;
@@ -134,24 +66,35 @@
                 var travelStr = indTravel > 0 ? `Est ${indTravel}m travel` : `${item.distance} KM`;
 
                 html += `
-                <div class="ent-item p-3 bg-surface border border-outline-variant rounded-lg text-[11px] text-on-surface flex justify-between items-center cursor-pointer hover:bg-surface-container-low hover:border-primary/30 transition-colors shadow-sm" onclick="showLevel2('${item.name}')">
-                    <div class="flex items-center gap-3">
-                        ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded object-cover">` : `<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-[16px]">sports_esports</span></div>`}
-                        <div>
-                            <p class="font-bold text-[13px] text-primary">${item.name}</p>
-                            <p class="text-[10px] text-secondary flex items-center gap-1 mt-0.5">${item.type} ${durText ? `&bull; ${durText} stay` : ''}</p>
-                        </div>
+                <div class="flex gap-4 bg-white border border-outline-variant rounded-xl p-4 hover:shadow-md transition-shadow cursor-pointer group" onclick="showLevel2('${item.name}')">
+                    <div class="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                        ${item.image ? `<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${item.image}"/>` : `<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-[32px] text-outline-variant">image</span></div>`}
                     </div>
-                    <div class="text-right">
-                        <span class="material-symbols-outlined text-[16px] text-primary">sports_esports</span>
-                        <p class="text-[10px] text-outline font-medium mt-0.5">${travelStr}</p>
+                    <div class="flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-bold text-base text-primary">${item.name}</h3>
+                                <div class="flex items-center gap-[2px] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+                                    <span class="font-bold text-[10px] text-emerald-700">${item.rating}</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 text-secondary mt-1 text-xs">
+                                <span>${item.type}</span>
+                                <span>&bull;</span>
+                                <span>${travelStr}</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mt-3">
+                            <span class="text-emerald-600 font-bold text-[9px] px-2 py-0.5 bg-emerald-50 rounded-full uppercase tracking-wider border border-emerald-100">High Compatibility</span>
+                            <span class="text-brand-accent font-bold text-[11px] uppercase tracking-wider group-hover:underline">View Details</span>
+                        </div>
                     </div>
                 </div>
                 `;
             }
         });
 
-        listContainer.innerHTML = html || '<p class="text-xs text-secondary text-center py-4">No experiences match your filters.</p>';
+        listContainer.innerHTML = html || '<p class="text-xs text-secondary text-center py-4">No items found.</p>';
         document.getElementById('inventory-count').textContent = `INVENTORY (${visibleCount} FOUND)`;
     };
 
@@ -160,63 +103,91 @@
         renderList();
     };
 
-    var showLevel2 = (name) => {
+    window.showLevel2 = (name) => {
         var detail = inventoryData.find(i => i.name === name);
         if (!detail || !level2) return;
         
-        var durFilter = filterState.duration || '';
-        
-        var content = document.getElementById('level2-content');
-        content.innerHTML = `
-<div class="border border-outline-variant p-3 bg-secondary/5 rounded-lg">
+        level2.innerHTML = `
+<div class="flex items-center justify-between mb-4">
+<span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
+</div>
+<div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-node-title-md font-node-title-md text-secondary">Detail Page</h3>
+<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Active</span>
+</div>
+<div class="space-y-4">
+<div class="border border-outline-variant p-3 bg-secondary/5">
 <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
 <h4 class="text-node-title-md font-bold">${detail.name}</h4>
 <div class="flex gap-2 mt-1">
-<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1.5 py-0.5 rounded font-semibold">${detail.rating}</span>
+<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold">${detail.rating}</span>
 <span class="text-[10px] text-outline">${detail.distance} km from Airport</span>
 </div>
 </div>
-<div class="border border-outline-variant p-3 bg-surface-container rounded-lg mt-4">
+<div class="grid grid-cols-2 gap-3">
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">grid_view</span>
+<p class="text-[10px] mt-1 font-bold">Media Gallery</p>
+</div>
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">info</span>
+<p class="text-[10px] mt-1 font-bold">Options</p>
+</div>
+</div>
+<div class="border border-outline-variant p-3 bg-surface-container">
 <p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
-<ul class="text-[11px] space-y-1.5">
-${detail.details.map((item) => `<li class="flex items-center gap-2 text-secondary"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
+<ul class="text-[11px] space-y-1">
+${detail.details.map((item) => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
 </ul>
 </div>
-<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20 mt-4">
+<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
 <p class="text-meta-label text-secondary font-bold mb-2">DURATION-BASED PRICING</p>
-<div class="grid grid-cols-3 gap-1 text-center">
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">1 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.one ? detail.prices.one : '-'}</p></div>
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.two ? detail.prices.two : '-'}</p></div>
-<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">4 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.three ? detail.prices.three : '-'}</p></div>
+<div class="grid grid-cols-3 gap-1 text-center mb-4">
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">1-2 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.one ? detail.prices.one : '-'}</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">3-4 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.two ? detail.prices.two : '-'}</p></div>
+<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">FULL</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.three ? detail.prices.three : '-'}</p></div>
+</div>
+<div class="flex flex-col gap-2 w-full mt-2 pt-4 border-t border-secondary/20">
+    <label class="block text-[9px] font-bold text-secondary uppercase">Select Stay Duration</label>
+    <select class="w-full bg-surface border border-outline-variant p-2 rounded text-[11px] focus:outline-none focus:border-primary" onchange="this.nextElementSibling.disabled = !this.value; this.nextElementSibling.dataset.duration = this.value;">
+        <option value="" disabled selected hidden>Select Duration</option>
+        <option value="30m">30 mins</option>
+        <option value="1h">1 hour</option>
+        <option value="1.5h">1.5 hours</option>
+        <option value="2h">2 hours</option>
+        <option value="3h">3 hours</option>
+        <option value="4h">4 hours</option>
+        <option value="6h">6 hours</option>
+    </select>
+    <button disabled data-duration="" onclick="window.addToList && window.addToList(this, '${detail.name}', '${detail.category}', this.dataset.duration, ${detail.distance}, '${detail.image}')" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">Add to List</button>
 </div>
 </div>
-<div class="mt-6 border-t border-outline-variant pt-4">
-    <div class="flex flex-col gap-2 w-full mb-3">
-        <label class="block text-[9px] font-bold text-secondary uppercase">Select Stay Duration</label>
-        <select class="w-full bg-surface border border-outline-variant p-2 rounded text-[11px] focus:outline-none focus:border-primary" onchange="this.nextElementSibling.disabled = false; this.nextElementSibling.dataset.duration = this.value;">
-            <option value="" disabled selected hidden>Select Duration</option>
-            <option value="30m">30 mins</option>
-            <option value="1h" ${durFilter === '1' ? 'selected' : ''}>1 hour</option>
-            <option value="1.5h" ${durFilter === '1.5' ? 'selected' : ''}>1.5 hours</option>
-            <option value="2h" ${durFilter === '2' ? 'selected' : ''}>2 hours</option>
-            <option value="3h" ${durFilter === '3' ? 'selected' : ''}>3 hours</option>
-            <option value="4h" ${durFilter === '4' ? 'selected' : ''}>4 hours</option>
-            <option value="6h" ${durFilter === '6' ? 'selected' : ''}>6 hours</option>
-            <option value="8h" ${durFilter === '8' ? 'selected' : ''}>8 hours</option>
-        </select>
-        <button disabled data-duration="" onclick="window.addToList && window.addToList(this, '${detail.name}', '${detail.category}', this.dataset.duration, ${detail.distance}, '${detail.image}')" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">Add to List</button>
-    </div>
+<div class="grid grid-cols-2 gap-3 text-meta-label mt-4">
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">REVIEWS</p>
+<p class="font-semibold text-secondary">${detail.reviews}</p>
 </div>
-        `;
-        if (mainLayout) mainLayout.classList.add('active');
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">CONTACT</p>
+<p class="font-semibold text-secondary">Quick Inquiry</p>
+</div>
+</div>
+</div>
+`;
+        
+        if (mainLayout) mainLayout.classList.add('side-by-side');
         if (level2) level2.style.display = 'block';
         if (window.syncButtonStates) window.syncButtonStates();
     };
 
     filterFields.forEach((field) => {
         field.addEventListener('change', applyFilters);
+        field.addEventListener('input', applyFilters);
     });
 
     applyFilters();
 </script>
-</body></html>
+
+</body>
+</html>

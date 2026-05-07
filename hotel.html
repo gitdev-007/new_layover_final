@@ -1,82 +1,296 @@
 <!DOCTYPE html>
+
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>StayMarket | Hotels</title>
+<title>LayoverX Hotels Sitemap</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#9d4300",
+                        "inverse-primary": "#c0c1ff",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "on-primary-container": "#fffbff",
+                        "tertiary-container": "#007cb1",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#07006c",
+                        "surface-dim": "#cbdbf5",
+                        "tertiary": "#00628d",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-secondary-fixed-variant": "#783200",
+                        "inverse-on-surface": "#eaf1ff",
+                        "primary-fixed": "#e1e0ff",
+                        "surface": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#001e2f",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-background": "#0b1c30",
+                        "secondary-fixed": "#ffdbca",
+                        "surface-variant": "#d3e4fe",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-fixed-variant": "#004c6e",
+                        "surface-container": "#e5eeff",
+                        "primary-container": "#6063ee",
+                        "primary": "#4648d4",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#464554",
+                        "on-secondary-container": "#5c2400",
+                        "on-tertiary-container": "#fcfcff",
+                        "tertiary-fixed": "#c9e6ff",
+                        "on-secondary-fixed": "#341100",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "tertiary-fixed-dim": "#89ceff",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f8f9ff",
+                        "outline": "#767586",
+                        "background": "#f8f9ff",
+                        "outline-variant": "#c7c4d7",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#494bd6",
+                        "inverse-surface": "#213145",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fd761a",
+                        "surface-container-high": "#dce9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "connector-thickness": "2px",
+                        "stack-gap": "2rem",
+                        "level-indent": "4rem",
+                        "node-padding": "1.25rem",
+                        "grid-size": "8px"
+                    },
+                    "fontFamily": {
+                        "node-title-lg": ["Manrope"],
+                        "node-title-md": ["Manrope"],
+                        "meta-label": ["Inter"],
+                        "node-description": ["Inter"],
+                        "connector-text": ["Inter"]
+                    },
+                    "fontSize": {
+                        "node-title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "node-title-md": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "meta-label": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "node-description": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "connector-text": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
 <style>
-        .hotel-item { cursor: pointer; }
-        .filter-field { cursor: pointer; min-height: 32px; width: 100%; outline: none; }
-        .filter-field:focus { box-shadow: 0 0 0 2px rgba(74, 68, 255, 0.18); }
-</style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            font-size: 1.25rem;
+        }
+        .connector-line {
+            background-image: radial-gradient(circle, #767586 1px, transparent 1px);
+            background-size: 8px 8px;
+        }
+        .main-layout {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .main-layout.active {
+            justify-content: flex-start;
+        }
+        .main-layout,
+        .main-layout * {
+            transition: none !important;
+            transform: none !important;
+            animation: none !important;
+        }
+        .level1 {
+            width: 600px;
+            transition: none;
+        }
+        .level2 {
+            width: 600px;
+            display: none;
+        }
+        .hotel-item {
+            cursor: pointer;
+        }
+        .filter-field {
+            cursor: pointer;
+            min-height: 32px;
+            width: 100%;
+            outline: none;
+        }
+        .filter-field:focus {
+            box-shadow: 0 0 0 2px rgba(74, 68, 255, 0.18);
+        }
+    </style>
 </head>
 <body class="bg-white text-on-background font-node-description antialiased p-8">
+<!-- Top Navigation Anchor -->
+<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center w-full px-8 py-3 max-w-full mx-auto mb-12">
+<div class="flex items-center gap-4">
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">StayMarket</h1>
+<span class="text-xs bg-primary-container text-on-primary-container px-2 py-0.5 font-bold">LAYOVERX SYSTEM</span>
+</div>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 pb-1 font-semibold font-manrope text-sm" href="#">Browse</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Deals</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">My Bookings</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Support</a>
+</nav>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-slate-500">notifications</span>
+<span class="material-symbols-outlined text-slate-500">account_circle</span>
+</div>
+</header>
 <main class="max-w-7xl mx-auto space-y-12">
+<!-- SITEMAP CANVAS -->
 <div class="main-layout">
 <!-- LEVEL 1: HOTELS LISTING PAGE -->
 <div class="level1 space-y-6 relative z-10">
+<div class="flex items-center justify-between mb-4">
+<span class="bg-primary text-white text-meta-label px-3 py-1 font-bold">LEVEL 1: LISTING</span>
+</div>
+<!-- Main Card Container -->
 <div class="bg-white border-2 border-primary-container p-node-padding rounded shadow-sm">
 <div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-primary">Hotels Listing</h3>
+<h3 class="text-node-title-md font-node-title-md text-primary">Hotels Listing Page</h3>
 <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Finalized</span>
 </div>
+<!-- Component Blocks -->
 <div class="space-y-4">
+<!-- Filter Block -->
 <div class="border border-outline-variant p-3">
 <p class="text-meta-label text-outline mb-1">SEARCH &amp; FILTERS</p>
 <div class="grid grid-cols-2 gap-2 text-node-description">
 <select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="duration" onchange="applyFilters()">
-<option value="" disabled selected hidden>Select Stay Duration</option>
-<option value="2">2 hr</option>
-<option value="4">4 hr</option>
-<option value="8">8 hr</option>
+<option value="">Duration (2, 4, 8h)</option>
+<option selected value="2 hrs">2 hrs</option>
+<option value="4 hours">4 hours</option>
+<option value="8 hours">8 hours</option>
 </select>
 <select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="priceRange" onchange="applyFilters()">
-<option selected value="0-5000">₹0 – ₹5000</option>
-<option value="5000-10000">₹5000 – ₹10000</option>
-<option value="10000+">₹10000+</option>
+<option value="">Price Range</option>
+<option selected value="₹1000–₹5000">₹1000–₹5000</option>
+<option value="₹1500 - ₹3000">₹1500 - ₹3000</option>
+<option value="₹3000+">₹3000+</option>
 </select>
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" onchange="applyFilters()">
-<option selected value="0-5">0 – 5 km</option>
-<option value="5-10">5 – 10 km</option>
-<option value="10+">10+ km</option>
-</select>
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="type" onchange="applyFilters()">
-<option selected value="">All Types</option>
-<option value="Luxury">Luxury</option>
-<option value="Transit Hub">Transit Hub</option>
-<option value="Eco Stay">Eco Stay</option>
-</select>
+<input class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" placeholder="Distance" type="text" value="5 km" oninput="applyFilters()"/>
+<input class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="amenities" placeholder="Amenities" type="text" value="WiFi" oninput="applyFilters()"/>
 </div>
 </div>
+<!-- Grid Preview -->
 <div class="border-2 border-dashed border-outline-variant p-3">
-<p class="text-meta-label text-outline mb-2" id="inventory-count">HOTEL INVENTORY (0 FOUND)</p>
-<div class="rounded-lg flex gap-3">
-    <div class="space-y-2 w-full" id="inventory-list"></div>
-</div>
+<p class="text-meta-label text-outline mb-2" id="inventory-count">INVENTORY (0 FOUND)</p>
+<div class="rounded-lg flex gap-3"><div class="space-y-4 w-full" id="inventory-list"></div></div>
 </div>
 </div>
 </div>
 </div>
 <!-- LEVEL 2: HOTEL DETAIL PAGE -->
 <div class="level2 space-y-6 relative z-10">
+<div class="flex items-center justify-between mb-4">
+<span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
+</div>
+<!-- Main Card Container -->
 <div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
 <div class="flex justify-between items-start mb-6">
 <h3 class="text-node-title-md font-node-title-md text-secondary">Hotel Detail Page</h3>
-<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Active</span>
+<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">In Progress</span>
 </div>
-<div class="space-y-4" id="level2-content">
+<!-- Component Blocks -->
+<div class="space-y-4">
+<!-- Detail Header -->
+<div class="border border-outline-variant p-3 bg-secondary/5">
+<p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
+<h4 class="text-node-title-md font-bold" data-detail-field="name">The Orchid Hotel, Mumbai</h4>
+<div class="flex gap-2 mt-1">
+<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold" data-detail-field="rating">4.8 ★</span>
+<span class="text-[10px] text-outline" data-detail-field="location">Vile Parle, Mumbai</span>
+</div>
+</div>
+<!-- Gallery & Room Options -->
+<div class="grid grid-cols-2 gap-3">
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">grid_view</span>
+<p class="text-[10px] mt-1 font-bold">Media Gallery</p>
+</div>
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">bed</span>
+<p class="text-[10px] mt-1 font-bold">Room Options</p>
+</div>
+</div>
+<!-- Feature List -->
+<div class="border border-outline-variant p-3 bg-surface-container">
+<p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
+<ul class="text-[11px] space-y-1" data-detail-field="details">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> Flexible hourly stay</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> Complimentary Airport Shuttle</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> Express Transit Check-in</li>
+</ul>
+</div>
+<!-- Pricing Table Block -->
+<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
+<p class="text-meta-label text-secondary font-bold mb-2">HOURLY TIERED PRICING</p>
+<div class="grid grid-cols-4 gap-1 text-center">
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-2">₹1200</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">4 HR</p><p class="font-bold text-[11px]" data-detail-field="price-4">₹1800</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">8 HR</p><p class="font-bold text-[11px]" data-detail-field="price-8">₹2800</p></div>
+<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">FULL</p><p class="font-bold text-[11px]" data-detail-field="price-full">₹4500</p></div>
+</div>
+<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide">PLAN LAYOVER</button>
+</div>
+<!-- Reviews & FAQ -->
+<div class="grid grid-cols-2 gap-3 text-meta-label">
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">REVIEWS</p>
+<p class="font-semibold text-secondary" data-detail-field="reviews">482 Verified</p>
+</div>
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">CONTACT</p>
+<p class="font-semibold text-secondary">Quick Inquiry</p>
 </div>
 </div>
 </div>
 </div>
+</div>
+</div>
+<!-- ANNOTATION / LEGEND -->
+<section class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="border-2 border-dashed border-outline-variant p-4 bg-surface rounded">
+<h5 class="text-meta-label font-bold text-outline uppercase mb-3">Logic Annotations</h5>
+<ul class="text-[12px] space-y-2 text-on-surface-variant">
+<li class="flex gap-2"><strong>[1]</strong> Price sorting logic adjusts based on selected duration bucket.</li>
+<li class="flex gap-2"><strong>[2]</strong> Detailed Page shifts theme to Orange to signify "Conversion Focused" state.</li>
+<li class="flex gap-2"><strong>[3]</strong> Shuttle availability is a primary filter for layover users.</li>
+</ul>
+</div>
+</section>
 </main>
+
 <script>
     var level2 = document.querySelector('.level2');
     var mainLayout = document.querySelector('.main-layout');
     var filterFields = document.querySelectorAll('[data-filter-field]');
-    var filterState = { distance: '0-5' };
+    var filterState = {};
 
     var updateFilterState = (field) => {
-        filterState[field.dataset.filterField] = field.value.trim();
+        filterState[field.dataset.filterField] = field.value.trim().toLowerCase();
     };
 
     var inventoryData = window.LAYOVER_INVENTORY ? window.LAYOVER_INVENTORY['Hotels'] : [];
@@ -86,25 +300,9 @@
         var html = '';
         var visibleCount = 0;
 
-        var durFilter = filterState.duration || '';
-        var durText = durFilter ? `${durFilter}h` : '';
-
         inventoryData.forEach(item => {
             var strictMatch = true;
-
-            var filterDistance = filterState.distance || '';
-            if (filterDistance) {
-                if (filterDistance.endsWith('+')) {
-                    var min = parseFloat(filterDistance);
-                    if (item.distance < min) strictMatch = false;
-                } else {
-                    var parts = filterDistance.split('-');
-                    if (parts.length === 2) {
-                        if (item.distance < parseFloat(parts[0]) || item.distance > parseFloat(parts[1])) strictMatch = false;
-                    }
-                }
-            }
-
+            // Simple filtering logic
             if (strictMatch) {
                 visibleCount++;
                 var indTravel = 0;
@@ -114,25 +312,36 @@
                 var travelStr = indTravel > 0 ? `Est ${indTravel}m travel` : `${item.distance} KM`;
 
                 html += `
-                <div class="hotel-item p-3 bg-surface border border-outline-variant rounded-lg text-[11px] text-on-surface flex justify-between items-center cursor-pointer hover:bg-surface-container-low hover:border-primary/30 transition-colors shadow-sm" onclick="showLevel2('${item.name}')">
-                    <div class="flex items-center gap-3">
-                        ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded object-cover">` : `<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-[16px]">image</span></div>`}
-                        <div>
-                            <p class="font-bold text-[13px] text-primary">${item.name}</p>
-                            <p class="text-[10px] text-secondary flex items-center gap-1 mt-0.5">${item.type} ${durText ? `&bull; ${durText} stay` : ''}</p>
-                        </div>
+                <div class="flex gap-4 bg-white border border-outline-variant rounded-xl p-4 hover:shadow-md transition-shadow cursor-pointer group" onclick="showLevel2('${item.name}')">
+                    <div class="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                        ${item.image ? `<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${item.image}"/>` : `<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-[32px] text-outline-variant">image</span></div>`}
                     </div>
-                    <div class="text-right">
-                        <span class="material-symbols-outlined text-[16px] text-primary">hotel</span>
-                        <p class="text-[10px] text-outline font-medium mt-0.5">${travelStr}</p>
+                    <div class="flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-bold text-base text-primary">${item.name}</h3>
+                                <div class="flex items-center gap-[2px] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+                                    <span class="font-bold text-[10px] text-emerald-700">${item.rating}</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 text-secondary mt-1 text-xs">
+                                <span>${item.type}</span>
+                                <span>&bull;</span>
+                                <span>${travelStr}</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mt-3">
+                            <span class="text-emerald-600 font-bold text-[9px] px-2 py-0.5 bg-emerald-50 rounded-full uppercase tracking-wider border border-emerald-100">High Compatibility</span>
+                            <span class="text-brand-accent font-bold text-[11px] uppercase tracking-wider group-hover:underline">View Details</span>
+                        </div>
                     </div>
                 </div>
                 `;
             }
         });
 
-        listContainer.innerHTML = html || '<p class="text-xs text-secondary text-center py-4">No hotels match your filters.</p>';
-        document.getElementById('inventory-count').textContent = `HOTEL INVENTORY (${visibleCount} FOUND)`;
+        listContainer.innerHTML = html || '<p class="text-xs text-secondary text-center py-4">No items found.</p>';
+        document.getElementById('inventory-count').textContent = `INVENTORY (${visibleCount} FOUND)`;
     };
 
     var applyFilters = () => {
@@ -140,64 +349,106 @@
         renderList();
     };
 
-    var showLevel2 = (name) => {
+    window.showLevel2 = (name) => {
         var detail = inventoryData.find(i => i.name === name);
         if (!detail || !level2) return;
         
-        var durFilter = filterState.duration || '';
-        var durText = durFilter ? `${durFilter}h` : '';
-        
-        var content = document.getElementById('level2-content');
-        content.innerHTML = `
-<div class="border border-outline-variant p-3 bg-secondary/5 rounded-lg">
+        level2.innerHTML = `
+<div class="flex items-center justify-between mb-4">
+<span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
+</div>
+<div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-node-title-md font-node-title-md text-secondary">Detail Page</h3>
+<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Active</span>
+</div>
+<div class="space-y-4">
+<div class="border border-outline-variant p-3 bg-secondary/5">
 <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
 <h4 class="text-node-title-md font-bold">${detail.name}</h4>
 <div class="flex gap-2 mt-1">
-<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1.5 py-0.5 rounded font-semibold">${detail.rating}</span>
+<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold">${detail.rating}</span>
 <span class="text-[10px] text-outline">${detail.distance} km from Airport</span>
 </div>
 </div>
-<div class="border border-outline-variant p-3 bg-surface-container rounded-lg mt-4">
+<div class="grid grid-cols-2 gap-3">
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">grid_view</span>
+<p class="text-[10px] mt-1 font-bold">Media Gallery</p>
+</div>
+<div class="border border-outline-variant p-2 text-center bg-surface">
+<span class="material-symbols-outlined text-secondary">info</span>
+<p class="text-[10px] mt-1 font-bold">Options</p>
+</div>
+</div>
+<div class="border border-outline-variant p-3 bg-surface-container">
 <p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
-<ul class="text-[11px] space-y-1.5">
-${detail.details.map((item) => `<li class="flex items-center gap-2 text-secondary"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
+<ul class="text-[11px] space-y-1">
+${detail.details.map((item) => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
 </ul>
 </div>
-<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20 mt-4">
+<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
 <p class="text-meta-label text-secondary font-bold mb-2">DURATION-BASED PRICING</p>
-<div class="grid grid-cols-3 gap-1 text-center">
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">1 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.one ? detail.prices.one : '-'}</p></div>
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.two ? detail.prices.two : '-'}</p></div>
-<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">4 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.three ? detail.prices.three : '-'}</p></div>
+<div class="grid grid-cols-3 gap-1 text-center mb-4">
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">1-2 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.one ? detail.prices.one : '-'}</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">3-4 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.two ? detail.prices.two : '-'}</p></div>
+<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">FULL</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.three ? detail.prices.three : '-'}</p></div>
+</div>
+<div class="flex flex-col gap-2 w-full mt-2 pt-4 border-t border-secondary/20">
+    <label class="block text-[9px] font-bold text-secondary uppercase">Select Stay Duration</label>
+    <select class="w-full bg-surface border border-outline-variant p-2 rounded text-[11px] focus:outline-none focus:border-primary" onchange="this.nextElementSibling.disabled = !this.value; this.nextElementSibling.dataset.duration = this.value;">
+        <option value="" disabled selected hidden>Select Duration</option>
+        <option value="30m">30 mins</option>
+        <option value="1h">1 hour</option>
+        <option value="1.5h">1.5 hours</option>
+        <option value="2h">2 hours</option>
+        <option value="3h">3 hours</option>
+        <option value="4h">4 hours</option>
+        <option value="6h">6 hours</option>
+    </select>
+    <button disabled data-duration="" onclick="window.addToList && window.addToList(this, '${detail.name}', '${detail.category}', this.dataset.duration, ${detail.distance}, '${detail.image}')" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">Add to List</button>
 </div>
 </div>
-<div class="mt-6 border-t border-outline-variant pt-4">
-    <div class="flex flex-col gap-2 w-full mb-3">
-        <label class="block text-[9px] font-bold text-secondary uppercase">Select Stay Duration</label>
-        <select class="w-full bg-surface border border-outline-variant p-2 rounded text-[11px] focus:outline-none focus:border-primary" onchange="this.nextElementSibling.disabled = false; this.nextElementSibling.dataset.duration = this.value;">
-            <option value="" disabled selected hidden>Select Duration</option>
-            <option value="30m">30 mins</option>
-            <option value="1h" ${durFilter === '1' ? 'selected' : ''}>1 hour</option>
-            <option value="1.5h" ${durFilter === '1.5' ? 'selected' : ''}>1.5 hours</option>
-            <option value="2h" ${durFilter === '2' ? 'selected' : ''}>2 hours</option>
-            <option value="3h" ${durFilter === '3' ? 'selected' : ''}>3 hours</option>
-            <option value="4h" ${durFilter === '4' ? 'selected' : ''}>4 hours</option>
-            <option value="6h" ${durFilter === '6' ? 'selected' : ''}>6 hours</option>
-            <option value="8h" ${durFilter === '8' ? 'selected' : ''}>8 hours</option>
-        </select>
-        <button disabled data-duration="" onclick="window.addToList && window.addToList(this, '${detail.name}', '${detail.category}', this.dataset.duration, ${detail.distance}, '${detail.image}')" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">Add to List</button>
-    </div>
+<div class="grid grid-cols-2 gap-3 text-meta-label mt-4">
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">REVIEWS</p>
+<p class="font-semibold text-secondary">${detail.reviews}</p>
 </div>
-        `;
-        if (mainLayout) mainLayout.classList.add('active');
+<div class="border border-outline-variant p-2 rounded">
+<p class="text-outline mb-1">CONTACT</p>
+<p class="font-semibold text-secondary">Quick Inquiry</p>
+</div>
+</div>
+</div>
+`;
+        
+        if (mainLayout) mainLayout.classList.add('side-by-side');
         if (level2) level2.style.display = 'block';
         if (window.syncButtonStates) window.syncButtonStates();
     };
 
     filterFields.forEach((field) => {
         field.addEventListener('change', applyFilters);
+        field.addEventListener('input', applyFilters);
     });
 
     applyFilters();
 </script>
+
+<!-- Footer Anchor -->
+<footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 mt-20 w-full">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full px-8 py-12 max-w-7xl mx-auto">
+<div>
+<h4 class="text-lg font-bold text-slate-700 dark:text-slate-300 mb-4">StayMarket</h4>
+<p class="text-slate-500 dark:text-slate-400 font-manrope text-xs tracking-wide">© 2024 StayMarket Global. Structured for clarity.</p>
+</div>
+<div class="flex flex-wrap gap-6 justify-end">
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">About Us</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150 underline" href="#">Privacy Policy</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">Terms of Service</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">Help Center</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">Careers</a>
+</div>
+</div>
+</footer>
 </body></html>
