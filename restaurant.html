@@ -331,11 +331,24 @@
                     btn.innerHTML = btn.dataset.originalHtml;
                 }
                 
-                btn.innerHTML = 'PLAN LAYOVER';
-                btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
-                btn.onclick = function() {
-                    window.location.href = 'QR_Upload_State.html';
-                };
+                const isMarketplace = !!document.getElementById('marketplace-content') || window.location.pathname.includes('marketplace');
+                if (isMarketplace) {
+                    btn.innerHTML = 'ADD TO LIST';
+                    btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
+                    btn.onclick = function() {
+                        if (window.addToList) {
+                            window.addToList(btn, item.name, 'Restaurant', '', item.distance, '');
+                        } else if (window.parent && window.parent.addToList) {
+                            window.parent.addToList(btn, item.name, 'Restaurant', '', item.distance, '');
+                        }
+                    };
+                } else {
+                    btn.innerHTML = 'PLAN LAYOVER';
+                    btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
+                    btn.onclick = function() {
+                        window.location.href = 'QR_Upload_State.html';
+                    };
+                }
             }
             
             l2.classList.remove('hidden');
