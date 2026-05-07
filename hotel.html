@@ -1,567 +1,113 @@
 <!DOCTYPE html>
-
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>LayoverX Hotels Sitemap</title>
+<title>StayMarket | Hotels Listing</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "secondary": "#9d4300",
-                        "inverse-primary": "#c0c1ff",
-                        "on-primary-fixed-variant": "#2f2ebe",
-                        "on-primary-container": "#fffbff",
-                        "tertiary-container": "#007cb1",
-                        "surface-container-lowest": "#ffffff",
-                        "on-primary-fixed": "#07006c",
-                        "surface-dim": "#cbdbf5",
-                        "tertiary": "#00628d",
-                        "secondary-fixed-dim": "#ffb690",
-                        "on-secondary-fixed-variant": "#783200",
-                        "inverse-on-surface": "#eaf1ff",
-                        "primary-fixed": "#e1e0ff",
-                        "surface": "#f8f9ff",
-                        "surface-container-low": "#eff4ff",
-                        "on-secondary": "#ffffff",
-                        "on-tertiary-fixed": "#001e2f",
-                        "on-tertiary": "#ffffff",
-                        "surface-container-highest": "#d3e4fe",
-                        "on-background": "#0b1c30",
-                        "secondary-fixed": "#ffdbca",
-                        "surface-variant": "#d3e4fe",
-                        "error-container": "#ffdad6",
-                        "on-surface": "#0b1c30",
-                        "on-tertiary-fixed-variant": "#004c6e",
-                        "surface-container": "#e5eeff",
-                        "primary-container": "#6063ee",
-                        "primary": "#4648d4",
-                        "on-error-container": "#93000a",
-                        "on-surface-variant": "#464554",
-                        "on-secondary-container": "#5c2400",
-                        "on-tertiary-container": "#fcfcff",
-                        "tertiary-fixed": "#c9e6ff",
-                        "on-secondary-fixed": "#341100",
-                        "primary-fixed-dim": "#c0c1ff",
-                        "tertiary-fixed-dim": "#89ceff",
-                        "on-primary": "#ffffff",
-                        "surface-bright": "#f8f9ff",
-                        "outline": "#767586",
-                        "background": "#f8f9ff",
-                        "outline-variant": "#c7c4d7",
-                        "error": "#ba1a1a",
-                        "surface-tint": "#494bd6",
-                        "inverse-surface": "#213145",
-                        "on-error": "#ffffff",
-                        "secondary-container": "#fd761a",
-                        "surface-container-high": "#dce9ff"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "connector-thickness": "2px",
-                        "stack-gap": "2rem",
-                        "level-indent": "4rem",
-                        "node-padding": "1.25rem",
-                        "grid-size": "8px"
-                    },
-                    "fontFamily": {
-                        "node-title-lg": ["Manrope"],
-                        "node-title-md": ["Manrope"],
-                        "meta-label": ["Inter"],
-                        "node-description": ["Inter"],
-                        "connector-text": ["Inter"]
-                    },
-                    "fontSize": {
-                        "node-title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
-                        "node-title-md": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
-                        "meta-label": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                        "node-description": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
-                        "connector-text": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
-                    }
-                },
-            },
-        }
-    </script>
 <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-            font-size: 1.25rem;
-        }
-        .connector-line {
-            background-image: radial-gradient(circle, #767586 1px, transparent 1px);
-            background-size: 8px 8px;
-        }
-        .main-layout {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-        }
-        .main-layout.active {
-            justify-content: flex-start;
-        }
-        .main-layout,
-        .main-layout * {
-            transition: none !important;
-            transform: none !important;
-            animation: none !important;
-        }
-        .level1 {
-            width: 600px;
-            transition: none;
-        }
-        .level2 {
-            width: 600px;
-            display: none;
-        }
-        .hotel-item {
-            cursor: pointer;
-        }
-        .filter-field {
-            cursor: pointer;
-            min-height: 32px;
-            width: 100%;
-            outline: none;
-        }
-        .filter-field:focus {
-            box-shadow: 0 0 0 2px rgba(74, 68, 255, 0.18);
-        }
-    </style>
+    .hotel-item { transition: all 0.2s ease; }
+    .hotel-item:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+</style>
 </head>
-<body class="bg-white text-on-background font-node-description antialiased p-8">
-<!-- Top Navigation Anchor -->
-<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center w-full px-8 py-3 max-w-full mx-auto mb-12">
-<div class="flex items-center gap-4">
-<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">StayMarket</h1>
-<span class="text-xs bg-primary-container text-on-primary-container px-2 py-0.5 font-bold">LAYOVERX SYSTEM</span>
-</div>
-<nav class="hidden md:flex gap-6 items-center">
-<a class="text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 pb-1 font-semibold font-manrope text-sm" href="#">Browse</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Deals</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">My Bookings</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Support</a>
-</nav>
-<div class="flex gap-4 items-center">
-<span class="material-symbols-outlined text-slate-500">notifications</span>
-<span class="material-symbols-outlined text-slate-500">account_circle</span>
-</div>
-</header>
-<main class="max-w-7xl mx-auto space-y-12">
-<!-- SITEMAP CANVAS -->
-<div class="main-layout">
-<!-- LEVEL 1: HOTELS LISTING PAGE -->
-<div class="level1 space-y-6 relative z-10">
-<div class="flex items-center justify-between mb-4">
-<span class="bg-primary text-white text-meta-label px-3 py-1 font-bold">LEVEL 1: LISTING</span>
-</div>
-<!-- Main Card Container -->
-<div class="bg-white border-2 border-primary-container p-node-padding rounded shadow-sm">
-<div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-primary">Hotels Listing Page</h3>
-<span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Finalized</span>
-</div>
-<!-- Component Blocks -->
-<div class="space-y-4">
-<!-- Filter Block -->
-<div class="border border-outline-variant p-3 bg-surface rounded-lg mb-4">
-<p class="text-meta-label text-outline mb-2">SEARCH &amp; FILTERS</p>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-node-description">
-<input class="bg-surface-container-high px-3 py-2 rounded border-0 text-node-description w-full focus:ring-1 focus:ring-primary outline-none transition-all" id="search-keyword" placeholder="Search name, location, keyword..." type="text" oninput="renderHotels()"/>
-<input class="bg-surface-container-high px-3 py-2 rounded border-0 text-node-description w-full focus:ring-1 focus:ring-primary outline-none transition-all" id="filter-distance" placeholder="Max distance (km)" type="number" step="0.1" oninput="renderHotels()"/>
-<select class="bg-surface-container-high px-3 py-2 rounded border-0 text-node-description w-full focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer" id="sort-distance" onchange="renderHotels()">
-<option value="asc">Sort: Nearest First</option>
-<option value="desc">Sort: Furthest First</option>
-</select>
-</div>
-</div>
-<!-- Grid Preview -->
-<div class="border-2 border-dashed border-outline-variant p-3 rounded-lg bg-surface-container-lowest">
-<p class="text-meta-label text-outline mb-3" id="inventory-count">HOTEL INVENTORY (0 HOTELS FOUND)</p>
-<div class="rounded-lg">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="hotel-grid">
-<!-- Hotels injected dynamically -->
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- LEVEL 2: HOTEL DETAIL PAGE -->
-<div class="level2 space-y-6 relative z-10">
-<div class="flex items-center justify-between mb-4">
-<span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
-</div>
-<!-- Main Card Container -->
-<div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
-<div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-secondary">Hotel Detail Page</h3>
-<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">In Progress</span>
-</div>
-<!-- Component Blocks -->
-<div class="space-y-4">
-<!-- Detail Header -->
-<div class="border border-outline-variant p-3 bg-secondary/5">
-<p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-<h4 class="text-node-title-md font-bold" data-detail-field="name">The Orchid Hotel, Mumbai</h4>
-<div class="flex gap-2 mt-1">
-<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold" data-detail-field="rating">4.8 ★</span>
-<span class="text-[10px] text-outline" data-detail-field="location">Vile Parle, Mumbai</span>
-</div>
-</div>
-<!-- Gallery & Room Options -->
-<div class="grid grid-cols-2 gap-3">
-<div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">grid_view</span>
-<p class="text-[10px] mt-1 font-bold">Media Gallery</p>
-</div>
-<div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">bed</span>
-<p class="text-[10px] mt-1 font-bold">Room Options</p>
-</div>
-</div>
-<!-- Feature List -->
-<div class="border border-outline-variant p-3 bg-surface-container">
-<p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
-<ul class="text-[11px] space-y-1" data-detail-field="details">
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> Flexible hourly stay</li>
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> Complimentary Airport Shuttle</li>
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> Express Transit Check-in</li>
-</ul>
-</div>
-<!-- Pricing Table Block -->
-<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
-<p class="text-meta-label text-secondary font-bold mb-2">HOURLY TIERED PRICING</p>
-<div class="grid grid-cols-4 gap-1 text-center">
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-2">₹1200</p></div>
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">4 HR</p><p class="font-bold text-[11px]" data-detail-field="price-4">₹1800</p></div>
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">8 HR</p><p class="font-bold text-[11px]" data-detail-field="price-8">₹2800</p></div>
-<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">FULL</p><p class="font-bold text-[11px]" data-detail-field="price-full">₹4500</p></div>
-</div>
-<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide">PLAN LAYOVER</button>
-</div>
-<!-- Reviews & FAQ -->
-<div class="grid grid-cols-2 gap-3 text-meta-label">
-<div class="border border-outline-variant p-2 rounded">
-<p class="text-outline mb-1">REVIEWS</p>
-<p class="font-semibold text-secondary" data-detail-field="reviews">482 Verified</p>
-</div>
-<div class="border border-outline-variant p-2 rounded">
-<p class="text-outline mb-1">CONTACT</p>
-<p class="font-semibold text-secondary">Quick Inquiry</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- ANNOTATION / LEGEND -->
-<section class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-<div class="border-2 border-dashed border-outline-variant p-4 bg-surface rounded">
-<h5 class="text-meta-label font-bold text-outline uppercase mb-3">Logic Annotations</h5>
-<ul class="text-[12px] space-y-2 text-on-surface-variant">
-<li class="flex gap-2"><strong>[1]</strong> Price sorting logic adjusts based on selected duration bucket.</li>
-<li class="flex gap-2"><strong>[2]</strong> Detailed Page shifts theme to Orange to signify "Conversion Focused" state.</li>
-<li class="flex gap-2"><strong>[3]</strong> Shuttle availability is a primary filter for layover users.</li>
-</ul>
-</div>
-</section>
+<body class="bg-slate-50 text-slate-900 font-sans p-4 md:p-8">
+
+<main class="max-w-4xl mx-auto space-y-8">
+    <div class="bg-white border border-slate-200 p-8 rounded-2xl shadow-sm">
+        <h1 class="text-3xl font-bold text-slate-900 mb-2">Hotels Near Mumbai Airport</h1>
+        <p class="text-slate-500 mb-8" id="subtitle">Explore options for your stay</p>
+
+        <!-- Search & Filters -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 mb-8">
+            <select class="filter-field border border-slate-300 rounded-lg p-2" data-filter-field="duration" onchange="applyFilters()">
+                <option value="">Duration (Any)</option>
+                <option value="2">2 Hours</option>
+                <option value="4">4 Hours</option>
+                <option value="8">8 Hours</option>
+            </select>
+            <select class="filter-field border border-slate-300 rounded-lg p-2" data-filter-field="priceRange" onchange="applyFilters()">
+                <option value="0-99999">Price Range (Any)</option>
+                <option value="0-5000">₹0 – ₹5000</option>
+                <option value="5000-10000">₹5000 – ₹10000</option>
+                <option value="10001-99999">₹10000+</option>
+            </select>
+            <select class="filter-field border border-slate-300 rounded-lg p-2" data-filter-field="distance" onchange="applyFilters()">
+                <option value="999">Distance (Any)</option>
+                <option value="3">Within 3 km</option>
+                <option value="5">Within 5 km</option>
+                <option value="10">Within 10 km</option>
+            </select>
+            <select class="filter-field border border-slate-300 rounded-lg p-2" data-filter-field="amenities" onchange="applyFilters()">
+                <option value="">Amenities (Any)</option>
+                <option value="pool">Pool</option>
+                <option value="spa">Spa</option>
+            </select>
+        </div>
+
+        <p class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4" id="inventory-count">HOTEL INVENTORY</p>
+        <div id="inventory-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Populated by JS -->
+        </div>
+    </div>
 </main>
+
 <script>
-    const level2 = document.querySelector('.level2');
-    const mainLayout = document.querySelector('.main-layout');
-    const hotelItems = document.querySelectorAll('.hotel-item');
-    const filterFields = document.querySelectorAll('[data-filter-field]');
-    const filterDefaults = {
-        duration: '2 hrs',
-        priceRange: '₹1000–₹5000',
-        distance: '5 km',
-        amenities: 'WiFi'
-    };
-    const filterState = {};
-
-    const updateFilterState = (field) => {
-        const key = field.dataset.filterField;
-        const fallback = filterDefaults[key] || '';
-        const value = field.value.trim() || fallback;
-
-        if (!field.value.trim()) {
-            field.value = fallback;
-        }
-
-        filterState[key] = value;
-    };
-
-    filterFields.forEach((field) => {
-        updateFilterState(field);
-    });
+    const hotels = [
+        { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Standard", price: 4500, amenities: ["Airport Shuttle"], duration: [2,4] },
+        { id: 2, name: "Hotel Sahara Star", distance: 1.1, category: "Premium", price: 5000, amenities: ["Airport Shuttle", "Pool"], duration: [2,4,8] },
+        { id: 3, name: "Taj Santacruz", distance: 1.6, category: "Premium", price: 6000, amenities: ["Airport Shuttle", "Spa"], duration: [4,8,12] },
+        { id: 4, name: "Hotel Bawa International", distance: 1.7, category: "Standard", price: 2200, amenities: ["Airport Shuttle"], duration: [2,4] },
+        { id: 5, name: "JW Marriott Mumbai Sahar", distance: 1.8, category: "Premium", price: 7000, amenities: ["Airport Shuttle", "Pool", "Spa"], duration: [4,8,12] },
+        { id: 6, name: "Hotel Midland", distance: 2.3, category: "Standard", price: 1800, amenities: ["Airport Shuttle"], duration: [2,4] },
+        { id: 7, name: "ITC Maratha", distance: 2.4, category: "Premium", price: 7500, amenities: ["Airport Shuttle", "Pool", "Spa"], duration: [4,8,12] },
+        { id: 8, name: "The Leela Mumbai", distance: 2.5, category: "Premium", price: 6500, amenities: ["Airport Shuttle", "Pool", "Spa"], duration: [4,8,12] },
+        { id: 9, name: "Aurika Mumbai Airport", distance: 2.8, category: "Premium", price: 4500, amenities: ["Airport Shuttle", "Pool"], duration: [4,8] },
+        { id: 10, name: "Lemon Tree Premier", distance: 3.2, category: "Standard", price: 3200, amenities: ["Airport Shuttle", "Pool"], duration: [4,8] },
+        { id: 11, name: "Holiday Inn Mumbai Airport", distance: 4.2, category: "Standard", price: 4500, amenities: ["Airport Shuttle", "Pool"], duration: [4,8,12] },
+        { id: 12, name: "Grand Hyatt Mumbai", distance: 6.1, category: "Premium", price: 8000, amenities: ["Airport Shuttle", "Pool", "Spa"], duration: [8,12,24] }
+    ];
 
     function applyFilters() {
-        filterFields.forEach((field) => {
-            updateFilterState(field);
+        const dur = document.querySelector('[data-filter-field="duration"]').value;
+        const price = document.querySelector('[data-filter-field="priceRange"]').value;
+        const dist = parseFloat(document.querySelector('[data-filter-field="distance"]').value);
+        const amen = document.querySelector('[data-filter-field="amenities"]').value.toLowerCase();
+
+        let filtered = hotels.filter(h => {
+            if (dur && !h.duration.includes(parseInt(dur))) return false;
+            if (price) {
+                const [min, max] = price.split('-').map(Number);
+                if (h.price < min || h.price > max) return false;
+            }
+            if (dist && h.distance > dist) return false;
+            if (amen && !h.amenities.map(a => a.toLowerCase()).includes(amen)) return false;
+            return true;
         });
 
-        hotelItems.forEach((item) => {
-            const duration = item.dataset.duration || '';
-            const price = item.dataset.price || '';
-            const distance = item.dataset.distance || '';
-            const amenities = (item.dataset.amenities || '').toLowerCase();
-
-            let match = true;
-
-            const filterDuration = filterState.duration || '';
-            if (filterDuration) {
-                const fd = parseInt(filterDuration, 10);
-                const id = parseInt(duration, 10);
-                if (!isNaN(fd) && !isNaN(id) && id !== fd) {
-                    match = false;
-                }
-            }
-
-            const filterPrice = filterState.priceRange || '';
-            if (match && filterPrice) {
-                const p = parseInt(price, 10);
-                if (filterPrice.includes('+')) {
-                    const min = parseInt(filterPrice, 10);
-                    if (!isNaN(min) && !isNaN(p) && p < min) match = false;
-                } else {
-                    const parts = filterPrice.match(/\d+/g);
-                    if (parts && parts.length >= 2) {
-                        const min = parseInt(parts[0], 10);
-                        const max = parseInt(parts[1], 10);
-                        if (!isNaN(min) && !isNaN(max) && !isNaN(p) && (p < min || p > max)) match = false;
-                    }
-                }
-            }
-
-            const filterDistance = filterState.distance || '';
-            if (match && filterDistance) {
-                const fd = parseInt(filterDistance, 10);
-                const id = parseInt(distance, 10);
-                if (!isNaN(fd) && !isNaN(id) && id > fd) match = false;
-            }
-
-            const filterAmenities = (filterState.amenities || '').toLowerCase();
-            if (match && filterAmenities) {
-                if (!amenities.includes(filterAmenities)) match = false;
-            }
-
-            item.style.display = match ? 'block' : 'none';
-        });
-
-        console.log('Filters applied:', filterState);
+        filtered.sort((a, b) => a.distance - b.distance);
+        render(filtered);
     }
-    const hotelDetails = {
-        'The Orchid Hotel': {
-            name: 'The Orchid Hotel, Mumbai',
-            rating: '4.8 ★',
-            location: 'Vile Parle, Mumbai',
-            reviews: '482 Verified',
-            prices: { two: '₹1200', four: '₹1800', eight: '₹2800', full: '₹4500' },
-            details: ['Flexible hourly stay', 'Complimentary Airport Shuttle', 'Express Transit Check-in']
-        },
-        'Hotel Sahara Star': {
-            name: 'Hotel Sahara Star, Mumbai',
-            rating: '4.7 ★',
-            location: 'Domestic Airport, Mumbai',
-            reviews: '438 Verified',
-            prices: { two: '₹1400', four: '₹2200', eight: '₹3300', full: '₹5200' },
-            details: ['Lagoon-view rooms', 'Airport-adjacent location', 'Multiple dining options']
-        },
-        'Taj Santacruz': {
-            name: 'Taj Santacruz, Mumbai',
-            rating: '4.9 ★',
-            location: 'Santacruz, Mumbai',
-            reviews: '516 Verified',
-            prices: { two: '₹2200', four: '₹3400', eight: '₹5200', full: '₹8200' },
-            details: ['Premium suites', 'Luxury transit lounge access', 'Spa and wellness services']
-        },
-        'JW Marriott Sahar': {
-            name: 'JW Marriott Sahar, Mumbai',
-            rating: '4.8 ★',
-            location: 'Andheri East, Mumbai',
-            reviews: '497 Verified',
-            prices: { two: '₹2100', four: '₹3200', eight: '₹5000', full: '₹7800' },
-            details: ['Resort-style pool', 'Business traveler amenities', 'Close to Terminal 2']
-        },
-        'ITC Maratha': {
-            name: 'ITC Maratha, Mumbai',
-            rating: '4.8 ★',
-            location: 'Sahar, Mumbai',
-            reviews: '465 Verified',
-            prices: { two: '₹2000', four: '₹3100', eight: '₹4800', full: '₹7600' },
-            details: ['Heritage luxury rooms', 'Signature dining', 'Transit-friendly check-in']
-        },
-        'The Leela Mumbai': {
-            name: 'The Leela Mumbai',
-            rating: '4.7 ★',
-            location: 'Andheri East, Mumbai',
-            reviews: '452 Verified',
-            prices: { two: '₹1900', four: '₹3000', eight: '₹4600', full: '₹7200' },
-            details: ['Garden-view stays', 'Premium airport shuttle', 'Quiet work-friendly rooms']
-        },
-        'Aurika Mumbai': {
-            name: 'Aurika Mumbai',
-            rating: '4.6 ★',
-            location: 'Near Mumbai Airport',
-            reviews: '318 Verified',
-            prices: { two: '₹1700', four: '₹2600', eight: '₹3900', full: '₹6200' },
-            details: ['Modern rooms', 'Fast check-in', 'Layover dining packages']
-        },
-        'Grand Hyatt': {
-            name: 'Grand Hyatt Mumbai',
-            rating: '4.7 ★',
-            location: 'Santacruz East, Mumbai',
-            reviews: '489 Verified',
-            prices: { two: '₹1800', four: '₹2900', eight: '₹4400', full: '₹7000' },
-            details: ['Large rooms', 'Multiple restaurants', 'Business center access']
-        },
-        'Hotel Bawa Intl.': {
-            name: 'Hotel Bawa International',
-            rating: '4.2 ★',
-            location: 'Vile Parle East, Mumbai',
-            reviews: '276 Verified',
-            prices: { two: '₹800', four: '₹1300', eight: '₹2100', full: '₹3300' },
-            details: ['Budget-friendly rooms', 'Quick airport access', 'Flexible stay slots']
-        },
-        'Hotel Midland': {
-            name: 'Hotel Midland',
-            rating: '4.0 ★',
-            location: 'Santacruz, Mumbai',
-            reviews: '214 Verified',
-            prices: { two: '₹700', four: '₹1100', eight: '₹1800', full: '₹2900' },
-            details: ['Simple transit rooms', 'Cafe on-site', 'Short-stay availability']
-        },
-        'Lemon Tree Premier': {
-            name: 'Lemon Tree Premier, Mumbai',
-            rating: '4.4 ★',
-            location: 'Andheri East, Mumbai',
-            reviews: '331 Verified',
-            prices: { two: '₹1000', four: '₹1600', eight: '₹2500', full: '₹3900' },
-            details: ['Reliable business rooms', 'Breakfast options', 'Near airport road']
-        },
-        'Holiday Inn': {
-            name: 'Holiday Inn Mumbai International Airport',
-            rating: '4.5 ★',
-            location: 'Sakinaka, Mumbai',
-            reviews: '367 Verified',
-            prices: { two: '₹1100', four: '₹1700', eight: '₹2700', full: '₹4200' },
-            details: ['Rooftop pool', 'Airport shuttle support', 'Comfortable day-use rooms']
-        }
-    };
 
-    const renderLevel2 = (detail) => `
-<div class="flex items-center justify-between mb-4">
-<span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
-</div>
-<div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
-<div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-secondary">Hotel Detail Page</h3>
-<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">In Progress</span>
-</div>
-<div class="space-y-4">
-<div class="border border-outline-variant p-3 bg-secondary/5">
-<p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-<h4 class="text-node-title-md font-bold" data-detail-field="name">${detail.name}</h4>
-<div class="flex gap-2 mt-1">
-<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold" data-detail-field="rating">${detail.rating}</span>
-<span class="text-[10px] text-outline" data-detail-field="location">${detail.location}</span>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-3">
-<div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">grid_view</span>
-<p class="text-[10px] mt-1 font-bold">Media Gallery</p>
-</div>
-<div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">bed</span>
-<p class="text-[10px] mt-1 font-bold">Room Options</p>
-</div>
-</div>
-<div class="border border-outline-variant p-3 bg-surface-container">
-<p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
-<ul class="text-[11px] space-y-1" data-detail-field="details">
-${detail.details.map((item) => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
-</ul>
-</div>
-<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
-<p class="text-meta-label text-secondary font-bold mb-2">HOURLY TIERED PRICING</p>
-<div class="grid grid-cols-4 gap-1 text-center">
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-2">${detail.prices.two}</p></div>
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">4 HR</p><p class="font-bold text-[11px]" data-detail-field="price-4">${detail.prices.four}</p></div>
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">8 HR</p><p class="font-bold text-[11px]" data-detail-field="price-8">${detail.prices.eight}</p></div>
-<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">FULL</p><p class="font-bold text-[11px]" data-detail-field="price-full">${detail.prices.full}</p></div>
-</div>
-<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide">PLAN LAYOVER</button>
-</div>
-<div class="grid grid-cols-2 gap-3 text-meta-label">
-<div class="border border-outline-variant p-2 rounded">
-<p class="text-outline mb-1">REVIEWS</p>
-<p class="font-semibold text-secondary" data-detail-field="reviews">${detail.reviews}</p>
-</div>
-<div class="border border-outline-variant p-2 rounded">
-<p class="text-outline mb-1">CONTACT</p>
-<p class="font-semibold text-secondary">Quick Inquiry</p>
-</div>
-</div>
-</div>
-</div>`;
-
-    const updateLevel2 = (hotelName) => {
-        const detail = hotelDetails[hotelName];
-        if (!detail || !level2) return;
-
-        level2.innerHTML = renderLevel2(detail);
-    };
-
-    hotelItems.forEach((hotelItem) => {
-        const showLevel2 = () => {
-            updateLevel2(hotelItem.textContent.trim());
-            if (mainLayout) {
-                mainLayout.classList.add('active');
-            }
-            if (level2) {
-                level2.style.display = 'block';
-            }
-        };
-
-        hotelItem.addEventListener('click', showLevel2);
-        hotelItem.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                showLevel2();
-            }
-        });
-    });
+    function render(data) {
+        const container = document.getElementById('inventory-list');
+        document.getElementById('inventory-count').textContent = `HOTEL INVENTORY (${data.length} FOUND)`;
+        container.innerHTML = data.map(h => `
+            <div class="hotel-item p-4 border border-slate-200 rounded-xl bg-white shadow-sm hover:shadow-md transition">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="font-bold text-lg">${h.name}</h3>
+                    <span class="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 uppercase">${h.category}</span>
+                </div>
+                <p class="text-sm text-slate-500 mb-4">${h.distance} km from T2 Terminal</p>
+                <div class="flex justify-between items-center text-sm font-bold text-slate-700 border-t pt-3">
+                    <span>₹${h.price}</span>
+                    <button class="bg-blue-900 text-white px-4 py-2 rounded-lg text-xs">Add to List</button>
+                </div>
+            </div>
+        `).join('');
+    }
 
     applyFilters();
 </script>
-<!-- Footer Anchor -->
-<footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 mt-20 w-full">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full px-8 py-12 max-w-7xl mx-auto">
-<div>
-<h4 class="text-lg font-bold text-slate-700 dark:text-slate-300 mb-4">StayMarket</h4>
-<p class="text-slate-500 dark:text-slate-400 font-manrope text-xs tracking-wide">© 2024 StayMarket Global. Structured for clarity.</p>
-</div>
-<div class="flex flex-wrap gap-6 justify-end">
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">About Us</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150 underline" href="#">Privacy Policy</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">Terms of Service</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">Help Center</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">Careers</a>
-</div>
-</div>
-</footer>
-</body></html>
+</body>
+</html>
