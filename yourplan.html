@@ -239,95 +239,177 @@ document.addEventListener('DOMContentLoaded', () => {
         layoverList = stored ? JSON.parse(stored) : [];
     } catch(e) {}
 
-    document.getElementById('plan-activity-count').textContent = `${layoverList.length} activit${layoverList.length === 1 ? 'y' : 'ies'} scheduled`;
-
-    // 3. Render the List
-    const listContainer = document.getElementById('itinerary-list');
-    
-    if (layoverList.length === 0) {
-        listContainer.innerHTML = `
-            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl flex flex-col items-center justify-center text-center">
-                <span class="material-symbols-outlined text-[48px] text-outline-variant mb-4">list_alt_add</span>
-                <h4 class="font-h2 text-on-surface font-semibold mb-2">No Experiences Yet</h4>
-                <p class="font-body-md text-secondary">Browse the marketplace and add experiences to start planning your perfect layover.</p>
-            </div>
-        `;
-    } else {
-        let html = '';
-        layoverList.forEach((item, index) => {
-            html += `
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md group hover:border-primary/40 transition-colors shadow-sm relative overflow-hidden">
-                    <div class="cursor-grab text-outline-variant group-hover:text-primary">
-                        <span class="material-symbols-outlined" data-icon="drag_indicator">drag_indicator</span>
-                    </div>
-                    <div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden shrink-0 border border-outline-variant/30">
-                        ${item.image ? `<img class="w-full h-full object-cover" src="${item.image}"/>` : `<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-outline-variant">image</span></div>`}
-                    </div>
-                    <div class="flex-grow">
-                        <div class="flex items-center gap-sm">
-                            <h4 class="font-h2 text-body-lg font-semibold">${item.name}</h4>
-                        </div>
-                        <p class="font-body-md text-secondary flex items-center gap-1 mt-0.5">
-                            ${item.category} • ${item.duration ? item.duration + ' stay' : ''} ${item.distance ? `• ${item.distance} km` : ''}
-                        </p>
-                    </div>
-                    <button onclick="removeItem('${item.name}')" class="absolute right-md text-outline-variant hover:text-error transition-colors p-2 rounded-md hover:bg-error-container opacity-0 group-hover:opacity-100 focus:opacity-100">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
-                </div>
-            `;
+    window.calculateTiming = function() {
+        let expMins = 0;
+        layoverList.forEach(item => {
+            let mins = 0;
+            const durStr = (item.duration || '').toLowerCase();
+            if (durStr.includes('h')) {
+                mins = parseFloat(durStr) * 60;
+            } else if (durStr.includes('m')) {
+                mins = parseFloat(durStr);
+            }
+            expMins += mins;
         });
-        listContainer.innerHTML = html;
-    }
 
-    // 4. Calculate Timings
-    window.removeItem = function(name) {
-        layoverList = layoverList.filter(i => i.name !== name);
-        localStorage.setItem('layoverList', JSON.stringify(layoverList));
-        location.reload(); // Simplest way to sync state cleanly
+        let travelMins = 0;
+        let currentDist = 0;
+        layoverList.forEach(item => {
+            let legDistance = (currentDist === 0) ? item.distance : (currentDist + item.distance);
+            travelMins += Math.round((legDistance * 3) + 15);
+            currentDist = item.distance;
+        });
+        if (layoverList.length > 0) {
+            travelMins += Math.round((currentDist * 3) + 15); // back to airport
+        }
+        
+        return { expMins, travelMins };
     };
 
-    let worstTravelMins = 0;
-    if (layoverList.length > 0) {
-        const getPermutations = (arr) => {
-            if (arr.length <= 1) return [arr];
-            const result = [];
-            for (let i = 0; i < arr.length; i++) {
-                const current = arr[i];
-                const remaining = arr.slice(0, i).concat(arr.slice(i + 1));
-                const remainingPerms = getPermutations(remaining);
-                for (let j = 0; j < remainingPerms.length; j++) {
-                    result.push([current].concat(remainingPerms[j]));
+    window.renderItinerary = function() {
+        const listContainer = document.getElementById('itinerary-list');
+        document.getElementById('plan-activity-count').textContent = `${layoverList.length} activit${layoverList.length === 1 ? 'y' : 'ies'} scheduled`;
+
+        if (layoverList.length === 0) {
+            listContainer.innerHTML = `
+                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl flex flex-col items-center justify-center text-center">
+                    <span class="material-symbols-outlined text-[48px] text-outline-variant mb-4">list_alt_add</span>
+                    <h4 class="font-h2 text-on-surface font-semibold mb-2">No Experiences Yet</h4>
+                    <p class="font-body-md text-secondary">Browse the marketplace and add experiences to start planning your perfect layover.</p>
+                </div>
+            `;
+        } else {
+            let html = '';
+            layoverList.forEach((item, index) => {
+                let statusColor = "border-outline-variant/30";
+                let statusBadge = "";
+                
+                let hasError = false;
+                if (item.startTime && item.endTime) {
+                    if (item.startTime >= item.endTime) {
+                        hasError = true;
+                        statusColor = "border-error";
+                        statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-error-container text-error ml-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">error</span> Invalid Time</span>`;
+                    }
                 }
-            }
-            return result;
-        };
+                if (!hasError && index > 0 && item.startTime && layoverList[index-1].endTime) {
+                    if (item.startTime < layoverList[index-1].endTime) {
+                        hasError = true;
+                        statusColor = "border-error";
+                        statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-error-container text-error ml-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">warning</span> Overlap</span>`;
+                    }
+                }
 
-        const permutations = getPermutations(layoverList);
-        permutations.forEach(seq => {
-            let seqTravelMins = 0;
-            let currentDist = 0;
-            seq.forEach(item => {
-                let legDistance = (currentDist === 0) ? item.distance : (currentDist + item.distance);
-                seqTravelMins += Math.round((legDistance * 3) + 15);
-                currentDist = item.distance;
+                html += `
+                    <div class="bg-surface-container-lowest border ${statusColor} rounded-xl p-md flex flex-col gap-3 group hover:border-primary/40 transition-colors shadow-sm relative">
+                        
+                        <div class="flex items-center gap-md">
+                            <div class="flex flex-col items-center justify-center text-outline-variant gap-1 shrink-0">
+                                <button onclick="moveUp(${index})" class="hover:text-primary ${index===0?'opacity-30 pointer-events-none':''}"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span></button>
+                                <span class="font-bold text-sm w-6 text-center text-primary bg-primary-fixed rounded-full aspect-square flex items-center justify-center">${index + 1}</span>
+                                <button onclick="moveDown(${index})" class="hover:text-primary ${index===layoverList.length-1?'opacity-30 pointer-events-none':''}"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_down</span></button>
+                            </div>
+                            
+                            <div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden shrink-0 border border-outline-variant/30 hidden sm:block">
+                                ${item.image ? `<img class="w-full h-full object-cover" src="${item.image}"/>` : `<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-outline-variant">image</span></div>`}
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <div class="flex items-center flex-wrap">
+                                    <h4 class="font-h2 text-body-lg font-semibold truncate">${item.name}</h4>
+                                    ${statusBadge}
+                                </div>
+                                <p class="font-body-md text-secondary flex items-center gap-1 mt-0.5 text-sm">
+                                    ${item.category} • ${item.duration ? item.duration + ' stay' : ''} ${item.distance ? `• Est ${Math.round(item.distance*3 + 15)}m travel` : ''}
+                                </p>
+                            </div>
+                            <button onclick="removeItem('${item.name.replace(/'/g, "\'")}')" class="text-outline-variant hover:text-error transition-colors p-2 rounded-md hover:bg-error-container shrink-0">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+
+                        <div class="flex gap-4 items-center bg-surface p-3 rounded-lg border border-outline-variant/50 sm:ml-12">
+                            <div class="flex flex-col w-full sm:w-32">
+                                <label class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1">Start Time</label>
+                                <input type="time" value="${item.startTime || ''}" onchange="updateStart(${index}, this.value)" class="bg-white border border-outline-variant rounded px-2 py-1 text-sm text-primary font-medium focus:border-primary outline-none">
+                            </div>
+                            <div class="flex flex-col w-full sm:w-32">
+                                <label class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1">End Time</label>
+                                <input type="time" value="${item.endTime || ''}" onchange="updateEnd(${index}, this.value)" class="bg-white border border-outline-variant rounded px-2 py-1 text-sm text-primary font-medium focus:border-primary outline-none">
+                            </div>
+                        </div>
+
+                    </div>
+                `;
             });
-            seqTravelMins += Math.round((currentDist * 3) + 15);
-            if (seqTravelMins > worstTravelMins) {
-                worstTravelMins = seqTravelMins;
-            }
-        });
-    }
+            listContainer.innerHTML = html;
+        }
 
-    const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+        const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
 
-    let totalLayoverMins = layoverDurationHours * 60;
-    let bufferMins = 2 * 60;
-    let journeyMins = totalLayoverMins - bufferMins - worstTravelMins;
-    if (journeyMins < 0) journeyMins = 0;
+        let { expMins, travelMins } = window.calculateTiming();
+        let totalLayoverMins = layoverDurationHours * 60;
+        let bufferMins = 2 * 60;
+        let journeyMins = totalLayoverMins - bufferMins - travelMins - expMins;
+        
+        // Status checks
+        let journeyTimeEl = document.getElementById('plan-journey-time');
+        let journeyCard = journeyTimeEl.closest('div');
+        
+        if (journeyMins < 0) {
+            journeyTimeEl.className = 'font-display text-h2 text-error';
+            journeyTimeEl.previousElementSibling.className = 'font-label-caps text-label-caps text-error';
+            journeyCard.className = 'p-md bg-error-container rounded-lg flex flex-col gap-xs border border-error transition-colors';
+            journeyTimeEl.textContent = formatTime(Math.abs(journeyMins)) + ' Over';
+        } else if (journeyMins < 60) {
+            journeyTimeEl.className = 'font-display text-h2 text-tertiary-container';
+            journeyTimeEl.previousElementSibling.className = 'font-label-caps text-label-caps text-tertiary-container';
+            journeyCard.className = 'p-md bg-tertiary-fixed rounded-lg flex flex-col gap-xs border border-tertiary-container/30 transition-colors';
+            journeyTimeEl.textContent = formatTime(journeyMins) + ' Left';
+        } else {
+            journeyTimeEl.className = 'font-display text-h2 text-primary';
+            journeyTimeEl.previousElementSibling.className = 'font-label-caps text-label-caps text-primary';
+            journeyCard.className = 'p-md bg-primary-fixed rounded-lg flex flex-col gap-xs transition-colors';
+            journeyTimeEl.textContent = formatTime(journeyMins) + ' Left';
+        }
 
-    document.getElementById('plan-travel-time').textContent = formatTime(worstTravelMins);
-    document.getElementById('plan-journey-time').textContent = formatTime(journeyMins);
+        document.getElementById('plan-travel-time').textContent = formatTime(travelMins);
+    };
+
+    window.moveUp = function(i) {
+        if (i > 0) {
+            let temp = layoverList[i];
+            layoverList[i] = layoverList[i-1];
+            layoverList[i-1] = temp;
+            window.saveAndRender();
+        }
+    };
+    window.moveDown = function(i) {
+        if (i < layoverList.length - 1) {
+            let temp = layoverList[i];
+            layoverList[i] = layoverList[i+1];
+            layoverList[i+1] = temp;
+            window.saveAndRender();
+        }
+    };
+    window.removeItem = function(name) {
+        layoverList = layoverList.filter(i => i.name !== name);
+        window.saveAndRender();
+    };
+    window.updateStart = function(i, val) {
+        layoverList[i].startTime = val;
+        window.saveAndRender();
+    };
+    window.updateEnd = function(i, val) {
+        layoverList[i].endTime = val;
+        window.saveAndRender();
+    };
+    window.saveAndRender = function() {
+        localStorage.setItem('layoverList', JSON.stringify(layoverList));
+        window.renderItinerary();
+    };
+
+    // Initial render
+    window.renderItinerary();
 });
 </script>
 </body></html>

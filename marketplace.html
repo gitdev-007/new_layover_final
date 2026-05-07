@@ -462,138 +462,29 @@ window.removeFromList = function(itemName) {
 };
 
 window.calculateTiming = function() {
-    let expMins = 0;
-    window.layoverList.forEach(item => {
-        let mins = 0;
-        const durStr = item.duration.toLowerCase();
-        if (durStr.includes('h')) {
-            mins = parseFloat(durStr) * 60;
-        } else if (durStr.includes('m')) {
-            mins = parseFloat(durStr);
-        }
-        expMins += mins;
-    });
-
-    let worstTravelMins = 0;
-    if (window.layoverList.length > 0) {
-        const getPermutations = (arr) => {
-            if (arr.length <= 1) return [arr];
-            const result = [];
-            for (let i = 0; i < arr.length; i++) {
-                const current = arr[i];
-                const remaining = arr.slice(0, i).concat(arr.slice(i + 1));
-                const remainingPerms = getPermutations(remaining);
-                for (let j = 0; j < remainingPerms.length; j++) {
-                    result.push([current].concat(remainingPerms[j]));
-                }
-            }
-            return result;
-        };
-
-        const permutations = getPermutations(window.layoverList);
-        permutations.forEach(seq => {
-            let seqTravelMins = 0;
-            let currentDist = 0;
-            seq.forEach(item => {
-                let legDistance = (currentDist === 0) ? item.distance : (currentDist + item.distance);
-                seqTravelMins += Math.round((legDistance * 3) + 15);
-                currentDist = item.distance;
-            });
-            seqTravelMins += Math.round((currentDist * 3) + 15);
-            if (seqTravelMins > worstTravelMins) {
-                worstTravelMins = seqTravelMins;
-            }
-        });
-    }
-
-    return { expMins, worstTravelMins };
-};
-
-window.updateTimeCalculations = function() {
-    const layoverDurationRaw = localStorage.getItem('layover_duration') || '8';
-    const layoverDurationHours = parseInt(layoverDurationRaw, 10);
-    
-    let totalLayoverMins = layoverDurationHours * 60;
-    let bufferMins = 2 * 60;
-    
-    let { expMins, worstTravelMins } = window.calculateTiming();
-    
-    let remainingMins = totalLayoverMins - bufferMins - worstTravelMins - expMins;
-    
-    // Format helpers
-    const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
-    
-    // Update summary values
-    document.getElementById('time-total').textContent = `${layoverDurationHours}h`;
-    document.getElementById('time-travel').textContent = formatTime(worstTravelMins);
-    document.getElementById('time-exp').textContent = formatTime(expMins);
-    
-    const flightDepartureRaw = localStorage.getItem('flight_departure') || '';
-    let depTimeStr = '--:--';
-    if (flightDepartureRaw) {
-        try {
-            const depDate = new Date(flightDepartureRaw);
-            if (!isNaN(depDate.getTime())) {
-                depTimeStr = depDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-            }
-        } catch(e) {}
-    }
-    const timeDepartureEl = document.getElementById('time-departure');
-    if (timeDepartureEl) timeDepartureEl.textContent = `Departure ${depTimeStr}`;
-    
-    let remEl = document.getElementById('time-remaining');
-    let remContainer = document.getElementById('rem-container');
-    let remLabel = document.getElementById('rem-label');
-    
-    if (remainingMins < 0) {
-        window.isRisk = true;
-        remEl.textContent = 'Risk';
-        remContainer.className = 'bg-red-50 py-3 px-3 rounded-2xl border border-red-200 flex flex-col justify-center min-w-[80px] transition-colors';
-        remEl.className = 'font-h3 text-[15px] text-red-700 font-bold tracking-tight mt-0.5';
-        remLabel.className = 'font-label-caps text-[9px] text-red-800 leading-tight uppercase tracking-widest mb-1';
-    } else {
-        window.isRisk = false;
-        remEl.textContent = formatTime(remainingMins);
-        if (remainingMins < 60) {
-            remContainer.className = 'bg-amber-50 py-3 px-3 rounded-2xl border border-amber-200 flex flex-col justify-center min-w-[80px] transition-colors';
-            remEl.className = 'font-h3 text-[15px] text-amber-700 font-bold tracking-tight mt-0.5';
-            remLabel.className = 'font-label-caps text-[9px] text-amber-800 leading-tight uppercase tracking-widest mb-1';
-        } else {
-            remContainer.className = 'bg-emerald-50 py-3 px-3 rounded-2xl border border-emerald-100 flex flex-col justify-center min-w-[80px] transition-colors';
-            remEl.className = 'font-h3 text-[15px] text-emerald-700 font-bold tracking-tight mt-0.5';
-            remLabel.className = 'font-label-caps text-[9px] text-emerald-800 leading-tight uppercase tracking-widest mb-1';
-        }
-    }
-};
-
-window.toggleListDrawer = function() {
-    let drawer = document.getElementById('list-drawer');
-    if (!drawer) {
-        drawer = document.createElement('div');
-        drawer.id = 'list-drawer';
-        drawer.className = 'fixed bottom-[140px] left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] bg-white rounded-xl shadow-2xl border border-outline-variant z-[100] transition-all duration-300 transform scale-95 opacity-0 pointer-events-none flex flex-col max-h-[300px]';
-        document.body.appendChild(drawer);
-    }
-    
-    if (drawer.classList.contains('opacity-0')) {
-        renderListDrawer();
-        drawer.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-        drawer.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
-    } else {
-        drawer.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
-        drawer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-    }
-};
-
-window.updateItemDuration = function(itemName, newDuration) {
-      const item = window.layoverList.find(i => i.name === itemName);
-      if (item) {
-          item.duration = newDuration;
-          window.saveLayoverList();
-          window.updateTimeCalculations();
-          window.renderListDrawer();
-          window.updateListIndicator();
+      let expMins = 0;
+      window.layoverList.forEach(item => {
+          let mins = 0;
+          const durStr = (item.duration || '').toLowerCase();
+          if (durStr.includes('h')) {
+              mins = parseFloat(durStr) * 60;
+          } else if (durStr.includes('m')) {
+              mins = parseFloat(durStr);
+          }
+          expMins += mins;
+      });
+  
+      let worstTravelMins = 0;
+      if (window.layoverList.length > 0) {
+          let currentDist = 0;
+          window.layoverList.forEach(item => {
+              let legDistance = (currentDist === 0) ? item.distance : (currentDist + item.distance);
+              worstTravelMins += Math.round((legDistance * 3) + 15);
+              currentDist = item.distance;
+          });
+          worstTravelMins += Math.round((currentDist * 3) + 15);
       }
+      return { expMins, worstTravelMins };
   };
 
   window.renderListDrawer = function() {
@@ -601,41 +492,41 @@ window.updateItemDuration = function(itemName, newDuration) {
       if (!drawer) return;
       
       let html = `
-          <div class="px-4 py-3 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest rounded-t-xl">
-              <h4 class="font-bold text-sm text-primary flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">list_alt</span> Selected Experiences</h4>
+          <div class="px-4 py-3 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest rounded-t-xl shrink-0">
+              <h4 class="font-bold text-sm text-primary flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">list_alt</span> Edit Experiences</h4>
               <button onclick="window.toggleListDrawer()" class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">close</span></button>
           </div>
           <div class="p-4 overflow-y-auto flex-1 space-y-3">
       `;
       
-      if (window.layoverList.length === 0) {
+      if (window.draftLayoverList.length === 0) {
           html += `<p class="text-xs text-secondary text-center py-4">No items added yet.</p>`;
       } else {
-          let { expMins, worstTravelMins } = window.calculateTiming();
+          let { expMins, worstTravelMins } = window.calculateTimingForDraft();
           const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
   
-          window.layoverList.forEach(item => {
-              let indTravel = Math.round(window.calculateDynamicTravelMins(item.distance) * 2 + 30);
+          window.draftLayoverList.forEach((item, index) => {
+              let indTravel = Math.round((item.distance * 3) + 15); // Simplify individual travel estimate
               
               let optionsHTML = '';
               const cat = (item.category || '').toLowerCase();
               
               if (cat.includes('hotel')) {
-                  const opts = ['1h', '2h', '3h', '4h', '6h', '8h'];
+                  const opts = ['3h', '4h', '6h', '8h', '10h', '12h', '16h', '24h'];
                   opts.forEach(o => {
-                      const label = o.replace('h', ' Hours').replace('1 Hours', '1 Hour');
+                      const label = o.replace('h', ' Hours');
                       optionsHTML += `<option value="${o}" ${item.duration === o ? 'selected' : ''}>${label}</option>`;
                   });
               } else if (cat.includes('restaurant')) {
-                  const opts = ['30m', '1h', '2h', '3h'];
+                  const opts = ['30m', '1h', '1.5h', '2h'];
                   opts.forEach(o => {
                       const label = o === '30m' ? '30 Min' : o.replace('h', ' Hours').replace('1 Hours', '1 Hour');
                       optionsHTML += `<option value="${o}" ${item.duration === o ? 'selected' : ''}>${label}</option>`;
                   });
               } else if (cat.includes('spa')) {
-                  const opts = ['1h', '2h', '3h', '4h'];
+                  const opts = ['30m', '1h', '1.5h', '2h', '2.5h', '3h'];
                   opts.forEach(o => {
-                      const label = o.replace('h', ' Hours').replace('1 Hours', '1 Hour');
+                      const label = o === '30m' ? '30 Min' : o.replace('h', ' Hours').replace('1 Hours', '1 Hour');
                       optionsHTML += `<option value="${o}" ${item.duration === o ? 'selected' : ''}>${label}</option>`;
                   });
               } else {
@@ -649,49 +540,71 @@ window.updateItemDuration = function(itemName, newDuration) {
               const safeItemName = item.name.replace(/'/g, "\\'");
               
               html += `
-                  <div class="flex gap-3 items-center bg-surface p-2 rounded-lg border border-outline-variant relative">
-                      ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded object-cover">` : `<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-[16px]">image</span></div>`}
-                      <div class="flex-1 min-w-0">
-                          <p class="font-bold text-[11px] text-primary truncate">${item.name}</p>
-                          <div class="text-[9px] text-secondary flex gap-1.5 items-center mt-1 flex-wrap">
-                              <span>${item.category}</span>
-                              &bull;
+                  <div class="flex flex-col gap-2 bg-surface p-3 rounded-lg border border-outline-variant relative group">
+                      <div class="flex items-center gap-3">
+                          <span class="font-bold text-primary text-[14px] w-4 text-center">${index + 1}</span>
+                          ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded object-cover">` : `<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-secondary-container text-[16px]">image</span></div>`}
+                          <div class="flex-1 min-w-0">
+                              <p class="font-bold text-[11px] text-primary truncate">${item.name}</p>
+                              <p class="text-[9px] text-secondary mt-0.5">${item.category} &bull; Est ${formatTime(indTravel)} travel</p>
+                          </div>
+                          <div class="flex flex-col gap-1 items-end">
+                              <div class="flex gap-1">
+                                  <button onclick="window.draftMoveUp(${index})" class="p-0.5 border rounded hover:bg-surface-container-high ${index === 0 ? 'opacity-30 pointer-events-none' : ''}"><span class="material-symbols-outlined text-[14px]">arrow_upward</span></button>
+                                  <button onclick="window.draftMoveDown(${index})" class="p-0.5 border rounded hover:bg-surface-container-high ${index === window.draftLayoverList.length - 1 ? 'opacity-30 pointer-events-none' : ''}"><span class="material-symbols-outlined text-[14px]">arrow_downward</span></button>
+                              </div>
+                              <button onclick="window.draftRemove(${index})" class="text-error hover:bg-error-container p-0.5 rounded-md mt-1 transition-colors">
+                                  <span class="material-symbols-outlined text-[14px]">delete</span>
+                              </button>
+                          </div>
+                      </div>
+                      <div class="flex gap-2 items-center mt-1 border-t border-outline-variant pt-2">
+                          <div class="flex-1">
+                              <span class="text-[9px] text-secondary block mb-0.5">Duration</span>
                               <div class="relative flex items-center">
-                                  <select onchange="window.updateItemDuration('${safeItemName}', this.value)" class="bg-surface-container-lowest border border-outline-variant rounded-md pl-1.5 pr-4 py-0.5 text-[9px] font-bold text-primary outline-none cursor-pointer hover:bg-surface-container-low hover:border-primary/30 transition-colors appearance-none">
+                                  <select onchange="window.draftUpdateDuration(${index}, this.value)" class="w-full bg-surface-container-lowest border border-outline-variant rounded pl-1.5 pr-4 py-1 text-[9px] font-bold text-primary outline-none cursor-pointer hover:bg-surface-container-low transition-colors appearance-none">
                                       ${optionsHTML}
                                   </select>
                                   <span class="material-symbols-outlined absolute right-1 text-[12px] pointer-events-none text-primary/70">arrow_drop_down</span>
                               </div>
-                              &bull; 
-                              <span>Est ${formatTime(indTravel)} overhead</span>
+                          </div>
+                          <div class="flex-1">
+                              <span class="text-[9px] text-secondary block mb-0.5">Start</span>
+                              <input type="time" value="${item.startTime || ''}" onchange="window.draftUpdateStart(${index}, this.value)" class="w-full bg-surface-container-lowest border border-outline-variant rounded px-1.5 py-1 text-[9px] font-bold text-primary outline-none cursor-pointer">
+                          </div>
+                          <div class="flex-1">
+                              <span class="text-[9px] text-secondary block mb-0.5">End</span>
+                              <input type="time" value="${item.endTime || ''}" onchange="window.draftUpdateEnd(${index}, this.value)" class="w-full bg-surface-container-lowest border border-outline-variant rounded px-1.5 py-1 text-[9px] font-bold text-primary outline-none cursor-pointer">
                           </div>
                       </div>
-                      <button onclick="window.removeFromList('${safeItemName}')" class="p-1.5 text-secondary hover:text-error transition-colors rounded-md hover:bg-error-container">
-                          <span class="material-symbols-outlined text-[16px]">delete</span>
-                      </button>
                   </div>
               `;
           });
   
           html += `
-              <div class="mt-4 pt-3 border-t border-outline-variant flex flex-col gap-1 text-[10px] text-secondary font-medium">
+              <div class="mt-2 pt-3 border-t border-outline-variant flex flex-col gap-1 text-[10px] text-secondary font-medium">
                   <div class="flex justify-between">
-                      <span>Total Experience Time:</span>
+                      <span>Experience Time:</span>
                       <span class="font-bold text-primary">${formatTime(expMins)}</span>
                   </div>
                   <div class="flex justify-between">
-                      <span>Est. Worst-Case Travel Overhead:</span>
+                      <span>Est. Travel Overhead:</span>
                       <span class="font-bold text-primary">${formatTime(worstTravelMins)}</span>
                   </div>
               </div>
           `;
       }
       
-      html += `</div>`;
+      html += `</div>
+          <div class="p-3 bg-surface-container-lowest border-t border-outline-variant flex justify-between gap-3 shrink-0 rounded-b-xl">
+              <button onclick="window.toggleListDrawer()" class="flex-1 py-2 rounded-lg border border-outline-variant font-bold text-xs text-secondary hover:bg-surface-container-high transition-colors">Cancel</button>
+              <button onclick="window.saveListEdits()" class="flex-1 py-2 rounded-lg bg-primary text-white font-bold text-xs shadow-md hover:bg-primary/90 transition-colors">Save Changes</button>
+          </div>
+      `;
       drawer.innerHTML = html;
   };
 
-window.updateListIndicator = function() {
+  window.updateListIndicator = function() {
     let indicator = document.getElementById('global-list-indicator');
     if (!indicator) {
         indicator = document.createElement('div');
