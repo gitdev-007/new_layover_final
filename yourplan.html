@@ -281,28 +281,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             let html = '';
             layoverList.forEach((item, index) => {
-                let statusColor = "border-outline-variant/30";
-                let statusBadge = "";
-                
-                let hasError = false;
-                if (item.startTime && item.endTime) {
-                    if (item.startTime >= item.endTime) {
-                        hasError = true;
-                        statusColor = "border-error";
-                        statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-error-container text-error ml-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">error</span> Invalid Time</span>`;
-                    }
-                }
-                if (!hasError && index > 0 && item.startTime && layoverList[index-1].endTime) {
-                    if (item.startTime < layoverList[index-1].endTime) {
-                        hasError = true;
-                        statusColor = "border-error";
-                        statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-error-container text-error ml-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">warning</span> Overlap</span>`;
-                    }
-                }
-
                 html += `
-                    <div class="bg-surface-container-lowest border ${statusColor} rounded-xl p-md flex flex-col gap-3 group hover:border-primary/40 transition-colors shadow-sm relative">
-                        
+                    <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-md flex flex-col gap-3 group hover:border-primary/40 transition-colors shadow-sm relative">
                         <div class="flex items-center gap-md">
                             <div class="flex flex-col items-center justify-center text-outline-variant gap-1 shrink-0">
                                 <button onclick="moveUp(${index})" class="hover:text-primary ${index===0?'opacity-30 pointer-events-none':''}"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span></button>
@@ -316,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="flex-grow min-w-0">
                                 <div class="flex items-center flex-wrap">
                                     <h4 class="font-h2 text-body-lg font-semibold truncate">${item.name}</h4>
-                                    ${statusBadge}
                                 </div>
                                 <p class="font-body-md text-secondary flex items-center gap-1 mt-0.5 text-sm">
                                     ${item.category} • ${item.duration ? item.duration + ' stay' : ''} ${item.distance ? `• Est ${Math.round(item.distance*3 + 15)}m travel` : ''}
@@ -326,18 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="material-symbols-outlined">delete</span>
                             </button>
                         </div>
-
-                        <div class="flex gap-4 items-center bg-surface p-3 rounded-lg border border-outline-variant/50 sm:ml-12">
-                            <div class="flex flex-col w-full sm:w-32">
-                                <label class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1">Start Time</label>
-                                <input type="time" value="${item.startTime || ''}" onchange="updateStart(${index}, this.value)" class="bg-white border border-outline-variant rounded px-2 py-1 text-sm text-primary font-medium focus:border-primary outline-none">
-                            </div>
-                            <div class="flex flex-col w-full sm:w-32">
-                                <label class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1">End Time</label>
-                                <input type="time" value="${item.endTime || ''}" onchange="updateEnd(${index}, this.value)" class="bg-white border border-outline-variant rounded px-2 py-1 text-sm text-primary font-medium focus:border-primary outline-none">
-                            </div>
-                        </div>
-
                     </div>
                 `;
             });
@@ -393,14 +360,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     window.removeItem = function(name) {
         layoverList = layoverList.filter(i => i.name !== name);
-        window.saveAndRender();
-    };
-    window.updateStart = function(i, val) {
-        layoverList[i].startTime = val;
-        window.saveAndRender();
-    };
-    window.updateEnd = function(i, val) {
-        layoverList[i].endTime = val;
         window.saveAndRender();
     };
     window.saveAndRender = function() {
