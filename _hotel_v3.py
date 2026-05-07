@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = """<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -379,3 +379,9 @@
     </script>
 </body>
 </html>
+"""
+
+with open("c:/Users/Dev Tinker/Desktop/layoverX_dummy/hotel.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("Updated hotel.html")
