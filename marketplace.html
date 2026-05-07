@@ -165,7 +165,26 @@
         </div>
     </div>
 </section>
-<!-- Category Pills -->
+
+  <!-- Dynamic Planner Summary -->
+  <section id="planner-summary-panel" class="bg-white border-2 border-primary/20 rounded-xl p-4 shadow-sm mb-4 transition-all duration-300 hidden">
+      <h2 class="font-h3 text-sm font-semibold text-primary mb-3 uppercase tracking-widest">ITINERARY PLANNER</h2>
+      <div class="grid grid-cols-3 gap-2 text-center">
+          <div class="border border-outline-variant p-2 rounded bg-surface">
+              <p class="text-[10px] text-secondary uppercase tracking-wider mb-1">Items</p>
+              <p id="summary-items" class="font-bold text-lg text-primary">0</p>
+          </div>
+          <div class="border border-outline-variant p-2 rounded bg-surface">
+              <p class="text-[10px] text-secondary uppercase tracking-wider mb-1">Experience</p>
+              <p id="summary-exp-time" class="font-bold text-lg text-primary">0h</p>
+          </div>
+          <div class="border border-outline-variant p-2 rounded bg-surface">
+              <p class="text-[10px] text-secondary uppercase tracking-wider mb-1">Transit</p>
+              <p id="summary-transit-time" class="font-bold text-lg text-primary">0m</p>
+          </div>
+      </div>
+  </section>
+  <!-- Category Pills -->
 <section class="flex gap-sm overflow-x-auto no-scrollbar py-base -mx-container-margin px-container-margin">
 <button onclick="loadCategory('recommended.html', this)" class="category-pill bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform duration-150 shadow-sm">Recommended For You</button>
 <button onclick="loadCategory('hotel.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Hotels</button>
@@ -622,6 +641,7 @@ window.renderListDrawer = function() {
     drawer.innerHTML = html;
 };
 
+
 window.updateListIndicator = function() {
     let indicator = document.getElementById('global-list-indicator');
     if (!indicator) {
@@ -631,7 +651,17 @@ window.updateListIndicator = function() {
         document.body.appendChild(indicator);
     }
 
+    const panel = document.getElementById('planner-summary-panel');
     if (window.layoverList.length > 0) {
+        if (panel) {
+            panel.classList.remove('hidden');
+            let { expMins, worstTravelMins } = window.calculateTiming();
+            const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+            document.getElementById('summary-items').textContent = window.layoverList.length;
+            document.getElementById('summary-exp-time').textContent = formatTime(expMins);
+            document.getElementById('summary-transit-time').textContent = formatTime(worstTravelMins);
+        }
+    
         indicator.innerHTML = `
             <button onclick="window.toggleListDrawer()" class="flex items-center gap-2 bg-surface-container-low hover:bg-surface-container-highest text-primary px-4 py-2 rounded-full font-label-sm transition-colors border border-outline-variant/50">
                 <span class="bg-primary text-white w-4 h-4 flex items-center justify-center rounded-full font-bold text-[9px]">${window.layoverList.length}</span>
@@ -645,6 +675,7 @@ window.updateListIndicator = function() {
         indicator.style.display = 'flex';
     } else {
         indicator.style.display = 'none';
+        if(panel) panel.classList.add('hidden');
         let drawer = document.getElementById('list-drawer');
         if (drawer) {
             drawer.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');

@@ -180,7 +180,14 @@
 
                     <!-- Plan Layover Block -->
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
-                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
+                        
+                      <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer">
+                          <option value="1h">1 Hour</option>
+                          <option value="2h">2 Hours</option>
+                          <option value="3h">3 Hours</option>
+                          <option value="4h">4 Hours</option>
+                      </select>
+                      <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
                             PLAN LAYOVER
                         </button>
                     </div>
@@ -329,26 +336,50 @@
                 if (btn.dataset.originalClasses) {
                     btn.className = btn.dataset.originalClasses;
                     btn.innerHTML = btn.dataset.originalHtml;
+                    btn.disabled = false;
                 }
+                btn.dataset.itemName = item.name;
                 
                 const isMarketplace = !!document.getElementById('marketplace-content') || window.location.pathname.includes('marketplace');
                 if (isMarketplace) {
-                    btn.innerHTML = 'ADD TO LIST';
-                    btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
-                    btn.onclick = function() {
-                        if (window.addToList) {
-                            window.addToList(btn, item.name, 'Restaurant', '', item.distance, '');
-                        } else if (window.parent && window.parent.addToList) {
-                            window.parent.addToList(btn, item.name, 'Restaurant', '', item.distance, '');
-                        }
-                    };
+                    // Check if already in list
+                    const existingListStr = localStorage.getItem('layoverList') || '[]';
+                    let alreadyAdded = false;
+                    try {
+                        const existingList = JSON.parse(existingListStr);
+                        alreadyAdded = existingList.some(i => i.name === item.name);
+                    } catch(e) {}
+                    
+                    if (alreadyAdded) {
+                        btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> ADDED';
+                        btn.className = 'w-full py-2 text-sm tracking-widest uppercase transition-colors bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default';
+                        btn.disabled = true;
+                        if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = true;
+                    } else {
+                        btn.innerHTML = 'ADD TO LIST';
+                        btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
+                        btn.disabled = false;
+                        if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
+                        btn.onclick = function() {
+                            const durSelect = document.getElementById('item-duration');
+                            const duration = durSelect ? durSelect.value : '2h';
+                            if (window.addToList) {
+                                window.addToList(btn, item.name, 'Restaurant', duration, item.distance, '');
+                            } else if (window.parent && window.parent.addToList) {
+                                window.parent.addToList(btn, item.name, 'Restaurant', duration, item.distance, '');
+                            }
+                        };
+                    }
                 } else {
                     btn.innerHTML = 'PLAN LAYOVER';
                     btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
+                    btn.disabled = false;
+                    if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
                     btn.onclick = function() {
                         window.location.href = 'QR_Upload_State.html';
                     };
                 }
+            }
             }
             
             l2.classList.remove('hidden');
