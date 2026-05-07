@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>LayoverX | Restaurants Sitemap</title>
+    <title>LayoverX | Restaurant Discovery</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -77,50 +77,53 @@
             <!-- Main Card Container -->
             <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
                 <div class="flex justify-between items-start mb-6">
-                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">RESTAURANTS LISTING PAGE</h3>
+                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">Restaurants Listing Page</h3>
                 </div>
 
                 <div class="space-y-4">
                     <!-- Search & Filters -->
                     <div class="border border-outline-variant p-3 bg-surface-container">
                         <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
+                        
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <select id="filter-cuisine" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Cuisine Type</option>
+                                <option value="Indian">Indian</option>
+                                <option value="Continental">Continental</option>
+                                <option value="Asian">Asian</option>
+                                <option value="Italian">Italian</option>
+                                <option value="Cafe">Cafe</option>
+                            </select>
+                            
+                            <select id="filter-price" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Price Range</option>
+                                <option value="0-1000">0 - 1000</option>
+                                <option value="1000-3000">1000 - 3000</option>
+                                <option value="3000+">3000+</option>
+                            </select>
 
-<select id="filter-1" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Cuisine Type</option>
-    <option value="Indian">Indian</option>
-    <option value="Italian">Italian</option>
-    <option value="Asian">Asian</option>
-    <option value="Continental">Continental</option>
-    <option value="Fast Food">Fast Food</option>
-    <option value="Cafe">Cafe</option>
-</select>
-<select id="filter-2" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Price Range</option>
-    <option value="500-1000">₹500 – ₹1000</option>
-    <option value="1000-3000">₹1000 – ₹3000</option>
-    <option value="3000+">₹3000+</option>
-</select>
-<select id="filter-3" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Distance</option>
-    <option value="1">Within 1 km</option>
-    <option value="3">Within 3 km</option>
-    <option value="5">Within 5 km</option>
-</select>
-<select id="filter-4" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Dining Style</option>
-    <option value="Fine Dining">Fine Dining</option>
-    <option value="Casual Dining">Casual Dining</option>
-    <option value="Lounge">Lounge</option>
-    <option value="Rooftop">Rooftop</option>
-    <option value="Cafe">Cafe</option>
-</select>
+                            <select id="filter-distance" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Distance</option>
+                                <option value="1">Within 1 km</option>
+                                <option value="3">Within 3 km</option>
+                                <option value="5">Within 5 km</option>
+                                <option value="10">Within 10 km</option>
+                            </select>
 
-</div>
-</div>
-<!-- Grid Preview -->
+                            <select id="filter-style" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Dining Style</option>
+                                <option value="Fine Dining">Fine Dining</option>
+                                <option value="Casual Dining">Casual Dining</option>
+                                <option value="Lounge">Lounge</option>
+                                <option value="Rooftop">Rooftop</option>
+                                <option value="Cafe">Cafe</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Grid Preview -->
                     <div class="border-2 border-dashed border-outline-variant p-4">
-                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">RESTAURANT INVENTORY (12 HOTELS FOUND)</p>
+                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">FOOD & DINING INVENTORY (12 RESTAURANTS FOUND)</p>
                         
                         <!-- Dynamic Hotels -->
                         <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -140,7 +143,7 @@
             <!-- Main Card Container -->
             <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
                 <div class="flex justify-between items-start mb-6 shrink-0">
-                    <h3 class="text-node-title-md text-secondary uppercase">RESTAURANT DETAIL PAGE</h3>
+                    <h3 class="text-node-title-md text-secondary uppercase">Restaurant Detail Page</h3>
                     <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
                 </div>
                 
@@ -148,25 +151,22 @@
                     <!-- Detail Header -->
                     <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
                         <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-                        <h4 id="l2-name" class="text-[14px] font-bold">Restaurant Name</h4>
-<div class="flex items-center gap-2 mt-1">
-    <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold">4.8 ★</span>
-    <span id="l2-distance" class="text-[10px] text-on-surface-variant">1.6 km from T2</span>
-</div>
-<div class="text-[10px] text-on-surface-variant mt-1">
-    <span id="l2-type" class="font-semibold text-primary">Indian</span> • <span id="l2-style">Fine Dining</span>
-</div>
+                        <h4 id="l2-name" class="text-[14px] font-bold">Hotel Name</h4>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold">4.8 ★</span>
+                            <span id="l2-distance" class="text-[10px] text-on-surface-variant">0.9 km from T2</span>
+                        </div>
                     </div>
 
-                    <!-- Gallery & Room Options -->
+                    <!-- Gallery & Dining Options -->
                     <div class="grid grid-cols-2 gap-3">
                         <div class="wireframe-box p-2 text-center bg-surface-container">
                             <span class="material-symbols-outlined text-secondary text-[18px]">grid_view</span>
                             <p class="text-[10px] mt-1 font-bold">Media Gallery</p>
                         </div>
                         <div class="wireframe-box p-2 text-center bg-surface-container">
-                            <span class="material-symbols-outlined text-secondary text-[18px]">bed</span>
-                            <p class="text-[10px] mt-1 font-bold">Room Options</p>
+                            <span class="material-symbols-outlined text-secondary text-[18px]">restaurant_menu</span>
+                            <p class="text-[10px] mt-1 font-bold">Dining Options</p>
                         </div>
                     </div>
 
@@ -202,103 +202,127 @@
     </main>
 
     <script>
+        
+        const items = [
+            { id: 1, name: "Masala Kraft", distance: 4.2, category: "Premium", rating: "4.8", price: 3500, type: "Indian", style: "Fine Dining", features: ["Fine Dining", "Authentic Spices", "Indoor Seating"] },
+            { id: 2, name: "Peshawri", distance: 3.9, category: "Premium", rating: "4.9", price: 4000, type: "Indian", style: "Fine Dining", features: ["Fine Dining", "Tandoori", "Indoor Seating"] },
+            { id: 3, name: "Dum Pukht", distance: 5.1, category: "Premium", rating: "4.9", price: 4500, type: "Indian", style: "Fine Dining", features: ["Fine Dining", "Royal Awadhi", "Indoor Seating"] },
+            { id: 4, name: "Aer Lounge", distance: 6.0, category: "Premium", rating: "4.7", price: 3200, type: "Continental", style: "Rooftop", features: ["Rooftop Seating", "City Views", "Outdoor Seating"] },
+            { id: 5, name: "Fifty Five East", distance: 2.8, category: "Premium", rating: "4.6", price: 3000, type: "Asian", style: "Lounge", features: ["Business Dining", "Global Cuisine", "Mixed Seating"] },
+            { id: 6, name: "Celini", distance: 3.4, category: "Premium", rating: "4.7", price: 3500, type: "Italian", style: "Fine Dining", features: ["Fine Dining", "Wood-fired Pizza", "Indoor Seating"] },
+            { id: 7, name: "Lotus Cafe", distance: 4.7, category: "Premium", rating: "4.6", price: 2500, type: "Continental", style: "Cafe", features: ["Business Dining", "Buffet", "Indoor Seating"] },
+            { id: 8, name: "Citrus", distance: 2.5, category: "Premium", rating: "4.5", price: 2800, type: "Continental", style: "Fine Dining", features: ["Fine Dining", "Fresh Juices", "Indoor Seating"] },
+            { id: 9, name: "Cafe Coffee Day", distance: 0.8, category: "Standard", rating: "4.1", price: 500, type: "Cafe", style: "Cafe", features: ["Late Night Dining", "Quick Bites", "Indoor Seating"] },
+            { id: 10, name: "Boulevard", distance: 1.9, category: "Standard", rating: "4.0", price: 1800, type: "Continental", style: "Casual Dining", features: ["Vegetarian Options", "Buffet", "Mixed Seating"] },
+            { id: 11, name: "Hotel Midland Restaurant", distance: 2.3, category: "Standard", rating: "3.9", price: 800, type: "Indian", style: "Casual Dining", features: ["Vegetarian Options", "Thali", "Indoor Seating"] },
+            { id: 12, name: "Bawa Cafe", distance: 1.7, category: "Standard", rating: "4.2", price: 900, type: "Cafe", style: "Cafe", features: ["Late Night Dining", "Parsi Snacks", "Indoor Seating"] }
+        ];
 
-const items = [
-    { id: 1, name: "Masala Kraft", distance: 1.6, category: "Premium", rating: "4.8", price: 3500, type: "Indian", style: "Fine Dining", features: ["Operating Hours: 12PM-11PM", "Key Highlights: Authentic Spices", "Seating: Indoor"] },
-    { id: 2, name: "Peshawri", distance: 2.4, category: "Premium", rating: "4.9", price: 4000, type: "Indian", style: "Fine Dining", features: ["Operating Hours: 12PM-11PM", "Key Highlights: Tandoori", "Seating: Indoor"] },
-    { id: 3, name: "Dum Pukht", distance: 2.4, category: "Premium", rating: "4.9", price: 4500, type: "Indian", style: "Fine Dining", features: ["Operating Hours: 7PM-11PM", "Key Highlights: Royal Awadhi", "Seating: Indoor"] },
-    { id: 4, name: "Aer Lounge", distance: 1.1, category: "Premium", rating: "4.7", price: 3200, type: "Continental", style: "Rooftop", features: ["Operating Hours: 5PM-1AM", "Key Highlights: City Views", "Seating: Outdoor"] },
-    { id: 5, name: "Fifty Five East", distance: 6.1, category: "Premium", rating: "4.6", price: 3000, type: "Asian", style: "Lounge", features: ["Operating Hours: 24/7", "Key Highlights: Global Cuisine", "Seating: Mixed"] },
-    { id: 6, name: "Celini", distance: 6.1, category: "Premium", rating: "4.7", price: 3500, type: "Italian", style: "Fine Dining", features: ["Operating Hours: 12PM-11PM", "Key Highlights: Wood-fired Pizza", "Seating: Indoor"] },
-    { id: 7, name: "Lotus Cafe", distance: 1.8, category: "Premium", rating: "4.6", price: 2500, type: "Continental", style: "Cafe", features: ["Operating Hours: 24/7", "Key Highlights: Buffet", "Seating: Indoor"] },
-    { id: 8, name: "Citrus", distance: 2.5, category: "Premium", rating: "4.5", price: 2800, type: "Continental", style: "Fine Dining", features: ["Operating Hours: 6AM-11PM", "Key Highlights: Fresh Juices", "Seating: Indoor"] },
-    { id: 9, name: "Citrus Cafe", distance: 3.2, category: "Standard", rating: "4.1", price: 1500, type: "Cafe", style: "Casual Dining", features: ["Operating Hours: 24/7", "Key Highlights: Quick Bites", "Seating: Indoor"] },
-    { id: 10, name: "Boulevard", distance: 4.2, category: "Standard", rating: "4.0", price: 1800, type: "Continental", style: "Casual Dining", features: ["Operating Hours: 6AM-11PM", "Key Highlights: Buffet", "Seating: Mixed"] },
-    { id: 11, name: "Hotel Midland Restaurant", distance: 2.3, category: "Standard", rating: "3.9", price: 800, type: "Indian", style: "Casual Dining", features: ["Operating Hours: 11AM-10PM", "Key Highlights: Thali", "Seating: Indoor"] },
-    { id: 12, name: "Bawa Cafe", distance: 1.7, category: "Standard", rating: "4.2", price: 900, type: "Cafe", style: "Cafe", features: ["Operating Hours: 7AM-11PM", "Key Highlights: Parsi Snacks", "Seating: Indoor"] }
-];
+        let activeItemId = null;
 
-let activeItemId = null;
+        function renderItems() {
+            const grid = document.getElementById('hotel-grid');
+            
+            const cuisineVal = document.getElementById('filter-cuisine').value;
+            const priceVal = document.getElementById('filter-price').value;
+            const distVal = document.getElementById('filter-distance').value;
+            const styleVal = document.getElementById('filter-style').value;
 
-function renderItems() {
-    const grid = document.getElementById('hotel-grid');
-    const filter1 = document.getElementById('filter-1').value;
-    const filter2 = document.getElementById('filter-2').value;
-    const filter3 = document.getElementById('filter-3').value;
-    const filter4 = document.getElementById('filter-4').value;
+            const filtered = items.filter(h => {
+                let match = true;
+                if (cuisineVal !== 'any' && match) {
+                    if (h.type !== cuisineVal) match = false;
+                }
+                if (distVal !== 'any' && match) {
+                    const maxD = parseFloat(distVal);
+                    if (h.distance > maxD) match = false;
+                }
+                if (priceVal !== 'any' && match) {
+                    if (priceVal === '3000+') {
+                        if (h.price < 3000) match = false;
+                    } else {
+                        const [min, max] = priceVal.split('-').map(Number);
+                        if (h.price < min || h.price > max) match = false;
+                    }
+                }
+                if (styleVal !== 'any' && match) {
+                    if (h.style !== styleVal) match = false;
+                }
+                return match;
+            });
 
-    const filtered = items.filter(h => {
-        let match = true;
-        if (filter1 !== 'any' && h.type !== filter1) match = false;
-        if (filter3 !== 'any') {
-            if (h.distance > parseFloat(filter3)) match = false;
-        }
-        if (filter4 !== 'any' && h.style !== filter4) match = false;
-        if (filter2 !== 'any') {
-            if (filter2 === '3000+' && h.price < 3000) match = false;
-            if (filter2 !== '3000+') {
-                const [min, max] = filter2.split('-').map(Number);
-                if (h.price < min || h.price > max) match = false;
+            document.getElementById('inventory-count').textContent = `FOOD & DINING INVENTORY (${filtered.length} RESTAURANTS FOUND)`;
+
+            grid.innerHTML = '';
+            
+            const premiumItems = filtered.filter(h => h.category === "Premium");
+            const standardItems = filtered.filter(h => h.category === "Standard");
+
+            const renderCard = (h) => {
+                const isActive = h.id === activeItemId;
+                const isPremium = h.category === "Premium";
+                const bgClass = isActive 
+                    ? 'bg-primary/10 border-primary' 
+                    : (isPremium ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50');
+                
+                return `
+                    <div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer transition-colors text-[11px] font-medium text-on-surface flex flex-col justify-between h-16 ${bgClass}">
+                        <div class="flex justify-between items-start">
+                            <span class="truncate pr-1">${h.name}</span>
+                            ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
+                        </div>
+                        <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
+                            <span>${h.distance} km from T2</span>
+                            <span class="font-bold text-secondary">${h.rating} ★</span>
+                        </div>
+                    </div>
+                `;
+            };
+
+            if (premiumItems.length > 0) {
+                grid.innerHTML += `
+                    <div class="col-span-full mt-2 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
+                        <h4 class="text-meta-label text-primary uppercase">PREMIUM RESTAURANTS</h4>
+                        <span class="text-[10px] font-bold text-on-surface-variant">(${premiumItems.length})</span>
+                    </div>
+                `;
+                premiumItems.forEach(h => {
+                    grid.innerHTML += renderCard(h);
+                });
+            }
+
+            if (standardItems.length > 0) {
+                grid.innerHTML += `
+                    <div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
+                        <h4 class="text-meta-label text-primary uppercase">STANDARD RESTAURANTS</h4>
+                        <span class="text-[10px] font-bold text-on-surface-variant">(${standardItems.length})</span>
+                    </div>
+                `;
+                standardItems.forEach(h => {
+                    grid.innerHTML += renderCard(h);
+                });
             }
         }
-        return match;
-    });
 
-    document.getElementById('inventory-count').textContent = `RESTAURANT INVENTORY (${filtered.length} RESTAURANTS FOUND)`;
-    grid.innerHTML = '';
-    
-    const premiumItems = filtered.filter(h => h.category === "Premium");
-    const standardItems = filtered.filter(h => h.category === "Standard");
+        function openLevel2(id) {
+            activeItemId = id;
+            renderItems(); 
+            
+            const item = items.find(h => h.id === id);
+            if(!item) return;
 
-    const renderCard = (h) => {
-        const isActive = h.id === activeItemId;
-        const isPremium = h.category === "Premium";
-        const bgClass = isActive ? 'bg-primary/10 border-primary' : (isPremium ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50');
-        return `
-            <div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer transition-colors text-[11px] font-medium text-on-surface flex flex-col justify-between h-16 ${bgClass}">
-                <div class="flex justify-between items-start">
-                    <span class="truncate pr-1">${h.name}</span>
-                    ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
-                </div>
-                <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
-                    <span>${h.distance} km</span>
-                    <span class="font-bold text-secondary">${h.rating}</span>
-                </div>
-            </div>
-        `;
-    };
+            document.getElementById('l2-name').textContent = item.name;
+            document.getElementById('l2-rating').textContent = `${item.rating} ★`;
+            document.getElementById('l2-distance').textContent = `${item.distance} km from T2`;
+            
+            const amCont = document.getElementById('l2-amenities');
+            amCont.innerHTML = item.features.length 
+                ? item.features.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('') 
+                : '<div class="text-[11px] text-on-surface-variant italic">Standard options included</div>';
 
-    if (premiumItems.length > 0) {
-        grid.innerHTML += `<div class="col-span-full mt-2 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">Premium Restaurants</h4><span class="text-[10px] font-bold text-on-surface-variant">(${premiumItems.length})</span></div>`;
-        premiumItems.forEach(h => { grid.innerHTML += renderCard(h); });
-    }
-    if (standardItems.length > 0) {
-        grid.innerHTML += `<div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">Standard Restaurants</h4><span class="text-[10px] font-bold text-on-surface-variant">(${standardItems.length})</span></div>`;
-        standardItems.forEach(h => { grid.innerHTML += renderCard(h); });
-    }
-}
-
-function openLevel2(id) {
-    activeItemId = id;
-    renderItems(); 
-    const item = items.find(h => h.id === id);
-    if(!item) return;
-
-    document.getElementById('l2-name').textContent = item.name;
-    document.getElementById('l2-rating').textContent = `${item.rating} ★`;
-    document.getElementById('l2-distance').textContent = `${item.distance} km from T2`;
-    document.getElementById('l2-type').textContent = item.type;
-    document.getElementById('l2-style').textContent = item.style;
-    
-    const amCont = document.getElementById('l2-amenities');
-    amCont.innerHTML = item.features.length 
-        ? item.features.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('') 
-        : '<div class="text-[11px] text-on-surface-variant italic">Standard options included</div>';
-
-    const l1 = document.getElementById('level1');
-    const l2 = document.getElementById('level2');
-    
-    
+            const l1 = document.getElementById('level1');
+            const l2 = document.getElementById('level2');
+            
             const btn = document.getElementById('add-list-btn');
             if (btn) {
                 // Reset styling
@@ -307,53 +331,37 @@ function openLevel2(id) {
                     btn.innerHTML = btn.dataset.originalHtml;
                 }
                 
-                const isMarketplace = !!document.getElementById('marketplace-content') || window.location.pathname.includes('marketplace');
-                if (isMarketplace) {
-                    btn.innerHTML = 'ADD TO LIST';
-                    btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
-                    btn.onclick = function() {
-                        if (window.addToList) {
-                            window.addToList(btn, item.name, 'Restaurant', '', item.distance, '');
-                        } else if (window.parent && window.parent.addToList) {
-                            window.parent.addToList(btn, item.name, 'Restaurant', '', item.distance, '');
-                        }
-                    };
-                } else {
-                    btn.innerHTML = 'PLAN LAYOVER';
-                    btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
-                    btn.onclick = function() {
-                        window.location.href = 'QR_Upload_State.html';
-                    };
-                }
+                btn.innerHTML = 'PLAN LAYOVER';
+                btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
+                btn.onclick = function() {
+                    window.location.href = 'QR_Upload_State.html';
+                };
             }
             
             l2.classList.remove('hidden');
     
-        requestAnimationFrame(() => { 
-        l2.classList.remove('opacity-0'); 
-        setTimeout(() => {
-            l2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 100);
-    });
-}
+            requestAnimationFrame(() => { 
+                l2.classList.remove('opacity-0'); 
+                setTimeout(() => {
+                    l2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            });
+        }
 
-function closeLevel2() {
-    activeItemId = null;
-    renderItems();
-    const l1 = document.getElementById('level1');
-    const l2 = document.getElementById('level2');
-    l2.classList.add('opacity-0');
-    setTimeout(() => {
-        l2.classList.add('hidden');
-        
-    }, 300);
-}
+        function closeLevel2() {
+            activeItemId = null;
+            renderItems();
+            
+            const l1 = document.getElementById('level1');
+            const l2 = document.getElementById('level2');
+            
+            l2.classList.add('opacity-0');
+            setTimeout(() => {
+                l2.classList.add('hidden');
+            }, 300);
+        }
 
-// Ensure alias exists for legacy html code
-function renderHotels() { renderItems(); }
-
-        document.addEventListener('DOMContentLoaded', renderHotels);
+        document.addEventListener('DOMContentLoaded', renderItems);
     </script>
 </body>
 </html>
-

@@ -1,90 +1,21 @@
-<!DOCTYPE html>
-<html class="light" lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>LayoverX | Restaurant Discovery</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#1d4ed8", /* blue */
-                        "primary-container": "#bfdbfe",
-                        secondary: "#ea580c", /* orange */
-                        "secondary-container": "#fed7aa",
-                        surface: "#ffffff",
-                        "surface-container": "#f8fafc",
-                        "surface-container-high": "#f1f5f9",
-                        "outline-variant": "#cbd5e1",
-                        "on-surface": "#0f172a",
-                        "on-surface-variant": "#475569"
-                    },
-                    fontFamily: {
-                        sans: ["Inter", "sans-serif"],
-                        manrope: ["Manrope", "sans-serif"]
-                    },
-                    fontSize: {
-                        "meta-label": ["10px", { letterSpacing: "0.1em", fontWeight: "700" }],
-                        "node-title-lg": ["20px", { letterSpacing: "-0.02em", fontWeight: "800" }],
-                        "node-title-md": ["16px", { letterSpacing: "-0.01em", fontWeight: "700" }],
-                        "node-description": ["12px", { lineHeight: "1.5" }]
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #f7f7fb; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
-    </style>
-</head>
-<body class="text-on-surface font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
-    <!-- Navbar -->
-    <header class="w-full bg-white border-b border-outline-variant sticky top-0 z-50">
-        <div class="max-w-[1400px] mx-auto px-6 h-16 flex justify-between items-center text-sm font-semibold text-on-surface-variant">
-            <div class="flex items-center gap-8">
-                <a class="text-lg font-bold text-primary font-manrope uppercase tracking-tight" href="#">LayoverX</a>
-                <nav class="hidden md:flex gap-6 items-center">
-                    <a class="text-primary border-b-2 border-primary pb-1 uppercase text-[11px] tracking-widest" href="#">Browse</a>
-                    <a class="hover:text-primary transition-colors uppercase text-[11px] tracking-widest" href="#">My Bookings</a>
-                    <a class="hover:text-primary transition-colors uppercase text-[11px] tracking-widest" href="#">Support</a>
-                </nav>
-            </div>
-            <div class="flex gap-4 items-center">
-                <span class="material-symbols-outlined text-[20px]">notifications</span>
-                <span class="material-symbols-outlined text-[20px]">account_circle</span>
-            </div>
-        </div>
-    </header>
+import codecs
+import re
 
-    <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col items-center gap-6 relative pb-20 mt-4">
-        
-        <!-- LEVEL 1: LISTING -->
-        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
-            <div class="flex items-center justify-between mb-4">
-                <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
-                
-            </div>
+def generate_restaurant():
+    with codecs.open('hotel.html', 'r', encoding='utf-8') as f:
+        html = f.read()
 
-            <!-- Main Card Container -->
-            <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
-                <div class="flex justify-between items-start mb-6">
-                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">Restaurants Listing Page</h3>
-                </div>
-
-                <div class="space-y-4">
-                    <!-- Search & Filters -->
-                    <div class="border border-outline-variant p-3 bg-surface-container">
-                        <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
-                        
+    # Change title and header
+    html = html.replace('Hotel Booking Sitemap', 'Restaurant Discovery')
+    html = html.replace('Hotels Listing Page', 'Restaurants Listing Page')
+    html = html.replace('Hotel Detail Page', 'Restaurant Detail Page')
+    html = html.replace('HOTEL INVENTORY', 'FOOD & DINING INVENTORY')
+    html = html.replace('HOTELS FOUND', 'RESTAURANTS FOUND')
+    html = html.replace('Premium Hotels', 'PREMIUM RESTAURANTS')
+    html = html.replace('Standard Hotels', 'STANDARD RESTAURANTS')
+    
+    # Replace search and filters block
+    filters_html = """
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                             <select id="filter-cuisine" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Cuisine Type</option>
@@ -118,91 +49,11 @@
                                 <option value="Rooftop">Rooftop</option>
                                 <option value="Cafe">Cafe</option>
                             </select>
-                        </div>
-                    </div>
-
-                    <!-- Grid Preview -->
-                    <div class="border-2 border-dashed border-outline-variant p-4">
-                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">FOOD & DINING INVENTORY (12 RESTAURANTS FOUND)</p>
-                        
-                        <!-- Dynamic Hotels -->
-                        <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- LEVEL 2: DETAIL -->
-        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative">
-            <div class="flex items-center justify-between mb-4">
-                <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
-                
-            </div>
-
-            <!-- Main Card Container -->
-            <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
-                <div class="flex justify-between items-start mb-6 shrink-0">
-                    <h3 class="text-node-title-md text-secondary uppercase">Restaurant Detail Page</h3>
-                    <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
-                </div>
-                
-                <div class="space-y-4 overflow-y-auto hide-scrollbar flex-grow pb-4">
-                    <!-- Detail Header -->
-                    <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
-                        <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-                        <h4 id="l2-name" class="text-[14px] font-bold">Hotel Name</h4>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold">4.8 ★</span>
-                            <span id="l2-distance" class="text-[10px] text-on-surface-variant">0.9 km from T2</span>
-                        </div>
-                    </div>
-
-                    <!-- Gallery & Dining Options -->
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="wireframe-box p-2 text-center bg-surface-container">
-                            <span class="material-symbols-outlined text-secondary text-[18px]">grid_view</span>
-                            <p class="text-[10px] mt-1 font-bold">Media Gallery</p>
-                        </div>
-                        <div class="wireframe-box p-2 text-center bg-surface-container">
-                            <span class="material-symbols-outlined text-secondary text-[18px]">restaurant_menu</span>
-                            <p class="text-[10px] mt-1 font-bold">Dining Options</p>
-                        </div>
-                    </div>
-
-                    <!-- Feature List -->
-                    <div class="wireframe-box p-3 bg-surface-container">
-                        <p class="text-meta-label text-on-surface-variant mb-2">KEY DIFFERENTIATORS</p>
-                        <div id="l2-amenities" class="text-[11px] space-y-1">
-                            <!-- Amenities list -->
-                        </div>
-                    </div>
-
-                    <!-- Plan Layover Block -->
-                    <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
-                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
-                            PLAN LAYOVER
-                        </button>
-                    </div>
-
-                    <!-- Reviews & Contact -->
-                    <div class="grid grid-cols-2 gap-3 text-meta-label mt-4">
-                        <div class="wireframe-box p-2">
-                            <p class="text-on-surface-variant mb-1">REVIEWS</p>
-                            <p class="font-semibold text-secondary">482 Verified</p>
-                        </div>
-                        <div class="wireframe-box p-2">
-                            <p class="text-on-surface-variant mb-1">CONTACT</p>
-                            <p class="font-semibold text-secondary">Quick Inquiry</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        
+                        </div>"""
+    html = re.sub(r'<div class="grid grid-cols-2 md:grid-cols-4 gap-2">.*?</div>', filters_html, html, flags=re.DOTALL)
+    
+    # Replace dataset and JS logic
+    dataset_js = """
         const items = [
             { id: 1, name: "Masala Kraft", distance: 4.2, category: "Premium", rating: "4.8", price: 3500, type: "Indian", style: "Fine Dining", features: ["Fine Dining", "Authentic Spices", "Indoor Seating"] },
             { id: 2, name: "Peshawri", distance: 3.9, category: "Premium", rating: "4.9", price: 4000, type: "Indian", style: "Fine Dining", features: ["Fine Dining", "Tandoori", "Indoor Seating"] },
@@ -361,7 +212,26 @@
             }, 300);
         }
 
-        document.addEventListener('DOMContentLoaded', renderItems);
-    </script>
-</body>
-</html>
+        document.addEventListener('DOMContentLoaded', renderItems);"""
+    
+    # Find the script tag and replace it entirely
+    html = re.sub(r'const hotels = \[.*?</script>', dataset_js + '\n    </script>', html, flags=re.DOTALL)
+    
+    # Change "Room Options" to "Dining Options"
+    html = html.replace('Room Options', 'Dining Options')
+    html = html.replace('bed', 'restaurant_menu')
+
+    # Remove ADD TO LIST from HTML block to match standard
+    html = re.sub(
+        r'<button id="add-list-btn" class="(.*?)">\s*ADD TO LIST\s*</button>',
+        r'<button id="add-list-btn" class="\1">\n                            PLAN LAYOVER\n                        </button>',
+        html
+    )
+
+    # Make sure onclick closeLevel2() is updated correctly if needed
+    
+    # Write to restaurant.html
+    with codecs.open('restaurant.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+
+generate_restaurant()
