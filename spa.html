@@ -2,65 +2,21 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>LayoverX Spa &amp; Wellness</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "secondary": "#9d4300","inverse-primary": "#c0c1ff","on-primary-fixed-variant": "#2f2ebe","on-primary-container": "#fffbff","tertiary-container": "#007cb1","surface-container-lowest": "#ffffff","on-primary-fixed": "#07006c","surface-dim": "#cbdbf5","tertiary": "#00628d","secondary-fixed-dim": "#ffb690","on-secondary-fixed-variant": "#783200","inverse-on-surface": "#eaf1ff","primary-fixed": "#e1e0ff","surface": "#f8f9ff","surface-container-low": "#eff4ff","on-secondary": "#ffffff","on-tertiary-fixed": "#001e2f","on-tertiary": "#ffffff","surface-container-highest": "#d3e4fe","on-background": "#0b1c30","secondary-fixed": "#ffdbca","surface-variant": "#d3e4fe","error-container": "#ffdad6","on-surface": "#0b1c30","on-tertiary-fixed-variant": "#004c6e","surface-container": "#e5eeff","primary-container": "#6063ee","primary": "#4648d4","on-error-container": "#93000a","on-surface-variant": "#464554","on-secondary-container": "#5c2400","on-tertiary-container": "#fcfcff","tertiary-fixed": "#c9e6ff","on-secondary-fixed": "#341100","primary-fixed-dim": "#c0c1ff","tertiary-fixed-dim": "#89ceff","on-primary": "#ffffff","surface-bright": "#f8f9ff","outline": "#767586","background": "#f8f9ff","outline-variant": "#c7c4d7","error": "#ba1a1a","surface-tint": "#494bd6","inverse-surface": "#213145","on-error": "#ffffff","secondary-container": "#fd761a","surface-container-high": "#dce9ff"
-                    },
-                    "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
-                    "spacing": { "connector-thickness": "2px", "stack-gap": "2rem", "level-indent": "4rem", "node-padding": "1.25rem", "grid-size": "8px" },
-                    "fontFamily": { "node-title-lg": ["Manrope"], "node-title-md": ["Manrope"], "meta-label": ["Inter"], "node-description": ["Inter"], "connector-text": ["Inter"] },
-                    "fontSize": { "node-title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "700"}], "node-title-md": ["16px", {"lineHeight": "20px", "fontWeight": "600"}], "meta-label": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}], "node-description": ["13px", {"lineHeight": "18px", "fontWeight": "400"}], "connector-text": ["12px", {"lineHeight": "16px", "fontWeight": "500"}] }
-                }
-            }
-        }
-    </script>
+<title>StayMarket | Spa</title>
 <style>
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; font-size: 1.25rem; }
-        .main-layout { display: flex; justify-content: center; align-items: flex-start; gap: 20px; }
-        .main-layout.active { justify-content: flex-start; }
-        .main-layout, .main-layout * { transition: none !important; transform: none !important; animation: none !important; }
-        .level1 { width: 600px; transition: none; }
-        .level2 { width: 600px; display: none; }
         .spa-item { cursor: pointer; }
         .filter-field { cursor: pointer; min-height: 32px; width: 100%; outline: none; }
         .filter-field:focus { box-shadow: 0 0 0 2px rgba(74, 68, 255, 0.18); }
 </style>
 </head>
 <body class="bg-white text-on-background font-node-description antialiased p-8">
-<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center w-full px-8 py-3 max-w-full mx-auto mb-12">
-<div class="flex items-center gap-4">
-<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">StayMarket</h1>
-<span class="text-xs bg-primary-container text-on-primary-container px-2 py-0.5 font-bold">LAYOVERX SYSTEM</span>
-</div>
-<nav class="hidden md:flex gap-6 items-center">
-<a class="text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 pb-1 font-semibold font-manrope text-sm" href="#">Browse</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Deals</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">My Bookings</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-manrope text-sm font-medium" href="#">Support</a>
-</nav>
-<div class="flex gap-4 items-center">
-<span class="material-symbols-outlined text-slate-500">notifications</span>
-<span class="material-symbols-outlined text-slate-500">account_circle</span>
-</div>
-</header>
 <main class="max-w-7xl mx-auto space-y-12">
 <div class="main-layout">
 <!-- LEVEL 1: SPA LISTING PAGE -->
 <div class="level1 space-y-6 relative z-10">
-<div class="flex items-center justify-between mb-4">
-<span class="bg-primary text-white text-meta-label px-3 py-1 font-bold">LEVEL 1: LISTING</span>
-</div>
 <div class="bg-white border-2 border-primary-container p-node-padding rounded shadow-sm">
 <div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-primary">Spa &amp; Wellness Listing Page</h3>
+<h3 class="text-node-title-md font-node-title-md text-primary">Spa &amp; Wellness Listing</h3>
 <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Finalized</span>
 </div>
 <div class="space-y-4">
@@ -68,381 +24,147 @@
 <p class="text-meta-label text-outline mb-1">SEARCH &amp; FILTERS</p>
 <div class="grid grid-cols-2 gap-2 text-node-description">
 <select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="duration" onchange="applyFilters()">
-<option value="">Duration (30m, 1h, 2h)</option>
-<option selected value="1">1 hr</option>
-<option value="0.5">30 min</option>
+<option value="" disabled selected hidden>Select Spa Duration</option>
+<option value="1">1 hr</option>
+<option value="1.5">1.5 hr</option>
 <option value="2">2 hr</option>
 </select>
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="priceRange" onchange="applyFilters()">
-<option selected value="0-3000">₹0 – ₹3000</option>
-<option value="3000-5000">₹3000 – ₹5000</option>
-<option value="5000+">₹5000+</option>
-</select>
 <select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" onchange="applyFilters()">
-<option selected value="0-3">0 – 3 km</option>
-<option value="3-5">3 – 5 km</option>
-<option value="5+">5+ km</option>
-</select>
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="spaType" onchange="applyFilters()">
-<option selected value="">All Types</option>
-<option value="luxury">Luxury</option>
-<option value="ayurveda">Ayurveda</option>
-<option value="thai">Thai</option>
-<option value="wellness">Wellness</option>
+<option selected value="0-5">0 – 5 km</option>
+<option value="5-10">5 – 10 km</option>
+<option value="10+">10+ km</option>
 </select>
 </div>
 </div>
 <div class="border-2 border-dashed border-outline-variant p-3">
-<p class="text-meta-label text-outline mb-2">SPA INVENTORY (9 SPAS FOUND)</p>
-<div class="rounded-lg flex gap-3"><div class="space-y-4 w-full"><div><p class="text-[10px] font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">workspace_premium</span> PREMIUM SPAS (4)</p><div class="grid grid-cols-2 gap-2"><div class="spa-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="1" data-price="3960" data-distance="1.6" data-spa-type="luxury" role="button" tabindex="0">Jiva Spa</div><div class="spa-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="1" data-price="3520" data-distance="1.8" data-spa-type="luxury" role="button" tabindex="0">Quan Spa</div><div class="spa-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="1" data-price="3960" data-distance="2.1" data-spa-type="luxury" role="button" tabindex="0">The Spa (Leela)</div><div class="spa-item p-2 bg-primary/5 border border-primary/20 rounded text-[11px] font-medium text-on-surface" data-duration="1" data-price="4840" data-distance="4.5" data-spa-type="luxury" role="button" tabindex="0">Heavenly Spa</div></div></div><div><p class="text-[10px] font-bold text-outline mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">spa</span> STANDARD SPAS (5)</p><div class="grid grid-cols-2 gap-2"><div class="spa-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" data-duration="1" data-price="2160" data-distance="2.2" data-spa-type="ayurveda" role="button" tabindex="0">Kerala Ayurveda Spa</div><div class="spa-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" data-duration="1" data-price="1840" data-distance="2.8" data-spa-type="thai" role="button" tabindex="0">Sawadhee Thai Spa</div><div class="spa-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" data-duration="0.5" data-price="1656" data-distance="3.1" data-spa-type="wellness" role="button" tabindex="0">Four Fountains Spa</div><div class="spa-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" data-duration="1" data-price="2576" data-distance="4.2" data-spa-type="wellness" role="button" tabindex="0">Myrah Spa</div><div class="spa-item p-2 bg-surface border border-outline-variant rounded text-[11px] text-on-surface" data-duration="1" data-price="1840" data-distance="6.5" data-spa-type="wellness" role="button" tabindex="0">Rewa Escape Spa</div></div></div></div></div>
+<p class="text-meta-label text-outline mb-2" id="inventory-count">SPA INVENTORY (0 FOUND)</p>
+<div class="rounded-lg flex gap-3">
+    <div class="space-y-2 w-full" id="inventory-list"></div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <!-- LEVEL 2: SPA DETAIL PAGE -->
 <div class="level2 space-y-6 relative z-10">
-<div class="flex items-center justify-between mb-4">
-<span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
-</div>
 <div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
 <div class="flex justify-between items-start mb-6">
 <h3 class="text-node-title-md font-node-title-md text-secondary">Spa Detail Page</h3>
-<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">In Progress</span>
+<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Active</span>
 </div>
-<div class="space-y-4">
-<div class="border border-outline-variant p-3 bg-secondary/5">
-<p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-<h4 class="text-node-title-md font-bold" data-detail-field="name">Select a spa</h4>
-<div class="flex gap-2 mt-1">
-<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold" data-detail-field="rating">–</span>
-<span class="text-[10px] text-outline" data-detail-field="location">–</span>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-3">
-<div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">grid_view</span>
-<p class="text-[10px] mt-1 font-bold">Media Gallery</p>
-</div>
-<div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">spa</span>
-<p class="text-[10px] mt-1 font-bold">Treatment Menu</p>
-</div>
-</div>
-<div class="border border-outline-variant p-3 bg-surface-container">
-<p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
-<ul class="text-[11px] space-y-1" data-detail-field="details">
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> Click a spa to view details</li>
-</ul>
-</div>
-<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
-<p class="text-meta-label text-secondary font-bold mb-2">DURATION-BASED PRICING</p>
-<div class="grid grid-cols-3 gap-1 text-center">
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">30 MIN</p><p class="font-bold text-[11px]" data-detail-field="price-30">–</p></div>
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">1 HR</p><p class="font-bold text-[11px]" data-detail-field="price-60">–</p></div>
-<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-120">–</p></div>
-</div>
-<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200" onclick="window.addToList && window.addToList(this, '${detail.name}', 'Spa', '1h')">Add to List</button>
-</div>
-<div class="grid grid-cols-2 gap-3 text-meta-label">
-<div class="border border-outline-variant p-2 rounded">
-<p class="text-outline mb-1">REVIEWS</p>
-<p class="font-semibold text-secondary" data-detail-field="reviews">–</p>
-</div>
-<div class="border border-outline-variant p-2 rounded">
-<p class="text-outline mb-1">CONTACT</p>
-<p class="font-semibold text-secondary">Quick Inquiry</p>
-</div>
-</div>
+<div class="space-y-4" id="level2-content">
 </div>
 </div>
 </div>
 </div>
 </main>
 <script>
-    const level2 = document.querySelector('.level2');
-    const mainLayout = document.querySelector('.main-layout');
-    const spaItems = document.querySelectorAll('.spa-item');
-    const filterFields = document.querySelectorAll('[data-filter-field]');
-    const filterDefaults = {
-        duration: '1',
-        priceRange: '0-3000',
-        distance: '0-3',
-        spaType: ''
-    };
-    const filterState = {};
+    var level2 = document.querySelector('.level2');
+    var mainLayout = document.querySelector('.main-layout');
+    var filterFields = document.querySelectorAll('[data-filter-field]');
+    var filterState = { distance: '0-5' };
 
-    const updateFilterState = (field) => {
-        const key = field.dataset.filterField;
-        const fallback = filterDefaults[key] || '';
-        const value = field.value.trim() || fallback;
-        if (!field.value.trim()) {
-            field.value = fallback;
-        }
-        filterState[key] = value;
+    var updateFilterState = (field) => {
+        filterState[field.dataset.filterField] = field.value.trim();
+    };
+
+    var inventoryData = window.LAYOVER_INVENTORY ? window.LAYOVER_INVENTORY['Spa'] : [];
+
+    var renderList = () => {
+        var listContainer = document.getElementById('inventory-list');
+        var html = '';
+        var visibleCount = 0;
+
+        var durFilter = filterState.duration || '';
+        var durText = durFilter ? `${durFilter}h` : '';
+
+        inventoryData.forEach(item => {
+            var strictMatch = true;
+
+            var filterDistance = filterState.distance || '';
+            if (filterDistance) {
+                if (filterDistance.endsWith('+')) {
+                    var min = parseFloat(filterDistance);
+                    if (item.distance < min) strictMatch = false;
+                } else {
+                    var parts = filterDistance.split('-');
+                    if (parts.length === 2) {
+                        if (item.distance < parseFloat(parts[0]) || item.distance > parseFloat(parts[1])) strictMatch = false;
+                    }
+                }
+            }
+
+            if (strictMatch) {
+                visibleCount++;
+                var indTravel = 0;
+                if (window.calculateDynamicTravelMins) {
+                    indTravel = Math.round(window.calculateDynamicTravelMins(item.distance));
+                }
+                var travelStr = indTravel > 0 ? `Est ${indTravel}m travel` : `${item.distance} KM`;
+
+                html += `
+                <div class="spa-item p-3 bg-surface border border-outline-variant rounded-lg text-[11px] text-on-surface flex justify-between items-center cursor-pointer hover:bg-surface-container-low hover:border-primary/30 transition-colors shadow-sm" onclick="showLevel2('${item.name}')">
+                    <div class="flex items-center gap-3">
+                        ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded object-cover">` : `<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-[16px]">spa</span></div>`}
+                        <div>
+                            <p class="font-bold text-[13px] text-primary">${item.name}</p>
+                            <p class="text-[10px] text-secondary flex items-center gap-1 mt-0.5">${item.type} ${durText ? `&bull; ${durText} stay` : ''}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="material-symbols-outlined text-[16px] text-primary">spa</span>
+                        <p class="text-[10px] text-outline font-medium mt-0.5">${travelStr}</p>
+                    </div>
+                </div>
+                `;
+            }
+        });
+
+        listContainer.innerHTML = html || '<p class="text-xs text-secondary text-center py-4">No spas match your filters.</p>';
+        document.getElementById('inventory-count').textContent = `SPA INVENTORY (${visibleCount} FOUND)`;
+    };
+
+    var applyFilters = () => {
+        filterFields.forEach(field => updateFilterState(field));
+        renderList();
+    };
+
+    var showLevel2 = (name) => {
+        var detail = inventoryData.find(i => i.name === name);
+        if (!detail || !level2) return;
+        
+        var durFilter = filterState.duration || '';
+        var durText = durFilter ? `${durFilter}h` : '';
+        
+        var content = document.getElementById('level2-content');
+        content.innerHTML = `
+<div class="border border-outline-variant p-3 bg-secondary/5 rounded-lg">
+<p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
+<h4 class="text-node-title-md font-bold">${detail.name}</h4>
+<div class="flex gap-2 mt-1">
+<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1.5 py-0.5 rounded font-semibold">${detail.rating}</span>
+<span class="text-[10px] text-outline">${detail.distance} km from Airport</span>
+</div>
+</div>
+<div class="border border-outline-variant p-3 bg-surface-container rounded-lg mt-4">
+<p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
+<ul class="text-[11px] space-y-1.5">
+${detail.details.map((item) => `<li class="flex items-center gap-2 text-secondary"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
+</ul>
+</div>
+<div class="mt-6 border-t border-outline-variant pt-4">
+<button onclick="window.addToList && window.addToList(this, '${detail.name}', '${detail.category}', '${durText}', ${detail.distance}, '${detail.image}')" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200 shadow-md">Add to List</button>
+</div>
+        `;
+        if (mainLayout) mainLayout.classList.add('active');
+        if (level2) level2.style.display = 'block';
+        if (window.syncButtonStates) window.syncButtonStates();
     };
 
     filterFields.forEach((field) => {
-        updateFilterState(field);
-    });
-
-    function applyFilters() {
-        filterFields.forEach((field) => {
-            updateFilterState(field);
-        });
-
-        spaItems.forEach((item) => {
-            item.style.display = 'block';
-        });
-
-        const visibleItems = [];
-        const hiddenItems = [];
-
-        spaItems.forEach((item) => {
-            const duration = item.dataset.duration || '';
-            const price = item.dataset.price || '';
-            const p = parseInt(price, 10);
-            const distance = parseFloat(item.dataset.distance || '0');
-
-            let strictMatch = true;
-
-            // Duration: strict AND filter
-            const filterDuration = filterState.duration || '';
-            if (filterDuration) {
-                const fd = parseFloat(filterDuration);
-                const id = parseFloat(duration);
-                if (!isNaN(fd) && !isNaN(id) && id !== fd) strictMatch = false;
-            }
-
-            // Price: strict AND filter
-            const filterPrice = filterState.priceRange || '';
-            if (strictMatch && filterPrice) {
-                if (filterPrice.endsWith('+')) {
-                    const min = parseInt(filterPrice, 10);
-                    if (!isNaN(min) && !isNaN(p) && p < min) strictMatch = false;
-                } else {
-                    const parts = filterPrice.split('-');
-                    if (parts.length === 2) {
-                        const min = parseInt(parts[0], 10);
-                        const max = parseInt(parts[1], 10);
-                        if (!isNaN(min) && !isNaN(max) && !isNaN(p) && (p < min || p > max)) strictMatch = false;
-                    }
-                }
-            }
-
-            // Distance: strict AND filter (range-based)
-            const filterDistance = filterState.distance || '';
-            if (strictMatch && filterDistance) {
-                if (filterDistance.endsWith('+')) {
-                    const min = parseFloat(filterDistance);
-                    if (!isNaN(min) && !isNaN(distance) && distance < min) strictMatch = false;
-                } else {
-                    const parts = filterDistance.split('-');
-                    if (parts.length === 2) {
-                        const dMin = parseFloat(parts[0]);
-                        const dMax = parseFloat(parts[1]);
-                        if (!isNaN(dMin) && !isNaN(dMax) && !isNaN(distance) && (distance < dMin || distance > dMax)) strictMatch = false;
-                    }
-                }
-            }
-
-            // Spa Type: soft match (do NOT hide spas based on type)
-
-            if (strictMatch) {
-                visibleItems.push(item);
-            } else {
-                hiddenItems.push({ item, price: p });
-            }
-        });
-
-        if (visibleItems.length === 0 && hiddenItems.length > 0) {
-            const filterPrice = filterState.priceRange || '';
-            let targetPrice = 0;
-            if (filterPrice.endsWith('+')) {
-                targetPrice = parseInt(filterPrice, 10);
-            } else {
-                const parts = filterPrice.split('-');
-                targetPrice = parseInt(parts[0], 10) || 0;
-            }
-            hiddenItems.sort((a, b) => Math.abs(a.price - targetPrice) - Math.abs(b.price - targetPrice));
-            hiddenItems.slice(0, 4).forEach((h) => {
-                h.item.style.display = 'block';
-            });
-        } else {
-            hiddenItems.forEach((h) => {
-                h.item.style.display = 'none';
-            });
-        }
-
-        console.log('Filters applied:', filterState);
-    }
-
-    const spaDetails = {
-        'Jiva Spa': {
-            name: 'Jiva Spa, Taj Santacruz',
-            rating: '4.9 ★',
-            location: '1.6 km from Airport',
-            reviews: '389 Verified',
-            prices: { thirty: '₹2200', sixty: '₹3960', hundred: '₹7200' },
-            details: ['Signature Ayurvedic treatments', 'Trained therapists from Kerala', 'Herbal steam & meditation rooms']
-        },
-        'Quan Spa': {
-            name: 'Quan Spa, JW Marriott',
-            rating: '4.8 ★',
-            location: '1.8 km from Airport',
-            reviews: '342 Verified',
-            prices: { thirty: '₹1900', sixty: '₹3520', hundred: '₹6400' },
-            details: ['East-meets-West therapies', 'Aromatherapy specialists', 'Couples treatment suites']
-        },
-        'The Spa (Leela)': {
-            name: 'The Spa, Leela Mumbai',
-            rating: '4.8 ★',
-            location: '2.1 km from Airport',
-            reviews: '376 Verified',
-            prices: { thirty: '₹2200', sixty: '₹3960', hundred: '₹7200' },
-            details: ['Luxury ESPA treatments', 'Private relaxation lounges', 'Temperature-controlled pools']
-        },
-        'Heavenly Spa': {
-            name: 'Heavenly Spa, Westin',
-            rating: '4.7 ★',
-            location: '4.5 km from Airport',
-            reviews: '298 Verified',
-            prices: { thirty: '₹2640', sixty: '₹4840', hundred: '₹8800' },
-            details: ['Westin Heavenly signature massage', 'Sleep-enhancement program', 'Vitality pools & whirlpools']
-        },
-        'Kerala Ayurveda Spa': {
-            name: 'Kerala Ayurveda Spa',
-            rating: '4.5 ★',
-            location: '2.2 km from Airport',
-            reviews: '267 Verified',
-            prices: { thirty: '₹1200', sixty: '₹2160', hundred: '₹3900' },
-            details: ['Traditional Kerala Panchakarma', 'Medicinal herb treatments', 'Doctor-supervised wellness plans']
-        },
-        'Sawadhee Thai Spa': {
-            name: 'Sawadhee Thai Spa',
-            rating: '4.4 ★',
-            location: '2.8 km from Airport',
-            reviews: '231 Verified',
-            prices: { thirty: '₹1000', sixty: '₹1840', hundred: '₹3400' },
-            details: ['Authentic Thai massage', 'Herbal compress therapy', 'Trained Thai therapists']
-        },
-        'Four Fountains Spa': {
-            name: 'Four Fountains Spa',
-            rating: '4.3 ★',
-            location: '3.1 km from Airport',
-            reviews: '214 Verified',
-            prices: { thirty: '₹900', sixty: '₹1656', hundred: '₹3000' },
-            details: ['Stress-relief focused treatments', 'Affordable wellness packages', 'Detox & de-tan therapies']
-        },
-        'Myrah Spa': {
-            name: 'Myrah Spa',
-            rating: '4.4 ★',
-            location: '4.2 km from Airport',
-            reviews: '256 Verified',
-            prices: { thirty: '₹1400', sixty: '₹2576', hundred: '₹4700' },
-            details: ['Bespoke wellness rituals', 'Organic product lines', 'Facial & skin rejuvenation']
-        },
-        'Rewa Escape Spa': {
-            name: 'Rewa Escape Spa',
-            rating: '4.2 ★',
-            location: '6.5 km from Airport',
-            reviews: '189 Verified',
-            prices: { thirty: '₹1000', sixty: '₹1840', hundred: '₹3400' },
-            details: ['Nature-inspired retreat setting', 'Sound healing sessions', 'Yoga & meditation add-ons']
-        }
-    };
-
-    const renderLevel2 = (detail) => `
-<div class="flex items-center justify-between mb-4">
-<span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
-</div>
-<div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
-<div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-secondary">Spa Detail Page</h3>
-<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">In Progress</span>
-</div>
-<div class="space-y-4">
-<div class="border border-outline-variant p-3 bg-secondary/5">
-<p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-<h4 class="text-node-title-md font-bold" data-detail-field="name">${detail.name}</h4>
-<div class="flex gap-2 mt-1">
-<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold" data-detail-field="rating">${detail.rating}</span>
-<span class="text-[10px] text-outline" data-detail-field="location">${detail.location}</span>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-3">
-<div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">grid_view</span>
-<p class="text-[10px] mt-1 font-bold">Media Gallery</p>
-</div>
-<div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">spa</span>
-<p class="text-[10px] mt-1 font-bold">Treatment Menu</p>
-</div>
-</div>
-<div class="border border-outline-variant p-3 bg-surface-container">
-<p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
-<ul class="text-[11px] space-y-1" data-detail-field="details">
-${detail.details.map((item) => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
-</ul>
-</div>
-<div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
-<p class="text-meta-label text-secondary font-bold mb-2">DURATION-BASED PRICING</p>
-<div class="grid grid-cols-3 gap-1 text-center">
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">30 MIN</p><p class="font-bold text-[11px]" data-detail-field="price-30">${detail.prices.thirty}</p></div>
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">1 HR</p><p class="font-bold text-[11px]" data-detail-field="price-60">${detail.prices.sixty}</p></div>
-<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-120">${detail.prices.hundred}</p></div>
-</div>
-<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200" onclick="window.addToList && window.addToList(this, '${detail.name}', 'Spa', '1h')">Add to List</button>
-</div>
-<div class="grid grid-cols-2 gap-3 text-meta-label">
-<div class="border border-outline-variant p-2 rounded">
-<p class="text-outline mb-1">REVIEWS</p>
-<p class="font-semibold text-secondary" data-detail-field="reviews">${detail.reviews}</p>
-</div>
-<div class="border border-outline-variant p-2 rounded">
-<p class="text-outline mb-1">CONTACT</p>
-<p class="font-semibold text-secondary">Quick Inquiry</p>
-</div>
-</div>
-</div>
-</div>`;
-
-    const updateLevel2 = (spaName) => {
-        const detail = spaDetails[spaName];
-        if (!detail || !level2) return;
-        level2.innerHTML = renderLevel2(detail);
-    };
-
-    spaItems.forEach((spaItem) => {
-        const showLevel2 = () => {
-            updateLevel2(spaItem.textContent.trim());
-            if (mainLayout) mainLayout.classList.add('active');
-            if (level2) level2.style.display = 'block';
-        };
-        spaItem.addEventListener('click', showLevel2);
-        spaItem.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                showLevel2();
-            }
-        });
+        field.addEventListener('change', applyFilters);
     });
 
     applyFilters();
 </script>
-<footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 mt-20 w-full">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full px-8 py-12 max-w-7xl mx-auto">
-<div>
-<h4 class="text-lg font-bold text-slate-700 dark:text-slate-300 mb-4">StayMarket</h4>
-<p class="text-slate-500 dark:text-slate-400 font-manrope text-xs tracking-wide">© 2024 StayMarket Global. Structured for clarity.</p>
-</div>
-<div class="flex flex-wrap gap-6 justify-end">
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">About Us</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150 underline" href="#">Privacy Policy</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">Terms of Service</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">Help Center</a>
-<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-manrope text-xs tracking-wide transition-opacity duration-150" href="#">Careers</a>
-</div>
-</div>
-</footer>
 </body></html>

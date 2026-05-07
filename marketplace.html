@@ -280,6 +280,60 @@ async function loadCategory(url, btn) {
     }
 }
 
+// Global Inventory Data
+window.LAYOVER_INVENTORY = {
+    'Hotels': [
+        { name: 'Taj Santacruz', type: 'Luxury', distance: 1.6, rating: '4.9 ★', reviews: '500+ Verified', category: 'Hotel', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBwNzfcRJjijBDZgGuN06liNWs1qWY_wilvYW59m7gAyeP-YnTLGypLGymQixUFn5Cl-iK8NMX1dgWIFpJnzahNQQxXNJGudjm4hMIvyw3DPBsySLCSsZrbWDM_09zFL3iJO7BydG5JqCAILjaTw_zRDZFP3qrpcTHnTQw6cN1aNngn8O9_qo_APqOyNQEnYvIbQD00kNj6KSkpuZCUV22YVMhtQ0Il3NMEJAUovV1-m0Z0NjZtsrsEHqDdN6hCunHxeHg9jt5arWQy', details: ['King Suite with Pool view', 'Butler service included', 'Grand Club Lounge access'] },
+        { name: 'JW Marriott Sahar', type: 'Luxury', distance: 1.8, rating: '4.8 ★', reviews: '450+ Verified', category: 'Hotel', image: '', details: ['Studio Room with workspace', 'Executive Premium city view', 'Resort Stay features'] },
+        { name: 'Hotel Sahara Star', type: 'Transit Hub', distance: 1.1, rating: '4.7 ★', reviews: '300+ Verified', category: 'Hotel', image: '', details: ['Mercury Room - Modern styling', 'Earth Room - Garden view', 'Transit Hub convenience'] },
+        { name: 'The Orchid Hotel', type: 'Eco Stay', distance: 0.9, rating: '4.8 ★', reviews: '400+ Verified', category: 'Hotel', image: '', details: ['Business Room', 'Eco Stay environment', 'Focused on efficiency'] }
+    ],
+    'Restaurants': [
+        { name: 'Thai Naam', type: 'Premium Thai', distance: 1.8, rating: '4.8 ★', reviews: '200+ Verified', category: 'Restaurant', image: '', details: ['Chef Tasting', 'Set Lunch'] },
+        { name: 'JW Cafe', type: 'Global Buffet', distance: 1.8, rating: '4.7 ★', reviews: '300+ Verified', category: 'Restaurant', image: '', details: ['Sunday Brunch'] },
+        { name: 'Cafe Coffee Day', type: 'Quick Bites', distance: 0.4, rating: '4.2 ★', reviews: '1k+ Verified', category: 'Restaurant', image: '', details: ['Combo Deal'] },
+        { name: 'Sake & Stone', type: 'Japanese', distance: 1.8, rating: '4.9 ★', reviews: '150+ Verified', category: 'Restaurant', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCEHVvr-KaB3u9h4V-312uBZ5YCpyIPs7kZEuC15dMwLgEFEdf-Go7ztOhHMKjxdVRtEFFehrI-V1C078nB0nQJajGjAjmVUwj4MIV63prrEH0xqpHwo1tfqmdvNjVl1EIpu7KJTT6QwIKAIMh9Ic1AF_clXq1ZzSqhjrQgJ4exxuwih9Hk3FW6x-99ZZJIKQayUPI9bKBp7sinvN0a9K63ak3SX0xQKRugYBmQFD0oMMtTayp4jRp0xdS1YlKUrFOB-aWZKObVv2Sz', details: ['Sashimi Platter'] }
+    ],
+    'Spa': [
+        { name: 'Jiva Spa', type: 'Ayurvedic', distance: 1.6, rating: '4.9 ★', reviews: '100+ Verified', category: 'Spa', image: '', details: ['Vishudhi', 'Sushupti'] },
+        { name: 'Aura Wellness', type: 'Holistic', distance: 1.6, rating: '4.7 ★', reviews: '250+ Verified', category: 'Spa', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCCnlikk1QQwO6H7p5wmjMMSTz3-coe_ACFYTs9AmXRKI-nJwpTolWRuFhAe7t4GMI-483U8N39X5yzgNhajjHVvzKatotYftMWFMLAObmgqxr9aX65t-9aunRgOJvJGCv_4jvAPtInQjt_oMCnBkU-Ls9aTJE2aPf1n03vV7lSh3CdaAq_53sISit2fSaiOSGNOLIWb3uBb1a45HXz40We1lfxL3r2H7tlpJIOdyOM7CLuZzN5Pn2qcXPm9t05bkMfXCaYGh8S4xp1', details: ['Deep Tissue Massage'] }
+    ],
+    'Entertainment': [
+        { name: 'KidZania', type: 'Kids Play Zone', distance: 7.9, rating: '4.8 ★', reviews: '1.2k Verified', category: 'Gaming & Entertainment', image: '', details: ['Role-play activities', 'Interactive City', 'Career Simulation'] },
+        { name: 'Shott Gaming', type: 'Arcade', distance: 8.6, rating: '4.6 ★', reviews: '400+ Verified', category: 'Gaming & Entertainment', image: '', details: ['Bowling Alley', 'VR Simulators', 'Laser Tag'] },
+        { name: 'Zero Latency', type: 'VR Arena', distance: 16.5, rating: '4.9 ★', reviews: '850+ Verified', category: 'Gaming & Entertainment', image: '', details: ['Free-Roam VR', 'Zombie Survival', 'Space Mission'] },
+        { name: 'SMAAASH', type: 'Arcade', distance: 16.8, rating: '4.5 ★', reviews: '2.5k Verified', category: 'Gaming & Entertainment', image: '', details: ['Virtual Cricket', 'Go-Karting', 'Arcade'] },
+        { name: 'JUMPP', type: 'Kids Play Zone', distance: 3.9, rating: '4.2 ★', reviews: '150+ Verified', category: 'Gaming & Entertainment', image: '', details: ['Trampoline Park', 'Kids Play Area', 'Ninja Course'] },
+        { name: 'Clue Hunt', type: 'Escape Room', distance: 8.3, rating: '4.7 ★', reviews: '600+ Verified', category: 'Gaming & Entertainment', image: '', details: ['Mystery Solving', 'Team Puzzles', 'Thematic Rooms'] },
+        { name: 'Timezone', type: 'Arcade', distance: 8.5, rating: '4.3 ★', reviews: '1.8k Verified', category: 'Gaming & Entertainment', image: '', details: ['Arcade Games', 'Bowling', 'Bumper Cars'] },
+        { name: 'Snow Kingdom', type: 'Kids Play Zone', distance: 17.8, rating: '4.4 ★', reviews: '900+ Verified', category: 'Gaming & Entertainment', image: '', details: ['Snow Slides', 'Ice Skating', 'Snow Fight Arena'] }
+    ]
+};
+
+window.calculateDynamicTravelMins = function(distance) {
+    const transportType = localStorage.getItem("transportType") || "Luxury";
+    const speedMap = { walking: 5, cab: 28, metro: 40, bike: 18, Sedan: 40, SUV: 38, XL: 35, Luxury: 45, Shuttle: 30 };
+    const speed = speedMap[transportType] || 28;
+    
+    let trafficMultiplier = 1.0;
+    const flightDepartureRaw = localStorage.getItem('flight_departure');
+    if (flightDepartureRaw) {
+        try {
+            const date = new Date(flightDepartureRaw);
+            const hour = date.getHours();
+            if ((hour >= 7 && hour < 10) || (hour >= 17 && hour < 21)) {
+                trafficMultiplier = 1.7; // Heavy
+            } else {
+                trafficMultiplier = 1.3; // Moderate
+            }
+        } catch(e) {}
+    }
+    
+    return (distance / speed) * 60 * trafficMultiplier;
+};
+
+window.isRisk = false;
+
 // Auto-load Recommended For You category on initial page visit
 document.addEventListener('DOMContentLoaded', () => {
     const firstTab = document.querySelector('.category-pill');
@@ -287,6 +341,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial setup of header metrics from localStorage
     window.updateTimeCalculations();
+    
+    // Trips Tab Enable/Disable Logic
+    const tripPlanActivated = localStorage.getItem('tripPlanActivated') === 'true';
+    const tripsTab = document.getElementById('nav-trips-tab');
+    if (tripsTab) {
+        if (!tripPlanActivated) {
+            tripsTab.style.opacity = '0.4';
+            tripsTab.style.pointerEvents = 'none';
+            tripsTab.style.cursor = 'not-allowed';
+        } else {
+            tripsTab.style.opacity = '1';
+            tripsTab.style.pointerEvents = 'auto';
+            tripsTab.style.cursor = 'pointer';
+            tripsTab.onclick = () => window.location.href = 'yourplan.html';
+        }
+    }
 });
 
 window.saveLayoverList = function() {
@@ -456,12 +526,14 @@ window.updateTimeCalculations = function() {
     let remContainer = document.getElementById('rem-container');
     let remLabel = document.getElementById('rem-label');
     
-    if (remainingMins <= 0) {
-        remEl.textContent = remainingMins === 0 ? '0m' : 'Risk';
+    if (remainingMins < 0) {
+        window.isRisk = true;
+        remEl.textContent = 'Risk';
         remContainer.className = 'bg-red-50 py-3 px-3 rounded-2xl border border-red-200 flex flex-col justify-center min-w-[80px] transition-colors';
         remEl.className = 'font-h3 text-[15px] text-red-700 font-bold tracking-tight mt-0.5';
         remLabel.className = 'font-label-caps text-[9px] text-red-800 leading-tight uppercase tracking-widest mb-1';
     } else {
+        window.isRisk = false;
         remEl.textContent = formatTime(remainingMins);
         if (remainingMins < 60) {
             remContainer.className = 'bg-amber-50 py-3 px-3 rounded-2xl border border-amber-200 flex flex-col justify-center min-w-[80px] transition-colors';
@@ -513,7 +585,7 @@ window.renderListDrawer = function() {
         const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
 
         window.layoverList.forEach(item => {
-            let indTravel = Math.round((item.distance * 3 * 2) + 30);
+            let indTravel = Math.round(window.calculateDynamicTravelMins(item.distance) * 2 + 30);
             html += `
                 <div class="flex gap-3 items-center bg-surface p-2 rounded-lg border border-outline-variant">
                     ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded object-cover">` : `<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-[16px]">image</span></div>`}
@@ -565,7 +637,7 @@ window.updateListIndicator = function() {
                 <span class="bg-primary text-white w-4 h-4 flex items-center justify-center rounded-full font-bold text-[9px]">${window.layoverList.length}</span>
                 <span class="font-semibold tracking-wide text-xs">View List</span>
             </button>
-            <button onclick="window.proceedToPlan(this)" class="flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-full font-label-sm transition-colors shadow-sm">
+            <button id="btn-plan-my-list" onclick="window.proceedToPlan(this)" class="flex items-center gap-1.5 px-5 py-2 rounded-full font-label-sm transition-colors shadow-sm ${window.isRisk ? 'bg-secondary-fixed text-secondary cursor-not-allowed' : 'bg-primary hover:bg-primary/90 text-white'}">
                 <span class="font-semibold tracking-wide text-xs">Plan My List</span>
                 <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
             </button>
@@ -584,8 +656,14 @@ window.updateListIndicator = function() {
 window.proceedToPlan = function(btn) {
     if (window.layoverList.length === 0) return;
     
-    const originalHtml = btn.innerHTML;
-    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[14px]">refresh</span> <span class="font-semibold tracking-wide text-xs">Routing...</span>';
+    if (window.isRisk) {
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<span class="font-bold tracking-wide px-2 whitespace-nowrap text-error">Insufficient safe buffer time. Please reduce experiences or travel duration before planning your trip.</span>';
+        setTimeout(() => { btn.innerHTML = originalHtml; }, 3000);
+        return;
+    }
+    
+    localStorage.setItem("tripPlanActivated", "true");
     btn.classList.add('opacity-90', 'cursor-wait');
     
     setTimeout(() => {

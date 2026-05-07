@@ -6,86 +6,7 @@
 </div>
 
 <div class="space-y-4" id="rec-container">
-    <!-- Card 1: Hotel -->
-    <div class="rec-card flex gap-4 bg-surface border border-outline-variant rounded-xl p-3 hover:shadow-md transition-shadow items-center" data-duration="120" data-distance="1.6">
-        <div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-slate-200">
-            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwNzfcRJjijBDZgGuN06liNWs1qWY_wilvYW59m7gAyeP-YnTLGypLGymQixUFn5Cl-iK8NMX1dgWIFpJnzahNQQxXNJGudjm4hMIvyw3DPBsySLCSsZrbWDM_09zFL3iJO7BydG5JqCAILjaTw_zRDZFP3qrpcTHnTQw6cN1aNngn8O9_qo_APqOyNQEnYvIbQD00kNj6KSkpuZCUV22YVMhtQ0Il3NMEJAUovV1-m0Z0NjZtsrsEHqDdN6hCunHxeHg9jt5arWQy"/>
-        </div>
-        <div class="flex-grow flex flex-col justify-between py-1">
-            <div class="flex justify-between items-start">
-                <div>
-                    <span class="text-[9px] font-bold text-outline uppercase tracking-wider">Hotel</span>
-                    <h3 class="font-bold text-sm text-on-surface leading-tight mt-0.5">The Grand Hyatt</h3>
-                </div>
-                <div class="flex items-center gap-[2px] bg-emerald-50 px-1.5 py-0.5 rounded">
-                    <span class="font-bold text-[10px] text-emerald-700">4.8 ★</span>
-                </div>
-            </div>
-            <div class="flex gap-2 text-secondary mt-1 text-[10px]">
-                <span>15 min away</span>
-                <span>•</span>
-                <span>2h stay</span>
-            </div>
-            <div class="flex justify-between items-center mt-3">
-                <span class="text-emerald-600 font-bold text-[9px] px-2 py-0.5 bg-emerald-50 rounded-full uppercase tracking-wider">High Compatibility</span>
-                <button onclick="window.addToList && window.addToList(this, 'The Grand Hyatt', 'Hotel', '2h', 1.6)" class="bg-primary text-white text-[10px] font-bold px-4 py-2 rounded-md hover:shadow-md active:scale-95 transition-all duration-200 flex items-center justify-center">Add to List</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 2: Dining -->
-    <div class="rec-card flex gap-4 bg-surface border border-outline-variant rounded-xl p-3 hover:shadow-md transition-shadow items-center" data-duration="90" data-distance="1.8">
-        <div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-slate-200">
-            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEHVvr-KaB3u9h4V-312uBZ5YCpyIPs7kZEuC15dMwLgEFEdf-Go7ztOhHMKjxdVRtEFFehrI-V1C078nB0nQJajGjAjmVUwj4MIV63prrEH0xqpHwo1tfqmdvNjVl1EIpu7KJTT6QwIKAIMh9Ic1AF_clXq1ZzSqhjrQgJ4exxuwih9Hk3FW6x-99ZZJIKQayUPI9bKBp7sinvN0a9K63ak3SX0xQKRugYBmQFD0oMMtTayp4jRp0xdS1YlKUrFOB-aWZKObVv2Sz"/>
-        </div>
-        <div class="flex-grow flex flex-col justify-between py-1">
-            <div class="flex justify-between items-start">
-                <div>
-                    <span class="text-[9px] font-bold text-outline uppercase tracking-wider">Restaurant</span>
-                    <h3 class="font-bold text-sm text-on-surface leading-tight mt-0.5">Sake &amp; Stone</h3>
-                </div>
-                <div class="flex items-center gap-[2px] bg-emerald-50 px-1.5 py-0.5 rounded">
-                    <span class="font-bold text-[10px] text-emerald-700">4.9 ★</span>
-                </div>
-            </div>
-            <div class="flex gap-2 text-secondary mt-1 text-[10px]">
-                <span>20 min away</span>
-                <span>•</span>
-                <span>1.5h stay</span>
-            </div>
-            <div class="flex justify-between items-center mt-3">
-                <span class="text-emerald-600 font-bold text-[9px] px-2 py-0.5 bg-emerald-50 rounded-full uppercase tracking-wider">High Compatibility</span>
-                <button onclick="window.addToList && window.addToList(this, 'Sake & Stone', 'Restaurant', '1.5h', 1.8)" class="bg-primary text-white text-[10px] font-bold px-4 py-2 rounded-md hover:shadow-md active:scale-95 transition-all duration-200 flex items-center justify-center">Add to List</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Card 3: Spa -->
-    <div class="rec-card flex gap-4 bg-surface border border-outline-variant rounded-xl p-3 hover:shadow-md transition-shadow items-center" data-duration="60" data-distance="1.6">
-        <div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-slate-200">
-            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCnlikk1QQwO6H7p5wmjMMSTz3-coe_ACFYTs9AmXRKI-nJwpTolWRuFhAe7t4GMI-483U8N39X5yzgNhajjHVvzKatotYftMWFMLAObmgqxr9aX65t-9aunRgOJvJGCv_4jvAPtInQjt_oMCnBkU-Ls9aTJE2aPf1n03vV7lSh3CdaAq_53sISit2fSaiOSGNOLIWb3uBb1a45HXz40We1lfxL3r2H7tlpJIOdyOM7CLuZzN5Pn2qcXPm9t05bkMfXCaYGh8S4xp1"/>
-        </div>
-        <div class="flex-grow flex flex-col justify-between py-1">
-            <div class="flex justify-between items-start">
-                <div>
-                    <span class="text-[9px] font-bold text-outline uppercase tracking-wider">Spa & Wellness</span>
-                    <h3 class="font-bold text-sm text-on-surface leading-tight mt-0.5">Aura Wellness</h3>
-                </div>
-                <div class="flex items-center gap-[2px] bg-emerald-50 px-1.5 py-0.5 rounded">
-                    <span class="font-bold text-[10px] text-emerald-700">4.7 ★</span>
-                </div>
-            </div>
-            <div class="flex gap-2 text-secondary mt-1 text-[10px]">
-                <span>10 min away</span>
-                <span>•</span>
-                <span>1h stay</span>
-            </div>
-            <div class="flex justify-between items-center mt-3">
-                <span class="text-emerald-600 font-bold text-[9px] px-2 py-0.5 bg-emerald-50 rounded-full uppercase tracking-wider">High Compatibility</span>
-                <button onclick="window.addToList && window.addToList(this, 'Aura Wellness', 'Spa', '1h', 1.6)" class="bg-primary text-white text-[10px] font-bold px-4 py-2 rounded-md hover:shadow-md active:scale-95 transition-all duration-200 flex items-center justify-center">Add to List</button>
-            </div>
-        </div>
-    </div>
+    <!-- Rendered dynamically -->
 </div>
 </div>
 </div>
@@ -95,21 +16,66 @@
     const layoverDurationHours = parseInt(layoverDurationRaw, 10);
     const availableMins = (layoverDurationHours * 60) - 120; // total - buffer
 
-    const cards = document.querySelectorAll('.rec-card');
+    const container = document.getElementById('rec-container');
+    let html = '';
     let visibleCount = 0;
-    cards.forEach(card => {
-        const dur = parseInt(card.dataset.duration || 0, 10);
-        const dist = parseFloat(card.dataset.distance || 0);
-        const estTravel = Math.round((dist * 3 * 2) + 30); // worst case overhead
-        if (dur + estTravel > availableMins) {
-            card.style.display = 'none';
-        } else {
+
+    // Pick top items from inventory
+    const topPicks = [];
+    if (window.LAYOVER_INVENTORY) {
+        if (window.LAYOVER_INVENTORY['Hotels'][0]) topPicks.push(window.LAYOVER_INVENTORY['Hotels'][0]);
+        if (window.LAYOVER_INVENTORY['Restaurants'][0]) topPicks.push(window.LAYOVER_INVENTORY['Restaurants'][0]);
+        if (window.LAYOVER_INVENTORY['Spa'][0]) topPicks.push(window.LAYOVER_INVENTORY['Spa'][0]);
+    }
+
+    topPicks.forEach(item => {
+        const dist = parseFloat(item.distance || 0);
+        let estTravel = 30; // base overhead
+        if (window.calculateDynamicTravelMins) {
+            estTravel += Math.round(window.calculateDynamicTravelMins(dist) * 2); // round trip overhead just for filtering
+        }
+        
+        // Let's assume a default safe duration of 2h for recommended items if they don't have a filter set
+        const defaultDurMins = 120;
+
+        if (defaultDurMins + estTravel <= availableMins) {
             visibleCount++;
+            html += `
+            <div class="flex gap-4 bg-surface border border-outline-variant rounded-xl p-3 hover:shadow-md transition-shadow items-center">
+                <div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-slate-200">
+                    ${item.image ? `<img class="w-full h-full object-cover" src="${item.image}"/>` : `<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-outline-variant text-[24px]">category</span></div>`}
+                </div>
+                <div class="flex-grow flex flex-col justify-between py-1">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[9px] font-bold text-outline uppercase tracking-wider">${item.category}</span>
+                            <h3 class="font-bold text-sm text-on-surface leading-tight mt-0.5">${item.name}</h3>
+                        </div>
+                        <div class="flex items-center gap-[2px] bg-emerald-50 px-1.5 py-0.5 rounded">
+                            <span class="font-bold text-[10px] text-emerald-700">${item.rating}</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 text-secondary mt-1 text-[10px]">
+                        <span>Est ${Math.round(estTravel/2)}m away</span>
+                    </div>
+                    <div class="flex justify-between items-center mt-3">
+                        <span class="text-emerald-600 font-bold text-[9px] px-2 py-0.5 bg-emerald-50 rounded-full uppercase tracking-wider">High Compatibility</span>
+                        <button onclick="window.addToList && window.addToList(this, '${item.name}', '${item.category}', '2h', ${item.distance}, '${item.image}')" class="bg-primary text-white text-[10px] font-bold px-4 py-2 rounded-md hover:shadow-md active:scale-95 transition-all duration-200 flex items-center justify-center">Add to List</button>
+                    </div>
+                </div>
+            </div>
+            `;
         }
     });
 
     if (visibleCount === 0) {
-        document.getElementById('rec-container').innerHTML = '<p class="text-xs text-secondary text-center py-4">No experiences fit your remaining layover time safely.</p>';
+        container.innerHTML = '<p class="text-xs text-secondary text-center py-4">No experiences fit your remaining layover time safely.</p>';
+    } else {
+        container.innerHTML = html;
+    }
+
+    if (window.syncButtonStates) {
+        window.syncButtonStates();
     }
 })();
 </script>
