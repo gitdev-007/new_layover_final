@@ -65,7 +65,7 @@
         </div>
     </header>
 
-    <main class="flex-grow w-full max-w-[1400px] mx-auto p-4 sm:p-8 flex items-start gap-8 relative pb-20 mt-4">
+    <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col items-center gap-6 relative pb-20 mt-4">
         
         <!-- LEVEL 1: LISTING -->
         <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
@@ -131,7 +131,7 @@
         </div>
 
         <!-- LEVEL 2: DETAIL -->
-        <div id="level2" class="layout-transition hidden opacity-0 w-full flex-shrink-0 z-20 relative">
+        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative">
             <div class="flex items-center justify-between mb-4">
                 <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
                 
@@ -180,7 +180,7 @@
 
                     <!-- Plan Layover Block -->
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
-                        <button onclick="window.location.href='qr_upload_state.html'" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
+                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
                             PLAN LAYOVER
                         </button>
                     </div>
@@ -298,7 +298,37 @@ function openLevel2(id) {
     const l1 = document.getElementById('level1');
     const l2 = document.getElementById('level2');
     
-    l2.classList.remove('hidden');
+    
+            const btn = document.getElementById('add-list-btn');
+            if (btn) {
+                // Reset styling
+                if (btn.dataset.originalClasses) {
+                    btn.className = btn.dataset.originalClasses;
+                    btn.innerHTML = btn.dataset.originalHtml;
+                }
+                
+                const isMarketplace = !!document.getElementById('marketplace-content') || window.location.pathname.includes('marketplace');
+                if (isMarketplace) {
+                    btn.innerHTML = 'ADD TO LIST';
+                    btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
+                    btn.onclick = function() {
+                        if (window.addToList) {
+                            window.addToList(btn, item.name, 'Restaurant', '', item.distance, '');
+                        } else if (window.parent && window.parent.addToList) {
+                            window.parent.addToList(btn, item.name, 'Restaurant', '', item.distance, '');
+                        }
+                    };
+                } else {
+                    btn.innerHTML = 'PLAN LAYOVER';
+                    btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
+                    btn.onclick = function() {
+                        window.location.href = 'qr_upload_state.html';
+                    };
+                }
+            }
+            
+            l2.classList.remove('hidden');
+    
         requestAnimationFrame(() => { 
         l2.classList.remove('opacity-0'); 
         setTimeout(() => {
