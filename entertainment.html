@@ -182,11 +182,7 @@
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
                         
                       <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer">
-                          <option value="1h">1 Hour</option>
-                          <option value="2h">2 Hours</option>
-                          <option value="3h">3 Hours</option>
-                          <option value="4h">4 Hours</option>
-                      </select>
+                        </select>
                       <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
                             PLAN LAYOVER
                         </button>
@@ -210,7 +206,28 @@
 
     <script>
 
-const items = [
+
+        const entertainmentDurations = [
+            { valStr: '30m', label: '30 Min' },
+            { valStr: '1h', label: '1 Hour' },
+            { valStr: '2h', label: '2 Hours' },
+            { valStr: '3h', label: '3 Hours' },
+            { valStr: '4h', label: '4 Hours' }
+        ];
+
+        function populateEntertainmentDurations() {
+            const itemDropdown = document.getElementById('item-duration');
+            if (itemDropdown && itemDropdown.options.length === 0) {
+                entertainmentDurations.forEach(d => {
+                    itemDropdown.add(new Option(d.label, d.valStr));
+                });
+                itemDropdown.value = '1h'; // Set default to 1 Hour
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', populateEntertainmentDurations);
+
+        const items = [
     { id: 1, name: "SMAAASH Mumbai", distance: 5.8, category: "Premium", rating: "4.7", price: 3000, type: "Gaming", style: "VR Gaming", features: ["Timings: 11AM-11PM", "Capacity: Large", "Features: Multiplayer, VR Gaming"] },
     { id: 2, name: "Amoeba Sports Bar", distance: 4.5, category: "Premium", rating: "4.5", price: 2500, type: "Bowling", style: "Nightlife", features: ["Timings: 12PM-1AM", "Capacity: Medium", "Features: Bowling, Multiplayer"] },
     { id: 3, name: "Playboy Club Lounge", distance: 5.2, category: "Premium", rating: "4.8", price: 5500, type: "Lounge", style: "Premium Lounge", features: ["Timings: 8PM-3AM", "Capacity: Medium", "Features: Premium Lounge, Nightlife"] },
@@ -332,7 +349,7 @@ function openLevel2(id) {
                         if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
                         btn.onclick = function() {
                             const durSelect = document.getElementById('item-duration');
-                            const duration = durSelect ? durSelect.value : '2h';
+                            const duration = durSelect ? durSelect.value : '1h';
                             if (window.addToList) {
                                 window.addToList(btn, item.name, 'Entertainment', duration, item.distance, '');
                             } else if (window.parent && window.parent.addToList) {

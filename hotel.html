@@ -86,13 +86,8 @@
                         <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                             <select id="filter-duration" onchange="renderHotels()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-                                <option value="any">Duration</option>
-                                <option value="2">2 Hours</option>
-                                <option value="4">4 Hours</option>
-                                <option value="8">8 Hours</option>
-                                <option value="12">12 Hours</option>
-                                <option value="24">24 Hours</option>
-                            </select>
+                                  <option value="any">Duration</option>
+                              </select>
                             
                             <select id="filter-price" onchange="renderHotels()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Price Range</option>
@@ -180,11 +175,7 @@
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
                         
                       <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer">
-                          <option value="1h">1 Hour</option>
-                          <option value="2h">2 Hours</option>
-                          <option value="3h">3 Hours</option>
-                          <option value="4h">4 Hours</option>
-                      </select>
+                        </select>
                       <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
                             PLAN LAYOVER
                         </button>
@@ -207,6 +198,38 @@
     </main>
 
     <script>
+        
+        const hotelDurations = [
+            { valNum: '3', valStr: '3h', label: '3 Hours' },
+            { valNum: '4', valStr: '4h', label: '4 Hours' },
+            { valNum: '6', valStr: '6h', label: '6 Hours' },
+            { valNum: '8', valStr: '8h', label: '8 Hours' },
+            { valNum: '10', valStr: '10h', label: '10 Hours' },
+            { valNum: '12', valStr: '12h', label: '12 Hours' },
+            { valNum: '16', valStr: '16h', label: '16 Hours' },
+            { valNum: '24', valStr: '24h', label: '24 Hours' }
+        ];
+
+        function populateHotelDurations() {
+            const filterDropdown = document.getElementById('filter-duration');
+            if (filterDropdown && filterDropdown.options.length <= 1) {
+                hotelDurations.forEach(d => {
+                    filterDropdown.add(new Option(d.label, d.valNum));
+                });
+            }
+
+            const itemDropdown = document.getElementById('item-duration');
+            if (itemDropdown && itemDropdown.options.length === 0) {
+                hotelDurations.forEach(d => {
+                    itemDropdown.add(new Option(d.label, d.valStr));
+                });
+                itemDropdown.value = '3h'; // Set default to 3 Hours
+            }
+        }
+        
+        // Ensure duration is always set on load
+        document.addEventListener('DOMContentLoaded', populateHotelDurations);
+
         const hotels = [
             { id: 1, name: "The Orchid Hotel", distance: 0.9, terminal: "T2", category: "Premium", rating: "4.8", price: 4500, durations: [2, 4, 8, 12, 24], amenities: ["Airport Shuttle", "Pool", "Spa"] },
             { id: 2, name: "Hotel Sahara Star", distance: 1.1, terminal: "T2", category: "Premium", rating: "4.7", price: 5200, durations: [4, 8, 12, 24], amenities: ["Pool", "Spa"] },
@@ -363,7 +386,7 @@
                         if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
                         btn.onclick = function() {
                             const durSelect = document.getElementById('item-duration');
-                            const duration = durSelect ? durSelect.value : '2h';
+                            const duration = durSelect ? durSelect.value : '3h';
                             if (window.addToList) {
                                 window.addToList(btn, hotel.name, 'Hotel', duration, hotel.distance, '');
                             } else if (window.parent && window.parent.addToList) {
@@ -407,7 +430,9 @@
             }, 300);
         }
 
+        populateHotelDurations();
         document.addEventListener('DOMContentLoaded', renderHotels);
+        renderHotels();
     </script>
 </body>
 </html>

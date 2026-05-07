@@ -220,13 +220,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let depTimeStr = '--:--';
     let depDateStr = '';
     if (flightDepartureRaw) {
-        try {
-            const depDate = new Date(flightDepartureRaw);
-            if (!isNaN(depDate.getTime())) {
-                depTimeStr = depDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-                depDateStr = depDate.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
-            }
-        } catch(e) {}
+        if (flightDepartureRaw.includes(':') && flightDepartureRaw.length <= 5) {
+            depTimeStr = flightDepartureRaw;
+        } else {
+            try {
+                const depDate = new Date(flightDepartureRaw);
+                if (!isNaN(depDate.getTime())) {
+                    depTimeStr = depDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                    depDateStr = depDate.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+                }
+            } catch(e) {}
+        }
     }
 
     document.getElementById('plan-departure-info').textContent = `Departure: ${depTimeStr} ${depDateStr ? '• ' + depDateStr : ''}`;
@@ -239,31 +243,67 @@ document.addEventListener('DOMContentLoaded', () => {
         layoverList = stored ? JSON.parse(stored) : [];
     } catch(e) {}
 
-    window.calculateTiming = function() {
-        let expMins = 0;
-        layoverList.forEach(item => {
-            let mins = 0;
-            const durStr = (item.duration || '').toLowerCase();
-            if (durStr.includes('h')) {
-                mins = parseFloat(durStr) * 60;
-            } else if (durStr.includes('m')) {
-                mins = parseFloat(durStr);
-            }
-            expMins += mins;
-        });
-
-        let travelMins = 0;
-        let currentDist = 0;
-        layoverList.forEach(item => {
-            let legDistance = (currentDist === 0) ? item.distance : (currentDist + item.distance);
-            travelMins += Math.round((legDistance * 3) + 15);
-            currentDist = item.distance;
-        });
-        if (layoverList.length > 0) {
-            travelMins += Math.round((currentDist * 3) + 15); // back to airport
+    
+    window.getPlannerState = function(listToCalculate = layoverList) {
+        let totalLayoverMins = 0;
+        const layoverDurationRaw = localStorage.getItem('layover_duration') || '';
+        if (layoverDurationRaw.includes('h') || layoverDurationRaw.includes('H')) {
+            totalLayoverMins = parseFloat(layoverDurationRaw) * 60;
+        } else if (layoverDurationRaw) {
+            totalLayoverMins = parseFloat(layoverDurationRaw) * 60;
         }
         
-        return { expMins, travelMins };
+        let bufferMins = 120;
+        let expMins = 0;
+        let travelMins = 0;
+        let currentDist = 0;
+        
+        let processedItems = listToCalculate.map((item, idx) => {
+            let mins = 0;
+            const durStr = (item.duration || '').toLowerCase();
+            if (durStr.includes('h')) mins += parseFloat(durStr) * 60;
+            else if (durStr.includes('m')) mins += parseFloat(durStr);
+            
+            let legDistance = (currentDist === 0) ? (item.distance || 0) : ((currentDist + (item.distance || 0)));
+            let tMins = Math.round((legDistance * 3) + 15);
+            
+            currentDist = item.distance || 0;
+            
+            return {
+                id: item.id || Date.now() + idx,
+                category: item.category || 'Experience',
+                title: item.name,
+                selectedDurationMinutes: mins,
+                transitOverheadMinutes: tMins,
+                priority: idx + 1,
+                originalItem: item
+            };
+        });
+        
+        processedItems.forEach(i => {
+            expMins += i.selectedDurationMinutes;
+            travelMins += i.transitOverheadMinutes;
+        });
+        
+        if (processedItems.length > 0) {
+            travelMins += Math.round((currentDist * 3) + 15);
+        }
+        
+        let remaining = totalLayoverMins > 0 ? (totalLayoverMins - bufferMins - travelMins - expMins) : 0;
+        
+        return {
+            layoverDurationMinutes: totalLayoverMins,
+            airportBufferMinutes: bufferMins,
+            selectedItems: processedItems,
+            totalExperienceMinutes: expMins,
+            totalTransitMinutes: travelMins,
+            remainingMinutes: remaining
+        };
+    };
+
+    window.calculateTiming = function() {
+        let state = window.getPlannerState(layoverList);
+        return { expMins: state.totalExperienceMinutes, travelMins: state.totalTransitMinutes };
     };
 
     window.renderItinerary = function() {
@@ -313,15 +353,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
 
-        let { expMins, travelMins } = window.calculateTiming();
-        let totalLayoverMins = layoverDurationHours * 60;
-        let bufferMins = 2 * 60;
-        let journeyMins = totalLayoverMins - bufferMins - travelMins - expMins;
+        let state = window.getPlannerState(layoverList);
+        let journeyMins = state.remainingMinutes;
         
-        // Status checks
         let journeyTimeEl = document.getElementById('plan-journey-time');
         let journeyCard = journeyTimeEl.closest('div');
         
+        if (state.layoverDurationMinutes > 0) {
+            document.getElementById('plan-total-duration').textContent = formatTime(state.layoverDurationMinutes);
+        } else {
+            document.getElementById('plan-total-duration').textContent = '--';
+        }
+
         if (journeyMins < 0) {
             journeyTimeEl.className = 'font-display text-h2 text-error';
             journeyTimeEl.previousElementSibling.className = 'font-label-caps text-label-caps text-error';
@@ -339,10 +382,9 @@ document.addEventListener('DOMContentLoaded', () => {
             journeyTimeEl.textContent = formatTime(journeyMins) + ' Left';
         }
 
-        document.getElementById('plan-travel-time').textContent = formatTime(travelMins);
+        document.getElementById('plan-travel-time').textContent = formatTime(state.totalTransitMinutes);
     };
-
-    window.moveUp = function(i) {
+window.moveUp = function(i) {
         if (i > 0) {
             let temp = layoverList[i];
             layoverList[i] = layoverList[i-1];

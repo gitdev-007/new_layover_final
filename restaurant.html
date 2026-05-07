@@ -182,11 +182,7 @@
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
                         
                       <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer">
-                          <option value="1h">1 Hour</option>
-                          <option value="2h">2 Hours</option>
-                          <option value="3h">3 Hours</option>
-                          <option value="4h">4 Hours</option>
-                      </select>
+                        </select>
                       <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
                             PLAN LAYOVER
                         </button>
@@ -210,6 +206,33 @@
 
     <script>
         
+        
+        const restaurantDurations = [
+            { valStr: '30m', label: '30 Min' },
+            { valStr: '1h', label: '1 Hour' },
+            { valStr: '1.5h', label: '1.5 Hours' },
+            { valStr: '2h', label: '2 Hours' }
+        ];
+
+        function populateRestaurantDurations() {
+            const filterDropdown = document.getElementById('filter-duration');
+            if (filterDropdown && filterDropdown.options.length <= 1) {
+                restaurantDurations.forEach(d => {
+                    filterDropdown.add(new Option(d.label, d.valStr));
+                });
+            }
+
+            const itemDropdown = document.getElementById('item-duration');
+            if (itemDropdown && itemDropdown.options.length === 0) {
+                restaurantDurations.forEach(d => {
+                    itemDropdown.add(new Option(d.label, d.valStr));
+                });
+                itemDropdown.value = '1h'; // Set default to 1 Hour
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', populateRestaurantDurations);
+
         const items = [
             { id: 1, name: "Masala Kraft", distance: 4.2, category: "Premium", rating: "4.8", price: 3500, type: "Indian", style: "Fine Dining", features: ["Fine Dining", "Authentic Spices", "Indoor Seating"] },
             { id: 2, name: "Peshawri", distance: 3.9, category: "Premium", rating: "4.9", price: 4000, type: "Indian", style: "Fine Dining", features: ["Fine Dining", "Tandoori", "Indoor Seating"] },
@@ -362,7 +385,7 @@
                         if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
                         btn.onclick = function() {
                             const durSelect = document.getElementById('item-duration');
-                            const duration = durSelect ? durSelect.value : '2h';
+                            const duration = durSelect ? durSelect.value : '1h';
                             if (window.addToList) {
                                 window.addToList(btn, item.name, 'Restaurant', duration, item.distance, '');
                             } else if (window.parent && window.parent.addToList) {
@@ -403,7 +426,9 @@
             }, 300);
         }
 
+        populateRestaurantDurations();
         document.addEventListener('DOMContentLoaded', renderItems);
+        renderItems();
     </script>
 </body>
 </html>

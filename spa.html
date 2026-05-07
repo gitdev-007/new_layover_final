@@ -178,11 +178,7 @@
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
                         
                       <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer">
-                          <option value="1h">1 Hour</option>
-                          <option value="2h">2 Hours</option>
-                          <option value="3h">3 Hours</option>
-                          <option value="4h">4 Hours</option>
-                      </select>
+                        </select>
                       <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
                             PLAN LAYOVER
                         </button>
@@ -206,6 +202,35 @@
 
     <script>
         
+        
+        const spaDurations = [
+            { valStr: '30m', label: '30 Min' },
+            { valStr: '1h', label: '1 Hour' },
+            { valStr: '1.5h', label: '1.5 Hours' },
+            { valStr: '2h', label: '2 Hours' },
+            { valStr: '2.5h', label: '2.5 Hours' },
+            { valStr: '3h', label: '3 Hours' }
+        ];
+
+        function populateSpaDurations() {
+            const filterDropdown = document.getElementById('filter-duration');
+            if (filterDropdown && filterDropdown.options.length <= 1) {
+                spaDurations.forEach(d => {
+                    filterDropdown.add(new Option(d.label, d.valStr));
+                });
+            }
+
+            const itemDropdown = document.getElementById('item-duration');
+            if (itemDropdown && itemDropdown.options.length === 0) {
+                spaDurations.forEach(d => {
+                    itemDropdown.add(new Option(d.label, d.valStr));
+                });
+                itemDropdown.value = '1h'; // Set default to 1 Hour
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', populateSpaDurations);
+
         const items = [
             { id: 1, name: "Jiva Spa", distance: 3.1, category: "Premium", rating: "4.9", price: 6500, type: "Ayurvedic", feature: "Couple Therapy", features: ["Ayurvedic Therapy", "Couple Therapy", "Steam & Sauna"] },
             { id: 2, name: "Quan Spa", distance: 2.7, category: "Premium", rating: "4.8", price: 5500, type: "Swedish", feature: "Steam & Sauna", features: ["Steam & Sauna", "Express Relaxation Sessions", "Wellness Lounge"] },
@@ -354,7 +379,7 @@
                         if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
                         btn.onclick = function() {
                             const durSelect = document.getElementById('item-duration');
-                            const duration = durSelect ? durSelect.value : '2h';
+                            const duration = durSelect ? durSelect.value : '1h';
                             if (window.addToList) {
                                 window.addToList(btn, item.name, 'Spa', duration, item.distance, '');
                             } else if (window.parent && window.parent.addToList) {
@@ -395,7 +420,9 @@
             }, 300);
         }
 
+        populateSpaDurations();
         document.addEventListener('DOMContentLoaded', renderItems);
+        renderItems();
     </script>
 </body>
 </html>
