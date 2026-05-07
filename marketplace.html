@@ -133,27 +133,37 @@
 </header>
 <main class="px-container-margin mt-lg space-y-lg max-w-2xl mx-auto">
 <!-- Smart Time Panel -->
-<section class="flex justify-between gap-1 bg-surface-container-low p-3 rounded-xl border border-outline-variant items-center text-center overflow-x-auto no-scrollbar">
-<div class="flex-1 flex flex-col justify-center">
-<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Layover</p>
-<p class="font-h3 text-sm font-bold mt-1" id="time-total">8h</p>
-</div>
-<div class="flex-1 flex flex-col justify-center border-l border-outline-variant/30">
-<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Buffer</p>
-<p class="font-h3 text-sm font-bold mt-1" id="time-buffer">2h</p>
-</div>
-<div class="flex-1 flex flex-col justify-center border-l border-outline-variant/30">
-<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Travel</p>
-<p class="font-h3 text-sm font-bold mt-1" id="time-travel">0m</p>
-</div>
-<div class="flex-1 flex flex-col justify-center border-l border-outline-variant/30">
-<p class="font-label-sm text-[10px] text-secondary leading-tight uppercase tracking-wider">Experience Time</p>
-<p class="font-h3 text-sm font-bold mt-1" id="time-exp">0m</p>
-</div>
-<div class="bg-emerald-50 py-1.5 px-3 rounded-lg border border-emerald-100 flex flex-col justify-center min-w-[70px] ml-1 transition-colors" id="rem-container">
-<p class="font-label-sm text-[10px] text-emerald-800 leading-tight uppercase tracking-wider" id="rem-label">Remaining</p>
-<p class="font-h3 text-sm text-emerald-700 font-bold mt-0.5" id="time-remaining">6h</p>
-</div>
+<section class="bg-surface/60 backdrop-blur-xl border border-outline-variant/50 rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.03)] relative overflow-hidden group hover:border-outline-variant transition-colors duration-500">
+    <div class="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent pointer-events-none"></div>
+    <div class="flex items-center justify-between mb-3 px-1 relative z-10">
+        <h2 class="font-h3 text-sm font-semibold text-on-surface flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-primary">schedule</span> Journey Timeline</h2>
+        <div class="flex items-center gap-1.5 bg-white/50 border border-white/20 px-2.5 py-1 rounded-full shadow-sm">
+            <span class="material-symbols-outlined text-[14px] text-brand-purple">flight_takeoff</span>
+            <span class="font-label-sm text-[10px] text-brand-purple tracking-wide font-bold" id="time-departure">Departure --:--</span>
+        </div>
+    </div>
+    <div class="flex justify-between gap-2 items-stretch text-center overflow-x-auto no-scrollbar relative z-10 pb-1">
+        <div class="flex-1 min-w-[70px] flex flex-col justify-center bg-white/50 backdrop-blur-md rounded-2xl py-3 px-2 border border-white/20 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/70">
+            <p class="font-label-caps text-[9px] text-secondary leading-tight uppercase tracking-widest mb-1 opacity-80">Layover</p>
+            <p class="font-h3 text-sm font-bold text-primary tracking-tight" id="time-total">--</p>
+        </div>
+        <div class="flex-1 min-w-[70px] flex flex-col justify-center bg-white/50 backdrop-blur-md rounded-2xl py-3 px-2 border border-white/20 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/70">
+            <p class="font-label-caps text-[9px] text-secondary leading-tight uppercase tracking-widest mb-1 opacity-80">Buffer</p>
+            <p class="font-h3 text-sm font-bold text-primary tracking-tight" id="time-buffer">2h 0m</p>
+        </div>
+        <div class="flex-1 min-w-[70px] flex flex-col justify-center bg-white/50 backdrop-blur-md rounded-2xl py-3 px-2 border border-white/20 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/70">
+            <p class="font-label-caps text-[9px] text-secondary leading-tight uppercase tracking-widest mb-1 opacity-80">Travel</p>
+            <p class="font-h3 text-sm font-bold text-primary tracking-tight" id="time-travel">0m</p>
+        </div>
+        <div class="flex-1 min-w-[70px] flex flex-col justify-center bg-white/50 backdrop-blur-md rounded-2xl py-3 px-2 border border-white/20 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/70">
+            <p class="font-label-caps text-[9px] text-brand-purple leading-tight uppercase tracking-widest mb-1 opacity-90">Experiences</p>
+            <p class="font-h3 text-sm font-bold text-brand-purple tracking-tight" id="time-exp">0m</p>
+        </div>
+        <div class="bg-emerald-50 py-3 px-3 rounded-2xl border border-emerald-100/50 shadow-sm flex flex-col justify-center min-w-[80px] transition-colors" id="rem-container">
+            <p class="font-label-caps text-[9px] text-emerald-800 leading-tight uppercase tracking-widest mb-1" id="rem-label">Remaining</p>
+            <p class="font-h3 text-[15px] text-emerald-700 font-bold tracking-tight" id="time-remaining">--</p>
+        </div>
+    </div>
 </section>
 <!-- Category Pills -->
 <section class="flex gap-sm overflow-x-auto no-scrollbar py-base -mx-container-margin px-container-margin">
@@ -175,13 +185,9 @@
 </main>
 <!-- BottomNavBar -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-xs py-sm bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline">
-<button class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary font-semibold hover:text-primary dark:hover:text-inverse-primary transition-colors active:scale-95 transition-transform duration-150">
+<button onclick="window.location.reload()" class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary font-semibold hover:text-primary dark:hover:text-inverse-primary transition-colors active:scale-95 transition-transform duration-150">
 <span class="material-symbols-outlined" data-icon="explore" style="font-variation-settings: 'FILL' 1;">explore</span>
 <span class="font-label-sm text-label-sm">Explore</span>
-</button>
-<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-inverse-primary transition-colors active:scale-95 transition-transform duration-150">
-<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
-<span class="font-label-sm text-label-sm">Saved</span>
 </button>
 <button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-inverse-primary transition-colors active:scale-95 transition-transform duration-150">
 <span class="material-symbols-outlined" data-icon="airplane_ticket">airplane_ticket</span>
@@ -263,6 +269,7 @@ async function loadCategory(url, btn) {
                 document.body.appendChild(newScript);
             });
 
+            if (window.syncButtonStates) window.syncButtonStates();
             container.style.opacity = '1';
         }, 200);
 
@@ -277,11 +284,52 @@ async function loadCategory(url, btn) {
 document.addEventListener('DOMContentLoaded', () => {
     const firstTab = document.querySelector('.category-pill');
     if (firstTab) loadCategory('recommended.html', firstTab);
+
+    // Initial setup of header metrics from localStorage
+    window.updateTimeCalculations();
 });
 
-window.layoverList = [];
+window.saveLayoverList = function() {
+    localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+};
+
+window.loadLayoverList = function() {
+    try {
+        const stored = localStorage.getItem('layoverList');
+        window.layoverList = stored ? JSON.parse(stored) : [];
+    } catch(e) {
+        window.layoverList = [];
+    }
+};
+
+window.loadLayoverList();
+
+window.syncButtonStates = function() {
+    document.querySelectorAll('button').forEach(btn => {
+        const onclickStr = btn.getAttribute('onclick') || '';
+        if (onclickStr.includes('window.addToList')) {
+            window.layoverList.forEach(item => {
+                if (onclickStr.includes(`'${item.name}'`)) {
+                    if (!btn.dataset.originalClasses) {
+                        btn.dataset.originalClasses = btn.className;
+                        btn.dataset.originalHtml = btn.innerHTML;
+                    }
+                    btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Added';
+                    btn.classList.remove('bg-primary', 'bg-secondary', 'text-white', 'hover:bg-indigo-700', 'bg-slate-900', 'hover:shadow-md');
+                    btn.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-200', 'cursor-default');
+                    btn.disabled = true;
+                }
+            });
+        }
+    });
+};
 
 window.addToList = function(btn, itemName, category, duration, distance, image) {
+    if (!btn.dataset.originalClasses) {
+        btn.dataset.originalClasses = btn.className;
+        btn.dataset.originalHtml = btn.innerHTML;
+    }
+
     const existing = window.layoverList.find(i => i.name === itemName);
     if (!existing) {
         window.layoverList.push({
@@ -291,12 +339,13 @@ window.addToList = function(btn, itemName, category, duration, distance, image) 
             distance: parseFloat(distance) || 0,
             image: image || ''
         });
+        window.saveLayoverList();
     }
 
     // Subtle visual feedback
     btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Added';
     // Remove background colors and add subtle green
-    btn.classList.remove('bg-primary', 'bg-secondary', 'text-white', 'hover:bg-indigo-700', 'bg-slate-900');
+    btn.classList.remove('bg-primary', 'bg-secondary', 'text-white', 'hover:bg-indigo-700', 'bg-slate-900', 'hover:shadow-md');
     btn.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-200', 'cursor-default');
     btn.disabled = true;
 
@@ -306,6 +355,18 @@ window.addToList = function(btn, itemName, category, duration, distance, image) 
 
 window.removeFromList = function(itemName) {
     window.layoverList = window.layoverList.filter(i => i.name !== itemName);
+    window.saveLayoverList();
+    
+    // Restore original button state
+    document.querySelectorAll('button').forEach(btn => {
+        const onclickStr = btn.getAttribute('onclick') || '';
+        if (onclickStr.includes(`'${itemName}'`) && btn.dataset.originalClasses) {
+            btn.className = btn.dataset.originalClasses;
+            btn.innerHTML = btn.dataset.originalHtml;
+            btn.disabled = false;
+        }
+    });
+
     renderListDrawer();
     updateListIndicator();
     updateTimeCalculations();
@@ -360,7 +421,10 @@ window.calculateTiming = function() {
 };
 
 window.updateTimeCalculations = function() {
-    let totalLayoverMins = 8 * 60;
+    const layoverDurationRaw = localStorage.getItem('layover_duration') || '8';
+    const layoverDurationHours = parseInt(layoverDurationRaw, 10);
+    
+    let totalLayoverMins = layoverDurationHours * 60;
     let bufferMins = 2 * 60;
     
     let { expMins, worstTravelMins } = window.calculateTiming();
@@ -370,28 +434,43 @@ window.updateTimeCalculations = function() {
     // Format helpers
     const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
     
+    // Update summary values
+    document.getElementById('time-total').textContent = `${layoverDurationHours}h`;
     document.getElementById('time-travel').textContent = formatTime(worstTravelMins);
     document.getElementById('time-exp').textContent = formatTime(expMins);
+    
+    const flightDepartureRaw = localStorage.getItem('flight_departure') || '';
+    let depTimeStr = '--:--';
+    if (flightDepartureRaw) {
+        try {
+            const depDate = new Date(flightDepartureRaw);
+            if (!isNaN(depDate.getTime())) {
+                depTimeStr = depDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+            }
+        } catch(e) {}
+    }
+    const timeDepartureEl = document.getElementById('time-departure');
+    if (timeDepartureEl) timeDepartureEl.textContent = `Departure ${depTimeStr}`;
     
     let remEl = document.getElementById('time-remaining');
     let remContainer = document.getElementById('rem-container');
     let remLabel = document.getElementById('rem-label');
     
-    if (remainingMins < 0) {
-        remEl.textContent = 'Risk';
-        remContainer.className = 'bg-red-50 py-1.5 px-3 rounded-lg border border-red-200 flex flex-col justify-center min-w-[70px] ml-1 transition-colors';
-        remEl.className = 'font-h3 text-sm text-red-700 font-bold mt-0.5';
-        remLabel.className = 'font-label-sm text-[10px] text-red-800 leading-tight uppercase tracking-wider';
+    if (remainingMins <= 0) {
+        remEl.textContent = remainingMins === 0 ? '0m' : 'Risk';
+        remContainer.className = 'bg-red-50 py-3 px-3 rounded-2xl border border-red-200 flex flex-col justify-center min-w-[80px] transition-colors';
+        remEl.className = 'font-h3 text-[15px] text-red-700 font-bold tracking-tight mt-0.5';
+        remLabel.className = 'font-label-caps text-[9px] text-red-800 leading-tight uppercase tracking-widest mb-1';
     } else {
         remEl.textContent = formatTime(remainingMins);
         if (remainingMins < 60) {
-            remContainer.className = 'bg-amber-50 py-1.5 px-3 rounded-lg border border-amber-200 flex flex-col justify-center min-w-[70px] ml-1 transition-colors';
-            remEl.className = 'font-h3 text-sm text-amber-700 font-bold mt-0.5';
-            remLabel.className = 'font-label-sm text-[10px] text-amber-800 leading-tight uppercase tracking-wider';
+            remContainer.className = 'bg-amber-50 py-3 px-3 rounded-2xl border border-amber-200 flex flex-col justify-center min-w-[80px] transition-colors';
+            remEl.className = 'font-h3 text-[15px] text-amber-700 font-bold tracking-tight mt-0.5';
+            remLabel.className = 'font-label-caps text-[9px] text-amber-800 leading-tight uppercase tracking-widest mb-1';
         } else {
-            remContainer.className = 'bg-emerald-50 py-1.5 px-3 rounded-lg border border-emerald-100 flex flex-col justify-center min-w-[70px] ml-1 transition-colors';
-            remEl.className = 'font-h3 text-sm text-emerald-700 font-bold mt-0.5';
-            remLabel.className = 'font-label-sm text-[10px] text-emerald-800 leading-tight uppercase tracking-wider';
+            remContainer.className = 'bg-emerald-50 py-3 px-3 rounded-2xl border border-emerald-100 flex flex-col justify-center min-w-[80px] transition-colors';
+            remEl.className = 'font-h3 text-[15px] text-emerald-700 font-bold tracking-tight mt-0.5';
+            remLabel.className = 'font-label-caps text-[9px] text-emerald-800 leading-tight uppercase tracking-widest mb-1';
         }
     }
 };

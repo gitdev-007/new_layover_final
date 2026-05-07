@@ -136,38 +136,50 @@
 <main class="pt-20 pb-32 px-margin-page">
 <!-- Hero Section -->
 <section class="mb-stack-lg">
-<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-card-padding matte-shadow">
-<h1 class="font-h1 text-h1 text-on-surface mb-1">Choose Your Transportation</h1>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">Select a vehicle to bridge your airport transition with absolute comfort.</p>
-<div class="grid grid-cols-3 gap-gutter">
-<div class="flex flex-col">
-<span class="font-label-caps text-label-caps text-on-secondary-container mb-1">LAYOVER</span>
-<span class="font-h2 text-h2 text-primary">8h 30m</span>
+<div class="bg-surface/60 backdrop-blur-xl border border-outline-variant/50 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden group hover:border-outline-variant transition-colors duration-500">
+<div class="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none"></div>
+<h1 class="font-h1 text-h1 text-on-surface mb-2 relative z-10 tracking-tight">Choose Your Transportation</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-8 relative z-10">Select a vehicle to bridge your airport transition with absolute comfort.</p>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
+<div class="flex flex-col bg-white/50 backdrop-blur-md rounded-2xl p-4 border border-white/20 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/60">
+<span class="font-label-caps text-[10px] text-on-secondary-container mb-1.5 opacity-70 tracking-widest">LAYOVER TIME</span>
+<span class="font-h2 text-lg text-primary font-semibold tracking-tight" id="disp-layover">--</span>
 </div>
-<div class="flex flex-col">
-<span class="font-label-caps text-label-caps text-on-secondary-container mb-1">DEPARTURE</span>
-<span class="font-h2 text-h2 text-primary">22:45</span>
+<div class="flex flex-col bg-white/50 backdrop-blur-md rounded-2xl p-4 border border-white/20 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/60">
+<span class="font-label-caps text-[10px] text-on-secondary-container mb-1.5 opacity-70 tracking-widest">FLIGHT DEPARTURE</span>
+<span class="font-h2 text-lg text-primary font-semibold tracking-tight" id="disp-departure">--</span>
 </div>
-<div class="flex flex-col">
-<span class="font-label-caps text-label-caps text-on-secondary-container mb-1">REMAINING</span>
-<span class="font-h2 text-h2 text-brand-purple">5h 15m</span>
+<div class="flex flex-col bg-white/50 backdrop-blur-md rounded-2xl p-4 border border-white/20 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/60">
+<span class="font-label-caps text-[10px] text-on-secondary-container mb-1.5 opacity-70 tracking-widest">SAFE BUFFER</span>
+<span class="font-h2 text-lg text-primary font-semibold tracking-tight">2h 0m</span>
+</div>
+<div class="flex flex-col bg-brand-purple/5 backdrop-blur-md rounded-2xl p-4 border border-brand-purple/10 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-brand-purple/10 group-hover:border-brand-purple/20">
+<span class="font-label-caps text-[10px] text-brand-purple mb-1.5 tracking-widest">EXPERIENCE TIME AVAILABLE</span>
+<span class="font-h2 text-lg text-brand-purple font-semibold tracking-tight" id="disp-available">--</span>
 </div>
 </div>
 </div>
 </section>
 <!-- Smart Info Section -->
-<section class="mb-stack-lg flex gap-gutter overflow-x-auto no-scrollbar py-1">
-<div class="flex-shrink-0 flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full border border-outline-variant">
-<span class="material-symbols-outlined text-[16px] text-brand-purple" style="font-variation-settings: 'FILL' 1;">speed</span>
-<span class="font-label-caps text-label-caps text-on-surface">Efficiency: 94%</span>
+<section class="mb-stack-lg flex gap-4 overflow-x-auto no-scrollbar py-2">
+<div class="flex-shrink-0 flex items-center gap-2 bg-surface/50 backdrop-blur-sm px-4 py-2.5 rounded-full border border-brand-purple/15 shadow-[0_2px_10px_rgb(93,63,211,0.05)] hover:shadow-[0_4px_15px_rgb(93,63,211,0.1)] transition-all duration-300 cursor-default">
+<div class="w-6 h-6 rounded-full bg-brand-purple/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-brand-purple" style="font-variation-settings: 'FILL' 1;">speed</span>
 </div>
-<div class="flex-shrink-0 flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full border border-outline-variant">
-<span class="material-symbols-outlined text-[16px] text-brand-purple" style="font-variation-settings: 'FILL' 1;">traffic</span>
-<span class="font-label-caps text-label-caps text-on-surface">Traffic Adapt: High</span>
+<span class="font-label-caps text-[11px] text-on-surface tracking-wide">Efficiency: 94%</span>
 </div>
-<div class="flex-shrink-0 flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full border border-outline-variant">
-<span class="material-symbols-outlined text-[16px] text-brand-purple" style="font-variation-settings: 'FILL' 1;">verified</span>
-<span class="font-label-caps text-label-caps text-on-surface">Reliability: 99.9%</span>
+<div class="flex-shrink-0 flex items-center gap-2 bg-surface/50 backdrop-blur-sm px-4 py-2.5 rounded-full border border-brand-purple/15 shadow-[0_2px_10px_rgb(93,63,211,0.05)] hover:shadow-[0_4px_15px_rgb(93,63,211,0.1)] transition-all duration-300 cursor-default">
+<div class="w-6 h-6 rounded-full bg-brand-purple/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-brand-purple" style="font-variation-settings: 'FILL' 1;">traffic</span>
+</div>
+<span class="font-label-caps text-[11px] text-on-surface tracking-wide">Traffic Adapt: High</span>
+</div>
+<div class="flex-shrink-0 flex items-center gap-2 bg-surface/50 backdrop-blur-sm px-4 py-2.5 rounded-full border border-brand-purple/15 shadow-[0_2px_10px_rgb(93,63,211,0.05)] hover:shadow-[0_4px_15px_rgb(93,63,211,0.1)] transition-all duration-300 cursor-default">
+<div class="w-6 h-6 rounded-full bg-brand-purple/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-brand-purple" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<span class="font-label-caps text-[11px] text-on-surface tracking-wide">Reliability: 99.9%</span>
 </div>
 </section>
 <!-- Transportation List -->
@@ -318,6 +330,26 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const layoverDurationRaw = localStorage.getItem('layover_duration') || '8';
+    const flightDepartureRaw = localStorage.getItem('flight_departure') || '2026-04-27T22:45';
+    
+    const layoverDurationHours = parseInt(layoverDurationRaw, 10);
+    const safeBufferHours = 2;
+    let expTimeAvailable = layoverDurationHours - safeBufferHours;
+    if (expTimeAvailable < 0) expTimeAvailable = 0;
+    
+    let depTimeStr = flightDepartureRaw;
+    try {
+        const depDate = new Date(flightDepartureRaw);
+        if (!isNaN(depDate.getTime())) {
+            depTimeStr = depDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        }
+    } catch(e) {}
+    
+    document.getElementById('disp-layover').textContent = `${layoverDurationHours}h 0m`;
+    document.getElementById('disp-departure').textContent = depTimeStr;
+    document.getElementById('disp-available').textContent = `${expTimeAvailable}h 0m`;
+
     const transportCards = document.querySelectorAll('main section.space-y-stack-md > div');
     const continueBtn = document.getElementById('continueBtn');
     const validationMsg = document.getElementById('validationMsg');

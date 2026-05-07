@@ -235,45 +235,62 @@
 <h1 class="font-headline-xl text-white mb-6 leading-tight">Your Layover. Your Experience.</h1>
 <p class="text-body-lg text-secondary/80 max-w-2xl mx-auto mb-12">Explore curated airport-near experiences with a faster, simpler planning flow. Browse freely, compare options, and only sign in when you're ready to book.</p>
 <!-- Flagship Search Bar -->
-<div class="glass p-3 rounded-[28px] border border-white/10 shadow-2xl max-w-5xl mx-auto">
+<div class="glass p-3 rounded-[28px] border border-white/10 shadow-2xl max-w-5xl mx-auto relative">
 <div class="flex flex-col lg:flex-row items-stretch gap-2">
-<div class="flex-1 w-full px-5 py-3 flex items-center gap-3 border-b lg:border-b-0 lg:border-r border-white/10">
+
+<!-- Airport Field (Locked) -->
+<div class="flex-1 w-full px-5 py-3 flex items-center gap-3 border-b lg:border-b-0 lg:border-r border-white/10 opacity-70 select-none">
 <span class="material-symbols-outlined text-primary">flight_takeoff</span>
-<div class="w-full text-left">
-<label class="block text-[11px] uppercase tracking-[0.18em] text-secondary/50 mb-1">Airport</label>
-<select class="bg-transparent border-none focus:ring-0 text-white w-full font-body-md p-0">
-<option>Mumbai (BOM)</option>
-<option>Delhi (DEL)</option>
-<option>Bengaluru (BLR)</option>
-<option>Dubai (DXB)</option>
-<option>Singapore (SIN)</option>
-</select>
+<div class="w-full text-left overflow-hidden">
+<label class="block text-[11px] uppercase tracking-[0.18em] text-secondary/50 mb-1">Layover Airport</label>
+<div class="text-white w-full font-body-md p-0 overflow-hidden text-ellipsis whitespace-nowrap" title="Chhatrapati Shivaji Maharaj International Airport – Terminal 2 (BOM T2)">
+Chhatrapati Shivaji Maharaj International Airport – Terminal 2 (BOM T2)
+</div>
+<p class="text-[10px] text-secondary/40 mt-1 tracking-wide">Currently supported airport</p>
+<input type="hidden" id="layover-airport" value="BOM-T2">
 </div>
 </div>
-<div class="flex-1 w-full px-5 py-3 flex items-center gap-3 border-b lg:border-b-0 lg:border-r border-white/10">
+
+<!-- Duration Field -->
+<div class="flex-1 w-full px-5 py-3 flex items-center gap-3 border-b lg:border-b-0 lg:border-r border-white/10 hover:bg-white/5 focus-within:bg-white/5 transition-colors rounded-xl cursor-pointer">
 <span class="material-symbols-outlined text-primary">schedule</span>
 <div class="w-full text-left">
-<label class="block text-[11px] uppercase tracking-[0.18em] text-secondary/50 mb-1">Duration</label>
-<select class="bg-transparent border-none focus:ring-0 text-white w-full font-body-md p-0">
-<option>2-4 hrs</option>
-<option>4-6 hrs</option>
-<option>6-8 hrs</option>
-<option>8+ hrs</option>
+<label class="block text-[11px] uppercase tracking-[0.18em] text-secondary/50 mb-1" for="layover-duration">Layover Duration</label>
+<select id="layover-duration" class="bg-transparent border-none focus:ring-0 text-white w-full font-body-md p-0 cursor-pointer appearance-none outline-none">
+<option value="" disabled selected hidden>Select exact layover duration</option>
+<option value="2" class="bg-surface text-white">2 Hours</option>
+<option value="3" class="bg-surface text-white">3 Hours</option>
+<option value="4" class="bg-surface text-white">4 Hours</option>
+<option value="5" class="bg-surface text-white">5 Hours</option>
+<option value="6" class="bg-surface text-white">6 Hours</option>
+<option value="8" class="bg-surface text-white">8 Hours</option>
+<option value="10" class="bg-surface text-white">10 Hours</option>
+<option value="12" class="bg-surface text-white">12 Hours</option>
 </select>
 </div>
+<span class="material-symbols-outlined text-secondary/50 pointer-events-none text-[20px]">expand_more</span>
 </div>
-<div class="flex-1 w-full px-5 py-3 flex items-center gap-3">
-<span class="material-symbols-outlined text-primary">calendar_today</span>
-<div class="w-full text-left">
-<label class="block text-[11px] uppercase tracking-[0.18em] text-secondary/50 mb-1">Date &amp; Time</label>
-<input class="bg-transparent border-none focus:ring-0 text-white w-full font-body-md p-0" type="datetime-local" value="2026-04-27T14:30"/>
+
+<!-- Departure Date/Time Field -->
+<div class="flex-1 w-full px-5 py-3 flex items-center gap-3 hover:bg-white/5 focus-within:bg-white/5 transition-colors rounded-xl cursor-pointer group" onclick="const dt = document.getElementById('flight-departure'); dt.showPicker ? dt.showPicker() : dt.focus()">
+<span class="material-symbols-outlined text-primary pointer-events-none">calendar_today</span>
+<div class="w-full text-left pointer-events-none">
+<label class="block text-[11px] uppercase tracking-[0.18em] text-secondary/50 mb-1" for="flight-departure">Flight Departure</label>
+<input id="flight-departure" class="bg-transparent border-none focus:ring-0 text-white w-full font-body-md p-0 pointer-events-auto cursor-pointer [&::-webkit-calendar-picker-indicator]:hidden outline-none" type="datetime-local" required/>
+<p class="text-[10px] text-secondary/40 mt-1 tracking-wide group-hover:text-secondary/60 transition-colors">Select your departure date & time</p>
 </div>
 </div>
+
 </div>
-<div class="flex justify-center items-center mt-4">
-<button id="exploreBtn" class="w-full sm:w-auto border border-white/10 bg-white/[0.04] text-white px-8 py-4 rounded-full font-label-md hover:bg-white/[0.08] transition-all" type="button">Explore Experiences</button>
+
+<div id="form-validation-msg" class="hidden text-center text-primary-fixed mt-3 text-sm font-medium transition-opacity px-4 py-2 bg-error/10 rounded-lg mx-auto w-fit border border-error/20"></div>
+
+<div class="flex justify-center items-center mt-5">
+<button id="exploreBtn" class="w-full sm:w-auto border border-white/10 bg-white/[0.04] text-white/40 px-10 py-4 rounded-full font-label-md transition-all duration-300 opacity-50 cursor-not-allowed pointer-events-none flex items-center gap-2 justify-center shadow-lg" type="button">
+Explore Experiences <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
 </div>
-<p class="text-secondary/60 text-sm text-left mt-4 px-2">Browse all experiences without signing in. Login is only required when you continue to booking or checkout.</p>
+<p class="text-secondary/60 text-sm text-center mt-4 px-2 tracking-wide">Browse curated layover experiences instantly. Login is only required to finalize bookings.</p>
 </div>
 </div>
 </section>
@@ -784,24 +801,71 @@
             initializeApp();
         }
 
-        // Explore Experiences button - QR verification flow
+        // Explore Experiences button and validation flow
         function setupExploreButton() {
             const exploreBtn = document.getElementById('exploreBtn');
+            const durationInput = document.getElementById('layover-duration');
+            const departureInput = document.getElementById('flight-departure');
+            const validationMsg = document.getElementById('form-validation-msg');
             
-            if (!exploreBtn) {
-                console.error('❌ Explore button not found - id="exploreBtn" missing');
+            if (!exploreBtn || !durationInput || !departureInput) {
+                console.error('❌ Explore button or inputs not found');
                 return;
             }
+
+            const validateForm = () => {
+                const durationVal = durationInput.value;
+                const departureVal = departureInput.value;
+                const isValid = durationVal && departureVal;
+
+                if (isValid) {
+                    exploreBtn.classList.remove('text-white/40', 'bg-white/[0.04]', 'opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+                    exploreBtn.classList.add('bg-primary-container', 'text-on-primary-container', 'hover:scale-[1.02]', 'cursor-pointer', 'pointer-events-auto');
+                    if(validationMsg) validationMsg.classList.add('hidden');
+                } else {
+                    exploreBtn.classList.add('text-white/40', 'bg-white/[0.04]', 'opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+                    exploreBtn.classList.remove('bg-primary-container', 'text-on-primary-container', 'hover:scale-[1.02]', 'cursor-pointer', 'pointer-events-auto');
+                }
+                return isValid;
+            };
+
+            durationInput.addEventListener('change', validateForm);
+            departureInput.addEventListener('input', validateForm);
+            departureInput.addEventListener('change', validateForm);
+            
+            validateForm(); // Initial state check
             
             exploreBtn.addEventListener('click', function(e) {
-                // Prevent default if inside form
                 e.preventDefault();
                 
-                console.log('✅ Explore Experiences clicked - redirecting to QR Upload...');
-                window.location.href = 'QR_Upload_State.html';
+                const durationVal = durationInput.value;
+                const departureVal = departureInput.value;
+
+                if (!durationVal || !departureVal) {
+                    if(validationMsg) {
+                        validationMsg.textContent = !durationVal ? "Please select your layover duration" : "Please choose your departure date & time";
+                        validationMsg.classList.remove('hidden');
+                        validationMsg.classList.add('animate-pulse');
+                        setTimeout(() => validationMsg.classList.remove('animate-pulse'), 500);
+                    }
+                    return;
+                }
+                
+                // Store values for downstream components
+                localStorage.setItem('layover_duration', durationVal);
+                localStorage.setItem('flight_departure', departureVal);
+                
+                exploreBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">refresh</span> Routing...';
+                exploreBtn.style.pointerEvents = 'none';
+                exploreBtn.classList.add('opacity-90');
+                
+                console.log('✅ Form validated - redirecting to QR Upload...');
+                setTimeout(() => {
+                    window.location.href = 'QR_Upload_State.html';
+                }, 400);
             });
             
-            console.log('✅ Explore button handler attached');
+            console.log('✅ Explore validation handler attached');
         }
         
         // Setup on DOM ready
