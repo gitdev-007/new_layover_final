@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>LayoverX | Entertainment Sitemap</title>
+    <title>LayoverX | Spa & Wellness Sitemap</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -78,7 +78,7 @@
             <!-- Main Card Container -->
             <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
                 <div class="flex justify-between items-start mb-6">
-                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">ENTERTAINMENT & GAMING PAGE</h3>
+                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">SPA & WELLNESS PAGE</h3>
                 </div>
 
                 <div class="space-y-4">
@@ -88,19 +88,18 @@
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
 
 <select id="filter-1" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Experience Type</option>
-    <option value="Gaming">Gaming</option>
-    <option value="Bowling">Bowling</option>
-    <option value="VR Experience">VR Experience</option>
-    <option value="Lounge">Lounge</option>
-    <option value="Cinema">Cinema</option>
-    <option value="Arcade">Arcade</option>
+    <option value="any">Therapy Type</option>
+    <option value="Ayurvedic">Ayurvedic</option>
+    <option value="Deep Tissue">Deep Tissue</option>
+    <option value="Aromatherapy">Aromatherapy</option>
+    <option value="Thai Massage">Thai Massage</option>
+    <option value="Reflexology">Reflexology</option>
 </select>
 <select id="filter-2" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
     <option value="any">Price Range</option>
-    <option value="500-2000">₹500 – ₹2000</option>
-    <option value="2000-5000">₹2000 – ₹5000</option>
-    <option value="5000+">₹5000+</option>
+    <option value="1000-3000">₹1000 – ₹3000</option>
+    <option value="3000-6000">₹3000 – ₹6000</option>
+    <option value="6000+">₹6000+</option>
 </select>
 <select id="filter-3" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
     <option value="any">Distance</option>
@@ -109,19 +108,19 @@
     <option value="5">Within 5 km</option>
 </select>
 <select id="filter-4" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Features</option>
-    <option value="Multiplayer">Multiplayer</option>
-    <option value="VR Gaming">VR Gaming</option>
-    <option value="Premium Lounge">Premium Lounge</option>
-    <option value="Family Friendly">Family Friendly</option>
-    <option value="Nightlife">Nightlife</option>
+    <option value="any">Wellness Features</option>
+    <option value="Steam">Steam</option>
+    <option value="Jacuzzi">Jacuzzi</option>
+    <option value="Couple Therapy">Couple Therapy</option>
+    <option value="Sauna">Sauna</option>
+    <option value="Luxury Spa">Luxury Spa</option>
 </select>
 
 </div>
 </div>
 <!-- Grid Preview -->
                     <div class="border-2 border-dashed border-outline-variant p-4">
-                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">ENTERTAINMENT INVENTORY (12 HOTELS FOUND)</p>
+                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">SPA INVENTORY (12 HOTELS FOUND)</p>
                         
                         <!-- Dynamic Hotels -->
                         <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -141,7 +140,7 @@
             <!-- Main Card Container -->
             <div class="bg-white border-2 border-secondary p-6 shadow-sm h-full max-h-[85vh] sticky top-28 overflow-hidden flex flex-col">
                 <div class="flex justify-between items-start mb-6 shrink-0">
-                    <h3 class="text-node-title-md text-secondary uppercase">ENTERTAINMENT DETAIL PAGE</h3>
+                    <h3 class="text-node-title-md text-secondary uppercase">SPA DETAIL PAGE</h3>
                     <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
                 </div>
                 
@@ -149,13 +148,13 @@
                     <!-- Detail Header -->
                     <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
                         <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-                        <h4 id="l2-name" class="text-[14px] font-bold">Venue Name</h4>
+                        <h4 id="l2-name" class="text-[14px] font-bold">Spa Name</h4>
 <div class="flex items-center gap-2 mt-1">
     <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold">4.8 ★</span>
     <span id="l2-distance" class="text-[10px] text-on-surface-variant">1.6 km from T2</span>
 </div>
 <div class="text-[10px] text-on-surface-variant mt-1">
-    <span id="l2-type" class="font-semibold text-primary">Gaming</span>
+    <span id="l2-type" class="font-semibold text-primary">Ayurvedic</span>
 </div>
                     </div>
 
@@ -251,14 +250,14 @@
     <script>
 
 const items = [
-    { id: 1, name: "SMAAASH Mumbai", distance: 5.8, category: "Premium", rating: "4.7", price: 3000, type: "Gaming", style: "VR Gaming", features: ["Timings: 11AM-11PM", "Capacity: Large", "Features: Multiplayer, VR Gaming"] },
-    { id: 2, name: "Amoeba Sports Bar", distance: 4.5, category: "Premium", rating: "4.5", price: 2500, type: "Bowling", style: "Nightlife", features: ["Timings: 12PM-1AM", "Capacity: Medium", "Features: Bowling, Multiplayer"] },
-    { id: 3, name: "Playboy Club Lounge", distance: 5.2, category: "Premium", rating: "4.8", price: 5500, type: "Lounge", style: "Premium Lounge", features: ["Timings: 8PM-3AM", "Capacity: Medium", "Features: Premium Lounge, Nightlife"] },
-    { id: 4, name: "VR Galaxy Arena", distance: 3.9, category: "Premium", rating: "4.6", price: 2200, type: "VR Experience", style: "VR Gaming", features: ["Timings: 10AM-10PM", "Capacity: Small", "Features: VR Gaming, Family Friendly"] },
-    { id: 5, name: "Timezone Arcade", distance: 3.1, category: "Standard", rating: "4.3", price: 1500, type: "Arcade", style: "Family Friendly", features: ["Timings: 11AM-10PM", "Capacity: Medium", "Features: Family Friendly, Multiplayer"] },
-    { id: 6, name: "Fun Republic Gaming", distance: 4.0, category: "Standard", rating: "4.2", price: 1200, type: "Gaming", style: "Family Friendly", features: ["Timings: 10AM-11PM", "Capacity: Large", "Features: Family Friendly"] },
-    { id: 7, name: "Airport Lounge Hub", distance: 1.2, category: "Standard", rating: "4.0", price: 800, type: "Lounge", style: "Premium Lounge", features: ["Timings: 24/7", "Capacity: Medium", "Features: Premium Lounge"] },
-    { id: 8, name: "Midnight Bowling Club", distance: 4.8, category: "Standard", rating: "4.4", price: 1800, type: "Bowling", style: "Nightlife", features: ["Timings: 6PM-2AM", "Capacity: Medium", "Features: Nightlife, Multiplayer"] }
+    { id: 1, name: "Jiva Spa", distance: 1.6, category: "Premium", rating: "4.9", price: 6500, type: "Ayurvedic", style: "Luxury Spa", features: ["Duration: 90 Mins", "Facilities: Steam, Jacuzzi"] },
+    { id: 2, name: "Quan Spa", distance: 1.8, category: "Premium", rating: "4.8", price: 5500, type: "Deep Tissue", style: "Couple Therapy", features: ["Duration: 60 Mins", "Facilities: Sauna"] },
+    { id: 3, name: "Kaya Kalp Spa", distance: 2.4, category: "Premium", rating: "4.9", price: 7000, type: "Aromatherapy", style: "Luxury Spa", features: ["Duration: 120 Mins", "Facilities: Jacuzzi, Steam"] },
+    { id: 4, name: "The Leela Spa", distance: 2.5, category: "Premium", rating: "4.8", price: 6000, type: "Thai Massage", style: "Luxury Spa", features: ["Duration: 90 Mins", "Facilities: Sauna"] },
+    { id: 5, name: "Soma Spa", distance: 6.1, category: "Premium", rating: "4.7", price: 4500, type: "Reflexology", style: "Couple Therapy", features: ["Duration: 60 Mins", "Facilities: Steam"] },
+    { id: 6, name: "Lemon Tree Wellness", distance: 3.2, category: "Standard", rating: "4.2", price: 2500, type: "Ayurvedic", style: "Steam", features: ["Duration: 45 Mins", "Facilities: Basic"] },
+    { id: 7, name: "Holiday Inn Wellness", distance: 4.2, category: "Standard", rating: "4.3", price: 2800, type: "Deep Tissue", style: "Sauna", features: ["Duration: 60 Mins", "Facilities: Sauna"] },
+    { id: 8, name: "Midland Relaxation", distance: 2.3, category: "Standard", rating: "4.0", price: 1500, type: "Reflexology", style: "Steam", features: ["Duration: 30 Mins", "Facilities: Basic"] }
 ];
 
 let activeItemId = null;
@@ -276,8 +275,8 @@ function renderItems() {
         if (filter3 !== 'any' && h.distance > parseFloat(filter3)) match = false;
         if (filter4 !== 'any' && h.style !== filter4 && !h.features.join(' ').includes(filter4)) match = false;
         if (filter2 !== 'any') {
-            if (filter2 === '5000+' && h.price < 5000) match = false;
-            if (filter2 !== '5000+') {
+            if (filter2 === '6000+' && h.price < 6000) match = false;
+            if (filter2 !== '6000+') {
                 const [min, max] = filter2.split('-').map(Number);
                 if (h.price < min || h.price > max) match = false;
             }
@@ -285,7 +284,7 @@ function renderItems() {
         return match;
     });
 
-    document.getElementById('inventory-count').textContent = `ENTERTAINMENT INVENTORY (${filtered.length} VENUES FOUND)`;
+    document.getElementById('inventory-count').textContent = `SPA INVENTORY (${filtered.length} SPAS FOUND)`;
     grid.innerHTML = '';
     
     const premiumItems = filtered.filter(h => h.category === "Premium");
@@ -310,11 +309,11 @@ function renderItems() {
     };
 
     if (premiumItems.length > 0) {
-        grid.innerHTML += `<div class="col-span-full mt-2 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">Premium Entertainment</h4><span class="text-[10px] font-bold text-on-surface-variant">(${premiumItems.length})</span></div>`;
+        grid.innerHTML += `<div class="col-span-full mt-2 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">Premium Spas</h4><span class="text-[10px] font-bold text-on-surface-variant">(${premiumItems.length})</span></div>`;
         premiumItems.forEach(h => { grid.innerHTML += renderCard(h); });
     }
     if (standardItems.length > 0) {
-        grid.innerHTML += `<div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">Standard Entertainment</h4><span class="text-[10px] font-bold text-on-surface-variant">(${standardItems.length})</span></div>`;
+        grid.innerHTML += `<div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">Standard Spas</h4><span class="text-[10px] font-bold text-on-surface-variant">(${standardItems.length})</span></div>`;
         standardItems.forEach(h => { grid.innerHTML += renderCard(h); });
     }
 }

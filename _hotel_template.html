@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>LayoverX | Entertainment Sitemap</title>
+    <title>LayoverX | Hotel Booking Sitemap</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -78,7 +78,7 @@
             <!-- Main Card Container -->
             <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
                 <div class="flex justify-between items-start mb-6">
-                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">ENTERTAINMENT & GAMING PAGE</h3>
+                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">Hotels Listing Page</h3>
                 </div>
 
                 <div class="space-y-4">
@@ -86,42 +86,43 @@
                     <div class="border border-outline-variant p-3 bg-surface-container">
                         <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <select id="filter-duration" onchange="renderHotels()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Duration</option>
+                                <option value="2">2 Hours</option>
+                                <option value="4">4 Hours</option>
+                                <option value="8">8 Hours</option>
+                                <option value="12">12 Hours</option>
+                                <option value="24">24 Hours</option>
+                            </select>
+                            
+                            <select id="filter-price" onchange="renderHotels()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Price Range</option>
+                                <option value="0-3000">₹0 – ₹3000</option>
+                                <option value="3000-6000">₹3000 – ₹6000</option>
+                                <option value="6000-10000">₹6000 – ₹10000</option>
+                                <option value="10000+">₹10000+</option>
+                            </select>
 
-<select id="filter-1" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Experience Type</option>
-    <option value="Gaming">Gaming</option>
-    <option value="Bowling">Bowling</option>
-    <option value="VR Experience">VR Experience</option>
-    <option value="Lounge">Lounge</option>
-    <option value="Cinema">Cinema</option>
-    <option value="Arcade">Arcade</option>
-</select>
-<select id="filter-2" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Price Range</option>
-    <option value="500-2000">₹500 – ₹2000</option>
-    <option value="2000-5000">₹2000 – ₹5000</option>
-    <option value="5000+">₹5000+</option>
-</select>
-<select id="filter-3" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Distance</option>
-    <option value="1">Within 1 km</option>
-    <option value="3">Within 3 km</option>
-    <option value="5">Within 5 km</option>
-</select>
-<select id="filter-4" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-    <option value="any">Features</option>
-    <option value="Multiplayer">Multiplayer</option>
-    <option value="VR Gaming">VR Gaming</option>
-    <option value="Premium Lounge">Premium Lounge</option>
-    <option value="Family Friendly">Family Friendly</option>
-    <option value="Nightlife">Nightlife</option>
-</select>
+                            <select id="filter-distance" onchange="renderHotels()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Distance</option>
+                                <option value="1">Within 1 km</option>
+                                <option value="3">Within 3 km</option>
+                                <option value="5">Within 5 km</option>
+                            </select>
 
-</div>
-</div>
-<!-- Grid Preview -->
+                            <select id="filter-amenities" onchange="renderHotels()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Amenities</option>
+                                <option value="Airport Shuttle">Airport Shuttle</option>
+                                <option value="Pool">Pool</option>
+                                <option value="Spa">Spa</option>
+                                <option value="Business Center">Business Center</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Grid Preview -->
                     <div class="border-2 border-dashed border-outline-variant p-4">
-                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">ENTERTAINMENT INVENTORY (12 HOTELS FOUND)</p>
+                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">HOTEL INVENTORY (12 HOTELS FOUND)</p>
                         
                         <!-- Dynamic Hotels -->
                         <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -141,7 +142,7 @@
             <!-- Main Card Container -->
             <div class="bg-white border-2 border-secondary p-6 shadow-sm h-full max-h-[85vh] sticky top-28 overflow-hidden flex flex-col">
                 <div class="flex justify-between items-start mb-6 shrink-0">
-                    <h3 class="text-node-title-md text-secondary uppercase">ENTERTAINMENT DETAIL PAGE</h3>
+                    <h3 class="text-node-title-md text-secondary uppercase">Hotel Detail Page</h3>
                     <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
                 </div>
                 
@@ -149,14 +150,11 @@
                     <!-- Detail Header -->
                     <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
                         <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-                        <h4 id="l2-name" class="text-[14px] font-bold">Venue Name</h4>
-<div class="flex items-center gap-2 mt-1">
-    <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold">4.8 ★</span>
-    <span id="l2-distance" class="text-[10px] text-on-surface-variant">1.6 km from T2</span>
-</div>
-<div class="text-[10px] text-on-surface-variant mt-1">
-    <span id="l2-type" class="font-semibold text-primary">Gaming</span>
-</div>
+                        <h4 id="l2-name" class="text-[14px] font-bold">Hotel Name</h4>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold">4.8 ★</span>
+                            <span id="l2-distance" class="text-[10px] text-on-surface-variant">0.9 km from T2</span>
+                        </div>
                     </div>
 
                     <!-- Gallery & Room Options -->
@@ -182,7 +180,7 @@
                     <!-- Plan Layover Block -->
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
                         <button onclick="openVerificationModal()" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
-                            PLAN EXPERIENCE
+                            PLAN LAYOVER
                         </button>
                     </div>
 
@@ -249,114 +247,150 @@
     </div>
 
     <script>
+        const hotels = [
+            { id: 1, name: "The Orchid Hotel", distance: 0.9, terminal: "T2", category: "Premium", rating: "4.8", price: 4500, durations: [2, 4, 8, 12, 24], amenities: ["Airport Shuttle", "Pool", "Spa"] },
+            { id: 2, name: "Hotel Sahara Star", distance: 1.1, terminal: "T2", category: "Premium", rating: "4.7", price: 5200, durations: [4, 8, 12, 24], amenities: ["Pool", "Spa"] },
+            { id: 3, name: "Taj Santacruz", distance: 1.6, terminal: "T2", category: "Premium", rating: "4.9", price: 8200, durations: [8, 12, 24], amenities: ["Airport Shuttle", "Spa", "Business Center"] },
+            { id: 4, name: "Hotel Bawa Intl.", distance: 1.7, terminal: "T2", category: "Standard", rating: "4.2", price: 2800, durations: [2, 4, 8, 12], amenities: ["Business Center"] },
+            { id: 5, name: "JW Marriott Sahar", distance: 1.8, terminal: "T2", category: "Premium", rating: "4.8", price: 7800, durations: [4, 8, 12, 24], amenities: ["Pool", "Spa", "Business Center"] },
+            { id: 6, name: "Hotel Midland", distance: 2.3, terminal: "T2", category: "Standard", rating: "4.0", price: 2500, durations: [2, 4, 8, 12], amenities: [] },
+            { id: 7, name: "ITC Maratha", distance: 2.4, terminal: "T2", category: "Premium", rating: "4.8", price: 7600, durations: [8, 12, 24], amenities: ["Pool", "Spa", "Business Center"] },
+            { id: 8, name: "The Leela Mumbai", distance: 2.5, terminal: "T2", category: "Premium", rating: "4.7", price: 7200, durations: [4, 8, 12, 24], amenities: ["Pool", "Airport Shuttle", "Business Center"] },
+            { id: 9, name: "Aurika Mumbai", distance: 2.8, terminal: "T2", category: "Premium", rating: "4.6", price: 6200, durations: [4, 8, 12, 24], amenities: ["Pool", "Business Center"] },
+            { id: 10, name: "Lemon Tree Premier", distance: 3.2, terminal: "T2", category: "Standard", rating: "4.2", price: 3800, durations: [2, 4, 8, 12], amenities: ["Airport Shuttle"] },
+            { id: 11, name: "Holiday Inn", distance: 4.2, terminal: "T2", category: "Standard", rating: "4.4", price: 4200, durations: [4, 8, 12, 24], amenities: ["Pool", "Business Center"] },
+            { id: 12, name: "Grand Hyatt", distance: 6.1, terminal: "T2", category: "Premium", rating: "4.7", price: 7000, durations: [8, 12, 24], amenities: ["Pool", "Spa", "Business Center"] }
+        ];
 
-const items = [
-    { id: 1, name: "SMAAASH Mumbai", distance: 5.8, category: "Premium", rating: "4.7", price: 3000, type: "Gaming", style: "VR Gaming", features: ["Timings: 11AM-11PM", "Capacity: Large", "Features: Multiplayer, VR Gaming"] },
-    { id: 2, name: "Amoeba Sports Bar", distance: 4.5, category: "Premium", rating: "4.5", price: 2500, type: "Bowling", style: "Nightlife", features: ["Timings: 12PM-1AM", "Capacity: Medium", "Features: Bowling, Multiplayer"] },
-    { id: 3, name: "Playboy Club Lounge", distance: 5.2, category: "Premium", rating: "4.8", price: 5500, type: "Lounge", style: "Premium Lounge", features: ["Timings: 8PM-3AM", "Capacity: Medium", "Features: Premium Lounge, Nightlife"] },
-    { id: 4, name: "VR Galaxy Arena", distance: 3.9, category: "Premium", rating: "4.6", price: 2200, type: "VR Experience", style: "VR Gaming", features: ["Timings: 10AM-10PM", "Capacity: Small", "Features: VR Gaming, Family Friendly"] },
-    { id: 5, name: "Timezone Arcade", distance: 3.1, category: "Standard", rating: "4.3", price: 1500, type: "Arcade", style: "Family Friendly", features: ["Timings: 11AM-10PM", "Capacity: Medium", "Features: Family Friendly, Multiplayer"] },
-    { id: 6, name: "Fun Republic Gaming", distance: 4.0, category: "Standard", rating: "4.2", price: 1200, type: "Gaming", style: "Family Friendly", features: ["Timings: 10AM-11PM", "Capacity: Large", "Features: Family Friendly"] },
-    { id: 7, name: "Airport Lounge Hub", distance: 1.2, category: "Standard", rating: "4.0", price: 800, type: "Lounge", style: "Premium Lounge", features: ["Timings: 24/7", "Capacity: Medium", "Features: Premium Lounge"] },
-    { id: 8, name: "Midnight Bowling Club", distance: 4.8, category: "Standard", rating: "4.4", price: 1800, type: "Bowling", style: "Nightlife", features: ["Timings: 6PM-2AM", "Capacity: Medium", "Features: Nightlife, Multiplayer"] }
-];
+        let activeHotelId = null;
 
-let activeItemId = null;
+        function renderHotels() {
+            const grid = document.getElementById('hotel-grid');
+            
+            const durVal = document.getElementById('filter-duration').value;
+            const priceVal = document.getElementById('filter-price').value;
+            const distVal = document.getElementById('filter-distance').value;
+            const amenVal = document.getElementById('filter-amenities').value;
 
-function renderItems() {
-    const grid = document.getElementById('hotel-grid');
-    const filter1 = document.getElementById('filter-1').value;
-    const filter2 = document.getElementById('filter-2').value;
-    const filter3 = document.getElementById('filter-3').value;
-    const filter4 = document.getElementById('filter-4').value;
+            const filtered = hotels.filter(h => {
+                let match = true;
+                if (durVal !== 'any' && match) {
+                    if (!h.durations.includes(parseInt(durVal))) match = false;
+                }
+                if (distVal !== 'any' && match) {
+                    const maxD = parseFloat(distVal);
+                    if (h.distance > maxD) match = false;
+                }
+                if (priceVal !== 'any' && match) {
+                    if (priceVal === '10000+') {
+                        if (h.price < 10000) match = false;
+                    } else {
+                        const [min, max] = priceVal.split('-').map(Number);
+                        if (h.price < min || h.price > max) match = false;
+                    }
+                }
+                if (amenVal !== 'any' && match) {
+                    if (!h.amenities.includes(amenVal)) match = false;
+                }
+                return match;
+            });
 
-    const filtered = items.filter(h => {
-        let match = true;
-        if (filter1 !== 'any' && h.type !== filter1) match = false;
-        if (filter3 !== 'any' && h.distance > parseFloat(filter3)) match = false;
-        if (filter4 !== 'any' && h.style !== filter4 && !h.features.join(' ').includes(filter4)) match = false;
-        if (filter2 !== 'any') {
-            if (filter2 === '5000+' && h.price < 5000) match = false;
-            if (filter2 !== '5000+') {
-                const [min, max] = filter2.split('-').map(Number);
-                if (h.price < min || h.price > max) match = false;
+            document.getElementById('inventory-count').textContent = `HOTEL INVENTORY (${filtered.length} HOTELS FOUND)`;
+
+            grid.innerHTML = '';
+            
+            const premiumHotels = filtered.filter(h => h.category === "Premium");
+            const standardHotels = filtered.filter(h => h.category === "Standard");
+
+            const renderCard = (h) => {
+                const isActive = h.id === activeHotelId;
+                const isPremium = h.category === "Premium";
+                const bgClass = isActive 
+                    ? 'bg-primary/10 border-primary' 
+                    : (isPremium ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50');
+                
+                return `
+                    <div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer transition-colors text-[11px] font-medium text-on-surface flex flex-col justify-between h-16 ${bgClass}">
+                        <div class="flex justify-between items-start">
+                            <span class="truncate pr-1">${h.name}</span>
+                            ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
+                        </div>
+                        <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
+                            <span>${h.distance} km • ${h.terminal}</span>
+                            <span class="font-bold text-secondary">${h.rating}</span>
+                        </div>
+                    </div>
+                `;
+            };
+
+            if (premiumHotels.length > 0) {
+                grid.innerHTML += `
+                    <div class="col-span-full mt-2 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
+                        <h4 class="text-meta-label text-primary uppercase">Premium Hotels</h4>
+                        <span class="text-[10px] font-bold text-on-surface-variant">(${premiumHotels.length})</span>
+                    </div>
+                `;
+                premiumHotels.forEach(h => {
+                    grid.innerHTML += renderCard(h);
+                });
+            }
+
+            if (standardHotels.length > 0) {
+                grid.innerHTML += `
+                    <div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
+                        <h4 class="text-meta-label text-primary uppercase">Standard Hotels</h4>
+                        <span class="text-[10px] font-bold text-on-surface-variant">(${standardHotels.length})</span>
+                    </div>
+                `;
+                standardHotels.forEach(h => {
+                    grid.innerHTML += renderCard(h);
+                });
             }
         }
-        return match;
-    });
 
-    document.getElementById('inventory-count').textContent = `ENTERTAINMENT INVENTORY (${filtered.length} VENUES FOUND)`;
-    grid.innerHTML = '';
-    
-    const premiumItems = filtered.filter(h => h.category === "Premium");
-    const standardItems = filtered.filter(h => h.category === "Standard");
+        function openLevel2(id) {
+            activeHotelId = id;
+            renderHotels(); 
+            
+            const hotel = hotels.find(h => h.id === id);
+            if(!hotel) return;
 
-    const renderCard = (h) => {
-        const isActive = h.id === activeItemId;
-        const isPremium = h.category === "Premium";
-        const bgClass = isActive ? 'bg-primary/10 border-primary' : (isPremium ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50');
-        return `
-            <div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer transition-colors text-[11px] font-medium text-on-surface flex flex-col justify-between h-16 ${bgClass}">
-                <div class="flex justify-between items-start">
-                    <span class="truncate pr-1">${h.name}</span>
-                    ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
-                </div>
-                <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
-                    <span>${h.distance} km</span>
-                    <span class="font-bold text-secondary">${h.rating}</span>
-                </div>
-            </div>
-        `;
-    };
+            document.getElementById('l2-name').textContent = hotel.name;
+            document.getElementById('l2-rating').textContent = `${hotel.rating} ★`;
+            document.getElementById('l2-distance').textContent = `${hotel.distance} km from ${hotel.terminal}`;
+            
+            const amCont = document.getElementById('l2-amenities');
+            amCont.innerHTML = hotel.amenities.length 
+                ? hotel.amenities.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('') 
+                : '<div class="text-[11px] text-on-surface-variant italic">Standard amenities included</div>';
 
-    if (premiumItems.length > 0) {
-        grid.innerHTML += `<div class="col-span-full mt-2 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">Premium Entertainment</h4><span class="text-[10px] font-bold text-on-surface-variant">(${premiumItems.length})</span></div>`;
-        premiumItems.forEach(h => { grid.innerHTML += renderCard(h); });
-    }
-    if (standardItems.length > 0) {
-        grid.innerHTML += `<div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">Standard Entertainment</h4><span class="text-[10px] font-bold text-on-surface-variant">(${standardItems.length})</span></div>`;
-        standardItems.forEach(h => { grid.innerHTML += renderCard(h); });
-    }
-}
+            const l1 = document.getElementById('level1');
+            const l2 = document.getElementById('level2');
+            
+            l1.classList.remove('max-w-4xl', 'mx-auto');
+            l1.classList.add('lg:w-[55%]');
+            
+            l2.classList.remove('hidden');
+            
+            requestAnimationFrame(() => {
+                l2.classList.remove('opacity-0');
+            });
+        }
 
-function openLevel2(id) {
-    activeItemId = id;
-    renderItems(); 
-    const item = items.find(h => h.id === id);
-    if(!item) return;
-
-    document.getElementById('l2-name').textContent = item.name;
-    document.getElementById('l2-rating').textContent = `${item.rating} ★`;
-    document.getElementById('l2-distance').textContent = `${item.distance} km from T2`;
-    document.getElementById('l2-type').textContent = item.type;
-    
-    const amCont = document.getElementById('l2-amenities');
-    amCont.innerHTML = item.features.length 
-        ? item.features.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('') 
-        : '<div class="text-[11px] text-on-surface-variant italic">Standard options included</div>';
-
-    const l1 = document.getElementById('level1');
-    const l2 = document.getElementById('level2');
-    l1.classList.remove('max-w-4xl', 'mx-auto');
-    l1.classList.add('lg:w-[55%]');
-    l2.classList.remove('hidden');
-    requestAnimationFrame(() => { l2.classList.remove('opacity-0'); });
-}
-
-function closeLevel2() {
-    activeItemId = null;
-    renderItems();
-    const l1 = document.getElementById('level1');
-    const l2 = document.getElementById('level2');
-    l2.classList.add('opacity-0');
-    setTimeout(() => {
-        l2.classList.add('hidden');
-        l1.classList.remove('lg:w-[55%]');
-        l1.classList.add('max-w-4xl', 'mx-auto');
-    }, 300);
-}
-
-function renderHotels() { renderItems(); }
+        function closeLevel2() {
+            activeHotelId = null;
+            renderHotels();
+            
+            const l1 = document.getElementById('level1');
+            const l2 = document.getElementById('level2');
+            
+            l2.classList.add('opacity-0');
+            setTimeout(() => {
+                l2.classList.add('hidden');
+                l1.classList.remove('lg:w-[55%]');
+                l1.classList.add('max-w-4xl', 'mx-auto');
+            }, 300);
+        }
 
         function openVerificationModal() {
             const modal = document.getElementById('verification-modal');
