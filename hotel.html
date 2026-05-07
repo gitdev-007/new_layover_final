@@ -175,29 +175,26 @@
 <!-- Component Blocks -->
 <div class="space-y-4">
 <!-- Filter Block -->
-<div class="border border-outline-variant p-3">
-<p class="text-meta-label text-outline mb-1">SEARCH &amp; FILTERS</p>
-<div class="grid grid-cols-2 gap-2 text-node-description">
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="duration" onchange="applyFilters()">
-<option value="">Duration (2, 4, 8h)</option>
-<option selected value="2 hrs">2 hrs</option>
-<option value="4 hours">4 hours</option>
-<option value="8 hours">8 hours</option>
+<div class="border border-outline-variant p-3 bg-surface rounded-lg mb-4">
+<p class="text-meta-label text-outline mb-2">SEARCH &amp; FILTERS</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-node-description">
+<input class="bg-surface-container-high px-3 py-2 rounded border-0 text-node-description w-full focus:ring-1 focus:ring-primary outline-none transition-all" id="search-keyword" placeholder="Search name, location, keyword..." type="text" oninput="renderHotels()"/>
+<input class="bg-surface-container-high px-3 py-2 rounded border-0 text-node-description w-full focus:ring-1 focus:ring-primary outline-none transition-all" id="filter-distance" placeholder="Max distance (km)" type="number" step="0.1" oninput="renderHotels()"/>
+<select class="bg-surface-container-high px-3 py-2 rounded border-0 text-node-description w-full focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer" id="sort-distance" onchange="renderHotels()">
+<option value="asc">Sort: Nearest First</option>
+<option value="desc">Sort: Furthest First</option>
 </select>
-<select class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="priceRange" onchange="applyFilters()">
-<option value="">Price Range</option>
-<option selected value="₹1000–₹5000">₹1000–₹5000</option>
-<option value="₹1500 - ₹3000">₹1500 - ₹3000</option>
-<option value="₹3000+">₹3000+</option>
-</select>
-<input class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="distance" placeholder="Distance" type="text" value="5 km" oninput="applyFilters()"/>
-<input class="filter-field bg-surface-container-high px-2 py-1 rounded border-0 text-node-description" data-filter-field="amenities" placeholder="Amenities" type="text" value="WiFi" oninput="applyFilters()"/>
 </div>
 </div>
 <!-- Grid Preview -->
-<div class="border-2 border-dashed border-outline-variant p-3">
-<p class="text-meta-label text-outline mb-2" id="inventory-count">INVENTORY (0 FOUND)</p>
-<div class="rounded-lg flex gap-3"><div class="space-y-4 w-full" id="inventory-list"></div></div>
+<div class="border-2 border-dashed border-outline-variant p-3 rounded-lg bg-surface-container-lowest">
+<p class="text-meta-label text-outline mb-3" id="inventory-count">HOTEL INVENTORY (0 HOTELS FOUND)</p>
+<div class="rounded-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="hotel-grid">
+<!-- Hotels injected dynamically -->
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -282,93 +279,205 @@
 </div>
 </section>
 </main>
-
 <script>
-    var level2 = document.querySelector('.level2');
-    var mainLayout = document.querySelector('.main-layout');
-    var filterFields = document.querySelectorAll('[data-filter-field]');
-    var filterState = {};
+    const level2 = document.querySelector('.level2');
+    const mainLayout = document.querySelector('.main-layout');
+    const hotelItems = document.querySelectorAll('.hotel-item');
+    const filterFields = document.querySelectorAll('[data-filter-field]');
+    const filterDefaults = {
+        duration: '2 hrs',
+        priceRange: '₹1000–₹5000',
+        distance: '5 km',
+        amenities: 'WiFi'
+    };
+    const filterState = {};
 
-    var updateFilterState = (field) => {
-        filterState[field.dataset.filterField] = field.value.trim().toLowerCase();
+    const updateFilterState = (field) => {
+        const key = field.dataset.filterField;
+        const fallback = filterDefaults[key] || '';
+        const value = field.value.trim() || fallback;
+
+        if (!field.value.trim()) {
+            field.value = fallback;
+        }
+
+        filterState[key] = value;
     };
 
-    var inventoryData = window.LAYOVER_INVENTORY ? window.LAYOVER_INVENTORY['Hotels'] : [];
+    filterFields.forEach((field) => {
+        updateFilterState(field);
+    });
 
-    var renderList = () => {
-        var listContainer = document.getElementById('inventory-list');
-        var html = '';
-        var visibleCount = 0;
-
-        inventoryData.forEach(item => {
-            var strictMatch = true;
-            // Simple filtering logic
-            if (strictMatch) {
-                visibleCount++;
-                var indTravel = 0;
-                if (window.calculateDynamicTravelMins) {
-                    indTravel = Math.round(window.calculateDynamicTravelMins(item.distance));
-                }
-                var travelStr = indTravel > 0 ? `Est ${indTravel}m travel` : `${item.distance} KM`;
-
-                html += `
-                <div class="flex gap-4 bg-white border border-outline-variant rounded-xl p-4 hover:shadow-md transition-shadow cursor-pointer group" onclick="showLevel2('${item.name}')">
-                    <div class="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
-                        ${item.image ? `<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${item.image}"/>` : `<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-[32px] text-outline-variant">image</span></div>`}
-                    </div>
-                    <div class="flex-grow flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-base text-primary">${item.name}</h3>
-                                <div class="flex items-center gap-[2px] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
-                                    <span class="font-bold text-[10px] text-emerald-700">${item.rating}</span>
-                                </div>
-                            </div>
-                            <div class="flex gap-2 text-secondary mt-1 text-xs">
-                                <span>${item.type}</span>
-                                <span>&bull;</span>
-                                <span>${travelStr}</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-3">
-                            <span class="text-emerald-600 font-bold text-[9px] px-2 py-0.5 bg-emerald-50 rounded-full uppercase tracking-wider border border-emerald-100">High Compatibility</span>
-                            <span class="text-brand-accent font-bold text-[11px] uppercase tracking-wider group-hover:underline">View Details</span>
-                        </div>
-                    </div>
-                </div>
-                `;
-            }
+    function applyFilters() {
+        filterFields.forEach((field) => {
+            updateFilterState(field);
         });
 
-        listContainer.innerHTML = html || '<p class="text-xs text-secondary text-center py-4">No items found.</p>';
-        document.getElementById('inventory-count').textContent = `INVENTORY (${visibleCount} FOUND)`;
+        hotelItems.forEach((item) => {
+            const duration = item.dataset.duration || '';
+            const price = item.dataset.price || '';
+            const distance = item.dataset.distance || '';
+            const amenities = (item.dataset.amenities || '').toLowerCase();
+
+            let match = true;
+
+            const filterDuration = filterState.duration || '';
+            if (filterDuration) {
+                const fd = parseInt(filterDuration, 10);
+                const id = parseInt(duration, 10);
+                if (!isNaN(fd) && !isNaN(id) && id !== fd) {
+                    match = false;
+                }
+            }
+
+            const filterPrice = filterState.priceRange || '';
+            if (match && filterPrice) {
+                const p = parseInt(price, 10);
+                if (filterPrice.includes('+')) {
+                    const min = parseInt(filterPrice, 10);
+                    if (!isNaN(min) && !isNaN(p) && p < min) match = false;
+                } else {
+                    const parts = filterPrice.match(/\d+/g);
+                    if (parts && parts.length >= 2) {
+                        const min = parseInt(parts[0], 10);
+                        const max = parseInt(parts[1], 10);
+                        if (!isNaN(min) && !isNaN(max) && !isNaN(p) && (p < min || p > max)) match = false;
+                    }
+                }
+            }
+
+            const filterDistance = filterState.distance || '';
+            if (match && filterDistance) {
+                const fd = parseInt(filterDistance, 10);
+                const id = parseInt(distance, 10);
+                if (!isNaN(fd) && !isNaN(id) && id > fd) match = false;
+            }
+
+            const filterAmenities = (filterState.amenities || '').toLowerCase();
+            if (match && filterAmenities) {
+                if (!amenities.includes(filterAmenities)) match = false;
+            }
+
+            item.style.display = match ? 'block' : 'none';
+        });
+
+        console.log('Filters applied:', filterState);
+    }
+    const hotelDetails = {
+        'The Orchid Hotel': {
+            name: 'The Orchid Hotel, Mumbai',
+            rating: '4.8 ★',
+            location: 'Vile Parle, Mumbai',
+            reviews: '482 Verified',
+            prices: { two: '₹1200', four: '₹1800', eight: '₹2800', full: '₹4500' },
+            details: ['Flexible hourly stay', 'Complimentary Airport Shuttle', 'Express Transit Check-in']
+        },
+        'Hotel Sahara Star': {
+            name: 'Hotel Sahara Star, Mumbai',
+            rating: '4.7 ★',
+            location: 'Domestic Airport, Mumbai',
+            reviews: '438 Verified',
+            prices: { two: '₹1400', four: '₹2200', eight: '₹3300', full: '₹5200' },
+            details: ['Lagoon-view rooms', 'Airport-adjacent location', 'Multiple dining options']
+        },
+        'Taj Santacruz': {
+            name: 'Taj Santacruz, Mumbai',
+            rating: '4.9 ★',
+            location: 'Santacruz, Mumbai',
+            reviews: '516 Verified',
+            prices: { two: '₹2200', four: '₹3400', eight: '₹5200', full: '₹8200' },
+            details: ['Premium suites', 'Luxury transit lounge access', 'Spa and wellness services']
+        },
+        'JW Marriott Sahar': {
+            name: 'JW Marriott Sahar, Mumbai',
+            rating: '4.8 ★',
+            location: 'Andheri East, Mumbai',
+            reviews: '497 Verified',
+            prices: { two: '₹2100', four: '₹3200', eight: '₹5000', full: '₹7800' },
+            details: ['Resort-style pool', 'Business traveler amenities', 'Close to Terminal 2']
+        },
+        'ITC Maratha': {
+            name: 'ITC Maratha, Mumbai',
+            rating: '4.8 ★',
+            location: 'Sahar, Mumbai',
+            reviews: '465 Verified',
+            prices: { two: '₹2000', four: '₹3100', eight: '₹4800', full: '₹7600' },
+            details: ['Heritage luxury rooms', 'Signature dining', 'Transit-friendly check-in']
+        },
+        'The Leela Mumbai': {
+            name: 'The Leela Mumbai',
+            rating: '4.7 ★',
+            location: 'Andheri East, Mumbai',
+            reviews: '452 Verified',
+            prices: { two: '₹1900', four: '₹3000', eight: '₹4600', full: '₹7200' },
+            details: ['Garden-view stays', 'Premium airport shuttle', 'Quiet work-friendly rooms']
+        },
+        'Aurika Mumbai': {
+            name: 'Aurika Mumbai',
+            rating: '4.6 ★',
+            location: 'Near Mumbai Airport',
+            reviews: '318 Verified',
+            prices: { two: '₹1700', four: '₹2600', eight: '₹3900', full: '₹6200' },
+            details: ['Modern rooms', 'Fast check-in', 'Layover dining packages']
+        },
+        'Grand Hyatt': {
+            name: 'Grand Hyatt Mumbai',
+            rating: '4.7 ★',
+            location: 'Santacruz East, Mumbai',
+            reviews: '489 Verified',
+            prices: { two: '₹1800', four: '₹2900', eight: '₹4400', full: '₹7000' },
+            details: ['Large rooms', 'Multiple restaurants', 'Business center access']
+        },
+        'Hotel Bawa Intl.': {
+            name: 'Hotel Bawa International',
+            rating: '4.2 ★',
+            location: 'Vile Parle East, Mumbai',
+            reviews: '276 Verified',
+            prices: { two: '₹800', four: '₹1300', eight: '₹2100', full: '₹3300' },
+            details: ['Budget-friendly rooms', 'Quick airport access', 'Flexible stay slots']
+        },
+        'Hotel Midland': {
+            name: 'Hotel Midland',
+            rating: '4.0 ★',
+            location: 'Santacruz, Mumbai',
+            reviews: '214 Verified',
+            prices: { two: '₹700', four: '₹1100', eight: '₹1800', full: '₹2900' },
+            details: ['Simple transit rooms', 'Cafe on-site', 'Short-stay availability']
+        },
+        'Lemon Tree Premier': {
+            name: 'Lemon Tree Premier, Mumbai',
+            rating: '4.4 ★',
+            location: 'Andheri East, Mumbai',
+            reviews: '331 Verified',
+            prices: { two: '₹1000', four: '₹1600', eight: '₹2500', full: '₹3900' },
+            details: ['Reliable business rooms', 'Breakfast options', 'Near airport road']
+        },
+        'Holiday Inn': {
+            name: 'Holiday Inn Mumbai International Airport',
+            rating: '4.5 ★',
+            location: 'Sakinaka, Mumbai',
+            reviews: '367 Verified',
+            prices: { two: '₹1100', four: '₹1700', eight: '₹2700', full: '₹4200' },
+            details: ['Rooftop pool', 'Airport shuttle support', 'Comfortable day-use rooms']
+        }
     };
 
-    var applyFilters = () => {
-        filterFields.forEach(field => updateFilterState(field));
-        renderList();
-    };
-
-    window.showLevel2 = (name) => {
-        var detail = inventoryData.find(i => i.name === name);
-        if (!detail || !level2) return;
-        
-        level2.innerHTML = `
+    const renderLevel2 = (detail) => `
 <div class="flex items-center justify-between mb-4">
 <span class="bg-secondary text-white text-meta-label px-3 py-1 font-bold">LEVEL 2: DETAILS</span>
 </div>
 <div class="bg-white border-2 border-secondary p-node-padding rounded shadow-sm">
 <div class="flex justify-between items-start mb-6">
-<h3 class="text-node-title-md font-node-title-md text-secondary">Detail Page</h3>
-<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Active</span>
+<h3 class="text-node-title-md font-node-title-md text-secondary">Hotel Detail Page</h3>
+<span class="bg-purple-100 text-purple-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase">In Progress</span>
 </div>
 <div class="space-y-4">
 <div class="border border-outline-variant p-3 bg-secondary/5">
 <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-<h4 class="text-node-title-md font-bold">${detail.name}</h4>
+<h4 class="text-node-title-md font-bold" data-detail-field="name">${detail.name}</h4>
 <div class="flex gap-2 mt-1">
-<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold">${detail.rating}</span>
-<span class="text-[10px] text-outline">${detail.distance} km from Airport</span>
+<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1 font-semibold" data-detail-field="rating">${detail.rating}</span>
+<span class="text-[10px] text-outline" data-detail-field="location">${detail.location}</span>
 </div>
 </div>
 <div class="grid grid-cols-2 gap-3">
@@ -377,42 +486,30 @@
 <p class="text-[10px] mt-1 font-bold">Media Gallery</p>
 </div>
 <div class="border border-outline-variant p-2 text-center bg-surface">
-<span class="material-symbols-outlined text-secondary">info</span>
-<p class="text-[10px] mt-1 font-bold">Options</p>
+<span class="material-symbols-outlined text-secondary">bed</span>
+<p class="text-[10px] mt-1 font-bold">Room Options</p>
 </div>
 </div>
 <div class="border border-outline-variant p-3 bg-surface-container">
 <p class="text-meta-label text-outline mb-2">KEY DIFFERENTIATORS</p>
-<ul class="text-[11px] space-y-1">
+<ul class="text-[11px] space-y-1" data-detail-field="details">
 ${detail.details.map((item) => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${item}</li>`).join('')}
 </ul>
 </div>
 <div class="border-2 border-secondary p-3 rounded bg-secondary-fixed/20">
-<p class="text-meta-label text-secondary font-bold mb-2">DURATION-BASED PRICING</p>
-<div class="grid grid-cols-3 gap-1 text-center mb-4">
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">1-2 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.one ? detail.prices.one : '-'}</p></div>
-<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">3-4 HR</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.two ? detail.prices.two : '-'}</p></div>
-<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">FULL</p><p class="font-bold text-[11px]">${detail.prices && detail.prices.three ? detail.prices.three : '-'}</p></div>
+<p class="text-meta-label text-secondary font-bold mb-2">HOURLY TIERED PRICING</p>
+<div class="grid grid-cols-4 gap-1 text-center">
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">2 HR</p><p class="font-bold text-[11px]" data-detail-field="price-2">${detail.prices.two}</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">4 HR</p><p class="font-bold text-[11px]" data-detail-field="price-4">${detail.prices.four}</p></div>
+<div class="bg-white p-1 rounded border border-secondary-fixed"><p class="text-[9px] text-outline">8 HR</p><p class="font-bold text-[11px]" data-detail-field="price-8">${detail.prices.eight}</p></div>
+<div class="bg-white p-1 rounded border border-secondary bg-secondary/10"><p class="text-[9px] text-secondary font-bold">FULL</p><p class="font-bold text-[11px]" data-detail-field="price-full">${detail.prices.full}</p></div>
 </div>
-<div class="flex flex-col gap-2 w-full mt-2 pt-4 border-t border-secondary/20">
-    <label class="block text-[9px] font-bold text-secondary uppercase">Select Stay Duration</label>
-    <select class="w-full bg-surface border border-outline-variant p-2 rounded text-[11px] focus:outline-none focus:border-primary" onchange="this.nextElementSibling.disabled = !this.value; this.nextElementSibling.dataset.duration = this.value;">
-        <option value="" disabled selected hidden>Select Duration</option>
-        <option value="30m">30 mins</option>
-        <option value="1h">1 hour</option>
-        <option value="1.5h">1.5 hours</option>
-        <option value="2h">2 hours</option>
-        <option value="3h">3 hours</option>
-        <option value="4h">4 hours</option>
-        <option value="6h">6 hours</option>
-    </select>
-    <button disabled data-duration="" onclick="window.addToList && window.addToList(this, '${detail.name}', '${detail.category}', this.dataset.duration, ${detail.distance}, '${detail.image}')" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-sm tracking-wide flex justify-center items-center gap-2 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">Add to List</button>
+<button class="w-full mt-3 bg-secondary text-white font-bold py-2 rounded-lg text-sm tracking-wide">PLAN LAYOVER</button>
 </div>
-</div>
-<div class="grid grid-cols-2 gap-3 text-meta-label mt-4">
+<div class="grid grid-cols-2 gap-3 text-meta-label">
 <div class="border border-outline-variant p-2 rounded">
 <p class="text-outline mb-1">REVIEWS</p>
-<p class="font-semibold text-secondary">${detail.reviews}</p>
+<p class="font-semibold text-secondary" data-detail-field="reviews">${detail.reviews}</p>
 </div>
 <div class="border border-outline-variant p-2 rounded">
 <p class="text-outline mb-1">CONTACT</p>
@@ -420,21 +517,37 @@ ${detail.details.map((item) => `<li class="flex items-center gap-2"><span class=
 </div>
 </div>
 </div>
-`;
-        
-        if (mainLayout) mainLayout.classList.add('side-by-side');
-        if (level2) level2.style.display = 'block';
-        if (window.syncButtonStates) window.syncButtonStates();
+</div>`;
+
+    const updateLevel2 = (hotelName) => {
+        const detail = hotelDetails[hotelName];
+        if (!detail || !level2) return;
+
+        level2.innerHTML = renderLevel2(detail);
     };
 
-    filterFields.forEach((field) => {
-        field.addEventListener('change', applyFilters);
-        field.addEventListener('input', applyFilters);
+    hotelItems.forEach((hotelItem) => {
+        const showLevel2 = () => {
+            updateLevel2(hotelItem.textContent.trim());
+            if (mainLayout) {
+                mainLayout.classList.add('active');
+            }
+            if (level2) {
+                level2.style.display = 'block';
+            }
+        };
+
+        hotelItem.addEventListener('click', showLevel2);
+        hotelItem.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                showLevel2();
+            }
+        });
     });
 
     applyFilters();
 </script>
-
 <!-- Footer Anchor -->
 <footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 mt-20 w-full">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full px-8 py-12 max-w-7xl mx-auto">
