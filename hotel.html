@@ -339,7 +339,7 @@
                     btn.innerHTML = btn.dataset.originalHtml;
                     btn.disabled = false;
                 }
-                btn.dataset.itemName = item.name;
+                btn.dataset.itemName = hotel.name;
                 
                 const isMarketplace = !!document.getElementById('marketplace-content') || window.location.pathname.includes('marketplace');
                 if (isMarketplace) {
@@ -348,7 +348,7 @@
                     let alreadyAdded = false;
                     try {
                         const existingList = JSON.parse(existingListStr);
-                        alreadyAdded = existingList.some(i => i.name === item.name);
+                        alreadyAdded = existingList.some(i => i.name === hotel.name);
                     } catch(e) {}
                     
                     if (alreadyAdded) {
@@ -365,9 +365,9 @@
                             const durSelect = document.getElementById('item-duration');
                             const duration = durSelect ? durSelect.value : '2h';
                             if (window.addToList) {
-                                window.addToList(btn, item.name, 'Hotel', duration, item.distance, '');
+                                window.addToList(btn, hotel.name, 'Hotel', duration, hotel.distance, '');
                             } else if (window.parent && window.parent.addToList) {
-                                window.parent.addToList(btn, item.name, 'Hotel', duration, item.distance, '');
+                                window.parent.addToList(btn, hotel.name, 'Hotel', duration, hotel.distance, '');
                             }
                         };
                     }
@@ -381,8 +381,6 @@
                     };
                 }
             }
-            }
-            
             l2.classList.remove('hidden');
     
     
