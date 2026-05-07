@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#000000",
+                    "secondary": "#5d5f5f",
+                    "surface": "#f9f9f9",
+                    "surface-container": "#eeeeee",
+                    "surface-container-low": "#f3f3f3",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#cfc4c5",
+                    "on-surface": "#1b1b1b",
+                    "on-primary": "#ffffff",
+                    "background": "#f9f9f9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1.25rem",
+                    "lg": "1.25rem",
+                    "xl": "2rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "32px",
+                    "unit": "8px",
+                    "section-gap": "128px",
+                    "margin-page": "24px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "sans": ["Inter", "sans-serif"],
+            },
+            "fontSize": {
+                    "hero": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-md": ["28px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { -webkit-font-smoothing: antialiased; }
+        .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.8); }
+        .soft-shadow { shadow-[0_8px_30px_rgb(0,0,0,0.04)]; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Navigation -->
+<nav class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/20">
+<div class="flex justify-between items-center px-6 md:px-margin-page py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight">LAYOVERX</span>
+<div class="hidden md:flex gap-6">
+<a class="text-sm font-medium text-secondary hover:text-primary transition-colors" href="#">Our Product</a>
+<a class="text-sm font-medium text-secondary hover:text-primary transition-colors" href="#">How We Work</a>
+<a class="text-sm font-medium text-primary" href="careershome.html">Careers</a>
+</div>
+</div>
+<a class="bg-primary text-on-primary px-5 py-2.5 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity" href="openroles.html">
+            Open Roles
+        </a>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Modern Airport Architecture" class="w-full h-full object-cover blur-md opacity-40 scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBT5eceYl2HbWLs4KXQszuVzhTqEWQRtcyFug-mhwyMY-BCpuSKvcy_nOLP8BVNNg6Gtbq3flRJfLeriPIe9skKunnaebw5DaFov84w0c_AZRCT5Lf497I1UIGC09hmtNKdkuaJLN9YgnsaJcukd6z8chOfkfD32ugqyhiperg-zX37Offv3B7qz3ex8r4f9A9tJllleJTzmpv3IWWy8P251COQa670ej7TbAgbFZ_1LWrFvV6U9AFEbsKGuyF73Dp37tGXiuQZoXA"/>
+<div class="absolute inset-0 bg-gradient-to-b from-surface via-transparent to-surface"></div>
+</div>
+<div class="relative z-10 w-full max-w-container-max mx-auto px-6 md:px-margin-page text-center md:text-left">
+<span class="inline-block px-3 py-1 bg-surface-container rounded-full text-label-caps text-secondary mb-6">CAREERS AT LAYOVERX</span>
+<h1 class="text-5xl md:text-hero font-bold text-primary mb-6 max-w-3xl">Build products and experiences for modern international travelers.</h1>
+<p class="text-body-lg text-secondary mb-10 max-w-2xl">Help us scale the infrastructure for seamless airport transitions, from luxury transit hotels to wellness and digital dining.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+<a class="bg-primary text-on-primary px-8 py-4 rounded-full text-body-md font-semibold hover:opacity-90 transition-all text-center" href="openroles.html">
+                View Open Roles
+            </a>
+<button class="bg-white border border-outline-variant/50 text-primary px-8 py-4 rounded-full text-body-md font-semibold hover:bg-surface-container-low transition-all">
+                Learn About Our Teams
+            </button>
+</div>
+</div>
+</section>
+<!-- Company Overview -->
+<section class="py-24 px-6 md:px-margin-page max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="text-headline-lg mb-6">What We Build</h2>
+<p class="text-body-lg text-secondary leading-relaxed">
+                LayoverX helps travelers discover and manage airport-area experiences during long layovers — including hotels, dining, wellness, and entertainment. We bridge the gap between global airlines, airports, and hospitality providers to provide a unified digital portal for transit travelers.
+            </p>
+</div>
+<div class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/30">
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-2">
+<span class="material-symbols-outlined text-primary">hotel</span>
+<h4 class="font-semibold">Transit Hotels</h4>
+<p class="text-sm text-secondary">Hourly booking for airside rest.</p>
+</div>
+<div class="space-y-2">
+<span class="material-symbols-outlined text-primary">spa</span>
+<h4 class="font-semibold">Wellness</h4>
+<p class="text-sm text-secondary">Showers, gyms, and lounge access.</p>
+</div>
+<div class="space-y-2">
+<span class="material-symbols-outlined text-primary">restaurant</span>
+<h4 class="font-semibold">Digital Dining</h4>
+<p class="text-sm text-secondary">Mobile ordering across terminals.</p>
+</div>
+<div class="space-y-2">
+<span class="material-symbols-outlined text-primary">airplane_ticket</span>
+<h4 class="font-semibold">Integrations</h4>
+<p class="text-sm text-secondary">Airline boarding pass sync.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How We Work -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-6 md:px-margin-page">
+<h2 class="text-headline-lg mb-12">How We Work</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white p-8 rounded-lg border border-outline-variant/20 hover:shadow-sm transition-shadow">
+<h3 class="text-headline-md mb-3 text-lg">Product &amp; Design</h3>
+<p class="text-body-md text-secondary text-sm">Designing intuitive interfaces that simplify complex international logistics for thousands of daily users.</p>
+</div>
+<div class="bg-white p-8 rounded-lg border border-outline-variant/20 hover:shadow-sm transition-shadow">
+<h3 class="text-headline-md mb-3 text-lg">Engineering</h3>
+<p class="text-body-md text-secondary text-sm">Building resilient backend systems and high-performance mobile apps for global transit hubs.</p>
+</div>
+<div class="bg-white p-8 rounded-lg border border-outline-variant/20 hover:shadow-sm transition-shadow">
+<h3 class="text-headline-md mb-3 text-lg">Operations</h3>
+<p class="text-body-md text-secondary text-sm">Managing the complex ground operations and logistics required to keep traveler experiences seamless.</p>
+</div>
+<div class="bg-white p-8 rounded-lg border border-outline-variant/20 hover:shadow-sm transition-shadow">
+<h3 class="text-headline-md mb-3 text-lg">Partnerships</h3>
+<p class="text-body-md text-secondary text-sm">Cultivating relationships with premium hospitality brands and major international airport authorities.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Open Roles -->
+<section class="py-24 px-6 md:px-margin-page max-w-container-max mx-auto">
+<div class="flex justify-between items-end mb-12">
+<h2 class="text-headline-lg">Current Openings</h2>
+<a class="text-sm font-semibold text-primary underline underline-offset-4" href="openroles.html">Browse all roles</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Role Card -->
+<div class="bg-white border border-outline-variant/30 p-8 rounded-lg flex flex-col justify-between hover:border-primary transition-colors">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-caps text-secondary">DESIGN</span>
+<span class="text-xs text-secondary">Full-time</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Product Designer</h3>
+<p class="text-sm text-secondary mb-6">New York / Hybrid</p>
+<p class="text-sm text-secondary line-clamp-3 mb-8">Own the end-to-end design process for our flagship mobile application and traveler dashboard.</p>
+</div>
+<a class="inline-block text-center bg-surface-container text-primary py-3 rounded-lg font-semibold text-sm hover:bg-primary hover:text-white transition-all" href="#">Apply</a>
+</div>
+<!-- Role Card -->
+<div class="bg-white border border-outline-variant/30 p-8 rounded-lg flex flex-col justify-between hover:border-primary transition-colors">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-caps text-secondary">ENGINEERING</span>
+<span class="text-xs text-secondary">Remote</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Frontend Engineer</h3>
+<p class="text-sm text-secondary mb-6">London / Remote</p>
+<p class="text-sm text-secondary line-clamp-3 mb-8">Scale our React-based web platforms and internal tools used by airport hospitality partners.</p>
+</div>
+<a class="inline-block text-center bg-surface-container text-primary py-3 rounded-lg font-semibold text-sm hover:bg-primary hover:text-white transition-all" href="#">Apply</a>
+</div>
+<!-- Role Card -->
+<div class="bg-white border border-outline-variant/30 p-8 rounded-lg flex flex-col justify-between hover:border-primary transition-colors">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-caps text-secondary">PARTNERSHIPS</span>
+<span class="text-xs text-secondary">Full-time</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Partnership Manager</h3>
+<p class="text-sm text-secondary mb-6">Dubai / On-site</p>
+<p class="text-sm text-secondary line-clamp-3 mb-8">Expand our network of hotel and wellness providers across major MENA region transit hubs.</p>
+</div>
+<a class="inline-block text-center bg-surface-container text-primary py-3 rounded-lg font-semibold text-sm hover:bg-primary hover:text-white transition-all" href="#">Apply</a>
+</div>
+<!-- Role Card -->
+<div class="bg-white border border-outline-variant/30 p-8 rounded-lg flex flex-col justify-between hover:border-primary transition-colors">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-caps text-secondary">OPERATIONS</span>
+<span class="text-xs text-secondary">Full-time</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Operations Associate</h3>
+<p class="text-sm text-secondary mb-6">Singapore / On-site</p>
+<p class="text-sm text-secondary line-clamp-3 mb-8">Optimize ground logistics and support service delivery for our APAC partner network.</p>
+</div>
+<a class="inline-block text-center bg-surface-container text-primary py-3 rounded-lg font-semibold text-sm hover:bg-primary hover:text-white transition-all" href="#">Apply</a>
+</div>
+<!-- Role Card -->
+<div class="bg-white border border-outline-variant/30 p-8 rounded-lg flex flex-col justify-between hover:border-primary transition-colors">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-caps text-secondary">ENGINEERING</span>
+<span class="text-xs text-secondary">Full-time</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Mobile Developer</h3>
+<p class="text-sm text-secondary mb-6">New York / Remote</p>
+<p class="text-sm text-secondary line-clamp-3 mb-8">Develop and maintain high-performance iOS and Android experiences using Flutter.</p>
+</div>
+<a class="inline-block text-center bg-surface-container text-primary py-3 rounded-lg font-semibold text-sm hover:bg-primary hover:text-white transition-all" href="#">Apply</a>
+</div>
+<!-- Role Card -->
+<div class="bg-white border border-outline-variant/30 p-8 rounded-lg flex flex-col justify-between hover:border-primary transition-colors">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="text-label-caps text-secondary">CX</span>
+<span class="text-xs text-secondary">Remote</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Customer Experience Lead</h3>
+<p class="text-sm text-secondary mb-6">Multiple Locations</p>
+<p class="text-sm text-secondary line-clamp-3 mb-8">Lead our global support team and ensure 24/7 service excellence for international travelers.</p>
+</div>
+<a class="inline-block text-center bg-surface-container text-primary py-3 rounded-lg font-semibold text-sm hover:bg-primary hover:text-white transition-all" href="#">Apply</a>
+</div>
+</div>
+</section>
+<!-- Benefits -->
+<section class="py-24 bg-white border-y border-outline-variant/20">
+<div class="max-w-container-max mx-auto px-6 md:px-margin-page">
+<h2 class="text-headline-lg mb-12">Team Benefits</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary bg-surface-container p-3 rounded-lg h-fit">laptop_mac</span>
+<div>
+<h4 class="font-semibold mb-2">Flexible work setup</h4>
+<p class="text-sm text-secondary">Remote-first culture with stipend for home office equipment.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary bg-surface-container p-3 rounded-lg h-fit">flight</span>
+<div>
+<h4 class="font-semibold mb-2">Travel partnerships</h4>
+<p class="text-sm text-secondary">Exclusive access and discounts with global airline and hotel partners.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary bg-surface-container p-3 rounded-lg h-fit">school</span>
+<div>
+<h4 class="font-semibold mb-2">Learning budget</h4>
+<p class="text-sm text-secondary">Annual stipend for professional development and certifications.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary bg-surface-container p-3 rounded-lg h-fit">medical_services</span>
+<div>
+<h4 class="font-semibold mb-2">Health coverage</h4>
+<p class="text-sm text-secondary">Comprehensive global health, dental, and vision insurance plans.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary bg-surface-container p-3 rounded-lg h-fit">groups</span>
+<div>
+<h4 class="font-semibold mb-2">Team offsites</h4>
+<p class="text-sm text-secondary">Bi-annual international retreats to foster collaboration and connection.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary bg-surface-container p-3 rounded-lg h-fit">payments</span>
+<div>
+<h4 class="font-semibold mb-2">Performance bonuses</h4>
+<p class="text-sm text-secondary">Equity packages and performance-based incentive structures.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How We Hire -->
+<section class="py-24 px-6 md:px-margin-page max-w-container-max mx-auto">
+<h2 class="text-headline-lg text-center mb-16">How We Hire</h2>
+<div class="relative">
+<div class="hidden lg:block absolute top-12 left-0 w-full h-px bg-outline-variant/30 z-0"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative z-10">
+<div class="text-center">
+<div class="w-12 h-12 bg-primary text-on-primary rounded-full flex items-center justify-center mx-auto mb-6 font-bold">1</div>
+<h4 class="font-semibold mb-2">Application Review</h4>
+<p class="text-sm text-secondary px-4">Our talent team reviews your experience and background for the specific role.</p>
+</div>
+<div class="text-center">
+<div class="w-12 h-12 bg-primary text-on-primary rounded-full flex items-center justify-center mx-auto mb-6 font-bold">2</div>
+<h4 class="font-semibold mb-2">Intro Conversation</h4>
+<p class="text-sm text-secondary px-4">A brief call to discuss your goals and our mission at LayoverX.</p>
+</div>
+<div class="text-center">
+<div class="w-12 h-12 bg-primary text-on-primary rounded-full flex items-center justify-center mx-auto mb-6 font-bold">3</div>
+<h4 class="font-semibold mb-2">Team Interview</h4>
+<p class="text-sm text-secondary px-4">Technical or role-specific discussions with your potential future teammates.</p>
+</div>
+<div class="text-center">
+<div class="w-12 h-12 bg-primary text-on-primary rounded-full flex items-center justify-center mx-auto mb-6 font-bold">4</div>
+<h4 class="font-semibold mb-2">Final Decision</h4>
+<p class="text-sm text-secondary px-4">A wrap-up call to discuss offer details and onboarding steps.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-24 px-6 md:px-margin-page max-w-container-max mx-auto text-center">
+<div class="bg-primary text-on-primary rounded-xl py-16 px-8 sm:px-12">
+<h2 class="text-3xl md:text-4xl font-bold mb-8">Interested in building with us?</h2>
+<a class="inline-block bg-white text-primary px-10 py-4 rounded-full font-bold hover:bg-surface-container-low transition-all" href="openroles.html">
+            Explore Opportunities
+        </a>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white border-t border-outline-variant/20 py-20">
+<div class="max-w-container-max mx-auto px-6 md:px-margin-page">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-1">
+<span class="text-xl font-bold tracking-tight mb-4 block text-primary">LAYOVERX</span>
+<p class="text-sm text-secondary">Building tools for the modern international traveler.</p>
+</div>
+<div>
+<h4 class="text-label-caps text-primary mb-6">COMPANY</h4>
+<div class="flex flex-col gap-3">
+<a class="text-sm text-secondary hover:text-primary" href="#">About</a>
+<a class="text-sm text-secondary hover:text-primary" href="#">Newsroom</a>
+<a class="text-sm text-secondary hover:text-primary" href="#">Contact</a>
+</div>
+</div>
+<div>
+<h4 class="text-label-caps text-primary mb-6">RESOURCES</h4>
+<div class="flex flex-col gap-3">
+<a class="text-sm text-secondary hover:text-primary" href="#">Help Center</a>
+<a class="text-sm text-secondary hover:text-primary" href="#">Privacy Policy</a>
+<a class="text-sm text-secondary hover:text-primary" href="#">Terms of Service</a>
+</div>
+</div>
+<div>
+<h4 class="text-label-caps text-primary mb-6">CONNECT</h4>
+<div class="flex flex-col gap-3">
+<a class="text-sm text-secondary hover:text-primary" href="#">LinkedIn</a>
+<a class="text-sm text-secondary hover:text-primary" href="#">Twitter</a>
+</div>
+<p class="text-xs text-secondary mt-12">© 2024 LayoverX. All rights reserved.</p>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
