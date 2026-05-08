@@ -56,6 +56,7 @@ tailwind.config = {
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
 </style>
 </head>
 <body class="pb-32 overflow-x-hidden">
@@ -89,7 +90,7 @@ tailwind.config = {
     <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
             <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Layover</p>
-            <p class="text-sm font-bold text-primary" id="time-total">--</p>
+            <p class="text-sm font-bold text-primary" id="time-total">6h</p>
         </div>
         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
             <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Buffer</p>
@@ -105,24 +106,24 @@ tailwind.config = {
         </div>
         <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center col-span-2 md:col-span-1 transition-colors duration-300" id="rem-container">
             <p class="text-[9px] text-emerald-800 uppercase font-bold tracking-widest mb-1" id="rem-label">Remaining</p>
-            <p class="text-base font-bold text-emerald-700" id="time-remaining">--</p>
+            <p class="text-base font-bold text-emerald-700" id="time-remaining">4h 0m</p>
         </div>
     </div>
 </section>
 
 <!-- Category Pills -->
 <section class="flex gap-2 overflow-x-auto no-scrollbar py-2 border-b border-blueprint-border pb-4">
-<button onclick="window.renderCategory('recommended', this)" class="category-pill bg-primary text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended</button>
-<button onclick="window.renderCategory('hotel.html', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
-<button onclick="window.renderCategory('restaurant.html', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
-<button onclick="window.renderCategory('spa.html', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
-<button onclick="window.renderCategory('entertainment.html', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Ent.</button>
+<button onclick="renderMarketplace('recommended', this)" class="category-pill bg-primary text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended</button>
+<button onclick="renderMarketplace('hotels', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
+<button onclick="renderMarketplace('restaurants', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
+<button onclick="renderMarketplace('spa', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
+<button onclick="renderMarketplace('gaming', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Ent.</button>
 </section>
 
-<!-- Dynamic Experience Container -->
-<section id="marketplace-content" class="min-h-[400px]">
+<!-- REAL INVENTORY CONTAINER -->
+<div id="marketplaceInventory" class="min-h-[400px]">
 <!-- Rendered via JS -->
-</section>
+</div>
 
 </main>
 
@@ -181,1011 +182,279 @@ tailwind.config = {
 <script>
 // --- GLOBAL STATE & CONFIG ---
 window.layoverList = [];
-window.activeCategory = 'hotel.html'; 
+window.activeCategory = 'recommended'; 
 window.activeItem = null;
 window.isRisk = false;
 
-window.CATEGORY_CONFIG = {
-    'recommended': { title: 'Recommended For You', key: 'Recommended', icon: 'auto_awesome' },
-    'hotel.html': { title: 'Hotels & Stays', key: 'Hotels', icon: 'hotel', durations: ['3h', '4h', '6h', '8h', '10h', '12h', '16h', '24h'] },
-    'restaurant.html': { title: 'Food & Dining', key: 'Restaurants', icon: 'restaurant', durations: ['30m', '1h', '1.5h', '2h'] },
-    'spa.html': { title: 'Spa & Wellness', key: 'Spa', icon: 'spa', durations: ['30m', '1h', '1.5h', '2h', '2.5h', '3h'] },
-    'entertainment.html': { title: 'Gaming & Entertainment', key: 'Entertainment', icon: 'sports_esports', durations: ['30m', '1h', '2h', '3h', '4h'] }
-};
-
-window.LAYOVER_INVENTORY = {
-    'Hotels': [
-        { id: 1, name: "The Orchid Hotel", lat: 19.0991, lng: 72.8538, distance: 0.9, terminal: "T2", category: "Premium", rating: "4.8", price: 4500, durations: [3, 4, 6, 8, 10, 12, 16, 24], amenities: ["Airport Shuttle", "Pool", "Spa"], type: 'Hotel' },
-        { id: 2, name: "Hotel Sahara Star", lat: 19.0967, lng: 72.8524, distance: 1.1, terminal: "T2", category: "Premium", rating: "4.7", price: 5200, durations: [3, 4, 6, 8, 10, 12, 16, 24], amenities: ["Pool", "Spa"], type: 'Hotel' },
-        { id: 3, name: "Taj Santacruz", lat: 19.0963, lng: 72.8540, distance: 1.6, terminal: "T2", category: "Premium", rating: "4.9", price: 8200, durations: [6, 8, 10, 12, 16, 24], amenities: ["Airport Shuttle", "Spa", "Business Center"], type: 'Hotel' },
-        { id: 4, name: "Hotel Bawa Intl.", lat: 19.0950, lng: 72.8500, distance: 1.7, terminal: "T2", category: "Standard", rating: "4.2", price: 2800, durations: [3, 4, 6, 8, 10, 12], amenities: ["Business Center"], type: 'Hotel' },
-        { id: 5, name: "JW Marriott Sahar", lat: 19.1022, lng: 72.8770, distance: 1.8, terminal: "T2", category: "Premium", rating: "4.8", price: 7800, durations: [4, 6, 8, 10, 12, 16, 24], amenities: ["Pool", "Spa", "Business Center"], type: 'Hotel' },
-        { id: 6, name: "Hotel Midland", lat: 19.0880, lng: 72.8450, distance: 2.3, terminal: "T2", category: "Standard", rating: "4.0", price: 2500, durations: [3, 4, 6, 8, 10, 12], amenities: [], type: 'Hotel' },
-        { id: 7, name: "ITC Maratha", lat: 19.1050, lng: 72.8760, distance: 2.4, terminal: "T2", category: "Premium", rating: "4.8", price: 7600, durations: [8, 10, 12, 16, 24], amenities: ["Pool", "Spa", "Business Center"], type: 'Hotel' },
-        { id: 8, name: "The Leela Mumbai", lat: 19.1065, lng: 72.8780, distance: 2.5, terminal: "T2", category: "Premium", rating: "4.7", price: 7200, durations: [6, 8, 10, 12, 16, 24], amenities: ["Pool", "Airport Shuttle", "Business Center"], type: 'Hotel' },
-        { id: 9, name: "Aurika Mumbai", lat: 19.1080, lng: 72.8800, distance: 2.8, terminal: "T2", category: "Premium", rating: "4.6", price: 6200, durations: [4, 6, 8, 10, 12, 16, 24], amenities: ["Pool", "Business Center"], type: 'Hotel' },
-        { id: 10, name: "Lemon Tree Premier", lat: 19.1120, lng: 72.8820, distance: 3.2, terminal: "T2", category: "Standard", rating: "4.2", price: 3800, durations: [3, 4, 6, 8, 10, 12, 16], amenities: ["Airport Shuttle"], type: 'Hotel' },
-        { id: 11, name: "Holiday Inn", lat: 19.1100, lng: 72.8900, distance: 4.2, terminal: "T2", category: "Standard", rating: "4.4", price: 4200, durations: [4, 6, 8, 10, 12, 16, 24], amenities: ["Pool", "Business Center"], type: 'Hotel' },
-        { id: 12, name: "Grand Hyatt", lat: 19.0760, lng: 72.8480, distance: 6.1, terminal: "T2", category: "Premium", rating: "4.7", price: 7000, durations: [8, 10, 12, 16, 24], amenities: ["Pool", "Spa", "Business Center"], type: 'Hotel' }
+// --- FALLBACK INVENTORY DATA ---
+const marketplaceData = {
+    recommended: [
+        { id: 1, name: "The Orchid Hotel", lat: 19.0991, lng: 72.8538, distance: 0.9, category: "Premium", rating: "4.8", type: 'Hotel', durations: ['3h','4h','6h'] },
+        { id: 202, name: "JW Cafe", lat: 19.1023, lng: 72.8771, distance: 1.8, category: "Fine Dining", rating: "4.7", type: 'Restaurant', durations: ['1h','1.5h','2h'] },
+        { id: 301, name: "Jiva Spa", lat: 19.0963, lng: 72.8540, distance: 1.6, category: "Premium Spa", rating: "4.9", type: 'Spa', durations: ['1h','2h','3h'] }
     ],
-    'Restaurants': [
-        { id: 201, name: "Thai Naam", lat: 19.1022, lng: 72.8770, distance: 1.8, terminal: "T2", category: "Fine Dining", rating: "4.8", price: 3800, durations: [1, 1.5, 2], amenities: ["Chef Tasting"], type: 'Restaurant' },
-        { id: 202, name: "JW Cafe", lat: 19.1023, lng: 72.8771, distance: 1.8, terminal: "T2", category: "Fine Dining", rating: "4.7", price: 1800, durations: [1, 1.5, 2], amenities: ["Buffet"], type: 'Restaurant' },
-        { id: 203, name: "Cafe Coffee Day", lat: 19.0980, lng: 72.8750, distance: 0.4, terminal: "T2", category: "Cafes", rating: "4.2", price: 550, durations: [0.5, 1], amenities: ["Quick Bites"], type: 'Restaurant' },
-        { id: 204, name: "Sake & Stone", lat: 19.1024, lng: 72.8772, distance: 1.8, terminal: "T2", category: "Fine Dining", rating: "4.9", price: 4500, durations: [1.5, 2], amenities: ["Sashimi"], type: 'Restaurant' },
-        { id: 205, name: "Subway", lat: 19.0975, lng: 72.8740, distance: 0.2, terminal: "T2", category: "Fast Dining", rating: "4.0", price: 400, durations: [0.5, 1], amenities: ["Quick Bites"], type: 'Restaurant' }
+    hotels: [
+        { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", type: 'Hotel', durations: ['3h','4h','6h','12h'], lat: 19.0991, lng: 72.8538 },
+        { id: 2, name: "Hotel Sahara Star", distance: 1.1, category: "Premium", rating: "4.7", type: 'Hotel', durations: ['3h','4h','6h','12h'], lat: 19.0967, lng: 72.8524 },
+        { id: 3, name: "Taj Santacruz", distance: 1.6, category: "Premium", rating: "4.9", type: 'Hotel', durations: ['4h','6h','8h','12h'], lat: 19.0963, lng: 72.8540 },
+        { id: 4, name: "Hotel Bawa Intl.", distance: 1.7, category: "Standard", rating: "4.2", type: 'Hotel', durations: ['2h','3h','4h','6h'], lat: 19.0950, lng: 72.8500 },
+        { id: 5, name: "JW Marriott Sahar", distance: 1.8, category: "Premium", rating: "4.8", type: 'Hotel', durations: ['4h','6h','12h'], lat: 19.1022, lng: 72.8770 },
+        { id: 6, name: "Hotel Midland", distance: 2.3, category: "Standard", rating: "4.0", type: 'Hotel', durations: ['2h','3h','4h'], lat: 19.0880, lng: 72.8450 }
     ],
-    'Spa': [
-        { id: 301, name: "Jiva Spa", lat: 19.0963, lng: 72.8540, distance: 1.6, terminal: "T2", category: "Premium Spa", rating: "4.9", price: 3500, durations: [1, 1.5, 2, 2.5, 3], amenities: ["Ayurvedic"], type: 'Spa' },
-        { id: 302, name: "Aura Wellness", lat: 19.0964, lng: 72.8541, distance: 1.6, terminal: "T2", category: "Wellness", rating: "4.7", price: 2800, durations: [0.5, 1, 1.5, 2], amenities: ["Holistic"], type: 'Spa' },
-        { id: 303, name: "O2 Spa Express", lat: 19.0978, lng: 72.8748, distance: 0.5, terminal: "T2", category: "Express Treatments", rating: "4.4", price: 1200, durations: [0.5, 1], amenities: ["Foot Reflexology"], type: 'Spa' }
+    restaurants: [
+        { id: 201, name: "Thai Naam", distance: 1.8, category: "Fine Dining", rating: "4.8", type: 'Restaurant', durations: ['1h','1.5h','2h'], lat: 19.1022, lng: 72.8770 },
+        { id: 202, name: "JW Cafe", distance: 1.8, category: "Fine Dining", rating: "4.7", type: 'Restaurant', durations: ['1h','1.5h','2h'], lat: 19.1023, lng: 72.8771 },
+        { id: 203, name: "Cafe Coffee Day", distance: 0.4, category: "Cafes", rating: "4.2", type: 'Restaurant', durations: ['30m','1h'], lat: 19.0980, lng: 72.8750 },
+        { id: 204, name: "Sake & Stone", distance: 1.8, category: "Fine Dining", rating: "4.9", type: 'Restaurant', durations: ['1.5h','2h'], lat: 19.1024, lng: 72.8772 },
+        { id: 205, name: "Subway", distance: 0.2, category: "Fast Dining", rating: "4.0", type: 'Restaurant', durations: ['15m','30m'], lat: 19.0975, lng: 72.8740 }
     ],
-    'Entertainment': [
-        { id: 401, name: "KidZania", lat: 19.0860, lng: 72.9080, distance: 7.9, terminal: "T2", category: "Kids", rating: "4.8", price: 2500, durations: [2, 3, 4], amenities: ["Role-play"], type: 'Entertainment' },
-        { id: 402, name: "Zero Latency VR", lat: 18.9900, lng: 72.8200, distance: 16.5, terminal: "T2", category: "VR", rating: "4.9", price: 3500, durations: [1, 2], amenities: ["Free-Roam VR"], type: 'Entertainment' },
-        { id: 403, name: "T2 Premium Lounge", lat: 19.0975, lng: 72.8745, distance: 0.1, terminal: "T2", category: "Lounges", rating: "4.6", price: 1500, durations: [1, 2, 3, 4], amenities: ["Food & Drinks", "Wi-Fi"], type: 'Entertainment' },
-        { id: 404, name: "Timezone", lat: 19.0850, lng: 72.9090, distance: 8.5, terminal: "T2", category: "Gaming", rating: "4.3", price: 1800, durations: [1, 2, 3], amenities: ["Arcade"], type: 'Entertainment' }
+    spa: [
+        { id: 301, name: "Jiva Spa", distance: 1.6, category: "Premium Spa", rating: "4.9", type: 'Spa', durations: ['1h','1.5h','2h'], lat: 19.0963, lng: 72.8540 },
+        { id: 302, name: "Aura Wellness", distance: 1.6, category: "Wellness", rating: "4.7", type: 'Spa', durations: ['30m','1h','1.5h'], lat: 19.0964, lng: 72.8541 },
+        { id: 303, name: "O2 Spa Express", distance: 0.5, category: "Express Treatments", rating: "4.4", type: 'Spa', durations: ['15m','30m','45m'], lat: 19.0978, lng: 72.8748 }
+    ],
+    gaming: [
+        { id: 401, name: "KidZania", distance: 7.9, category: "Kids", rating: "4.8", type: 'Entertainment', durations: ['2h','3h','4h'], lat: 19.0860, lng: 72.9080 },
+        { id: 402, name: "Zero Latency VR", distance: 16.5, category: "VR", rating: "4.9", type: 'Entertainment', durations: ['1h','2h'], lat: 18.9900, lng: 72.8200 },
+        { id: 403, name: "T2 Premium Lounge", distance: 0.1, category: "Lounges", rating: "4.6", type: 'Entertainment', durations: ['1h','2h','3h'], lat: 19.0975, lng: 72.8745 }
     ]
 };
 
-window.FILTER_CONFIG = {
-    'hotel.html': {
-        title: "HOTELS LISTING PAGE",
-        inventoryLabel: "HOTEL",
-        durationLabel: "Duration",
-        durations: [{v:'3',l:'3 Hours'}, {v:'4',l:'4 Hours'}, {v:'6',l:'6 Hours'}, {v:'8',l:'8 Hours'}, {v:'10',l:'10 Hours'}, {v:'12',l:'12 Hours'}, {v:'16',l:'16 Hours'}, {v:'24',l:'24 Hours'}],
-        priceRange: [{v:'0-3000',l:'₹0 – ₹3000'}, {v:'3000-6000',l:'₹3000 – ₹6000'}, {v:'6000-10000',l:'₹6000 – ₹10000'}, {v:'10000+',l:'₹10000+'}],
-        distance: [{v:'1',l:'Within 1 km'}, {v:'3',l:'Within 3 km'}, {v:'5',l:'Within 5 km'}, {v:'10',l:'Within 10 km'}],
-        amenities: [{v:'Airport Shuttle',l:'Airport Shuttle'}, {v:'Pool',l:'Pool'}, {v:'Spa',l:'Spa'}, {v:'Business Center',l:'Business Center'}],
-        groups: [{key:'Premium', title:'PREMIUM HOTELS'}, {key:'Standard', title:'STANDARD HOTELS'}]
-    },
-    'restaurant.html': {
-        title: "RESTAURANTS LISTING PAGE",
-        inventoryLabel: "RESTAURANT",
-        durationLabel: "Duration",
-        durations: [{v:'0.5',l:'30 Min'}, {v:'1',l:'1 Hour'}, {v:'1.5',l:'1.5 Hours'}, {v:'2',l:'2 Hours'}],
-        priceRange: [{v:'0-1000',l:'₹0 – ₹1000'}, {v:'1000-2500',l:'₹1000 – ₹2500'}, {v:'2500-5000',l:'₹2500 – ₹5000'}, {v:'5000+',l:'₹5000+'}],
-        distance: [{v:'1',l:'Within 1 km'}, {v:'3',l:'Within 3 km'}, {v:'5',l:'Within 5 km'}],
-        amenities: [{v:'Chef Tasting',l:'Chef Tasting'}, {v:'Buffet',l:'Buffet'}, {v:'Quick Bites',l:'Quick Bites'}, {v:'Sashimi',l:'Sashimi'}],
-        groups: [{key:'Fine Dining', title:'FINE DINING'}, {key:'Fast Dining', title:'FAST DINING'}, {key:'Cafes', title:'CAFES'}]
-    },
-    'spa.html': {
-        title: "SPA & WELLNESS LISTING PAGE",
-        inventoryLabel: "SPA",
-        durationLabel: "Duration",
-        durations: [{v:'0.5',l:'30 Min'}, {v:'1',l:'1 Hour'}, {v:'1.5',l:'1.5 Hours'}, {v:'2',l:'2 Hours'}, {v:'2.5',l:'2.5 Hours'}, {v:'3',l:'3 Hours'}],
-        priceRange: [{v:'0-1500',l:'₹0 – ₹1500'}, {v:'1500-3000',l:'₹1500 – ₹3000'}, {v:'3000-5000',l:'₹3000 – ₹5000'}, {v:'5000+',l:'₹5000+'}],
-        distance: [{v:'1',l:'Within 1 km'}, {v:'3',l:'Within 3 km'}, {v:'5',l:'Within 5 km'}],
-        amenities: [{v:'Ayurvedic',l:'Ayurvedic'}, {v:'Holistic',l:'Holistic'}, {v:'Foot Reflexology',l:'Foot Reflexology'}],
-        groups: [{key:'Premium Spa', title:'PREMIUM SPA'}, {key:'Wellness', title:'WELLNESS'}, {key:'Express Treatments', title:'EXPRESS TREATMENTS'}]
-    },
-    'entertainment.html': {
-        title: "GAMING & ENTERTAINMENT LISTING PAGE",
-        inventoryLabel: "ENTERTAINMENT",
-        durationLabel: "Duration",
-        durations: [{v:'1',l:'1 Hour'}, {v:'2',l:'2 Hours'}, {v:'3',l:'3 Hours'}, {v:'4',l:'4 Hours'}],
-        priceRange: [{v:'0-1000',l:'₹0 – ₹1000'}, {v:'1000-2500',l:'₹1000 – ₹2500'}, {v:'2500-5000',l:'₹2500 – ₹5000'}, {v:'5000+',l:'₹5000+'}],
-        distance: [{v:'1',l:'Within 1 km'}, {v:'5',l:'Within 5 km'}, {v:'10',l:'Within 10 km'}, {v:'20',l:'Within 20 km'}],
-        amenities: [{v:'Role-play',l:'Role-play'}, {v:'Free-Roam VR',l:'Free-Roam VR'}, {v:'Arcade',l:'Arcade'}, {v:'Food & Drinks',l:'Food & Drinks'}],
-        groups: [{key:'Lounges', title:'LOUNGES'}, {key:'VR', title:'VR'}, {key:'Gaming', title:'GAMING'}, {key:'Kids', title:'KIDS'}]
-    }
-};
-
-window.calculateDynamicTravelMins = function(distance) {
-    const transportType = localStorage.getItem("transportType") || "Luxury";
-    const speedMap = { walking: 5, cab: 28, metro: 40, bike: 18, Sedan: 40, SUV: 38, XL: 35, Luxury: 45, Shuttle: 30 };
-
-// --- AIRPORT COORDINATES ---
+// --- ROUTING ENGINE ---
 window.AIRPORT_COORDS = { lat: 19.0974, lng: 72.8745, name: "Mumbai BOM T2" };
 
-// --- GOOGLE MAPS ROUTING SERVICE (with Graceful Haversine Fallback) ---
 window.RoutingEngine = {
     haversineDistance: function(lat1, lon1, lat2, lon2) {
-        const R = 6371; // km
+        const R = 6371;
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                  Math.sin(dLon/2) * Math.sin(dLon/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return R * c;
-    },
-    getModeDetails: function(transportType) {
-        const modeMap = {
-            'Walking': { speed: 5, label: 'walk' },
-            'Shuttle': { speed: 30, label: 'by shuttle' },
-            'Transit': { speed: 40, label: 'by transit' },
-            'Taxi': { speed: 35, label: 'drive' },
-            'Cab': { speed: 35, label: 'drive' },
-            'Luxury': { speed: 45, label: 'drive' },
-            'Sedan': { speed: 40, label: 'drive' }
-        };
-        return modeMap[transportType] || { speed: 35, label: 'drive' };
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     },
     calculateLeg: function(startCoord, endCoord) {
-        if (!startCoord || !endCoord) return { durationMins: 0, distanceKm: 0, mode: 'drive' };
-        
-        // 1. Calculate straight line distance and apply road network multiplier (1.4x)
-        const straightDistance = this.haversineDistance(startCoord.lat, startCoord.lng, endCoord.lat, endCoord.lng);
-        const roadDistance = straightDistance * 1.4;
-        
-        // 2. Determine transport mode and speed
+        const dist = this.haversineDistance(startCoord.lat, startCoord.lng, endCoord.lat, endCoord.lng) * 1.4;
         const transportType = localStorage.getItem("transportType") || "Luxury";
-        const modeData = this.getModeDetails(transportType);
-        
-        // 3. Traffic Multiplier based on departure time
-        let trafficMultiplier = 1.2; // Default moderate traffic
-        const flightDepartureRaw = localStorage.getItem('flight_departure');
-        if (flightDepartureRaw) {
-            try {
-                const date = new Date(flightDepartureRaw);
-                const hour = date.getHours();
-                if ((hour >= 8 && hour <= 11) || (hour >= 17 && hour <= 20)) trafficMultiplier = 1.6; // Rush hour
-                else if (hour >= 23 || hour <= 5) trafficMultiplier = 1.0; // Night
-            } catch(e) {}
-        }
-        
-        // 4. Calculate final duration
-        // If distance is very small (< 1km) and mode is walk, override mode
-        let finalMode = modeData.label;
-        let finalSpeed = modeData.speed;
-        
-        if (roadDistance < 1.5 && transportType !== 'Shuttle') {
-            finalMode = 'walk';
-            finalSpeed = 5;
-            trafficMultiplier = 1.0; // traffic doesn't affect walking
-        }
-        
-        // Time = Distance / Speed + base overhead (parking/walking to venue)
-        const baseOverheadMins = finalMode === 'walk' ? 2 : 8; 
-        const durationHours = roadDistance / finalSpeed;
-        const durationMins = Math.round((durationHours * 60 * trafficMultiplier) + baseOverheadMins);
-        
-        return {
-            durationMins: durationMins,
-            distanceKm: parseFloat(roadDistance.toFixed(1)),
-            mode: finalMode
-        };
+        const speeds = { Walking: 5, Shuttle: 30, Transit: 40, Taxi: 35, Luxury: 45 };
+        const speed = speeds[transportType] || 35;
+        const durationMins = Math.round((dist / speed) * 60 + 8);
+        return { durationMins, distKm: dist.toFixed(1), mode: transportType.toLowerCase() };
     }
 };
 
 window.calculateItineraryTravel = function(list) {
-    if (!list || list.length === 0) return { totalTravelMins: 0, legs: [] };
-    
-    let total = 0;
-    let legs = [];
-    
-    // Leg 1: Airport to First
-    let currentCoord = window.AIRPORT_COORDS;
-    
+    let total = 0; let legs = []; let currentCoord = window.AIRPORT_COORDS;
     list.forEach(item => {
-        // If item doesn't have coords, approximate using distance from T2 to make it robust
-        let targetCoord = { lat: item.lat, lng: item.lng };
-        if (!targetCoord.lat) {
-             const distOffset = (item.distance || 5) / 111; // rough lat degree conversion
-             targetCoord = { lat: window.AIRPORT_COORDS.lat + distOffset, lng: window.AIRPORT_COORDS.lng + distOffset };
-        }
-        
-        // Skip identical locations (0 mins) by enforcing a small minimum if they aren't actually 0
-        if (currentCoord.lat === targetCoord.lat && currentCoord.lng === targetCoord.lng) {
-            legs.push({ durationMins: 0, mode: 'inside venue', label: 'Inside same venue' });
-        } else {
-            const legData = window.RoutingEngine.calculateLeg(currentCoord, targetCoord);
-            legData.label = `${legData.durationMins} mins ${legData.mode} to ${item.name || item.title}`;
-            legs.push(legData);
-            total += legData.durationMins;
-        }
-        
-        currentCoord = targetCoord;
+        let target = { lat: item.lat || window.AIRPORT_COORDS.lat + (item.distance/111), lng: item.lng || window.AIRPORT_COORDS.lng + (item.distance/111) };
+        const leg = window.RoutingEngine.calculateLeg(currentCoord, target);
+        legs.push(leg); total += leg.durationMins; currentCoord = target;
     });
-    
-    // Final Leg: Last to Airport
-    const returnLeg = window.RoutingEngine.calculateLeg(currentCoord, window.AIRPORT_COORDS);
-    returnLeg.label = `${returnLeg.durationMins} mins ${returnLeg.mode} to Airport`;
-    legs.push(returnLeg);
-    total += returnLeg.durationMins;
-    
-    return { totalTravelMins: total, legs: legs };
-};
-    
-    let total = 0;
-    let legs = [];
-    let currentDist = 0;
-    
-    list.forEach(item => {
-        const itemDist = parseFloat(item.distance) || 0;
-        const legTime = window.calculateLegTravelTime(currentDist, itemDist);
-        legs.push(legTime);
-        total += legTime;
-        currentDist = itemDist;
-    });
-    
-    // Return to airport
-    const returnTime = window.calculateLegTravelTime(currentDist, 0);
-    legs.push(returnTime);
-    total += returnTime;
-    
+    const ret = window.RoutingEngine.calculateLeg(currentCoord, window.AIRPORT_COORDS);
+    total += ret.durationMins; legs.push(ret);
     return { totalTravelMins: total, legs: legs };
 };
 
-    const speed = speedMap[transportType] || 28;
-    let trafficMultiplier = 1.3;
-    return (distance / speed) * 60 * trafficMultiplier;
-};
-
+// --- CORE FUNCTIONS ---
 window.parseDurationToMins = function(durStr) {
     if (!durStr) return 0;
-    const lowerStr = String(durStr).toLowerCase();
-    let totalMins = 0;
-    const hMatch = lowerStr.match(/([\d\.]+)\s*(h|hour|hours)/);
-    if (hMatch) totalMins += parseFloat(hMatch[1]) * 60;
-    
-    const mMatch = lowerStr.match(/([\d\.]+)\s*(m|min|mins|minute|minutes)/);
-    if (mMatch) totalMins += parseFloat(mMatch[1]);
-    
+    const lower = String(durStr).toLowerCase();
+    let mins = 0;
+    const hMatch = lower.match(/([\d\.]+)\s*h/); if (hMatch) mins += parseFloat(hMatch[1]) * 60;
+    const mMatch = lower.match(/([\d\.]+)\s*m/); if (mMatch) mins += parseFloat(mMatch[1]);
     if (!hMatch && !mMatch) {
-        const val = parseFloat(lowerStr);
-        if (!isNaN(val)) {
-            if (val <= 24) totalMins += val * 60;
-            else totalMins += val;
-        }
+        const val = parseFloat(lower);
+        if (!isNaN(val)) mins = val <= 24 ? val * 60 : val;
     }
-    return totalMins;
+    return mins;
 };
 
 window.updateTimeCalculations = function() {
-    const layoverDurationRaw = localStorage.getItem('layover_duration') || '8';
-    const layoverDurationHours = parseInt(layoverDurationRaw, 10);
-    const flightDepartureRaw = localStorage.getItem('flight_departure') || '';
-    
-    let totalMins = layoverDurationHours * 60;
-    let bufferMins = 120;
+    const layoverH = parseInt(localStorage.getItem('layover_duration') || '6', 10);
+    let totalMins = layoverH * 60;
     let expMins = 0;
-    let worstTravelMins = 0;
+    window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
+    const travelData = window.calculateItineraryTravel(window.layoverList);
+    const travelMins = travelData.totalTravelMins;
+    const remainingMins = totalMins - 120 - travelMins - expMins;
 
-    if (window.layoverList.length > 0) {
-        window.layoverList.forEach(item => {
-            expMins += window.parseDurationToMins(item.duration);
-        });
-        const travelData = window.calculateItineraryTravel(window.layoverList);
-        worstTravelMins = travelData.totalTravelMins;
-    }
-
-    let remainingMins = totalMins - bufferMins - worstTravelMins - expMins;
+    document.getElementById('time-total').textContent = layoverH + 'h';
+    document.getElementById('time-travel').textContent = travelMins + 'm';
+    document.getElementById('time-exp').textContent = expMins + 'm';
+    const remEl = document.getElementById('time-remaining');
+    const remContainer = document.getElementById('rem-container');
+    
     const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
-
-    const timeTotalEl = document.getElementById('time-total');
-    const timeTravelEl = document.getElementById('time-travel');
-    const timeExpEl = document.getElementById('time-exp');
+    remEl.textContent = format(remainingMins);
+    window.isRisk = remainingMins < 15;
     
-    if (timeTotalEl) timeTotalEl.textContent = layoverDurationHours + 'h';
-    if (timeTravelEl) timeTravelEl.textContent = format(worstTravelMins);
-    if (timeExpEl) timeExpEl.textContent = format(expMins);
-    
-    let depTimeStr = '--:--';
-    if (flightDepartureRaw) {
-        try {
-            const depDate = new Date(flightDepartureRaw);
-            if (!isNaN(depDate.getTime())) {
-                depTimeStr = depDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-            }
-        } catch(e) {}
-    }
-    const timeDepartureEl = document.getElementById('time-departure');
-    if (timeDepartureEl) timeDepartureEl.textContent = `Departure ${depTimeStr}`;
-
-    let remEl = document.getElementById('time-remaining');
-    let remContainer = document.getElementById('rem-container');
-    if (remEl && remContainer) {
-        if (remainingMins < 15) {
-            window.isRisk = true;
-            remEl.textContent = remainingMins < 0 ? Math.abs(remainingMins) + 'm Over' : format(remainingMins);
-            remEl.style.color = '#dc2626';
-            remContainer.style.backgroundColor = '#fef2f2';
-            remContainer.style.border = '1px solid #fee2e2';
-        } else if (remainingMins <= 45) {
-            window.isRisk = false;
-            remEl.textContent = format(remainingMins);
-            remEl.style.color = '#b45309';
-            remContainer.style.backgroundColor = '#fffbeb';
-            remContainer.style.border = '1px solid #fef3c7';
-        } else {
-            window.isRisk = false;
-            remEl.textContent = format(remainingMins);
-            remEl.style.color = '#15803d';
-            remContainer.style.backgroundColor = '#ecfdf5';
-            remContainer.style.border = '1px solid #d1fae5';
-        }
+    if (remainingMins < 15) {
+        remEl.style.color = '#dc2626'; remContainer.style.backgroundColor = '#fef2f2';
+    } else if (remainingMins <= 45) {
+        remEl.style.color = '#b45309'; remContainer.style.backgroundColor = '#fffbeb';
+    } else {
+        remEl.style.color = '#15803d'; remContainer.style.backgroundColor = '#ecfdf5';
     }
 };
 
-
-window.renderCategory = function(catId, btn) {
+window.renderMarketplace = function(category, btn) {
     if (btn) {
-        document.querySelectorAll('.category-pill').forEach(pill => {
-            pill.classList.remove('bg-primary', 'text-white');
-            pill.classList.add('bg-white', 'text-on-surface');
-        });
-        btn.classList.remove('bg-white', 'text-on-surface');
-        btn.classList.add('bg-primary', 'text-white');
+        document.querySelectorAll('.category-pill').forEach(p => { p.classList.remove('bg-primary','text-white'); p.classList.add('bg-white','text-on-surface'); });
+        btn.classList.add('bg-primary','text-white'); btn.classList.remove('bg-white','text-on-surface');
     }
-
-    window.activeCategory = catId;
-    const container = document.getElementById('marketplace-content');
-
-    if (catId === 'recommended') {
-        const config = window.FILTER_CONFIG['hotel.html'];
-        container.innerHTML = `
-            <div id="level1" class="layout-transition w-full flex-shrink-0 z-10 relative bg-blueprint-bg border border-blueprint-border p-8 rounded-xl shadow-sm">
-                <div class="flex items-center justify-between mb-6 border-b border-blueprint-border pb-4">
-                    <div>
-                        <span class="text-primary font-bold text-xs uppercase tracking-widest">Recommended For You</span>
-                    </div>
-                    <span class="bg-primary text-white text-[10px] px-3 py-1 uppercase rounded-full tracking-widest shadow-sm">Level 1: Listing</span>
-                </div>
-                <div class="border-2 border-dashed border-blueprint-border p-6 rounded-lg bg-white">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">CURATED PICKS (3 FOUND)</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="hotel-grid">
-                        ${[window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => window.renderCard(i)).join('')}
-                    </div>
-                </div>
-            </div>
-            ${window.level2Template()}
-        `;
-        return;
-    }
-
-    const config = window.FILTER_CONFIG[catId];
-    if (!config) return;
-
-    let filterHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <select id="filter-duration" onchange="window.renderItems()" class="w-full bg-white border border-blueprint-border p-3 rounded text-[11px] font-bold uppercase tracking-widest text-slate-700 outline-none focus:border-primary transition-colors cursor-pointer shadow-sm">
-                <option value="any">${config.durationLabel}</option>
-                ${config.durations.map(d => `<option value="${d.v}">${d.l}</option>`).join('')}
-            </select>
-            <select id="filter-price" onchange="window.renderItems()" class="w-full bg-white border border-blueprint-border p-3 rounded text-[11px] font-bold uppercase tracking-widest text-slate-700 outline-none focus:border-primary transition-colors cursor-pointer shadow-sm">
-                <option value="any">Price Range</option>
-                ${config.priceRange.map(p => `<option value="${p.v}">${p.l}</option>`).join('')}
-            </select>
-            <select id="filter-distance" onchange="window.renderItems()" class="w-full bg-white border border-blueprint-border p-3 rounded text-[11px] font-bold uppercase tracking-widest text-slate-700 outline-none focus:border-primary transition-colors cursor-pointer shadow-sm">
-                <option value="any">Distance</option>
-                ${config.distance.map(d => `<option value="${d.v}">${d.l}</option>`).join('')}
-            </select>
-            <select id="filter-amenities" onchange="window.renderItems()" class="w-full bg-white border border-blueprint-border p-3 rounded text-[11px] font-bold uppercase tracking-widest text-slate-700 outline-none focus:border-primary transition-colors cursor-pointer shadow-sm">
-                <option value="any">Amenities</option>
-                ${config.amenities.map(a => `<option value="${a.v}">${a.l}</option>`).join('')}
-            </select>
-        </div>
-    `;
-
+    window.activeCategory = category;
+    const container = document.getElementById('marketplaceInventory');
+    const items = marketplaceData[category] || [];
+    
     container.innerHTML = `
         <div class="main-layout flex flex-col xl:flex-row items-start gap-8 w-full">
-            <div id="level1" class="layout-transition w-full flex-shrink-0 z-10 relative bg-blueprint-bg border border-blueprint-border p-8 rounded-xl shadow-sm">
+            <div id="level1" class="w-full bg-blueprint-bg border border-blueprint-border p-8 rounded-xl shadow-sm">
                 <div class="flex justify-between items-end border-b border-blueprint-border pb-6 mb-8">
                     <div>
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-1">LEVEL 1: LISTING</p>
-                        <h3 class="text-3xl font-bold text-primary uppercase tracking-tight" style="letter-spacing: -0.02em;">${config.title}</h3>
+                        <h3 class="text-3xl font-bold text-primary uppercase tracking-tight">${category.toUpperCase()}</h3>
                     </div>
-                    <span class="bg-primary text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-widest shadow-sm">Global Discovery</span>
                 </div>
-                
-                ${filterHTML}
-                
                 <div class="border-2 border-dashed border-blueprint-border p-6 rounded-lg bg-white">
-                    <div class="flex justify-between items-center mb-6">
-                        <p id="inventory-count" class="text-[11px] font-bold text-primary uppercase tracking-widest">${config.inventoryLabel} INVENTORY (0 FOUND)</p>
-                    </div>
-                    <div id="hotel-grid" class="w-full"></div>
-                </div>
-            </div>
-            
-            ${window.level2Template()}
-        </div>
-    `;
-
-    window.renderItems();
-};
-
-window.level2Template = function() {
-    return `
-        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-xl flex-shrink-0 z-20 relative">
-            <div class="bg-white border border-blueprint-border rounded-xl p-6 shadow-xl flex flex-col h-[700px]">
-                <div class="flex justify-between items-start mb-6 shrink-0 border-b border-slate-100 pb-4">
-                    <div>
-                        <span class="bg-primary/10 text-primary text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-widest mb-1 inline-block border border-primary/10">Level 2: Details</span>
-                        <h3 class="text-xl font-bold text-primary uppercase tracking-tight">Detail View</h3>
-                    </div>
-                    <button onclick="window.closeLevel2()" class="text-slate-400 hover:text-primary p-2 rounded-full hover:bg-slate-100 transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
-                </div>
-                
-                <div class="space-y-6 overflow-y-auto hide-scrollbar flex-grow pb-4 px-2">
-                    <div class="border border-blueprint-border p-4 rounded-lg bg-blueprint-bg">
-                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">ENTITY HEADER</p>
-                        <h4 id="l2-name" class="text-lg font-bold text-primary tracking-tight">Item Name</h4>
-                        <div class="flex items-center gap-2 mt-2">
-                            <span id="l2-rating" class="bg-brand-orange text-white text-[10px] px-2 py-0.5 rounded font-bold">4.8 ★</span>
-                            <span id="l2-distance" class="text-[10px] text-slate-500 font-medium">0.9 km from T2</span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="border border-blueprint-border p-4 rounded-lg text-center bg-white shadow-sm hover:border-primary transition-colors cursor-pointer">
-                            <span class="material-symbols-outlined text-primary text-[24px]">grid_view</span>
-                            <p class="text-[10px] mt-2 font-bold text-primary uppercase tracking-widest">Media Gallery</p>
-                        </div>
-                        <div class="border border-blueprint-border p-4 rounded-lg text-center bg-white shadow-sm hover:border-primary transition-colors cursor-pointer">
-                            <span class="material-symbols-outlined text-primary text-[24px]">list_alt</span>
-                            <p class="text-[10px] mt-2 font-bold text-primary uppercase tracking-widest">Options</p>
-                        </div>
-                    </div>
-
-                    <div class="border border-blueprint-border p-5 rounded-lg bg-white shadow-sm">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">KEY DIFFERENTIATORS</p>
-                        <div id="l2-amenities" class="text-xs font-medium text-slate-600 space-y-2"></div>
-                    </div>
-
-                    <div class="border-2 border-primary/20 p-5 rounded-lg bg-primary/5 shadow-inner">
-                        <label class="block text-[9px] font-bold text-primary uppercase tracking-widest mb-2">Selection Period <span class="text-red-500">*</span></label>
-                        <select id="item-duration" class="w-full mb-4 bg-white border border-slate-300 px-4 py-3 text-sm text-primary font-bold outline-none cursor-pointer rounded-lg shadow-sm focus:border-primary focus:ring-1 focus:ring-primary"></select>
-                        <button id="add-list-btn" class="w-full bg-primary text-white font-bold py-4 rounded-lg text-sm tracking-widest uppercase hover:bg-black transition-colors shadow-lg active:scale-95">
-                            ADD TO LIST
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4 text-meta-label">
-                        <div class="border border-blueprint-border p-4 rounded-lg bg-white shadow-sm">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">REVIEWS</p>
-                            <p class="font-bold text-primary text-sm">Verified</p>
-                        </div>
-                        <div class="border border-blueprint-border p-4 rounded-lg bg-white shadow-sm">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">CONTACT</p>
-                            <p class="font-bold text-primary text-sm">Quick Inquiry</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-window.renderCard = function(h) {
-    const isActive = window.activeItem && window.activeItem.id === h.id;
-    let configKey = 'hotel.html';
-    if (h.type === 'Hotel') configKey = 'hotel.html';
-    if (h.type === 'Restaurant') configKey = 'restaurant.html';
-    if (h.type === 'Spa') configKey = 'spa.html';
-    if (h.type === 'Entertainment') configKey = 'entertainment.html';
-
-    const config = window.FILTER_CONFIG[configKey];
-    let isPremium = false;
-    if (config) {
-        isPremium = (h.category === config.groups[0].key);
-    }
-    
-    const bgClass = isActive 
-        ? 'bg-primary/10 border-primary ring-1 ring-primary shadow-md' 
-        : 'bg-white border-blueprint-border hover:border-primary/50 hover:shadow-md';
-    
-    const travel = window.calculateLegTravelTime(0, h.distance);
-    
-    return `
-        <div onclick="window.openLevel2(${h.id})" class="p-4 border rounded-lg cursor-pointer transition-all flex flex-col h-full ${bgClass} group">
-            <div class="flex justify-between items-start mb-3">
-                <div class="pr-2">
-                    <h4 class="font-bold text-sm text-primary leading-tight group-hover:text-brand-blue transition-colors line-clamp-1">${h.name}</h4>
-                </div>
-                ${isPremium ? '<span class="material-symbols-outlined text-[16px] text-brand-orange shrink-0">workspace_premium</span>' : '<span class="material-symbols-outlined text-[16px] text-slate-300 group-hover:text-primary transition-colors">arrow_outward</span>'}
-            </div>
-            <div class="mt-auto border-t border-slate-100 pt-3 flex justify-between items-end">
-                <div class="flex flex-col">
-                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Est. Travel</span>
-                    <span class="text-[11px] font-bold text-primary">${travel}m</span>
-                </div>
-                <div class="flex flex-col items-end">
-                    <span class="text-[11px] font-bold text-brand-orange">${h.rating} ★</span>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-window.renderItems = function() {
-    if (window.activeCategory === 'recommended') return;
-
-    let configKey = 'Hotels';
-    if (window.activeCategory === 'restaurant.html') configKey = 'Restaurants';
-    else if (window.activeCategory === 'spa.html') configKey = 'Spa';
-    else if (window.activeCategory === 'entertainment.html') configKey = 'Entertainment';
-
-    const fullList = window.LAYOVER_INVENTORY[configKey] || [];
-    const grid = document.getElementById('hotel-grid');
-    if (!grid) return;
-
-    const durVal = document.getElementById('filter-duration') ? document.getElementById('filter-duration').value : 'any';
-    const priceVal = document.getElementById('filter-price') ? document.getElementById('filter-price').value : 'any';
-    const distVal = document.getElementById('filter-distance') ? document.getElementById('filter-distance').value : 'any';
-    const amenVal = document.getElementById('filter-amenities') ? document.getElementById('filter-amenities').value : 'any';
-
-    const filtered = fullList.filter(h => {
-        let match = true;
-        if (durVal !== 'any' && match) {
-            if (!h.durations.includes(parseFloat(durVal))) match = false;
-        }
-        if (distVal !== 'any' && match) {
-            const maxD = parseFloat(distVal);
-            if (h.distance > maxD) match = false;
-        }
-        if (priceVal !== 'any' && match) {
-            if (priceVal.includes('+')) {
-                const min = parseFloat(priceVal.replace('+',''));
-                if (h.price < min) match = false;
-            } else {
-                const [min, max] = priceVal.split('-').map(Number);
-                if (h.price < min || h.price > max) match = false;
-            }
-        }
-        if (amenVal !== 'any' && match) {
-            if (!h.amenities.includes(amenVal)) match = false;
-        }
-        return match;
-    });
-
-    const config = window.FILTER_CONFIG[window.activeCategory];
-    document.getElementById('inventory-count').textContent = `${config.inventoryLabel} INVENTORY (${filtered.length} FOUND)`;
-
-    grid.innerHTML = '';
-    
-    config.groups.forEach(grp => {
-        const groupItems = filtered.filter(h => h.category === grp.key);
-        if (groupItems.length > 0) {
-            grid.innerHTML += `
-                <div class="col-span-full mt-6 mb-3 flex items-center justify-between border-b border-blueprint-border pb-2">
-                    <h4 class="text-[11px] font-bold text-brand-blue uppercase tracking-widest flex items-center gap-2">
-                        ${grp.title}
-                    </h4>
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${groupItems.length} ITEMS</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full col-span-full">
-                    ${groupItems.map(h => window.renderCard(h)).join('')}
-                </div>
-            `;
-        }
-    });
-
-    const mappedCategories = config.groups.map(g => g.key);
-    const unmappedItems = filtered.filter(h => !mappedCategories.includes(h.category));
-    if (unmappedItems.length > 0) {
-        grid.innerHTML += `
-            <div class="col-span-full mt-6 mb-3 flex items-center justify-between border-b border-blueprint-border pb-2">
-                <h4 class="text-[11px] font-bold text-brand-blue uppercase tracking-widest flex items-center gap-2">
-                    OTHER OPTIONS
-                </h4>
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${unmappedItems.length} ITEMS</span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full col-span-full">
-                ${unmappedItems.map(h => window.renderCard(h)).join('')}
-            </div>
-        `;
-    }
-};
-
-window.openLevel2 = function(id) {
-    let item = null;
-    Object.values(window.LAYOVER_INVENTORY).forEach(cat => {
-        const found = cat.find(i => i.id === id);
-        if (found) item = found;
-    });
-    if (!item) return;
-
-    window.activeItem = item;
-    
-    if (window.activeCategory !== 'recommended') {
-        window.renderItems();
-    } else {
-        const grid = document.getElementById('hotel-grid');
-        if (grid) {
-            grid.innerHTML = [window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => window.renderCard(i)).join('');
-        }
-    }
-
-    document.getElementById('l2-name').textContent = item.name;
-    document.getElementById('l2-rating').textContent = `${item.rating} ★`;
-    document.getElementById('l2-distance').textContent = `${item.distance} km from T2`;
-    
-    const amCont = document.getElementById('l2-amenities');
-    amCont.innerHTML = item.amenities.length 
-        ? item.amenities.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('') 
-        : '<div class="text-[11px] text-on-surface-variant italic">Standard amenities included</div>';
-
-    let config = window.FILTER_CONFIG[window.activeCategory];
-    if (window.activeCategory === 'recommended') {
-        if (item.type === 'Hotel') config = window.FILTER_CONFIG['hotel.html'];
-        else if (item.type === 'Restaurant') config = window.FILTER_CONFIG['restaurant.html'];
-        else config = window.FILTER_CONFIG['spa.html'];
-    }
-
-    const itemDur = document.getElementById('item-duration');
-    if (itemDur) {
-        itemDur.innerHTML = '';
-        const defaultDur = window.getDefaultDuration(item);
-        config.durations.forEach(d => {
-            const opt = new Option(d.l, d.l);
-            if (d.l === defaultDur || d.v === defaultDur) opt.selected = true;
-            itemDur.add(opt);
-        });
-    }
-
-    const btn = document.getElementById('add-list-btn');
-    if (btn) {
-        if (btn.dataset.originalClasses) {
-            btn.className = btn.dataset.originalClasses;
-            btn.innerHTML = btn.dataset.originalHtml;
-            btn.disabled = false;
-        }
-        
-        const existingList = window.layoverList || [];
-        const alreadyAdded = existingList.some(i => i.name === item.name);
-        
-        if (alreadyAdded) {
-            btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> ADDED';
-            btn.className = 'w-full py-4 text-sm tracking-widest uppercase transition-colors bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg font-bold cursor-default shadow-sm';
-            btn.disabled = true;
-            if(itemDur) itemDur.disabled = true;
-        } else {
-            if (!btn.dataset.originalClasses) {
-                btn.dataset.originalClasses = btn.className;
-                btn.dataset.originalHtml = btn.innerHTML;
-            }
-            btn.innerHTML = 'ADD TO LIST';
-            btn.className = 'w-full bg-primary text-white font-bold py-4 rounded-lg text-sm tracking-widest uppercase hover:bg-black transition-colors shadow-lg active:scale-95';
-            btn.disabled = false;
-            if(itemDur) itemDur.disabled = false;
-            
-            btn.onclick = function() {
-                const duration = itemDur ? (itemDur.options[itemDur.selectedIndex].text) : '1h';
-                window.addToList(btn, item.name, item.type, duration, item.distance, '');
-            };
-        }
-    }
-
-    const l1 = document.getElementById('level1');
-    const l2 = document.getElementById('level2');
-    
-    if (l1 && l2) {
-        l2.classList.remove('hidden');
-        requestAnimationFrame(() => { 
-            l2.classList.remove('opacity-0'); 
-            setTimeout(() => {
-                l2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
-        });
-    }
-    
-    const layout = document.getElementById('marketplace-content');
-    if (layout) {
-         const wrapper = layout.querySelector('.main-layout') || layout;
-         wrapper.classList.add('flex', 'flex-col', 'xl:flex-row', 'gap-8');
-    }
-};
-
-window.closeLevel2 = function() {
-    window.activeItem = null;
-    if (window.activeCategory !== 'recommended') {
-        window.renderItems();
-    } else {
-        const grid = document.getElementById('hotel-grid');
-        if (grid) {
-            grid.innerHTML = [window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => window.renderCard(i)).join('');
-        }
-    }
-    
-    const l2 = document.getElementById('level2');
-    if (l2) {
-        l2.classList.add('opacity-0');
-        setTimeout(() => {
-            l2.classList.add('hidden');
-        }, 300);
-    }
-    
-    const layout = document.getElementById('marketplace-content');
-    if (layout) {
-         const wrapper = layout.querySelector('.main-layout') || layout;
-         wrapper.classList.remove('flex', 'flex-col', 'xl:flex-row', 'gap-8');
-    }
-};
-
-
-window.renderListDrawer = function() {
-    const content = document.getElementById('list-drawer-content');
-    const totals = document.getElementById('drawer-totals');
-    
-    if (content) {
-        content.innerHTML = window.layoverList.length > 0 ? 
-            window.layoverList.map((item, idx) => {
-                const travel = window.calculateLegTravelTime(0, item.distance);
-                
-                let catConfig = window.CATEGORY_CONFIG['hotel.html'];
-                if (item.category === 'Hotel') catConfig = window.CATEGORY_CONFIG['hotel.html'];
-                else if (item.category === 'Restaurant') catConfig = window.CATEGORY_CONFIG['restaurant.html'];
-                else if (item.category === 'Spa') catConfig = window.CATEGORY_CONFIG['spa.html'];
-                else if (item.category === 'Entertainment' || item.category === 'Gaming & Entertainment') catConfig = window.CATEGORY_CONFIG['entertainment.html'];
-                
-                const configRef = window.FILTER_CONFIG[catConfig === window.CATEGORY_CONFIG['hotel.html'] ? 'hotel.html' : catConfig === window.CATEGORY_CONFIG['restaurant.html'] ? 'restaurant.html' : catConfig === window.CATEGORY_CONFIG['spa.html'] ? 'spa.html' : 'entertainment.html'];
-                const durs = configRef ? configRef.durations.map(d=>d.l) : ['1h', '2h'];
-                
-                const optionsHtml = durs.map(label => {
-                    const selected = (item.duration === label) ? 'selected' : '';
-                    return `<option value="${label}" ${selected}>${label}</option>`;
-                }).join('');
-
-                const safeName = item.name.replace(/'/g, "\\'");
-
-                return `
-                <div id="drawer-item-${idx}" class="flex flex-col bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-primary/30 transition-all">
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center gap-3">
-                            ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded-lg object-cover">` : `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400"><span class="material-symbols-outlined">category</span></div>`}
-                            <div>
-                                <p class="font-bold text-sm text-primary uppercase">${item.name}</p>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${item.category} &bull; Est. Travel: ${travel}m</p>
+                    <p class="text-[11px] font-bold text-primary uppercase tracking-widest mb-6">INVENTORY (${items.length} FOUND)</p>
+                    <div id="hotel-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        ${items.map(i => `
+                            <div class="p-4 border border-blueprint-border rounded-lg bg-white hover:border-primary transition-all flex flex-col justify-between h-32 cursor-pointer group" onclick="window.openDetail(${i.id})">
+                                <div>
+                                    <h4 class="font-bold text-sm text-primary group-hover:text-brand-blue">${i.name}</h4>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase">${i.category}</p>
+                                </div>
+                                <div class="mt-2 pt-2 border-t border-slate-100 flex justify-between items-end">
+                                    <span class="text-[11px] font-bold text-primary">${i.distance}km • ${i.rating}★</span>
+                                    <span class="material-symbols-outlined text-slate-300 text-lg group-hover:text-primary">arrow_forward</span>
+                                </div>
                             </div>
-                        </div>
-                        <button onclick="window.animateRemoveFromList('${safeName}', 'drawer-item-${idx}')" class="text-slate-300 hover:text-red-500 transition-colors ml-2 p-1">
-                            <span class="material-symbols-outlined text-lg">delete</span>
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-between border-t border-slate-50 pt-3 mt-1">
-                        <span class="text-[10px] font-bold text-primary uppercase tracking-widest">Duration:</span>
-                        <select onchange="window.updateItemDuration('${safeName}', this.value)" class="bg-slate-50 border border-slate-200 text-primary text-xs font-bold rounded-lg px-2 py-1 outline-none cursor-pointer hover:bg-slate-100 transition-colors">
-                            ${optionsHtml}
-                        </select>
+                        `).join('')}
                     </div>
                 </div>
-            `}).join('') : '<div class="flex flex-col items-center justify-center py-20 text-slate-300"><span class="material-symbols-outlined text-5xl mb-4">event_busy</span><p class="font-bold text-[10px] uppercase tracking-widest">No experiences added yet.</p></div>';
-    }
-        
-    if (totals) {
-        let expMins = 0;
-        let maxDist = 0;
-        window.layoverList.forEach(item => {
-            expMins += window.parseDurationToMins(item.duration);
-            if (item.distance > maxDist) maxDist = item.distance;
-        });
-        const travelMins = window.layoverList.length > 0 ? window.calculateItineraryTravel(window.layoverList).totalTravelMins : 0;
-        const totalUsed = expMins + travelMins;
-        
-        const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
-        
-        totals.innerHTML = `
-            <div class="flex flex-col items-start">
-                <span class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Total Time Used</span>
-                <span class="text-base text-primary">${format(totalUsed)}</span>
             </div>
-            <div class="flex flex-col items-end">
-                <span class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Remaining</span>
-                <span class="text-base ${window.isRisk ? 'text-red-600' : 'text-emerald-600'}">${document.getElementById('time-remaining') ? document.getElementById('time-remaining').textContent : ''}</span>
+            <div id="level2" class="hidden w-full max-w-xl bg-white border border-blueprint-border rounded-xl p-6 shadow-xl flex flex-col sticky top-24">
+                <div class="flex justify-between items-start mb-6 border-b pb-4">
+                    <h3 id="l2-name" class="text-xl font-bold uppercase">Detail View</h3>
+                    <button onclick="window.closeDetail()" class="p-2"><span class="material-symbols-outlined">close</span></button>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-blueprint-bg p-4 rounded-lg border border-blueprint-border">
+                        <p id="l2-meta" class="text-[10px] font-bold text-slate-400 uppercase mb-1"></p>
+                        <div class="flex items-center gap-2"><span id="l2-rating" class="bg-brand-orange text-white text-[10px] px-2 rounded font-bold"></span></div>
+                    </div>
+                    <div class="border border-primary/20 p-5 rounded-lg bg-primary/5">
+                        <label class="block text-[9px] font-bold text-primary uppercase mb-2">Duration</label>
+                        <select id="item-duration" class="w-full mb-4 p-3 border rounded-lg font-bold text-sm"></select>
+                        <button id="add-list-btn" class="w-full bg-primary text-white font-black py-4 rounded-xl text-sm uppercase tracking-widest active:scale-95 shadow-lg">ADD TO LIST</button>
+                    </div>
+                </div>
             </div>
-        `;
-    }
+        </div>
+    `;
 };
 
-window.animateRemoveFromList = function(itemName, elemId) {
-    const el = document.getElementById(elemId);
-    if (el) {
-        el.style.transition = 'all 0.3s ease';
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(10px) scale(0.95)';
-        setTimeout(() => {
-            window.removeFromList(itemName);
-            window.renderListDrawer();
-        }, 300);
+window.openDetail = function(id) {
+    let item = null;
+    Object.values(marketplaceData).forEach(cat => { const found = cat.find(i => i.id === id); if (found) item = found; });
+    if (!item) return;
+    window.activeItem = item;
+    document.getElementById('level2').classList.remove('hidden');
+    document.getElementById('l2-name').textContent = item.name;
+    document.getElementById('l2-meta').textContent = `${item.category} • ${item.distance}km from T2`;
+    document.getElementById('l2-rating').textContent = item.rating + ' ★';
+    
+    const durSel = document.getElementById('item-duration');
+    durSel.innerHTML = item.durations.map(d => `<option value="${d}">${d}</option>`).join('');
+    
+    const btn = document.getElementById('add-list-btn');
+    const exists = window.layoverList.some(i => i.name === item.name);
+    if (exists) {
+        btn.innerHTML = 'ADDED'; btn.disabled = true; btn.className = 'w-full py-4 bg-emerald-50 text-emerald-700 border rounded-xl font-bold uppercase';
     } else {
-        window.removeFromList(itemName);
-        window.renderListDrawer();
+        btn.innerHTML = 'ADD TO LIST'; btn.disabled = false; btn.className = 'w-full bg-primary text-white font-black py-4 rounded-xl text-sm uppercase tracking-widest active:scale-95 shadow-lg';
+        btn.onclick = () => {
+            window.layoverList.push({ ...item, duration: durSel.value });
+            localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+            window.updateListIndicator(); window.updateTimeCalculations(); window.openDetail(id);
+        };
     }
 };
 
-window.updateItemDuration = function(itemName, newDuration) {
-    const item = window.layoverList.find(i => i.name === itemName);
-    if (item) {
-        item.duration = newDuration;
-        localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
-        window.updateTimeCalculations();
-        window.renderListDrawer();
-        
-        if (window.activeItem && window.activeItem.name === itemName) {
-             const detDur = document.getElementById('item-duration');
-             if (detDur) {
-                 for (let i = 0; i < detDur.options.length; i++) {
-                     if (detDur.options[i].text === newDuration || detDur.options[i].value === newDuration) {
-                         detDur.selectedIndex = i;
-                         break;
-                     }
-                 }
-             }
-        }
-    }
-};
+window.closeDetail = function() { document.getElementById('level2').classList.add('hidden'); };
 
 window.toggleListDrawer = function() {
-    const drawer = document.getElementById('list-drawer');
-    const panel = document.getElementById('list-drawer-panel');
-    
-    if (drawer.classList.contains('hidden')) {
-        window.renderListDrawer();
-        drawer.classList.remove('hidden');
-        setTimeout(() => {
-            drawer.classList.add('opacity-100');
-            panel.classList.remove('translate-x-full');
-        }, 10);
+    const d = document.getElementById('list-drawer'); const p = document.getElementById('list-drawer-panel');
+    if (d.classList.contains('hidden')) {
+        window.renderListDrawer(); d.classList.remove('hidden'); setTimeout(() => { d.classList.add('opacity-100'); p.classList.remove('translate-x-full'); }, 10);
     } else {
-        panel.classList.add('translate-x-full');
-        drawer.classList.remove('opacity-100');
-        setTimeout(() => drawer.classList.add('hidden'), 300);
+        p.classList.add('translate-x-full'); d.classList.remove('opacity-100'); setTimeout(() => d.classList.add('hidden'), 300);
     }
 };
 
-window.getDefaultDuration = function(item) {
-    if (item.type === 'Hotel') {
-        if (item.category === 'Premium') return '4 Hours';
-        if (item.category === 'Standard') return '3 Hours';
-        return '2 Hours';
-    }
-    if (item.type === 'Restaurant') {
-        if (item.category === 'Fine Dining') return '1.5 Hours';
-        if (item.category === 'Cafes' || item.category === 'Fast Dining') return '30 Min';
-        return '1 Hour';
-    }
-    if (item.type === 'Spa') {
-        if (item.category === 'Premium Spa') return '1.5 Hours';
-        if (item.category === 'Express Treatments') return '30 Min';
-        return '1 Hour';
-    }
-    if (item.type === 'Entertainment' || item.category === 'Gaming & Entertainment') {
-        if (item.category === 'Lounges') return '1 Hour';
-        if (item.category === 'Kids' || item.category === 'VR' || item.category === 'Gaming') return '45 Mins';
-        return '2 Hours';
-    }
-    return '1 Hour';
-};
-
-window.addToList = function(btn, itemName, category, duration, distance, image) {
-    if (!duration) return;
-    const existing = window.layoverList.find(i => i.name === itemName);
-    if (!existing) {
-        window.layoverList.push({ name: itemName, category, duration, distance: parseFloat(distance) || 0, image: image || '' });
-        localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
-    }
-    btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> ADDED';
-    btn.className = 'w-full py-2 text-sm tracking-widest uppercase transition-colors bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default';
-    btn.disabled = true;
-    const itemDur = document.getElementById('item-duration');
-    if(itemDur) itemDur.disabled = true;
-    window.updateListIndicator();
-    window.updateTimeCalculations();
-};
-
-window.removeFromList = function(itemName) {
-    window.layoverList = window.layoverList.filter(i => i.name !== itemName);
-    localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
-    window.renderCategory(window.activeCategory);
-    window.updateListIndicator();
-    window.updateTimeCalculations();
-};
-
-window.clearList = function() {
-    window.layoverList = [];
-    localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
-    window.renderCategory(window.activeCategory);
-    window.updateListIndicator();
-    window.updateTimeCalculations();
+window.renderListDrawer = function() {
+    const cont = document.getElementById('list-drawer-content');
+    cont.innerHTML = window.layoverList.length > 0 ? window.layoverList.map((i, idx) => `
+        <div id="item-${idx}" class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col gap-3">
+            <div class="flex justify-between items-center">
+                <p class="font-bold text-sm uppercase">${i.name}</p>
+                <button onclick="window.removeItem('${i.name.replace(/'/g, "\\'")}', 'item-${idx}')" class="text-slate-300 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+            </div>
+            <div class="flex justify-between items-center text-[10px] font-bold border-t pt-3">
+                <span class="text-slate-400">DURATION:</span>
+                <select onchange="window.updateDur('${i.name.replace(/'/g, "\\'")}', this.value)" class="bg-slate-50 px-2 py-1 rounded">
+                    ${i.durations.map(d => `<option value="${d}" ${i.duration===d?'selected':''}>${d}</option>`).join('')}
+                </select>
+            </div>
+        </div>
+    `).join('') : '<div class="text-center py-20 text-slate-300 font-bold uppercase text-[10px]">No experiences added yet.</div>';
     
-    const drawer = document.getElementById('list-drawer');
-    if (drawer && !drawer.classList.contains('hidden')) {
-        const panel = document.getElementById('list-drawer-panel');
-        panel.classList.add('translate-x-full');
-        drawer.classList.remove('opacity-100');
-        setTimeout(() => {
-            drawer.classList.add('hidden');
-            window.toggleListDrawer();
-        }, 300);
-    }
+    const totals = document.getElementById('drawer-totals');
+    let expMins = 0; window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
+    const travel = window.calculateItineraryTravel(window.layoverList).totalTravelMins;
+    const rem = (parseInt(localStorage.getItem('layover_duration')||'6')*60) - 120 - travel - expMins;
+    const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+    
+    totals.innerHTML = `<div class="flex flex-col"><span class="text-[9px] text-slate-400">TOTAL USED</span><span class="text-primary">${format(expMins+travel)}</span></div>
+                        <div class="flex flex-col items-end"><span class="text-[9px] text-slate-400">REMAINING</span><span class="${rem<15?'text-red-600':'text-emerald-600'}">${format(rem)}</span></div>`;
 };
 
-window.closeWarningModal = function() {
-    const modal = document.getElementById('warning-modal');
-    const panel = document.getElementById('warning-modal-panel');
-    if (modal) {
-        modal.classList.remove('opacity-100');
-        panel.classList.remove('scale-100');
-        panel.classList.add('scale-95');
-        setTimeout(() => modal.classList.add('hidden'), 300);
-    }
+window.removeItem = function(name, id) {
+    const el = document.getElementById(id); el.style.opacity = '0'; el.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+        window.layoverList = window.layoverList.filter(i => i.name !== name);
+        localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+        window.renderListDrawer(); window.updateListIndicator(); window.updateTimeCalculations();
+        if (window.activeItem && window.activeItem.name === name) window.openDetail(window.activeItem.id);
+    }, 200);
 };
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const warningModal = document.getElementById('warning-modal');
-        if (warningModal && !warningModal.classList.contains('hidden')) {
-            window.closeWarningModal();
-        }
-        const listDrawer = document.getElementById('list-drawer');
-        if (listDrawer && !listDrawer.classList.contains('hidden')) {
-            window.toggleListDrawer();
-        }
-        const level2 = document.getElementById('level2');
-        if (level2 && !level2.classList.contains('hidden')) {
-            window.hideDetail();
-        }
-    }
-});
+window.updateDur = function(name, val) {
+    const i = window.layoverList.find(x => x.name === name); if (i) i.duration = val;
+    localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+    window.renderListDrawer(); window.updateTimeCalculations();
+};
 
 window.updateListIndicator = function() {
-    let indicator = document.getElementById('global-list-indicator');
-    if (!indicator) {
-        indicator = document.createElement('div');
-        indicator.id = 'global-list-indicator';
-        indicator.className = 'fixed bottom-[100px] left-1/2 -translate-x-1/2 z-[100] transition-all duration-300';
-        document.body.appendChild(indicator);
-    }
-    
+    let ind = document.getElementById('global-list-indicator');
+    if (!ind) { ind = document.createElement('div'); ind.id = 'global-list-indicator'; ind.className = 'fixed bottom-[100px] left-1/2 -translate-x-1/2 z-[100]'; document.body.appendChild(ind); }
     if (window.layoverList.length > 0) {
-        indicator.style.display = 'flex';
-        indicator.innerHTML = `
-            <div class="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-outline-variant p-2 shadow-lg">
-                <button onclick="window.toggleListDrawer()" class="bg-surface-container hover:bg-outline-variant px-6 py-2 font-bold text-[10px] uppercase tracking-widest text-on-surface border border-outline-variant transition-colors">View List (${window.layoverList.length})</button>
-                <button onclick="window.proceedToPlan(this)" class="bg-secondary text-white px-8 py-2 font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-orange-700 transition-all">Plan My Trip <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
-            </div>`;
-    } else {
-        indicator.style.display = 'none';
-    }
+        ind.style.display = 'flex';
+        ind.innerHTML = `<div class="flex bg-white/95 backdrop-blur-md border border-slate-200 p-2 shadow-lg gap-2">
+            <button onclick="window.toggleListDrawer()" class="bg-slate-100 px-6 py-2 font-bold text-[10px] uppercase">View List (${window.layoverList.length})</button>
+            <button onclick="window.proceedToPlan()" class="bg-black text-white px-8 py-2 font-bold text-[10px] uppercase">Plan My Trip</button>
+        </div>`;
+    } else ind.style.display = 'none';
 };
 
-window.proceedToPlan = function(btn) {
-    if (window.isRisk) {
-        const modal = document.getElementById('warning-modal');
-        const panel = document.getElementById('warning-modal-panel');
-        if (modal) {
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.add('opacity-100');
-                panel.classList.remove('scale-95');
-                panel.classList.add('scale-100');
-            }, 10);
-        }
-        return;
-    }
-    localStorage.setItem("tripPlanActivated", "true");
-    window.location.href = 'yourplan.html';
-};
+window.proceedToPlan = function() { if (window.isRisk) { document.getElementById('warning-modal').classList.remove('hidden'); document.getElementById('warning-modal').classList.add('opacity-100'); document.getElementById('warning-modal-panel').classList.remove('scale-95'); } else window.location.href = 'yourplan.html'; };
+window.closeWarningModal = function() { document.getElementById('warning-modal').classList.add('hidden'); };
+window.clearList = function() { window.layoverList = []; localStorage.setItem('layoverList', '[]'); window.renderListDrawer(); window.updateListIndicator(); window.updateTimeCalculations(); };
 
 document.addEventListener('DOMContentLoaded', () => {
-    try {
-        const stored = localStorage.getItem('layoverList');
-        window.layoverList = stored ? JSON.parse(stored) : [];
-    } catch(e) { window.layoverList = []; }
-
-    window.renderCategory('hotel.html', document.querySelectorAll('.category-pill')[1]); // Default to hotels
+    try { window.layoverList = JSON.parse(localStorage.getItem('layoverList') || '[]'); } catch(e) { window.layoverList = []; }
+    window.renderMarketplace('recommended');
     window.updateTimeCalculations();
     window.updateListIndicator();
 });
 </script>
-
-<!-- Custom Warning Modal -->
-<div id="warning-modal" class="fixed inset-0 z-[100] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target === this) window.closeWarningModal()">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-95 transition-transform duration-300" id="warning-modal-panel">
-        <div class="p-6 text-center space-y-4">
-            <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2 text-red-500">
-                <span class="material-symbols-outlined text-3xl">warning</span>
-            </div>
-            <h3 class="text-xl font-bold text-primary tracking-tight">Time Warning</h3>
-            <p class="text-sm text-slate-500 font-medium leading-relaxed">Your itinerary exceeds the available layover time. Please reduce stay durations or remove experiences before proceeding.</p>
-        </div>
-        <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-center">
-            <button onclick="window.closeWarningModal()" class="w-full bg-primary hover:bg-black text-white font-bold py-3 rounded-xl text-sm uppercase tracking-widest transition-colors shadow-md active:scale-[0.98]">Acknowledge</button>
-        </div>
-    </div>
-</div>
 </body>
 </html>
