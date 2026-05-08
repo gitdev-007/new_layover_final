@@ -502,6 +502,10 @@ document.addEventListener('DOMContentLoaded', () => {
     state.selectedItems.forEach((item, idx) => {
         // Transit to stop
         const legTravel = item.transitOverheadMinutes;
+        const legMode = item.legTravelData ? item.legTravelData.mode : 'drive';
+        const legLabel = item.legTravelData ? item.legTravelData.label : `${legTravel} mins drive to ${item.title}`;
+        const legIcon = legMode === 'walk' ? 'directions_walk' : legMode === 'by transit' ? 'directions_subway' : legMode.includes('shuttle') ? 'airport_shuttle' : 'directions_car';
+        
         currentTime = new Date(currentTime.getTime() + (legTravel * 60 * 1000));
         
         html += `
@@ -509,8 +513,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="relative pl-12 py-2">
                 <div class="route-line"></div>
                 <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3 shadow-sm">
-                    <span class="material-symbols-outlined text-brand-purple" data-icon="directions_car">directions_car</span>
-                    <span class="text-primary font-bold text-[11px] uppercase tracking-wide">${legTravel} mins to ${item.title}</span>
+                    <span class="material-symbols-outlined text-brand-purple" data-icon="${legIcon}">${legIcon}</span>
+                    <span class="text-primary font-bold text-[11px] uppercase tracking-wide">${legLabel}</span>
                 </div>
             </div>
             <!-- EXPERIENCE -->
@@ -547,6 +551,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Final Transit back to airport
     const lastItem = state.selectedItems[state.selectedItems.length - 1];
     const returnTravel = state.totalTransitMinutes - state.selectedItems.reduce((acc, curr) => acc + curr.transitOverheadMinutes, 0);
+    // Since we don't have the final leg object natively here without recalculating, we infer from total
+    const returnLegIcon = 'airport_shuttle';
+    
     currentTime = new Date(currentTime.getTime() + (returnTravel * 60 * 1000));
     
     html += `
@@ -554,8 +561,8 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="relative pl-12 py-2">
             <div class="route-line"></div>
             <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3 shadow-sm">
-                <span class="material-symbols-outlined text-brand-purple" data-icon="airport_shuttle">airport_shuttle</span>
-                <span class="text-primary font-bold text-[11px] uppercase tracking-wide">${returnTravel} mins to Airport</span>
+                <span class="material-symbols-outlined text-brand-purple" data-icon="${returnLegIcon}">${returnLegIcon}</span>
+                <span class="text-primary font-bold text-[11px] uppercase tracking-wide">${returnTravel} mins drive to Airport</span>
             </div>
         </div>
         <!-- AIRPORT END -->
