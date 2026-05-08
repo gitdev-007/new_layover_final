@@ -1,14 +1,197 @@
-import re
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TransitLuxury | Curated Layover Experiences</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+    darkMode: "class",
+    theme: {
+        extend: {
+            "colors": {
+                "primary": "#000000",
+                "on-primary": "#ffffff",
+                "surface": "#fdf8f8",
+                "on-surface": "#1c1b1b",
+                "surface-container": "#f1edec",
+                "surface-container-low": "#f7f3f2",
+                "outline-variant": "#c7c6ca",
+                "secondary": "#5d5f5f",
+                "brand-blue": "#2563eb",
+                "brand-orange": "#f97316",
+                "blueprint-bg": "#f9fafb",
+                "blueprint-border": "#d1d5db"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "xs": "8px",
+                "base": "4px",
+                "sm": "12px",
+                "md": "16px",
+                "container-margin": "20px",
+                "xl": "32px",
+                "gutter": "12px",
+                "lg": "24px"
+            },
+            "fontFamily": {
+                "sans": ["Inter", "sans-serif"]
+            }
+        }
+    }
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #1c1b1b; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
+</style>
+</head>
+<body class="pb-32 overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-6 h-16 bg-white/90 backdrop-blur-md border-b border-blueprint-border">
+<div class="flex items-center gap-md">
+<button class="hover:bg-slate-100 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-200" onclick="window.history.back()">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold text-primary tracking-tighter uppercase">TransitLuxury</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="hover:bg-slate-100 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-primary">search</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-blueprint-border">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb6QlKHRooEUzlf4DY3Kgm29qMIJPlLKAvT72LmkLF0mwy0hbM4R4h6h650JhqgeHEJhE6E5aSUb9SDbG6gpIXYmhVA-R3nSBGb0FFZJHSIe4F0lFV6eFHFOvOKzAENKglaqd5lArarawkT68ImSQf7i6pqehTfolSRuKXVFSesSVWe5qDmJ5oV8b-iXxs1axSWK-bNFlJ2TPw0AN01U5gSa885EacZnZtb7xks7UehSDogJPOmrPZEyKaoeDiu3B2-wTO0-N9_CsK"/>
+</div>
+</div>
+</header>
+<main class="px-6 mt-8 space-y-8 max-w-7xl mx-auto">
+<!-- Smart Time Panel -->
+<section class="bg-white border border-blueprint-border rounded-3xl p-6 shadow-sm relative overflow-hidden">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xs font-bold text-on-surface flex items-center gap-2 uppercase tracking-[0.2em]"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
+        <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+            <span class="material-symbols-outlined text-xs text-brand-blue">flight_takeoff</span>
+            <span class="text-[10px] text-brand-blue tracking-widest font-bold uppercase" id="time-departure">Departure --:--</span>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Layover</p>
+            <p class="text-sm font-bold text-primary" id="time-total">--</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Buffer</p>
+            <p class="text-sm font-bold text-primary" id="time-buffer">2h 0m</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Travel</p>
+            <p class="text-sm font-bold text-primary" id="time-travel">0m</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Experiences</p>
+            <p class="text-sm font-bold text-brand-blue" id="time-exp">0m</p>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center col-span-2 md:col-span-1 transition-colors duration-300" id="rem-container">
+            <p class="text-[9px] text-emerald-800 uppercase font-bold tracking-widest mb-1" id="rem-label">Remaining</p>
+            <p class="text-base font-bold text-emerald-700" id="time-remaining">--</p>
+        </div>
+    </div>
+</section>
 
-with open('marketplace.html', 'r', encoding='utf-8') as f:
-    content = f.read()
+<!-- Category Pills -->
+<section class="flex gap-2 overflow-x-auto no-scrollbar py-2 border-b border-blueprint-border pb-4">
+<button onclick="window.renderCategory('recommended', this)" class="category-pill bg-primary text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended</button>
+<button onclick="window.renderCategory('hotel.html', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
+<button onclick="window.renderCategory('restaurant.html', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
+<button onclick="window.renderCategory('spa.html', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
+<button onclick="window.renderCategory('entertainment.html', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Ent.</button>
+</section>
 
-new_script = r'''<script>
+<!-- Dynamic Experience Container -->
+<section id="marketplace-content" class="min-h-[400px]">
+<!-- Rendered via JS -->
+</section>
+
+</main>
+
+<!-- List Drawer -->
+<div id="list-drawer" class="fixed inset-0 z-[70] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex justify-end" onclick="if(event.target === this) window.toggleListDrawer()">
+    <div class="bg-white w-full max-w-md h-full shadow-2xl overflow-hidden transform translate-x-full transition-transform duration-300 flex flex-col" id="list-drawer-panel">
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+            <h2 class="text-xl font-bold text-primary uppercase tracking-tight">SELECTED EXPERIENCES</h2>
+            <button onclick="window.toggleListDrawer()" class="p-2 rounded-full hover:bg-white border border-transparent hover:border-slate-200 transition-all">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="list-drawer-content" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"></div>
+        <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
+             <div class="flex justify-between items-center text-sm font-bold text-primary mb-2" id="drawer-totals">
+                 <!-- Injected via JS -->
+             </div>
+             <button onclick="window.proceedToPlan(this)" class="w-full bg-primary hover:bg-black text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">PLAN MY TRIP &rarr;</button>
+             <button onclick="window.clearList()" class="w-full bg-white text-red-600 font-bold py-3 rounded-xl text-xs uppercase tracking-widest border border-red-200 hover:bg-red-50 active:scale-95 transition-all">CLEAR LIST</button>
+        </div>
+    </div>
+</div>
+
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 h-20 bg-white/95 backdrop-blur-md border-t border-blueprint-border">
+<button id="nav-explore-tab" onclick="window.location.reload()" class="flex flex-col items-center justify-center text-primary font-bold active:scale-95 transition-all duration-150">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="text-[9px] uppercase tracking-widest mt-1">Explore</span>
+</button>
+<button id="nav-trips-tab" class="flex flex-col items-center justify-center text-secondary font-bold opacity-40 cursor-not-allowed">
+<span class="material-symbols-outlined text-2xl">airplane_ticket</span>
+<span class="text-[9px] uppercase tracking-widest mt-1">Trips</span>
+</button>
+<button id="nav-profile-tab" class="flex flex-col items-center justify-center text-secondary font-bold active:scale-95 transition-all duration-150">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-[9px] uppercase tracking-widest mt-1">Profile</span>
+</button>
+</nav>
+
+<!-- Custom Warning Modal -->
+<div id="warning-modal" class="fixed inset-0 z-[100] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target === this) window.closeWarningModal()">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-95 transition-transform duration-300" id="warning-modal-panel">
+        <div class="p-6 text-center space-y-4">
+            <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2 text-red-500">
+                <span class="material-symbols-outlined text-3xl">warning</span>
+            </div>
+            <h3 class="text-xl font-bold text-primary tracking-tight">Time Warning</h3>
+            <p class="text-sm text-slate-500 font-medium leading-relaxed">Your itinerary exceeds the available layover time. Please reduce stay durations or remove experiences before proceeding.</p>
+        </div>
+        <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-center">
+            <button onclick="window.closeWarningModal()" class="w-full bg-primary hover:bg-black text-white font-bold py-3 rounded-xl text-sm uppercase tracking-widest transition-colors shadow-md active:scale-[0.98]">Acknowledge</button>
+        </div>
+    </div>
+</div>
+
+<script>
 // --- GLOBAL STATE & CONFIG ---
 window.layoverList = [];
 window.activeCategory = 'hotel.html'; 
 window.activeItem = null;
 window.isRisk = false;
+
+window.CATEGORY_CONFIG = {
+    'recommended': { title: 'Recommended For You', key: 'Recommended', icon: 'auto_awesome' },
+    'hotel.html': { title: 'Hotels & Stays', key: 'Hotels', icon: 'hotel', durations: ['3h', '4h', '6h', '8h', '10h', '12h', '16h', '24h'] },
+    'restaurant.html': { title: 'Food & Dining', key: 'Restaurants', icon: 'restaurant', durations: ['30m', '1h', '1.5h', '2h'] },
+    'spa.html': { title: 'Spa & Wellness', key: 'Spa', icon: 'spa', durations: ['30m', '1h', '1.5h', '2h', '2.5h', '3h'] },
+    'entertainment.html': { title: 'Gaming & Entertainment', key: 'Entertainment', icon: 'sports_esports', durations: ['30m', '1h', '2h', '3h', '4h'] }
+};
 
 window.LAYOVER_INVENTORY = {
     'Hotels': [
@@ -45,7 +228,7 @@ window.LAYOVER_INVENTORY = {
     ]
 };
 
-const FILTER_CONFIG = {
+window.FILTER_CONFIG = {
     'hotel.html': {
         title: "HOTELS LISTING PAGE",
         inventoryLabel: "HOTEL",
@@ -166,16 +349,19 @@ window.updateTimeCalculations = function() {
             remEl.textContent = remainingMins < 0 ? Math.abs(remainingMins) + 'm Over' : format(remainingMins);
             remEl.style.color = '#dc2626';
             remContainer.style.backgroundColor = '#fef2f2';
+            remContainer.style.border = '1px solid #fee2e2';
         } else if (remainingMins <= 45) {
             window.isRisk = false;
             remEl.textContent = format(remainingMins);
             remEl.style.color = '#b45309';
             remContainer.style.backgroundColor = '#fffbeb';
+            remContainer.style.border = '1px solid #fef3c7';
         } else {
             window.isRisk = false;
             remEl.textContent = format(remainingMins);
             remEl.style.color = '#15803d';
             remContainer.style.backgroundColor = '#ecfdf5';
+            remContainer.style.border = '1px solid #d1fae5';
         }
     }
 };
@@ -192,54 +378,55 @@ window.renderCategory = function(catId, btn) {
 
     window.activeCategory = catId;
     const container = document.getElementById('marketplace-content');
-    
+
     if (catId === 'recommended') {
+        const config = window.FILTER_CONFIG['hotel.html'];
         container.innerHTML = `
             <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
                 <div class="flex items-center justify-between mb-4">
                     <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
                 </div>
-                <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
+                <div class="bg-white border-2 border-blueprint-border p-6 shadow-sm">
                     <div class="flex justify-between items-start mb-6">
-                        <h3 class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">Recommended For You</h3>
+                        <h3 class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="window.closeLevel2()">Recommended For You</h3>
                     </div>
                     <div class="border border-outline-variant p-3 bg-surface-container mb-4">
                         <p class="text-meta-label text-on-surface-variant mb-2">CURATED PICKS</p>
                         <p class="text-[11px] text-on-surface-variant">Top experiences based on your flight buffer.</p>
                     </div>
-                    <div class="border-2 border-dashed border-outline-variant p-4">
+                    <div class="border-2 border-dashed border-blueprint-border p-4">
                         <p class="text-meta-label text-on-surface-variant mb-3">INVENTORY (3 ITEMS FOUND)</p>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="hotel-grid">
-                            ${[window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => renderCard(i)).join('')}
+                            ${[window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => window.renderCard(i)).join('')}
                         </div>
                     </div>
                 </div>
             </div>
-            ${level2Template()}
+            ${window.level2Template()}
         `;
         return;
     }
 
-    const config = FILTER_CONFIG[catId];
+    const config = window.FILTER_CONFIG[catId];
     if (!config) return;
 
     let filterHTML = `
         <div class="border border-outline-variant p-3 bg-surface-container mb-4">
             <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                <select id="filter-duration" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                <select id="filter-duration" onchange="window.renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                     <option value="any">${config.durationLabel}</option>
                     ${config.durations.map(d => `<option value="${d.v}">${d.l}</option>`).join('')}
                 </select>
-                <select id="filter-price" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                <select id="filter-price" onchange="window.renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                     <option value="any">Price Range</option>
                     ${config.priceRange.map(p => `<option value="${p.v}">${p.l}</option>`).join('')}
                 </select>
-                <select id="filter-distance" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                <select id="filter-distance" onchange="window.renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                     <option value="any">Distance</option>
                     ${config.distance.map(d => `<option value="${d.v}">${d.l}</option>`).join('')}
                 </select>
-                <select id="filter-amenities" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                <select id="filter-amenities" onchange="window.renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                     <option value="any">Amenities</option>
                     ${config.amenities.map(a => `<option value="${a.v}">${a.l}</option>`).join('')}
                 </select>
@@ -248,34 +435,34 @@ window.renderCategory = function(catId, btn) {
     `;
 
     container.innerHTML = `
-        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative flex flex-col items-center">
-            <div class="w-full flex items-center justify-between mb-4">
+        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
+            <div class="flex items-center justify-between mb-4">
                 <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
             </div>
-            <div class="w-full bg-white border-2 border-primary-container p-6 shadow-sm">
+            <div class="bg-white border-2 border-blueprint-border p-6 shadow-sm">
                 <div class="flex justify-between items-start mb-6">
-                    <h3 class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">${config.title}</h3>
+                    <h3 class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="window.closeLevel2()">${config.title}</h3>
                 </div>
                 ${filterHTML}
-                <div class="border-2 border-dashed border-outline-variant p-4">
+                <div class="border-2 border-dashed border-blueprint-border p-4">
                     <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">${config.inventoryLabel} INVENTORY (0 FOUND)</p>
                     <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
                 </div>
             </div>
         </div>
-        ${level2Template()}
+        ${window.level2Template()}
     `;
 
-    renderItems();
+    window.renderItems();
 };
 
-function level2Template() {
+window.level2Template = function() {
     return `
-        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative mt-6 lg:mt-0 flex flex-col items-center">
-            <div class="w-full flex items-center justify-between mb-4">
+        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative mt-6 md:mt-0">
+            <div class="flex items-center justify-between mb-4">
                 <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
             </div>
-            <div class="w-full bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
+            <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
                 <div class="flex justify-between items-start mb-6 shrink-0">
                     <h3 class="text-node-title-md text-secondary uppercase">Detail Page</h3>
                     <button onclick="window.closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
@@ -330,16 +517,16 @@ function level2Template() {
     `;
 }
 
-function renderCard(h) {
+window.renderCard = function(h) {
     const isActive = window.activeItem && window.activeItem.id === h.id;
-    let isPremium = false;
     let configKey = 'hotel.html';
     if (h.type === 'Hotel') configKey = 'hotel.html';
     if (h.type === 'Restaurant') configKey = 'restaurant.html';
     if (h.type === 'Spa') configKey = 'spa.html';
     if (h.type === 'Entertainment') configKey = 'entertainment.html';
 
-    const config = FILTER_CONFIG[configKey];
+    const config = window.FILTER_CONFIG[configKey];
+    let isPremium = false;
     if (config) {
         isPremium = (h.category === config.groups[0].key);
     }
@@ -355,7 +542,7 @@ function renderCard(h) {
                 ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
             </div>
             <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
-                <span>${h.distance} km</span>
+                <span>${h.distance} km • ${h.terminal || 'T2'}</span>
                 <span class="font-bold text-secondary">${h.rating} ★</span>
             </div>
         </div>
@@ -403,7 +590,7 @@ window.renderItems = function() {
         return match;
     });
 
-    const config = FILTER_CONFIG[window.activeCategory];
+    const config = window.FILTER_CONFIG[window.activeCategory];
     document.getElementById('inventory-count').textContent = `${config.inventoryLabel} INVENTORY (${filtered.length} FOUND)`;
 
     grid.innerHTML = '';
@@ -418,7 +605,7 @@ window.renderItems = function() {
                 </div>
             `;
             groupItems.forEach(h => {
-                grid.innerHTML += renderCard(h);
+                grid.innerHTML += window.renderCard(h);
             });
         }
     });
@@ -433,7 +620,7 @@ window.renderItems = function() {
             </div>
         `;
         unmappedItems.forEach(h => {
-            grid.innerHTML += renderCard(h);
+            grid.innerHTML += window.renderCard(h);
         });
     }
 };
@@ -453,31 +640,31 @@ window.openLevel2 = function(id) {
     } else {
         const grid = document.getElementById('hotel-grid');
         if (grid) {
-            grid.innerHTML = [window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => renderCard(i)).join('');
+            grid.innerHTML = [window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => window.renderCard(i)).join('');
         }
     }
 
     document.getElementById('l2-name').textContent = item.name;
     document.getElementById('l2-rating').textContent = `${item.rating} ★`;
-    document.getElementById('l2-distance').textContent = `${item.distance} km from ${item.terminal}`;
+    document.getElementById('l2-distance').textContent = `${item.distance} km from T2`;
     
     const amCont = document.getElementById('l2-amenities');
     amCont.innerHTML = item.amenities.length 
         ? item.amenities.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('') 
         : '<div class="text-[11px] text-on-surface-variant italic">Standard amenities included</div>';
 
-    let config = FILTER_CONFIG[window.activeCategory];
+    let config = window.FILTER_CONFIG[window.activeCategory];
     if (window.activeCategory === 'recommended') {
-        if (item.type === 'Hotel') config = FILTER_CONFIG['hotel.html'];
-        else if (item.type === 'Restaurant') config = FILTER_CONFIG['restaurant.html'];
-        else config = FILTER_CONFIG['spa.html'];
+        if (item.type === 'Hotel') config = window.FILTER_CONFIG['hotel.html'];
+        else if (item.type === 'Restaurant') config = window.FILTER_CONFIG['restaurant.html'];
+        else config = window.FILTER_CONFIG['spa.html'];
     }
 
     const itemDur = document.getElementById('item-duration');
     if (itemDur) {
         itemDur.innerHTML = '';
         config.durations.forEach(d => {
-            itemDur.add(new Option(d.l, d.v));
+            itemDur.add(new Option(d.l, d.l));
         });
     }
 
@@ -517,13 +704,26 @@ window.openLevel2 = function(id) {
     const l1 = document.getElementById('level1');
     const l2 = document.getElementById('level2');
     
-    l2.classList.remove('hidden');
-    requestAnimationFrame(() => { 
-        l2.classList.remove('opacity-0'); 
-        setTimeout(() => {
-            l2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 100);
-    });
+    if (l1) {
+        l1.classList.add('md:w-1/2');
+    }
+
+    if (l2) {
+        l2.classList.remove('hidden');
+        l2.classList.add('md:w-1/2');
+        requestAnimationFrame(() => { 
+            l2.classList.remove('opacity-0'); 
+            setTimeout(() => {
+                l2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        });
+    }
+    
+    const layout = document.getElementById('marketplace-content');
+    if (layout) {
+         const wrapper = layout.querySelector('.main-layout') || layout;
+         wrapper.classList.add('flex', 'flex-col', 'md:flex-row', 'gap-8');
+    }
 };
 
 window.closeLevel2 = function() {
@@ -533,16 +733,26 @@ window.closeLevel2 = function() {
     } else {
         const grid = document.getElementById('hotel-grid');
         if (grid) {
-            grid.innerHTML = [window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => renderCard(i)).join('');
+            grid.innerHTML = [window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => window.renderCard(i)).join('');
         }
     }
     
+    const l1 = document.getElementById('level1');
     const l2 = document.getElementById('level2');
+    if (l1) l1.classList.remove('md:w-1/2');
+
     if (l2) {
         l2.classList.add('opacity-0');
         setTimeout(() => {
             l2.classList.add('hidden');
+            l2.classList.remove('md:w-1/2');
         }, 300);
+    }
+    
+    const layout = document.getElementById('marketplace-content');
+    if (layout) {
+         const wrapper = layout.querySelector('.main-layout') || layout;
+         wrapper.classList.remove('flex', 'flex-col', 'md:flex-row', 'gap-8');
     }
 };
 
@@ -555,14 +765,13 @@ window.renderListDrawer = function() {
             window.layoverList.map((item, idx) => {
                 const travel = Math.round(window.calculateDynamicTravelMins(item.distance) * 2 + 30);
                 
-                let catConfig = CATEGORY_CONFIG['hotel.html'];
-                if (item.category === 'Hotel') catConfig = CATEGORY_CONFIG['hotel.html'];
-                else if (item.category === 'Restaurant') catConfig = CATEGORY_CONFIG['restaurant.html'];
-                else if (item.category === 'Spa') catConfig = CATEGORY_CONFIG['spa.html'];
-                else if (item.category === 'Entertainment' || item.category === 'Gaming & Entertainment') catConfig = CATEGORY_CONFIG['entertainment.html'];
+                let catConfig = window.CATEGORY_CONFIG['hotel.html'];
+                if (item.category === 'Hotel') catConfig = window.CATEGORY_CONFIG['hotel.html'];
+                else if (item.category === 'Restaurant') catConfig = window.CATEGORY_CONFIG['restaurant.html'];
+                else if (item.category === 'Spa') catConfig = window.CATEGORY_CONFIG['spa.html'];
+                else if (item.category === 'Entertainment' || item.category === 'Gaming & Entertainment') catConfig = window.CATEGORY_CONFIG['entertainment.html'];
                 
-                // Fetch default durations matching the detailed view config
-                const configRef = FILTER_CONFIG[catConfig === CATEGORY_CONFIG['hotel.html'] ? 'hotel.html' : catConfig === CATEGORY_CONFIG['restaurant.html'] ? 'restaurant.html' : catConfig === CATEGORY_CONFIG['spa.html'] ? 'spa.html' : 'entertainment.html'];
+                const configRef = window.FILTER_CONFIG[catConfig === window.CATEGORY_CONFIG['hotel.html'] ? 'hotel.html' : catConfig === window.CATEGORY_CONFIG['restaurant.html'] ? 'restaurant.html' : catConfig === window.CATEGORY_CONFIG['spa.html'] ? 'spa.html' : 'entertainment.html'];
                 const durs = configRef ? configRef.durations.map(d=>d.l) : ['1h', '2h'];
                 
                 const optionsHtml = durs.map(label => {
@@ -570,7 +779,6 @@ window.renderListDrawer = function() {
                     return `<option value="${label}" ${selected}>${label}</option>`;
                 }).join('');
 
-                // Sanitize name for onclick string
                 const safeName = item.name.replace(/'/g, "\\'");
 
                 return `
@@ -762,8 +970,8 @@ window.updateListIndicator = function() {
         indicator.style.display = 'flex';
         indicator.innerHTML = `
             <div class="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-outline-variant p-2 shadow-lg">
-                <button onclick=\"window.toggleListDrawer()\" class="bg-surface-container hover:bg-outline-variant px-6 py-2 font-bold text-[10px] uppercase tracking-widest text-on-surface border border-outline-variant transition-colors">View List (${window.layoverList.length})</button>
-                <button onclick=\"window.proceedToPlan(this)\" class=\"bg-secondary text-white px-8 py-2 font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-orange-700 transition-all\">Plan My Trip <span class=\"material-symbols-outlined text-sm\">arrow_forward</span></button>
+                <button onclick="window.toggleListDrawer()" class="bg-surface-container hover:bg-outline-variant px-6 py-2 font-bold text-[10px] uppercase tracking-widest text-on-surface border border-outline-variant transition-colors">View List (${window.layoverList.length})</button>
+                <button onclick="window.proceedToPlan(this)" class="bg-secondary text-white px-8 py-2 font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-orange-700 transition-all">Plan My Trip <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
             </div>`;
     } else {
         indicator.style.display = 'none';
@@ -815,5 +1023,5 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     </div>
 </div>
-
-</body></html>
+</body>
+</html>
