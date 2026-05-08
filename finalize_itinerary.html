@@ -138,7 +138,7 @@
 <header class="bg-surface dark:bg-background border-b border-outline-variant/30 docked full-width top-0 z-50 sticky">
 <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16">
 <div class="flex items-center gap-4">
-<button class="hover:opacity-80 transition-opacity text-primary dark:text-on-background">
+<button onclick="window.location.href='yourplan.html'" class="hover:opacity-80 transition-opacity text-primary dark:text-on-background">
 <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
 </button>
 <h1 class="font-display-lg text-display-lg tracking-tighter text-primary dark:text-on-background uppercase text-2xl">LAYOVERX</h1>
@@ -403,22 +403,189 @@
 </div>
 </div>
 </main>
-<!-- BottomNavBar Component -->
-<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe max-w-container-max mx-auto shadow-[0_-4px_12px_rgba(15,23,42,0.08)] bg-surface-container-highest dark:bg-primary-container rounded-t-xl">
-<!-- Edit -->
-<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-primary-fixed-variant px-4 py-2 hover:bg-on-secondary-container/10 transition-colors">
-<span class="material-symbols-outlined" data-icon="edit">edit</span>
-<span class="font-label-sm text-label-sm">Edit</span>
-</button>
-<!-- Export -->
-<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-primary-fixed-variant px-4 py-2 hover:bg-on-secondary-container/10 transition-colors">
-<span class="material-symbols-outlined" data-icon="share">share</span>
-<span class="font-label-sm text-label-sm">Export</span>
-</button>
-<!-- Confirm Journey (Active) -->
-<button class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-xl px-8 py-2 scale-98 active:scale-95 duration-200 shadow-md">
+<!-- Operational Action FAB -->
+<button id="confirm-btn" class="fixed bottom-24 right-container_margin md:bottom-12 md:right-12 bg-primary text-on-primary shadow-lg rounded-full flex items-center gap-sm pl-md pr-lg py-md active:scale-95 transition-transform z-40 hover:shadow-xl hover:-translate-y-1">
 <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
 <span class="font-label-sm text-label-sm">Confirm Journey</span>
 </button>
-</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Load Data
+    const storedData = localStorage.getItem('final_itinerary_data');
+    if (!storedData) {
+        alert("No itinerary found. Please plan your layover first.");
+        window.location.href = 'yourplan.html';
+        return;
+    }
+    const state = JSON.parse(storedData);
+    
+    // 2. Load Flight/Departure Context
+    const flightDepartureRaw = localStorage.getItem('flight_departure') || '';
+    const airportRaw = localStorage.getItem('layover_airport') || 'Mumbai BOM T2';
+    
+    let depTime = new Date();
+    let depDateStr = '';
+    if (flightDepartureRaw) {
+        try {
+            depTime = new Date(flightDepartureRaw);
+            if (!isNaN(depTime.getTime())) {
+                depDateStr = depTime.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+        } catch(e) {}
+    }
+
+    // 3. Calculate Arrival (Approximate arrival as Departure - Layover)
+    let arrivalTime = new Date(depTime.getTime() - (state.layoverDurationMinutes * 60 * 1000));
+    
+    // Update Header
+    const airportHeader = document.querySelector('h3.font-headline-md');
+    if (airportHeader) airportHeader.textContent = airportRaw + ' (Start)';
+    
+    // 4. Update Summary Dashboard ... (rest of logic)
+    const formatMins = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+    
+    const summarySection = document.querySelector('section.mb-gutter div.grid');
+    summarySection.innerHTML = `
+        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+            <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Total Layover</p>
+            <p class="font-headline-md text-headline-md text-primary">${formatMins(state.layoverDurationMinutes)}</p>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+            <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Experience Time</p>
+            <p class="font-headline-md text-headline-md text-primary">${formatMins(state.totalExperienceMinutes)}</p>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+            <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Travel Time</p>
+            <p class="font-headline-md text-headline-md text-primary">${formatMins(state.totalTransitMinutes)}</p>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+            <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Buffer Time</p>
+            <p class="font-headline-md text-headline-md text-primary">${formatMins(state.airportBufferMinutes)}</p>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20 flex flex-col justify-between">
+            <p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Status</p>
+            <div class="flex items-center gap-2 mt-2">
+                <span class="w-2.5 h-2.5 rounded-full ${state.remainingMinutes >= 0 ? 'bg-green-500' : 'bg-red-500'}"></span>
+                <span class="font-body-md text-body-md font-semibold">${state.remainingMinutes >= 0 ? 'On Track' : 'Risky'}</span>
+                <span class="text-label-sm text-on-surface-variant opacity-70">(${state.remainingMinutes >= 0 ? 'Safe' : 'Insufficient Time'})</span>
+            </div>
+        </div>
+    `;
+
+    // 5. Render Timeline
+    const timelineContainer = document.querySelector('.lg\\:col-span-8 .relative.space-y-16');
+    const formatClock = (date) => date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    
+    let html = `
+        <!-- AIRPORT START -->
+        <div class="relative pl-12">
+            <div class="route-line"></div>
+            <div class="route-node absolute left-0 top-0 route-node-complete">
+                <span class="material-symbols-outlined text-white text-[14px]" data-icon="flight_land">flight_land</span>
+            </div>
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="font-headline-md text-headline-md uppercase tracking-tight">AIRPORT (Start)</h3>
+                    <p class="text-on-surface-variant text-sm font-medium">Mumbai Chhatrapati Shivaji Maharaj (BOM) T2</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-black text-primary text-lg">${formatClock(arrivalTime)}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-60">Arrival</p>
+                </div>
+            </div>
+        </div>
+    `;
+
+    let currentTime = new Date(arrivalTime.getTime());
+
+    state.selectedItems.forEach((item, idx) => {
+        // Transit to stop
+        const legTravel = Math.round((item.originalItem.distance * 3) + 15);
+        currentTime = new Date(currentTime.getTime() + (legTravel * 60 * 1000));
+        
+        html += `
+            <!-- Transit ${idx + 1} -->
+            <div class="relative pl-12 py-2">
+                <div class="route-line"></div>
+                <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3 shadow-sm">
+                    <span class="material-symbols-outlined text-brand-purple" data-icon="directions_car">directions_car</span>
+                    <span class="text-primary font-bold text-[11px] uppercase tracking-wide">${legTravel} mins to ${item.title}</span>
+                </div>
+            </div>
+            <!-- EXPERIENCE -->
+            <div class="relative pl-12">
+                <div class="route-line"></div>
+                <div class="route-node absolute left-0 top-0 route-node-active shadow-sm border-2 border-white"></div>
+                <div class="grid md:grid-cols-3 gap-6 bg-surface-container-lowest p-6 rounded-2xl shadow-md border border-outline-variant/10">
+                    <div class="md:col-span-2 space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="bg-secondary-container text-on-secondary-container text-[9px] uppercase font-black px-3 py-1 rounded-full mb-3 inline-block tracking-widest shadow-sm">${item.category}</span>
+                                <h3 class="font-headline-md text-xl font-black tracking-tight text-primary uppercase">${item.title}</h3>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-black text-primary text-lg">${formatClock(currentTime)}</p>
+                                <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-60">Arrive & Check-in</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                             <span class="text-secondary font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> ${formatMins(item.selectedDurationMinutes)} stay</span>
+                        </div>
+                    </div>
+                    <div class="h-32 rounded-xl overflow-hidden shadow-inner bg-slate-100">
+                        ${item.originalItem.image ? `<img class="w-full h-full object-cover" src="${item.originalItem.image}"/>` : `<div class="w-full h-full flex items-center justify-center text-outline-variant"><span class="material-symbols-outlined text-4xl">image</span></div>`}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Depart from stop
+        currentTime = new Date(currentTime.getTime() + (item.selectedDurationMinutes * 60 * 1000));
+    });
+
+    // Final Transit back to airport
+    const lastItem = state.selectedItems[state.selectedItems.length - 1];
+    const returnTravel = Math.round((lastItem.originalItem.distance * 3) + 15);
+    currentTime = new Date(currentTime.getTime() + (returnTravel * 60 * 1000));
+    
+    html += `
+        <!-- Final Transit -->
+        <div class="relative pl-12 py-2">
+            <div class="route-line"></div>
+            <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3 shadow-sm">
+                <span class="material-symbols-outlined text-brand-purple" data-icon="airport_shuttle">airport_shuttle</span>
+                <span class="text-primary font-bold text-[11px] uppercase tracking-wide">${returnTravel} mins to Airport</span>
+            </div>
+        </div>
+        <!-- AIRPORT END -->
+        <div class="relative pl-12">
+            <div class="route-node absolute left-0 top-0 bg-primary border-primary shadow-sm border-2 border-white">
+                <span class="material-symbols-outlined text-white text-[14px]" data-icon="flight_takeoff">flight_takeoff</span>
+            </div>
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="font-headline-md text-headline-md uppercase tracking-tight">AIRPORT (End)</h3>
+                    <p class="text-on-surface-variant text-sm font-medium">Mumbai Chhatrapati Shivaji Maharaj (BOM) T2</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-black text-primary text-lg">${formatClock(currentTime)}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-60">Security Check & Boarding</p>
+                </div>
+            </div>
+        </div>
+    `;
+
+    timelineContainer.innerHTML = html;
+    
+    // 6. Handle confirm button
+    const confirmBtn = document.getElementById('confirm-btn');
+    if (confirmBtn) {
+        confirmBtn.onclick = () => {
+            alert("Itinerary Confirmed! Your transit journey is secured.");
+            // Reset state if needed or redirect to a success page
+        };
+    }
+});
+</script>
 </body></html>

@@ -205,13 +205,28 @@
 </div>
 </footer>
 <!-- Operational Action FAB -->
-<button class="fixed bottom-24 right-container_margin md:bottom-12 md:right-12 bg-primary text-on-primary shadow-lg rounded-full flex items-center gap-sm pl-md pr-lg py-md active:scale-95 transition-transform z-40 hover:shadow-xl hover:-translate-y-1">
+<button id="finalize-btn" class="fixed bottom-24 right-container_margin md:bottom-12 md:right-12 bg-primary text-on-primary shadow-lg rounded-full flex items-center gap-sm pl-md pr-lg py-md active:scale-95 transition-transform z-40 hover:shadow-xl hover:-translate-y-1">
 <span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
 <span class="font-label-caps text-label-caps">FINALIZE ITINERARY</span>
 </button>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // ... existing initialization ...
+    const finalizeBtn = document.getElementById('finalize-btn');
+    if (finalizeBtn) {
+        finalizeBtn.onclick = () => {
+            if (layoverList.length === 0) {
+                alert("Please add at least one experience to your itinerary.");
+                return;
+            }
+            
+            const finalState = window.getPlannerState();
+            localStorage.setItem('final_itinerary_data', JSON.stringify(finalState));
+            window.location.href = 'finalize_itinerary.html';
+        };
+    }
+    // ... rest of script ...
     // 1. Load basic user flight data
     const layoverDurationRaw = localStorage.getItem('layover_duration') || '8';
     const layoverDurationHours = parseInt(layoverDurationRaw, 10);
