@@ -21,8 +21,10 @@
                         "surface-container-low": "#f7f3f2",
                         "outline-variant": "#c7c6ca",
                         "secondary": "#5d5f5f",
-                        "brand-purple": "#5D3FD3",
-                        "brand-accent": "#5D3FD3"
+                        "brand-blue": "#2563eb",
+                        "brand-orange": "#f97316",
+                        "blueprint-bg": "#f9fafb",
+                        "blueprint-border": "#d1d5db"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.125rem",
@@ -61,7 +63,7 @@
 <button class="hover:bg-slate-100 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-200" onclick="window.history.back()">
 <span class="material-symbols-outlined text-primary">arrow_back</span>
 </button>
-<h1 class="text-lg font-black text-primary tracking-tighter uppercase">TransitLuxury</h1>
+<h1 class="text-lg font-bold text-primary tracking-tighter uppercase">TransitLuxury</h1>
 </div>
 <div class="flex items-center gap-md">
 <button class="hover:bg-slate-100 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-200">
@@ -76,43 +78,43 @@
 <!-- Smart Time Panel -->
 <section class="bg-white border border-outline-variant rounded-3xl p-6 shadow-sm relative overflow-hidden">
     <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xs font-black text-on-surface flex items-center gap-2 uppercase tracking-[0.2em]"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
+        <h2 class="text-xs font-bold text-on-surface flex items-center gap-2 uppercase tracking-[0.2em]"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
         <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
-            <span class="material-symbols-outlined text-xs text-brand-purple">flight_takeoff</span>
-            <span class="text-[10px] text-brand-purple tracking-widest font-black uppercase" id="time-departure">Departure --:--</span>
+            <span class="material-symbols-outlined text-xs text-brand-blue">flight_takeoff</span>
+            <span class="text-[10px] text-brand-blue tracking-widest font-bold uppercase" id="time-departure">Departure --:--</span>
         </div>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest mb-1">Layover</p>
-            <p class="text-sm font-black text-primary" id="time-total">--</p>
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Layover</p>
+            <p class="text-sm font-bold text-primary" id="time-total">--</p>
         </div>
         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest mb-1">Buffer</p>
-            <p class="text-sm font-black text-primary" id="time-buffer">2h 0m</p>
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Buffer</p>
+            <p class="text-sm font-bold text-primary" id="time-buffer">2h 0m</p>
         </div>
         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest mb-1">Travel</p>
-            <p class="text-sm font-black text-primary" id="time-travel">0m</p>
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Travel</p>
+            <p class="text-sm font-bold text-primary" id="time-travel">0m</p>
         </div>
         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest mb-1">Experiences</p>
-            <p class="text-sm font-black text-brand-purple" id="time-exp">0m</p>
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Experiences</p>
+            <p class="text-sm font-bold text-brand-blue" id="time-exp">0m</p>
         </div>
         <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center col-span-2 md:col-span-1" id="rem-container">
-            <p class="text-[9px] text-emerald-800 uppercase font-black tracking-widest mb-1">Remaining</p>
-            <p class="text-base font-black text-emerald-700" id="time-remaining">--</p>
+            <p class="text-[9px] text-emerald-800 uppercase font-bold tracking-widest mb-1">Remaining</p>
+            <p class="text-base font-bold text-emerald-700" id="time-remaining">--</p>
         </div>
     </div>
 </section>
 
 <!-- Category Pills -->
 <section class="flex gap-2 overflow-x-auto no-scrollbar py-2">
-<button onclick="renderCategory('recommended', this)" class="category-pill bg-primary text-on-primary px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended For You</button>
-<button onclick="renderCategory('hotel.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
-<button onclick="renderCategory('restaurant.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
-<button onclick="renderCategory('spa.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
-<button onclick="renderCategory('entertainment.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Entertainment</button>
+<button onclick="renderCategory('recommended', this)" class="category-pill bg-primary text-on-primary px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended For You</button>
+<button onclick="renderCategory('hotel.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
+<button onclick="renderCategory('restaurant.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
+<button onclick="renderCategory('spa.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
+<button onclick="renderCategory('entertainment.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Entertainment</button>
 </section>
 
 <!-- Dynamic Experience Container -->
@@ -133,29 +135,29 @@
 <div id="list-drawer" class="fixed inset-0 z-[70] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex justify-end">
     <div class="bg-white w-full max-w-md h-full shadow-2xl overflow-hidden transform translate-x-full transition-transform duration-300 flex flex-col" id="list-drawer-panel">
         <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <h2 class="text-xl font-black text-primary uppercase tracking-tight">SELECTED EXPERIENCES</h2>
+            <h2 class="text-xl font-bold text-primary uppercase tracking-tight">SELECTED EXPERIENCES</h2>
             <button onclick="window.toggleListDrawer()" class="p-2 rounded-full hover:bg-white border border-transparent hover:border-slate-200 transition-all">
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
         <div id="list-drawer-content" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"></div>
         <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
-             <button onclick="window.proceedToPlan(this)" class="w-full bg-primary text-white font-black py-4 rounded-xl text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">PLAN MY TRIP →</button>
+             <button onclick="window.proceedToPlan(this)" class="w-full bg-primary text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">PLAN MY TRIP →</button>
         </div>
     </div>
 </div>
 
 <!-- BottomNavBar -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 h-20 bg-white/95 backdrop-blur-md border-t border-outline-variant">
-<button id="nav-explore-tab" onclick="window.location.reload()" class="flex flex-col items-center justify-center text-primary font-black active:scale-95 transition-all duration-150">
+<button id="nav-explore-tab" onclick="window.location.reload()" class="flex flex-col items-center justify-center text-primary font-bold active:scale-95 transition-all duration-150">
 <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">explore</span>
 <span class="text-[9px] uppercase tracking-widest mt-1">Explore</span>
 </button>
-<button id="nav-trips-tab" class="flex flex-col items-center justify-center text-secondary font-black opacity-40 cursor-not-allowed">
+<button id="nav-trips-tab" class="flex flex-col items-center justify-center text-secondary font-bold opacity-40 cursor-not-allowed">
 <span class="material-symbols-outlined text-2xl">airplane_ticket</span>
 <span class="text-[9px] uppercase tracking-widest mt-1">Trips</span>
 </button>
-<button id="nav-profile-tab" class="flex flex-col items-center justify-center text-secondary font-black active:scale-95 transition-all duration-150">
+<button id="nav-profile-tab" class="flex flex-col items-center justify-center text-secondary font-bold active:scale-95 transition-all duration-150">
 <span class="material-symbols-outlined text-2xl">person</span>
 <span class="text-[9px] uppercase tracking-widest mt-1">Profile</span>
 </button>
@@ -296,7 +298,7 @@ window.renderCategory = function(catId, btn) {
         const picks = [window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]];
         container.innerHTML = `
             <div class="bg-white border border-outline-variant p-8 rounded-3xl shadow-sm">
-                <h3 class="text-xl font-black text-primary mb-6 tracking-tight uppercase">Recommended For You</h3>
+                <h3 class="text-xl font-bold text-primary mb-6 tracking-tight uppercase">Recommended For You</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     ${picks.map(i => window.createRecommendedCard(i)).join('')}
                 </div>
@@ -310,50 +312,40 @@ window.renderCategory = function(catId, btn) {
     const standard = items.filter(i => !i.premium);
 
     container.innerHTML = `
-        <div class="bg-slate-50 border border-slate-200 p-8 rounded-3xl shadow-sm space-y-8">
-            <div class="flex justify-between items-end border-b border-slate-200 pb-6">
+        <div class="bg-blueprint-bg border border-blueprint-border p-8 rounded-lg space-y-8">
+            <div class="flex justify-between items-end border-b border-blueprint-border pb-6">
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Concierge Inventory</p>
-                    <h3 class="text-2xl font-black text-primary uppercase tracking-tight">${config.title.replace('& ', '')} LISTING PAGE</h3>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">LEVEL 1: LISTING</p>
+                    <h3 class="text-2xl font-bold text-primary uppercase tracking-tight">${config.title.replace('& ', '')} LISTING PAGE</h3>
                 </div>
-                <span class="bg-primary text-white text-[10px] px-3 py-1 rounded font-black uppercase tracking-widest">Global Discovery</span>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-inner">
-                <select class="w-full bg-transparent border border-slate-200 p-3 rounded text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary"><option>Duration</option></select>
-                <select class="w-full bg-transparent border border-slate-200 p-3 rounded text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary"><option>Price Range</option></select>
-                <select class="w-full bg-transparent border border-slate-200 p-3 rounded text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary"><option>Distance</option></select>
-                <select class="w-full bg-transparent border border-slate-200 p-3 rounded text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary"><option>Amenities</option></select>
+            <div class="grid grid-cols-4 gap-4 mb-8">
+                <select class="border border-blueprint-border p-2 rounded text-[11px] outline-none"><option>Duration</option></select>
+                <select class="border border-blueprint-border p-2 rounded text-[11px] outline-none"><option>Price Range</option></select>
+                <select class="border border-blueprint-border p-2 rounded text-[11px] outline-none"><option>Distance</option></select>
+                <select class="border border-blueprint-border p-2 rounded text-[11px] outline-none"><option>Amenities</option></select>
             </div>
 
-            <div class="space-y-12">
+            <div class="border-2 border-dashed border-blueprint-border p-8 rounded space-y-12">
+                <div class="flex justify-between items-center border-b border-blueprint-border pb-4">
+                    <h4 class="text-xs font-bold text-primary uppercase">HOTEL INVENTORY (12 HOTELS FOUND)</h4>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">${items.length} Items</span>
+                </div>
+
                 ${premium.length ? `
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center px-1">
-                        <h4 class="text-[10px] font-black text-brand-purple uppercase tracking-[0.2em] flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm">workspace_premium</span> Premium ${config.key}
-                        </h4>
-                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">${premium.length} Items</span>
-                    </div>
-                    <div class="border-2 border-dashed border-slate-200 p-6 rounded-2xl">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            ${premium.map(i => window.createDashboardCard(i)).join('')}
-                        </div>
+                    <h4 class="text-[10px] font-bold text-brand-blue uppercase tracking-widest border-b border-blueprint-border pb-2">PREMIUM ${config.key.toUpperCase()}</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        ${premium.map(i => window.createDashboardCard(i)).join('')}
                     </div>
                 </div>` : ''}
 
                 ${standard.length ? `
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center px-1">
-                        <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm">list</span> Standard Options
-                        </h4>
-                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">${standard.length} Items</span>
-                    </div>
-                    <div class="border-2 border-dashed border-slate-200 p-6 rounded-2xl">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            ${standard.map(i => window.createDashboardCard(i)).join('')}
-                        </div>
+                    <h4 class="text-[10px] font-bold text-brand-blue uppercase tracking-widest border-b border-blueprint-border pb-2">STANDARD OPTIONS</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        ${standard.map(i => window.createDashboardCard(i)).join('')}
                     </div>
                 </div>` : ''}
             </div>
@@ -369,12 +361,12 @@ window.createRecommendedCard = function(item) {
             <div class="w-full h-32 rounded-xl overflow-hidden bg-slate-200 relative">
                 ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-outline-variant"><span class="material-symbols-outlined text-3xl">${catConfig.icon}</span></div>`}
                 <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded border border-white/10">
-                    <span class="text-white text-[8px] font-black">${item.rating}</span>
+                    <span class="text-white text-[8px] font-bold">${item.rating}</span>
                 </div>
             </div>
             <div>
-                <h4 class="font-black text-sm text-primary uppercase tracking-tight">${item.name}</h4>
-                <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mt-1">${item.type} • ${travel}m away</p>
+                <h4 class="font-bold text-sm text-primary uppercase tracking-tight">${item.name}</h4>
+                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1">${item.type} • ${travel}m away</p>
             </div>
         </div>
     `;
@@ -383,24 +375,14 @@ window.createRecommendedCard = function(item) {
 window.createDashboardCard = function(item) {
     const travel = Math.round(window.calculateDynamicTravelMins(item.distance));
     return `
-        <div class="bg-white border border-slate-200 rounded-xl p-5 hover:border-primary hover:shadow-xl transition-all cursor-pointer group relative flex flex-col h-full" onclick="window.showDetail('${item.name}')">
-            <div class="flex justify-between items-start mb-4">
-                <div class="pr-6">
-                    <h4 class="font-black text-xs text-primary leading-tight uppercase tracking-tight line-clamp-2">${item.name}</h4>
-                    <p class="text-[8px] text-slate-400 font-black uppercase tracking-[0.1em] mt-2">${item.type}</p>
-                </div>
-                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-sm absolute top-5 right-5">arrow_outward</span>
+        <div class="bg-white border border-blueprint-border p-3 hover:border-brand-blue transition-all cursor-pointer relative flex flex-col h-24" onclick="window.showDetail('${item.name}')">
+            <span class="material-symbols-outlined text-slate-300 absolute top-2 right-2 text-xs">arrow_outward</span>
+            <div class="mb-auto">
+                <h4 class="font-bold text-[11px] text-primary uppercase tracking-tight line-clamp-1">${item.name}</h4>
+                <p class="text-[9px] text-slate-400 font-medium mt-1">${item.distance} km from T2</p>
             </div>
-            
-            <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
-                <div class="flex flex-col">
-                    <span class="text-[7px] text-slate-400 font-black uppercase tracking-widest mb-0.5">Est. Travel</span>
-                    <span class="text-[9px] font-black text-primary uppercase">${travel}m drive</span>
-                </div>
-                <div class="flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
-                    <span class="material-symbols-outlined text-[10px] text-emerald-600" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <span class="text-[9px] font-black text-emerald-700">${item.rating.split(' ')[0]}</span>
-                </div>
+            <div class="flex items-center justify-end">
+                <span class="text-[10px] font-bold text-brand-orange">${item.rating.split(' ')[0]}</span>
             </div>
         </div>
     `;
@@ -421,8 +403,8 @@ window.showDetail = function(name) {
         <div class="h-full flex flex-col">
             <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Concierge View</p>
-                    <h2 class="text-xl font-black text-primary uppercase tracking-tight">EXPERIENCE DETAILS</h2>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-1">Concierge View</p>
+                    <h2 class="text-xl font-bold text-primary uppercase tracking-tight">EXPERIENCE DETAILS</h2>
                 </div>
                 <button onclick="window.hideDetail()" class="p-2 rounded-full hover:bg-white border border-transparent hover:border-slate-200 transition-all">
                     <span class="material-symbols-outlined">close</span>
@@ -432,13 +414,13 @@ window.showDetail = function(name) {
             <div class="flex-1 overflow-y-auto p-10 space-y-12 no-scrollbar">
                 <div class="flex justify-between items-start">
                     <div>
-                        <span class="bg-primary/5 text-primary px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest mb-4 inline-block border border-primary/10">${item.type}</span>
-                        <h2 class="text-4xl font-black text-primary tracking-tighter leading-none uppercase">${item.name}</h2>
-                        <p class="text-sm text-slate-500 font-black mt-4 flex items-center gap-2 uppercase tracking-wide"><span class="material-symbols-outlined text-emerald-600">location_on</span> ${item.distance} KM FROM T2 TERMINAL</p>
+                        <span class="bg-primary/5 text-primary px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest mb-4 inline-block border border-primary/10">${item.type}</span>
+                        <h2 class="text-4xl font-bold text-primary tracking-tighter leading-none uppercase">${item.name}</h2>
+                        <p class="text-sm text-slate-500 font-bold mt-4 flex items-center gap-2 uppercase tracking-wide"><span class="material-symbols-outlined text-emerald-600">location_on</span> ${item.distance} KM FROM T2 TERMINAL</p>
                     </div>
                     <div class="flex items-center gap-2 bg-emerald-500 text-white px-4 py-2 rounded-xl shadow-lg">
                         <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="text-xl font-black">${item.rating.split(' ')[0]}</span>
+                        <span class="text-xl font-bold">${item.rating.split(' ')[0]}</span>
                     </div>
                 </div>
 
@@ -448,20 +430,20 @@ window.showDetail = function(name) {
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-32">
                     <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 space-y-6">
-                        <p class="text-[10px] font-black text-primary uppercase tracking-widest flex items-center gap-2 border-b border-slate-200 pb-4"><span class="material-symbols-outlined text-sm">verified_user</span> KEY DIFFERENTIATORS</p>
+                        <p class="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2 border-b border-slate-200 pb-4"><span class="material-symbols-outlined text-sm">verified_user</span> KEY DIFFERENTIATORS</p>
                         <ul class="text-sm font-bold text-slate-600 space-y-4">
                             ${item.details.map(d => `<li class="flex items-start gap-3"><span class="material-symbols-outlined text-emerald-600 text-[20px]">check_circle</span> <span>${d}</span></li>`).join('')}
                         </ul>
                     </div>
                     <div class="bg-primary border-[6px] border-black p-8 rounded-3xl space-y-8 flex flex-col justify-center shadow-2xl">
                         <div>
-                            <label class="block text-[10px] font-black text-white/50 uppercase tracking-widest mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-sm">schedule</span> Selection Period <span class="text-red-500">*</span></label>
-                            <select id="det-dur" class="w-full bg-white border-none p-5 rounded-2xl text-sm font-black outline-none shadow-inner appearance-none cursor-pointer" onchange="document.getElementById('det-add').disabled = !this.value">
+                            <label class="block text-[10px] font-bold text-white/50 uppercase tracking-widest mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-sm">schedule</span> Selection Period <span class="text-red-500">*</span></label>
+                            <select id="det-dur" class="w-full bg-white border-none p-5 rounded-2xl text-sm font-bold outline-none shadow-inner appearance-none cursor-pointer" onchange="document.getElementById('det-add').disabled = !this.value">
                                 <option value="" disabled selected hidden>Select timing...</option>
                                 ${durs.map(d => `<option value="${d}">${d.replace('h', ' Hours').replace('m', ' Mins').replace('1 Hours', '1 Hour')}</option>`).join('')}
                             </select>
                         </div>
-                        <button id="det-add" ${isAdded ? 'disabled' : 'disabled'} onclick="window.addToList(this, '${item.name}', '${item.category}', document.getElementById('det-dur').value, ${item.distance}, '${item.image}')" class="w-full bg-white text-black font-black py-6 rounded-2xl text-sm uppercase tracking-widest shadow-2xl active:scale-[0.98] transition-all disabled:opacity-30 flex items-center justify-center gap-3">
+                        <button id="det-add" ${isAdded ? 'disabled' : 'disabled'} onclick="window.addToList(this, '${item.name}', '${item.category}', document.getElementById('det-dur').value, ${item.distance}, '${item.image}')" class="w-full bg-white text-black font-bold py-6 rounded-2xl text-sm uppercase tracking-widest shadow-2xl active:scale-[0.98] transition-all disabled:opacity-30 flex items-center justify-center gap-3">
                             ${isAdded ? '<span class="material-symbols-outlined">check</span> SECURED' : '<span class="material-symbols-outlined">add_task</span> ADD TO LIST'}
                         </button>
                     </div>
@@ -496,14 +478,14 @@ window.toggleListDrawer = function() {
             window.layoverList.map((item, idx) => `
                 <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
                     <div>
-                        <p class="font-black text-xs text-primary uppercase">${item.name}</p>
-                        <p class="text-[9px] text-slate-400 font-black uppercase mt-1">${item.category} • ${item.duration.replace('h',' hr').replace('m',' min')}</p>
+                        <p class="font-bold text-xs text-primary uppercase">${item.name}</p>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase mt-1">${item.category} • ${item.duration.replace('h',' hr').replace('m',' min')}</p>
                     </div>
                     <button onclick="window.removeFromList('${item.name}')" class="text-slate-300 hover:text-red-500 transition-colors">
                         <span class="material-symbols-outlined text-lg">delete</span>
                     </button>
                 </div>
-            `).join('') : '<p class="text-center text-slate-400 font-black text-[10px] uppercase py-20 tracking-widest">No items secured</p>';
+            `).join('') : '<p class="text-center text-slate-400 font-bold text-[10px] uppercase py-20 tracking-widest">No items secured</p>';
             
         drawer.classList.remove('hidden');
         setTimeout(() => {
@@ -525,7 +507,7 @@ window.addToList = function(btn, itemName, category, duration, distance, image) 
         localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
     }
     btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Secured';
-    btn.className = "w-full bg-emerald-50 text-emerald-700 border border-emerald-200 py-6 rounded-2xl text-sm font-black flex items-center justify-center gap-2 cursor-default uppercase tracking-widest shadow-none";
+    btn.className = "w-full bg-emerald-50 text-emerald-700 border border-emerald-200 py-6 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 cursor-default uppercase tracking-widest shadow-none";
     btn.disabled = true;
     window.updateListIndicator();
     window.updateTimeCalculations();
@@ -545,14 +527,14 @@ window.removeFromList = function(itemName) {
             window.layoverList.map((item, idx) => `
                 <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
                     <div>
-                        <p class="font-black text-xs text-primary uppercase">${item.name}</p>
-                        <p class="text-[9px] text-slate-400 font-black uppercase mt-1">${item.category} • ${item.duration.replace('h',' hr').replace('m',' min')}</p>
+                        <p class="font-bold text-xs text-primary uppercase">${item.name}</p>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase mt-1">${item.category} • ${item.duration.replace('h',' hr').replace('m',' min')}</p>
                     </div>
                     <button onclick="window.removeFromList('${item.name}')" class="text-slate-300 hover:text-red-500 transition-colors">
                         <span class="material-symbols-outlined text-lg">delete</span>
                     </button>
                 </div>
-            `).join('') : '<p class="text-center text-slate-400 font-black text-[10px] uppercase py-20 tracking-widest">No items secured</p>';
+            `).join('') : '<p class="text-center text-slate-400 font-bold text-[10px] uppercase py-20 tracking-widest">No items secured</p>';
     }
 };
 
@@ -583,8 +565,8 @@ window.updateListIndicator = function() {
         indicator.style.display = 'flex';
         indicator.innerHTML = `
             <div class="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-slate-200 p-2 rounded-full shadow-2xl ring-1 ring-black/5">
-                <button onclick=\"window.toggleListDrawer()\" class="bg-slate-100 hover:bg-slate-200 px-6 py-3 rounded-full font-black text-[10px] uppercase tracking-widest text-primary border border-slate-300 transition-colors">View List (${window.layoverList.length})</button>
-                <button onclick=\"window.proceedToPlan(this)\" class=\"bg-black text-white px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest flex items-center gap-2 shadow-lg active:scale-95 transition-all\">Plan My Trip <span class=\"material-symbols-outlined text-sm\">arrow_forward</span></button>
+                <button onclick=\"window.toggleListDrawer()\" class="bg-slate-100 hover:bg-slate-200 px-6 py-3 rounded-full font-bold text-[10px] uppercase tracking-widest text-primary border border-slate-300 transition-colors">View List (${window.layoverList.length})</button>
+                <button onclick=\"window.proceedToPlan(this)\" class=\"bg-black text-white px-8 py-3 rounded-full font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 shadow-lg active:scale-95 transition-all\">Plan My Trip <span class=\"material-symbols-outlined text-sm\">arrow_forward</span></button>
             </div>`;
     } else {
         indicator.style.display = 'none';
