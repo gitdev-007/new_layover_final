@@ -132,34 +132,39 @@
 </div>
 </header>
 <main class="max-w-4xl mx-auto px-container_margin py-xl space-y-lg pb-32">
-<!-- Layover Summary Card -->
-<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
-<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-lg">
-<div>
-<h2 class="font-display text-h1 text-on-surface" id="plan-airport">Mumbai BOM T2</h2>
-<p class="font-body-md text-secondary" id="plan-departure-info">Departure: --:--</p>
-</div>
-</div>
-<!-- Time Management System: Bento Grid -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
-<div class="p-md bg-surface-container rounded-lg flex flex-col gap-xs">
-<span class="font-label-caps text-label-caps text-secondary">TOTAL DURATION</span>
-<span class="font-display text-h2 text-on-surface" id="plan-total-duration">--</span>
-</div>
-<div class="p-md bg-surface-container rounded-lg flex flex-col gap-xs">
-<span class="font-label-caps text-label-caps text-secondary">AIRPORT BUFFER</span>
-<span class="font-display text-h2 text-on-surface">2h 0m</span>
-</div>
-<div class="p-md bg-surface-container rounded-lg flex flex-col gap-xs">
-<span class="font-label-caps text-label-caps text-secondary">TRAVEL TIME</span>
-<span class="font-display text-h2 text-on-surface" id="plan-travel-time">0m</span>
-</div>
-<div class="p-md bg-surface-container rounded-lg flex flex-col gap-xs">
-<span class="font-label-caps text-label-caps text-primary">JOURNEY TIME</span>
-<span class="font-display text-h2 text-primary" id="plan-journey-time">--</span>
-</div>
-</div>
+<!-- Smart Time Panel -->
+<section class="bg-white border border-outline-variant rounded-3xl p-6 shadow-sm relative overflow-hidden">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xs font-bold text-on-surface flex items-center gap-2 uppercase tracking-[0.2em]"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
+        <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+            <span class="material-symbols-outlined text-xs text-brand-blue">flight_takeoff</span>
+            <span class="text-[10px] text-brand-blue tracking-widest font-bold uppercase" id="time-departure">Departure --:--</span>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Layover</p>
+            <p class="text-sm font-bold text-primary" id="time-total">--</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Buffer</p>
+            <p class="text-sm font-bold text-primary" id="time-buffer">2h 0m</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Travel</p>
+            <p class="text-sm font-bold text-primary" id="time-travel">0m</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Experiences</p>
+            <p class="text-sm font-bold text-brand-blue" id="time-exp">0m</p>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center col-span-2 md:col-span-1" id="rem-container">
+            <p class="text-[9px] text-emerald-800 uppercase font-bold tracking-widest mb-1">Remaining</p>
+            <p class="text-base font-bold text-emerald-700" id="time-remaining">--</p>
+        </div>
+    </div>
 </section>
+
 <!-- Selected Experiences List -->
 <section class="space-y-sm">
 <div class="flex justify-between items-center mb-sm">
@@ -248,8 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    document.getElementById('plan-departure-info').textContent = `Departure: ${depTimeStr} ${depDateStr ? '• ' + depDateStr : ''}`;
-    document.getElementById('plan-total-duration').textContent = `${layoverDurationHours}h 0m`;
+    const timeDepartureEl = document.getElementById('time-departure');
+    if (timeDepartureEl) timeDepartureEl.textContent = `Departure ${depTimeStr}`;
 
     // 2. Load Layover List State
     let layoverList = [];
@@ -371,33 +376,31 @@ document.addEventListener('DOMContentLoaded', () => {
         let state = window.getPlannerState(layoverList);
         let journeyMins = state.remainingMinutes;
         
-        let journeyTimeEl = document.getElementById('plan-journey-time');
-        let journeyCard = journeyTimeEl.closest('div');
         
-        if (state.layoverDurationMinutes > 0) {
-            document.getElementById('plan-total-duration').textContent = formatTime(state.layoverDurationMinutes);
-        } else {
-            document.getElementById('plan-total-duration').textContent = '--';
+        const timeTotalEl = document.getElementById('time-total');
+        const timeTravelEl = document.getElementById('time-travel');
+        const timeExpEl = document.getElementById('time-exp');
+        
+        if (timeTotalEl) timeTotalEl.textContent = formatTime(state.layoverDurationMinutes);
+        if (timeTravelEl) timeTravelEl.textContent = formatTime(state.totalTransitMinutes);
+        if (timeExpEl) timeExpEl.textContent = formatTime(state.totalExperienceMinutes);
+
+        let remEl = document.getElementById('time-remaining');
+        let remContainer = document.getElementById('rem-container');
+        if (remEl && remContainer) {
+            if (journeyMins < 0) {
+                remEl.textContent = 'Risk';
+                remEl.style.color = '#dc2626';
+                remContainer.style.backgroundColor = '#fef2f2';
+                remContainer.style.border = '1px solid #fee2e2';
+            } else {
+                remEl.textContent = formatTime(journeyMins);
+                remEl.style.color = '#15803d';
+                remContainer.style.backgroundColor = '#ecfdf5';
+                remContainer.style.border = '1px solid #d1fae5';
+            }
         }
 
-        if (journeyMins < 0) {
-            journeyTimeEl.className = 'font-display text-h2 text-error';
-            journeyTimeEl.previousElementSibling.className = 'font-label-caps text-label-caps text-error';
-            journeyCard.className = 'p-md bg-error-container rounded-lg flex flex-col gap-xs border border-error transition-colors';
-            journeyTimeEl.textContent = formatTime(Math.abs(journeyMins)) + ' Over';
-        } else if (journeyMins < 60) {
-            journeyTimeEl.className = 'font-display text-h2 text-tertiary-container';
-            journeyTimeEl.previousElementSibling.className = 'font-label-caps text-label-caps text-tertiary-container';
-            journeyCard.className = 'p-md bg-tertiary-fixed rounded-lg flex flex-col gap-xs border border-tertiary-container/30 transition-colors';
-            journeyTimeEl.textContent = formatTime(journeyMins) + ' Left';
-        } else {
-            journeyTimeEl.className = 'font-display text-h2 text-primary';
-            journeyTimeEl.previousElementSibling.className = 'font-label-caps text-label-caps text-primary';
-            journeyCard.className = 'p-md bg-primary-fixed rounded-lg flex flex-col gap-xs transition-colors';
-            journeyTimeEl.textContent = formatTime(journeyMins) + ' Left';
-        }
-
-        document.getElementById('plan-travel-time').textContent = formatTime(state.totalTransitMinutes);
     };
 window.moveUp = function(i) {
         if (i > 0) {
