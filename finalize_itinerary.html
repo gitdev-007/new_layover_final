@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-container": "#706347",
+            "secondary-container": "#f3e1bd",
+            "surface-bright": "#fcf8fa",
+            "surface-container-high": "#eae7e9",
+            "tertiary-fixed": "#fcdeb5",
+            "tertiary": "#000000",
+            "on-primary-container": "#7c839b",
+            "inverse-surface": "#303032",
+            "on-secondary": "#ffffff",
+            "tertiary-container": "#271901",
+            "on-error-container": "#93000a",
+            "secondary-fixed-dim": "#d6c5a3",
+            "outline-variant": "#c6c6cd",
+            "inverse-primary": "#bec6e0",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed": "#231a05",
+            "inverse-on-surface": "#f3f0f2",
+            "surface-container-lowest": "#ffffff",
+            "on-surface-variant": "#45464d",
+            "on-primary": "#ffffff",
+            "primary-container": "#131b2e",
+            "on-primary-fixed-variant": "#3f465c",
+            "on-tertiary": "#ffffff",
+            "surface": "#fcf8fa",
+            "surface-variant": "#e4e2e4",
+            "error": "#ba1a1a",
+            "secondary": "#6a5d41",
+            "primary-fixed": "#dae2fd",
+            "on-tertiary-fixed-variant": "#574425",
+            "secondary-fixed": "#f3e1bd",
+            "tertiary-fixed-dim": "#dec29a",
+            "on-tertiary-container": "#98805d",
+            "surface-tint": "#565e74",
+            "on-tertiary-fixed": "#271901",
+            "on-error": "#ffffff",
+            "on-primary-fixed": "#131b2e",
+            "outline": "#76777d",
+            "surface-container-low": "#f6f3f5",
+            "primary": "#000000",
+            "on-background": "#1b1b1d",
+            "on-secondary-fixed-variant": "#51452b",
+            "primary-fixed-dim": "#bec6e0",
+            "surface-container-highest": "#e4e2e4",
+            "surface-dim": "#dcd9db",
+            "on-surface": "#1b1b1d",
+            "surface-container": "#f0edef",
+            "background": "#fcf8fa"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "16px",
+            "margin-desktop": "40px",
+            "unit": "8px",
+            "gutter": "24px",
+            "container-max": "1280px"
+          },
+          "fontFamily": {
+            "label-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "display-lg": ["Inter"],
+            "headline-md": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+            "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "400"}],
+            "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+            "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "300"}],
+            "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0.01em", "fontWeight": "500"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .route-line {
+      position: absolute;
+      left: 11px;
+      top: 24px;
+      bottom: -24px;
+      width: 2px;
+      background-color: #cbd5e1; /* Slate Blue substitute */
+    }
+    .route-node {
+      position: relative;
+      z-index: 10;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .route-node-active {
+      border-color: #f3e1bd; /* Champagne Gold */
+      background: #f3e1bd;
+    }
+    .route-node-complete {
+      border-color: #15803d; /* Forest Green */
+      background: #15803d;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-32">
+<!-- TopAppBar Component -->
+<header class="bg-surface dark:bg-background border-b border-outline-variant/30 docked full-width top-0 z-50 sticky">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center gap-4">
+<button class="hover:opacity-80 transition-opacity text-primary dark:text-on-background">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-display-lg text-display-lg tracking-tighter text-primary dark:text-on-background uppercase text-2xl">LAYOVERX</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-8">
+<span class="text-on-surface-variant font-label-sm text-label-sm cursor-pointer hover:opacity-80">PLAN</span>
+<span class="text-primary font-bold font-label-sm text-label-sm cursor-pointer hover:opacity-80">ITINERARY</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm cursor-pointer hover:opacity-80">SUPPORT</span>
+</nav>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Premium user profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR4rAM83q4J_L2matCRrBFoodN-CSVmMEhjX4TpmlisRq4QuBGRnT6us0akIMPH_ci27S4xDb3UqKas-1H_z7q1BnIm8aoAmpUNj-mO2TdMOw9oL2WsOjFyprICJ6cl9WrWQfB-LnVAIG_1GaKnI4ICnmiWDTEiFBtnzZiGW5r-pf1Vp_97eysl6olptX-Xe8QPWuWSVasiiC-jKdFGPHLXD8N5Z0gNuF04-2rLL0BZZtN2JWTxtlmwJstqjPV2r4YMacVzkmLPEiv"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
+<!-- Top Summary Dashboard -->
+<section class="mb-gutter overflow-x-auto pb-4 -mx-margin-mobile px-margin-mobile md:mx-0 md:px-0">
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 min-w-[600px] md:min-w-full">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Total Layover</p>
+<p class="font-headline-md text-headline-md text-primary">12h 30m</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Experience Time</p>
+<p class="font-headline-md text-headline-md text-primary">9.5h</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Travel Time</p>
+<p class="font-headline-md text-headline-md text-primary">1h 17m</p>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Buffer Time</p>
+<p class="font-headline-md text-headline-md text-primary">1.5h</p>
+</div>
+<!-- Card 5 (Status) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20 flex flex-col justify-between">
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Status</p>
+<div class="flex items-center gap-2 mt-2">
+<span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+<span class="font-body-md text-body-md font-semibold">On Track</span>
+<span class="text-label-sm text-on-surface-variant opacity-70">(Low Risk)</span>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Main Itinerary Timeline (Vertical) - Left Column -->
+<div class="lg:col-span-8 space-y-12">
+<h2 class="font-headline-lg text-headline-lg text-primary">Finalized Itinerary</h2>
+<div class="relative space-y-16">
+<!-- AIRPORT START -->
+<div class="relative pl-12">
+<div class="route-line"></div>
+<div class="route-node absolute left-0 top-0 route-node-complete">
+<span class="material-symbols-outlined text-white text-[14px]" data-icon="flight_land">flight_land</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md">AIRPORT (Start)</h3>
+<p class="text-on-surface-variant">Mumbai Chhatrapati Shivaji Maharaj (BOM)</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">10:00 AM</p>
+<p class="text-label-sm text-on-surface-variant">Arrival</p>
+</div>
+</div>
+</div>
+<!-- Transit 1 -->
+<div class="relative pl-12 py-2">
+<div class="route-line"></div>
+<div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="directions_car">directions_car</span>
+<span class="text-on-surface-variant font-label-sm">18 mins to The Orchid Hotel</span>
+</div>
+</div>
+<!-- HOTEL EXPERIENCE -->
+<div class="relative pl-12">
+<div class="route-line"></div>
+<div class="route-node absolute left-0 top-0 route-node-active"></div>
+<div class="grid md:grid-cols-3 gap-6 bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/10">
+<div class="md:col-span-2 space-y-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] uppercase font-bold px-2 py-1 rounded-full mb-2 inline-block">Hotel Experience</span>
+<h3 class="font-headline-md text-headline-md">The Orchid Hotel</h3>
+<p class="text-on-surface-variant text-body-md">Luxury eco-friendly boutique stay near Terminal 1.</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">10:18 AM</p>
+<p class="text-label-sm text-on-surface-variant">4 Hours Stay</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]" data-icon="wifi">wifi</span><span class="text-label-sm">Free Wi-Fi</span></div>
+<div class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]" data-icon="pool">pool</span><span class="text-label-sm">Pool Access</span></div>
+</div>
+</div>
+<div class="h-40 rounded-xl overflow-hidden shadow-inner">
+<img class="w-full h-full object-cover" data-alt="A luxury hotel exterior featuring a modern white facade with lush vertical gardens and elegant lighting at dusk. The entrance is pristine with a polished dark stone floor reflecting the warm ambient lights of the lobby. The atmosphere is sophisticated and premium, conveying a sense of exclusive comfort for the global traveler." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCK9PrOObMtCKZh7Xfg9Z44iPAqquKzqrjv5cCw-YXQjA16YTZLOGBKfAHjQeP6d16m_bzlgpeGar8CRXtLCTCU3Ca9by8u1Lo_Y5H5GFv-DzbdwBXXt9w_2svkjm6CPsyCEDCHxGpI_y-USN4ct2voIvilJBLNQBaD4Xa4BWuq0eH8Gizpq0G7Vbba6KYeJ2jMTEl729jiyiwnU4u0rOU-O376VmlKN7J04o030rX6VCXqQ4nvnhvVbjWlUL4XvPayWsQxx11TCweF"/>
+</div>
+</div>
+</div>
+<!-- Transit 2 -->
+<div class="relative pl-12 py-2">
+<div class="route-line"></div>
+<div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="directions_car">directions_car</span>
+<span class="text-on-surface-variant font-label-sm">12 mins to Masala Kraft</span>
+</div>
+</div>
+<!-- RESTAURANT EXPERIENCE -->
+<div class="relative pl-12">
+<div class="route-line"></div>
+<div class="route-node absolute left-0 top-0 border-outline"></div>
+<div class="grid md:grid-cols-3 gap-6 bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/10">
+<div class="md:col-span-2 space-y-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] uppercase font-bold px-2 py-1 rounded-full mb-2 inline-block">Gourmet Dining</span>
+<h3 class="font-headline-md text-headline-md">Masala Kraft</h3>
+<p class="text-on-surface-variant text-body-md">Contemporary Indian cuisine with a focus on Mumbai street flavors refined for a fine-dining experience.</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">2:30 PM</p>
+<p class="text-label-sm text-on-surface-variant">1.5 Hours Stay</p>
+</div>
+</div>
+</div>
+<div class="h-40 rounded-xl overflow-hidden shadow-inner">
+<img class="w-full h-full object-cover" data-alt="A beautifully set fine-dining restaurant table in an upscale Indian restaurant. The interior features warm, dim lighting with metallic silver accents and dark wood textures. Artfully plated traditional dishes are presented on white ceramic, illuminated by soft golden spotlights creating a moody yet inviting atmosphere of high-end culinary excellence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzXwYF_psAML3w-MFYDScmLGmxGmDr6oIPFX4wmdY0AP7UV7CtB-CUcRF71cCgCZGY5h5XuueAST1vKvS-Peyz07j-Ef60mHDkKuLXL1ccl466oIdMPIQ1OG_dwVmsuf6fBb-vCKdShtBRnkq-5jwgfK801_RUPoIrxRPPYBf3AjRz9OxZIpJjLl0lOWBFbYLCQkW1c49mh6_kaPhv_MzxeprJrdH3jqTFlUbA2o-NuGZMntPQnL8mzZsCEt8mPcIp6wKpuSqa0DNu"/>
+</div>
+</div>
+</div>
+<!-- Transit 3 -->
+<div class="relative pl-12 py-2">
+<div class="route-line"></div>
+<div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="directions_walk">directions_walk</span>
+<span class="text-on-surface-variant font-label-sm">10 mins to Jiva Spa</span>
+</div>
+</div>
+<!-- SPA EXPERIENCE -->
+<div class="relative pl-12">
+<div class="route-line"></div>
+<div class="route-node absolute left-0 top-0 border-outline"></div>
+<div class="grid md:grid-cols-3 gap-6 bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/10">
+<div class="md:col-span-2 space-y-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] uppercase font-bold px-2 py-1 rounded-full mb-2 inline-block">Wellness</span>
+<h3 class="font-headline-md text-headline-md">Jiva Spa</h3>
+<p class="text-on-surface-variant text-body-md">Signature Ayurvedic treatments and reflexology for deep post-flight rejuvenation.</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">4:10 PM</p>
+<p class="text-label-sm text-on-surface-variant">2 Hours Stay</p>
+</div>
+</div>
+</div>
+<div class="h-40 rounded-xl overflow-hidden shadow-inner">
+<img class="w-full h-full object-cover" data-alt="A serene spa treatment room with soft, warm lighting and natural wood accents. A massage table is neatly prepared with plush white linens and a single orchid flower. In the background, a small indoor water feature provides a tranquil atmosphere. The color palette is composed of soft creams, warm browns, and metallic silver highlights, emphasizing a mood of deep relaxation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhQVMQnXLut8p5qPAfQzJd_YIuTM-luy9kEETk0zuBpqtuQz28FDjPtdGb1D9K11leR-oGywzWuMAAZxe9JKPTfBs9vWc88Ak6SIawHp90NKaw8eoWxMc9W3F80lIz3qjI2eE5d1grbrn5fMojxGfV6eLu4VhHvWISLYfZ0feTCmSN_q2UeFD7IuB-lEVsKMxWrooOKJ8dFFHuP2lx62p-U1oAgQYdevqsRfTCJEAkA7Opw4bILTLZMf9MNdA7H58EeiQMYSXZWrvY"/>
+</div>
+</div>
+</div>
+<!-- Transit 4 -->
+<div class="relative pl-12 py-2">
+<div class="route-line"></div>
+<div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="directions_car">directions_car</span>
+<span class="text-on-surface-variant font-label-sm">15 mins to Smaaash Mumbai</span>
+</div>
+</div>
+<!-- ENTERTAINMENT -->
+<div class="relative pl-12">
+<div class="route-line"></div>
+<div class="route-node absolute left-0 top-0 border-outline"></div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] uppercase font-bold px-2 py-1 rounded-full mb-2 inline-block">Leisure</span>
+<h3 class="font-headline-md text-headline-md">Smaaash Mumbai</h3>
+<p class="text-on-surface-variant text-body-md">Urban sports and gaming arena. Experience VR cricket or luxury bowling lanes.</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">6:25 PM</p>
+<p class="text-label-sm text-on-surface-variant">2 Hours Stay</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Final Transit -->
+<div class="relative pl-12 py-2">
+<div class="route-line"></div>
+<div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="shuttle_bus">airport_shuttle</span>
+<span class="text-on-surface-variant font-label-sm">22 mins to Airport</span>
+</div>
+</div>
+<!-- AIRPORT END -->
+<div class="relative pl-12">
+<div class="route-node absolute left-0 top-0 bg-primary border-primary">
+<span class="material-symbols-outlined text-white text-[14px]" data-icon="flight_takeoff">flight_takeoff</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md">AIRPORT (End)</h3>
+<p class="text-on-surface-variant">Mumbai Chhatrapati Shivaji Maharaj (BOM)</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">8:47 PM</p>
+<p class="text-label-sm text-on-surface-variant">Final Departure</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Map/Route Overview - Right Column (Sticky on Desktop) -->
+<div class="lg:col-span-4 lg:sticky lg:top-24 space-y-gutter">
+<div class="bg-surface-container-lowest rounded-2xl shadow-lg border border-outline-variant/20 overflow-hidden">
+<div class="p-4 border-b border-outline-variant/30 flex justify-between items-center bg-surface-bright">
+<h4 class="font-label-sm text-label-sm uppercase tracking-wider">Route Overview</h4>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="map">map</span>
+</div>
+<div class="aspect-square w-full bg-surface-container-high relative">
+<!-- Simulated Map -->
+<img class="w-full h-full object-cover opacity-50 grayscale" data-alt="A clean, minimalist map illustration of Mumbai's metropolitan area. The map uses a sophisticated color palette of light greys and whites for the city grid, with subtle champagne gold lines highlighting the transit route. Major landmarks like the airport and waterfront are delicately labeled with thin, modern sans-serif typography. The aesthetic is inspired by high-end concierge mapping services." data-location="Mumbai" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOOYSPa7ks1AFKEYWCBfHNsRBUNEi64YzRmeY5DNyg1Yy2HEdNX1b3ehq73rKGKgOxFYpvgLnAncXHSCMOed3uV1P9bPaesA-MlI8PT5XuQA0Zr7l-9zkVhzof-KS7cqyF0JTdatvuFAWUNwPorHPwkky2x0jvJPcHVLNSEX3gc9Aid1awVxFhv9YNE1U2XHhrV2jcsCr9q13PV0Y7ZEZzX24pvbWkk4eOBAWEJPdlFEwO1Z-NtLBmlvSB9TyAmuYdhcSo-cZm-UGt"/>
+<!-- Overlay Graphics -->
+<div class="absolute inset-0 p-8 flex flex-col items-center justify-center">
+<svg class="w-full h-full drop-shadow-md" viewbox="0 0 100 100">
+<circle cx="20" cy="20" fill="#000" r="3"></circle> <!-- Airport A -->
+<circle cx="80" cy="80" fill="#000" r="3"></circle> <!-- Airport B -->
+<path d="M 20 20 Q 50 10 70 30 T 40 60 T 80 80" fill="none" stroke="#f3e1bd" stroke-dasharray="4" stroke-width="2"></path>
+<circle cx="70" cy="30" fill="#6a5d41" r="2"></circle>
+<circle cx="40" cy="60" fill="#6a5d41" r="2"></circle>
+</svg>
+</div>
+</div>
+<div class="p-6 bg-surface-bright">
+<div class="flex items-center gap-4 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+<p class="text-label-sm">Transit times include current traffic estimates and airport security clearance buffers.</p>
+</div>
+<button class="w-full py-3 px-4 border border-outline rounded-xl font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">
+               EXPAND MAP VIEW
+             </button>
+</div>
+</div>
+<!-- Risk Assessment Card -->
+<div class="bg-secondary-container/30 p-6 rounded-2xl border border-secondary-container">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="verified">verified</span>
+<h4 class="font-bold text-on-secondary-container">LayoverX Guaranteed</h4>
+</div>
+<p class="text-on-secondary-container/80 text-label-sm">This itinerary has a 98.4% success rate for your connection. Free re-booking included if transit delays exceed 45 mins.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Component -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe max-w-container-max mx-auto shadow-[0_-4px_12px_rgba(15,23,42,0.08)] bg-surface-container-highest dark:bg-primary-container rounded-t-xl">
+<!-- Edit -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-primary-fixed-variant px-4 py-2 hover:bg-on-secondary-container/10 transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+<span class="font-label-sm text-label-sm">Edit</span>
+</button>
+<!-- Export -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-primary-fixed-variant px-4 py-2 hover:bg-on-secondary-container/10 transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+<span class="font-label-sm text-label-sm">Export</span>
+</button>
+<!-- Confirm Journey (Active) -->
+<button class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-xl px-8 py-2 scale-98 active:scale-95 duration-200 shadow-md">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+<span class="font-label-sm text-label-sm">Confirm Journey</span>
+</button>
+</footer>
+</body></html>
