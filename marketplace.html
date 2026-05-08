@@ -150,7 +150,7 @@
 </div>
 
 <!-- List Drawer -->
-<div id="list-drawer" class="fixed inset-0 z-[70] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex justify-end">
+<div id="list-drawer" class="fixed inset-0 z-[70] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex justify-end" onclick="if(event.target === this) window.toggleListDrawer()">
     <div class="bg-white w-full max-w-md h-full shadow-2xl overflow-hidden transform translate-x-full transition-transform duration-300 flex flex-col" id="list-drawer-panel">
         <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
             <h2 class="text-xl font-bold text-primary uppercase tracking-tight">SELECTED EXPERIENCES</h2>
@@ -160,7 +160,11 @@
         </div>
         <div id="list-drawer-content" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"></div>
         <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
-             <button onclick="window.proceedToPlan(this)" class="w-full bg-primary text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">PLAN MY TRIP →</button>
+             <div class="flex justify-between items-center text-sm font-bold text-primary mb-2" id="drawer-totals">
+                 <!-- Injected via JS -->
+             </div>
+             <button onclick="window.proceedToPlan(this)" class="w-full bg-primary hover:bg-black text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">PLAN MY TRIP &rarr;</button>
+             <button onclick="window.clearList()" class="w-full bg-white text-red-600 font-bold py-3 rounded-xl text-xs uppercase tracking-widest border border-red-200 hover:bg-red-50 active:scale-95 transition-all">CLEAR LIST</button>
         </div>
     </div>
 </div>
@@ -749,12 +753,130 @@ window.updateListIndicator = function() {
 };
 
 window.toggleListDrawer = function() {
-    alert("Items in list: \\n" + window.layoverList.map(i => i.name + " (" + i.duration + ")").join("\\n"));
+    const drawer = document.getElementById('list-drawer');
+    const panel = document.getElementById('list-drawer-panel');
+    const content = document.getElementById('list-drawer-content');
+    const totals = document.getElementById('drawer-totals');
+    
+    if (drawer.classList.contains('hidden')) {
+        content.innerHTML = window.layoverList.length > 0 ? 
+            window.layoverList.map((item, idx) => {
+                const travel = Math.round(window.calculateDynamicTravelMins(item.distance) * 2 + 30);
+                return `
+                <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-primary/30 transition-colors">
+                    <div class="flex items-center gap-4">
+                        ${item.image ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover">` : `<div class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400"><span class="material-symbols-outlined">category</span></div>`}
+                        <div>
+                            <p class="font-bold text-sm text-primary uppercase">${item.name}</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${item.category} &bull; ${item.duration.replace('h',' hr').replace('m',' min')} &bull; Est. Travel: ${travel}m</p>
+                        </div>
+                    </div>
+                    <button onclick="window.removeFromList('${item.name}')" class="text-slate-300 hover:text-red-500 transition-colors ml-2 p-1">
+                        <span class="material-symbols-outlined text-lg">delete</span>
+                    </button>
+                </div>
+            `}).join('') : '<p class="text-center text-slate-400 font-bold text-[10px] uppercase py-20 tracking-widest">No items secured</p>';
+        
+        let expMins = 0;
+        let maxDist = 0;
+        window.layoverList.forEach(item => {
+            const dur = String(item.duration || '0');
+            if (dur.includes('h')) expMins += parseFloat(dur) * 60;
+            else if (dur.includes('m')) expMins += parseFloat(dur);
+            else expMins += parseFloat(dur) * 60;
+            if (item.distance > maxDist) maxDist = item.distance;
+        });
+        const travelMins = window.layoverList.length > 0 ? Math.round(window.calculateDynamicTravelMins(maxDist) * 2 + 30) : 0;
+        const totalUsed = expMins + travelMins;
+        
+        const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+        
+        if(totals) {
+            totals.innerHTML = `
+                <div class="flex flex-col items-start">
+                    <span class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Total Time Used</span>
+                    <span class="text-base text-primary">${format(totalUsed)}</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Remaining</span>
+                    <span class="text-base ${window.isRisk ? 'text-red-600' : 'text-emerald-600'}">${document.getElementById('time-remaining') ? document.getElementById('time-remaining').textContent : ''}</span>
+                </div>
+            `;
+        }
+
+        drawer.classList.remove('hidden');
+        setTimeout(() => {
+            drawer.classList.add('opacity-100');
+            panel.classList.remove('translate-x-full');
+        }, 10);
+    } else {
+        panel.classList.add('translate-x-full');
+        drawer.classList.remove('opacity-100');
+        setTimeout(() => drawer.classList.add('hidden'), 300);
+    }
 };
+
+window.clearList = function() {
+    window.layoverList = [];
+    localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+    window.renderCategory(window.activeCategory);
+    window.updateListIndicator();
+    window.updateTimeCalculations();
+    
+    // Refresh drawer if open
+    const drawer = document.getElementById('list-drawer');
+    if (drawer && !drawer.classList.contains('hidden')) {
+        const panel = document.getElementById('list-drawer-panel');
+        panel.classList.add('translate-x-full');
+        drawer.classList.remove('opacity-100');
+        setTimeout(() => {
+            drawer.classList.add('hidden');
+            window.toggleListDrawer();
+        }, 300);
+    }
+};
+
+window.closeWarningModal = function() {
+    const modal = document.getElementById('warning-modal');
+    const panel = document.getElementById('warning-modal-panel');
+    if (modal) {
+        modal.classList.remove('opacity-100');
+        panel.classList.remove('scale-100');
+        panel.classList.add('scale-95');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+};
+
+// Add global ESC key listener
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const warningModal = document.getElementById('warning-modal');
+        if (warningModal && !warningModal.classList.contains('hidden')) {
+            window.closeWarningModal();
+        }
+        const listDrawer = document.getElementById('list-drawer');
+        if (listDrawer && !listDrawer.classList.contains('hidden')) {
+            window.toggleListDrawer();
+        }
+        const level2 = document.getElementById('level2');
+        if (level2 && !level2.classList.contains('hidden')) {
+            window.hideDetail();
+        }
+    }
+});
 
 window.proceedToPlan = function(btn) {
     if (window.isRisk) {
-        alert("Your itinerary exceeds the available layover time. Reduce stay durations or remove experiences before proceeding.");
+        const modal = document.getElementById('warning-modal');
+        const panel = document.getElementById('warning-modal-panel');
+        if (modal) {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('opacity-100');
+                panel.classList.remove('scale-95');
+                panel.classList.add('scale-100');
+            }, 10);
+        }
         return;
     }
     localStorage.setItem("tripPlanActivated", "true");
@@ -774,5 +896,22 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+
+
+<!-- Custom Warning Modal -->
+<div id="warning-modal" class="fixed inset-0 z-[100] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target === this) window.closeWarningModal()">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-95 transition-transform duration-300" id="warning-modal-panel">
+        <div class="p-6 text-center space-y-4">
+            <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2 text-red-500">
+                <span class="material-symbols-outlined text-3xl">warning</span>
+            </div>
+            <h3 class="text-xl font-bold text-primary tracking-tight">Time Warning</h3>
+            <p class="text-sm text-slate-500 font-medium leading-relaxed">Your itinerary exceeds the available layover time. Please reduce stay durations or remove experiences before proceeding.</p>
+        </div>
+        <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-center">
+            <button onclick="window.closeWarningModal()" class="w-full bg-primary hover:bg-black text-white font-bold py-3 rounded-xl text-sm uppercase tracking-widest transition-colors shadow-md active:scale-[0.98]">Acknowledge</button>
+        </div>
+    </div>
+</div>
 
 </body></html>
