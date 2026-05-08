@@ -1,191 +1,9 @@
-<!DOCTYPE html>
+import re
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TransitLuxury | Curated Layover Experiences</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#1d4ed8", /* blue */
-                        "primary-container": "#bfdbfe",
-                        secondary: "#ea580c", /* orange */
-                        "secondary-container": "#fed7aa",
-                        surface: "#ffffff",
-                        "surface-container": "#f8fafc",
-                        "surface-container-high": "#f1f5f9",
-                        "outline-variant": "#cbd5e1",
-                        "on-surface": "#0f172a",
-                        "on-surface-variant": "#475569"
-                    },
-                    fontFamily: {
-                        sans: ["Inter", "sans-serif"],
-                        manrope: ["Manrope", "sans-serif"]
-                    },
-                    fontSize: {
-                        "meta-label": ["10px", { letterSpacing: "0.1em", fontWeight: "700" }],
-                        "node-title-lg": ["20px", { letterSpacing: "-0.02em", fontWeight: "800" }],
-                        "node-title-md": ["16px", { letterSpacing: "-0.01em", fontWeight: "700" }],
-                        "node-description": ["12px", { lineHeight: "1.5" }]
-                    }
-                }
-            }
-        }
-    
-        function handlePlanLayover(item, category) {
-            const isVerified = localStorage.getItem('qr_verified') === 'true';
-            const duration = localStorage.getItem('layover_duration');
-            const departure = localStorage.getItem('flight_departure');
-            
-            // Check if fully set up
-            if (!isVerified || !duration || !departure) {
-                // Save pending item
-                const durSelect = document.getElementById('item-duration');
-                localStorage.setItem('pending_experience', JSON.stringify({
-                    name: item.name,
-                    category: category,
-                    duration: durSelect ? durSelect.value : '1h',
-                    distance: item.distance
-                }));
-                
-                // Redirect to homepage with alert message
-                localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            // If already verified, go to transportation/marketplace directly
-            window.location.href = 'transportation.html';
-        }
-    
-</script>
+with open('marketplace.html', 'r', encoding='utf-8') as f:
+    content = f.read()
 
-<style>
-        body { background-color: #f7f7fb; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
-    </style>
-</head>
-<body class="pb-32 overflow-x-hidden">
-<!-- TopAppBar -->
-<header class="sticky top-0 z-50 flex justify-between items-center w-full px-6 h-16 bg-white/90 backdrop-blur-md border-b border-outline-variant">
-<div class="flex items-center gap-md">
-<button class="hover:bg-slate-100 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-200" onclick="window.history.back()">
-<span class="material-symbols-outlined text-primary">arrow_back</span>
-</button>
-<h1 class="text-lg font-bold text-primary tracking-tighter uppercase">TransitLuxury</h1>
-</div>
-<div class="flex items-center gap-md">
-<button class="hover:bg-slate-100 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-200">
-<span class="material-symbols-outlined text-primary">search</span>
-</button>
-<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
-<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb6QlKHRooEUzlf4DY3Kgm29qMIJPlLKAvT72LmkLF0mwy0hbM4R4h6h650JhqgeHEJhE6E5aSUb9SDbG6gpIXYmhVA-R3nSBGb0FFZJHSIe4F0lFV6eFHFOvOKzAENKglaqd5lArarawkT68ImSQf7i6pqehTfolSRuKXVFSesSVWe5qDmJ5oV8b-iXxs1axSWK-bNFlJ2TPw0AN01U5gSa885EacZnZtb7xks7UehSDogJPOmrPZEyKaoeDiu3B2-wTO0-N9_CsK"/>
-</div>
-</div>
-</header>
-<main class="px-6 mt-8 space-y-8 max-w-7xl mx-auto">
-<!-- Smart Time Panel -->
-<section class="bg-white border border-outline-variant rounded-3xl p-6 shadow-sm relative overflow-hidden">
-    <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xs font-bold text-on-surface flex items-center gap-2 uppercase tracking-[0.2em]"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
-        <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
-            <span class="material-symbols-outlined text-xs text-brand-blue">flight_takeoff</span>
-            <span class="text-[10px] text-brand-blue tracking-widest font-bold uppercase" id="time-departure">Departure --:--</span>
-        </div>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Layover</p>
-            <p class="text-sm font-bold text-primary" id="time-total">--</p>
-        </div>
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Buffer</p>
-            <p class="text-sm font-bold text-primary" id="time-buffer">2h 0m</p>
-        </div>
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Travel</p>
-            <p class="text-sm font-bold text-primary" id="time-travel">0m</p>
-        </div>
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Experiences</p>
-            <p class="text-sm font-bold text-brand-blue" id="time-exp">0m</p>
-        </div>
-        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center col-span-2 md:col-span-1" id="rem-container">
-            <p class="text-[9px] text-emerald-800 uppercase font-bold tracking-widest mb-1">Remaining</p>
-            <p class="text-base font-bold text-emerald-700" id="time-remaining">--</p>
-        </div>
-    </div>
-</section>
-
-<!-- Category Pills -->
-<section class="flex gap-2 overflow-x-auto no-scrollbar py-2">
-<button onclick="renderCategory('recommended', this)" class="category-pill bg-primary text-on-primary px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended For You</button>
-<button onclick="renderCategory('hotel.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
-<button onclick="renderCategory('restaurant.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
-<button onclick="renderCategory('spa.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
-<button onclick="renderCategory('entertainment.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Entertainment</button>
-</section>
-
-<!-- Dynamic Experience Container -->
-<section id="marketplace-content" class="min-h-[400px]">
-<!-- Rendered via JS -->
-</section>
-
-</main>
-
-<!-- LEVEL 2 Overlay/Panel -->
-<div id="level2" class="fixed inset-0 z-[60] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex justify-end">
-    <div class="bg-white w-full max-w-xl h-full shadow-2xl overflow-hidden transform translate-x-full transition-transform duration-300 flex flex-col" id="level2-panel">
-        <div id="level2-content" class="flex-1 overflow-hidden"></div>
-    </div>
-</div>
-
-<!-- List Drawer -->
-<div id="list-drawer" class="fixed inset-0 z-[70] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex justify-end" onclick="if(event.target === this) window.toggleListDrawer()">
-    <div class="bg-white w-full max-w-md h-full shadow-2xl overflow-hidden transform translate-x-full transition-transform duration-300 flex flex-col" id="list-drawer-panel">
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <h2 class="text-xl font-bold text-primary uppercase tracking-tight">SELECTED EXPERIENCES</h2>
-            <button onclick="window.toggleListDrawer()" class="p-2 rounded-full hover:bg-white border border-transparent hover:border-slate-200 transition-all">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-        </div>
-        <div id="list-drawer-content" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"></div>
-        <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
-             <div class="flex justify-between items-center text-sm font-bold text-primary mb-2" id="drawer-totals">
-                 <!-- Injected via JS -->
-             </div>
-             <button onclick="window.proceedToPlan(this)" class="w-full bg-primary hover:bg-black text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">PLAN MY TRIP &rarr;</button>
-             <button onclick="window.clearList()" class="w-full bg-white text-red-600 font-bold py-3 rounded-xl text-xs uppercase tracking-widest border border-red-200 hover:bg-red-50 active:scale-95 transition-all">CLEAR LIST</button>
-        </div>
-    </div>
-</div>
-
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 h-20 bg-white/95 backdrop-blur-md border-t border-outline-variant">
-<button id="nav-explore-tab" onclick="window.location.reload()" class="flex flex-col items-center justify-center text-primary font-bold active:scale-95 transition-all duration-150">
-<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">explore</span>
-<span class="text-[9px] uppercase tracking-widest mt-1">Explore</span>
-</button>
-<button id="nav-trips-tab" class="flex flex-col items-center justify-center text-secondary font-bold opacity-40 cursor-not-allowed">
-<span class="material-symbols-outlined text-2xl">airplane_ticket</span>
-<span class="text-[9px] uppercase tracking-widest mt-1">Trips</span>
-</button>
-<button id="nav-profile-tab" class="flex flex-col items-center justify-center text-secondary font-bold active:scale-95 transition-all duration-150">
-<span class="material-symbols-outlined text-2xl">person</span>
-<span class="text-[9px] uppercase tracking-widest mt-1">Profile</span>
-</button>
-</nav>
-
-<script>
+new_script = r'''<script>
 // --- GLOBAL STATE & CONFIG ---
 window.layoverList = [];
 window.activeCategory = 'hotel.html'; 
@@ -278,6 +96,26 @@ window.calculateDynamicTravelMins = function(distance) {
     return (distance / speed) * 60 * trafficMultiplier;
 };
 
+window.parseDurationToMins = function(durStr) {
+    if (!durStr) return 0;
+    const lowerStr = String(durStr).toLowerCase();
+    let totalMins = 0;
+    const hMatch = lowerStr.match(/([\d\.]+)\s*(h|hour|hours)/);
+    if (hMatch) totalMins += parseFloat(hMatch[1]) * 60;
+    
+    const mMatch = lowerStr.match(/([\d\.]+)\s*(m|min|mins|minute|minutes)/);
+    if (mMatch) totalMins += parseFloat(mMatch[1]);
+    
+    if (!hMatch && !mMatch) {
+        const val = parseFloat(lowerStr);
+        if (!isNaN(val)) {
+            if (val <= 24) totalMins += val * 60;
+            else totalMins += val;
+        }
+    }
+    return totalMins;
+};
+
 window.updateTimeCalculations = function() {
     const layoverDurationRaw = localStorage.getItem('layover_duration') || '8';
     const layoverDurationHours = parseInt(layoverDurationRaw, 10);
@@ -291,12 +129,7 @@ window.updateTimeCalculations = function() {
     if (window.layoverList.length > 0) {
         let maxDist = 0;
         window.layoverList.forEach(item => {
-            let m = 0;
-            const dur = String(item.duration || '0');
-            if (dur.includes('h')) m = parseFloat(dur) * 60;
-            else if (dur.includes('m')) m = parseFloat(dur);
-            else m = parseFloat(dur) * 60; // Default generic numeric to hours
-            expMins += m;
+            expMins += window.parseDurationToMins(item.duration);
             if (item.distance > maxDist) maxDist = item.distance;
         });
         worstTravelMins = Math.round(window.calculateDynamicTravelMins(maxDist) * 2 + 30);
@@ -328,11 +161,16 @@ window.updateTimeCalculations = function() {
     let remEl = document.getElementById('time-remaining');
     let remContainer = document.getElementById('rem-container');
     if (remEl && remContainer) {
-        if (remainingMins < 0) {
+        if (remainingMins < 15) {
             window.isRisk = true;
-            remEl.textContent = 'Risk';
+            remEl.textContent = remainingMins < 0 ? Math.abs(remainingMins) + 'm Over' : format(remainingMins);
             remEl.style.color = '#dc2626';
             remContainer.style.backgroundColor = '#fef2f2';
+        } else if (remainingMins <= 45) {
+            window.isRisk = false;
+            remEl.textContent = format(remainingMins);
+            remEl.style.color = '#b45309';
+            remContainer.style.backgroundColor = '#fffbeb';
         } else {
             window.isRisk = false;
             remEl.textContent = format(remainingMins);
@@ -440,7 +278,7 @@ function level2Template() {
             <div class="w-full bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
                 <div class="flex justify-between items-start mb-6 shrink-0">
                     <h3 class="text-node-title-md text-secondary uppercase">Detail Page</h3>
-                    <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
+                    <button onclick="window.closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
                 </div>
                 
                 <div class="space-y-4 overflow-y-auto hide-scrollbar flex-grow pb-4">
@@ -494,7 +332,6 @@ function level2Template() {
 
 function renderCard(h) {
     const isActive = window.activeItem && window.activeItem.id === h.id;
-    // Defining premium based on the group property to match Explore layout grouping
     let isPremium = false;
     let configKey = 'hotel.html';
     if (h.type === 'Hotel') configKey = 'hotel.html';
@@ -526,7 +363,7 @@ function renderCard(h) {
 }
 
 window.renderItems = function() {
-    if (window.activeCategory === 'recommended') return; // Recommended has static rendering
+    if (window.activeCategory === 'recommended') return;
 
     let configKey = 'Hotels';
     if (window.activeCategory === 'restaurant.html') configKey = 'Restaurants';
@@ -571,7 +408,6 @@ window.renderItems = function() {
 
     grid.innerHTML = '';
     
-    // Group rendering dynamically based on config groups
     config.groups.forEach(grp => {
         const groupItems = filtered.filter(h => h.category === grp.key);
         if (groupItems.length > 0) {
@@ -587,7 +423,6 @@ window.renderItems = function() {
         }
     });
 
-    // If some items don't map to predefined groups
     const mappedCategories = config.groups.map(g => g.key);
     const unmappedItems = filtered.filter(h => !mappedCategories.includes(h.category));
     if (unmappedItems.length > 0) {
@@ -613,11 +448,9 @@ window.openLevel2 = function(id) {
 
     window.activeItem = item;
     
-    // Re-render to highlight active card
     if (window.activeCategory !== 'recommended') {
         window.renderItems();
     } else {
-        // Quick re-render for recommended
         const grid = document.getElementById('hotel-grid');
         if (grid) {
             grid.innerHTML = [window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => renderCard(i)).join('');
@@ -633,7 +466,6 @@ window.openLevel2 = function(id) {
         ? item.amenities.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('') 
         : '<div class="text-[11px] text-on-surface-variant italic">Standard amenities included</div>';
 
-    // Populate Durations specific to category
     let config = FILTER_CONFIG[window.activeCategory];
     if (window.activeCategory === 'recommended') {
         if (item.type === 'Hotel') config = FILTER_CONFIG['hotel.html'];
@@ -676,7 +508,7 @@ window.openLevel2 = function(id) {
             if(itemDur) itemDur.disabled = false;
             
             btn.onclick = function() {
-                const duration = itemDur ? (itemDur.options[itemDur.selectedIndex].text) : '1h'; // store string label
+                const duration = itemDur ? (itemDur.options[itemDur.selectedIndex].text) : '1h';
                 window.addToList(btn, item.name, item.type, duration, item.distance, '');
             };
         }
@@ -714,6 +546,138 @@ window.closeLevel2 = function() {
     }
 };
 
+window.renderListDrawer = function() {
+    const content = document.getElementById('list-drawer-content');
+    const totals = document.getElementById('drawer-totals');
+    
+    if (content) {
+        content.innerHTML = window.layoverList.length > 0 ? 
+            window.layoverList.map((item, idx) => {
+                const travel = Math.round(window.calculateDynamicTravelMins(item.distance) * 2 + 30);
+                
+                let catConfig = CATEGORY_CONFIG['hotel.html'];
+                if (item.category === 'Hotel') catConfig = CATEGORY_CONFIG['hotel.html'];
+                else if (item.category === 'Restaurant') catConfig = CATEGORY_CONFIG['restaurant.html'];
+                else if (item.category === 'Spa') catConfig = CATEGORY_CONFIG['spa.html'];
+                else if (item.category === 'Entertainment' || item.category === 'Gaming & Entertainment') catConfig = CATEGORY_CONFIG['entertainment.html'];
+                
+                // Fetch default durations matching the detailed view config
+                const configRef = FILTER_CONFIG[catConfig === CATEGORY_CONFIG['hotel.html'] ? 'hotel.html' : catConfig === CATEGORY_CONFIG['restaurant.html'] ? 'restaurant.html' : catConfig === CATEGORY_CONFIG['spa.html'] ? 'spa.html' : 'entertainment.html'];
+                const durs = configRef ? configRef.durations.map(d=>d.l) : ['1h', '2h'];
+                
+                const optionsHtml = durs.map(label => {
+                    const selected = (item.duration === label) ? 'selected' : '';
+                    return `<option value="${label}" ${selected}>${label}</option>`;
+                }).join('');
+
+                // Sanitize name for onclick string
+                const safeName = item.name.replace(/'/g, "\\'");
+
+                return `
+                <div id="drawer-item-${idx}" class="flex flex-col bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-primary/30 transition-all">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center gap-3">
+                            ${item.image ? `<img src="${item.image}" class="w-10 h-10 rounded-lg object-cover">` : `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400"><span class="material-symbols-outlined">category</span></div>`}
+                            <div>
+                                <p class="font-bold text-sm text-primary uppercase">${item.name}</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${item.category} &bull; Est. Travel: ${travel}m</p>
+                            </div>
+                        </div>
+                        <button onclick="window.animateRemoveFromList('${safeName}', 'drawer-item-${idx}')" class="text-slate-300 hover:text-red-500 transition-colors ml-2 p-1">
+                            <span class="material-symbols-outlined text-lg">delete</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-slate-50 pt-3 mt-1">
+                        <span class="text-[10px] font-bold text-primary uppercase tracking-widest">Duration:</span>
+                        <select onchange="window.updateItemDuration('${safeName}', this.value)" class="bg-slate-50 border border-slate-200 text-primary text-xs font-bold rounded-lg px-2 py-1 outline-none cursor-pointer hover:bg-slate-100 transition-colors">
+                            ${optionsHtml}
+                        </select>
+                    </div>
+                </div>
+            `}).join('') : '<div class="flex flex-col items-center justify-center py-20 text-slate-300"><span class="material-symbols-outlined text-5xl mb-4">event_busy</span><p class="font-bold text-[10px] uppercase tracking-widest">No experiences added yet.</p></div>';
+    }
+        
+    if (totals) {
+        let expMins = 0;
+        let maxDist = 0;
+        window.layoverList.forEach(item => {
+            expMins += window.parseDurationToMins(item.duration);
+            if (item.distance > maxDist) maxDist = item.distance;
+        });
+        const travelMins = window.layoverList.length > 0 ? Math.round(window.calculateDynamicTravelMins(maxDist) * 2 + 30) : 0;
+        const totalUsed = expMins + travelMins;
+        
+        const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+        
+        totals.innerHTML = `
+            <div class="flex flex-col items-start">
+                <span class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Total Time Used</span>
+                <span class="text-base text-primary">${format(totalUsed)}</span>
+            </div>
+            <div class="flex flex-col items-end">
+                <span class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Remaining</span>
+                <span class="text-base ${window.isRisk ? 'text-red-600' : 'text-emerald-600'}">${document.getElementById('time-remaining') ? document.getElementById('time-remaining').textContent : ''}</span>
+            </div>
+        `;
+    }
+};
+
+window.animateRemoveFromList = function(itemName, elemId) {
+    const el = document.getElementById(elemId);
+    if (el) {
+        el.style.transition = 'all 0.3s ease';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px) scale(0.95)';
+        setTimeout(() => {
+            window.removeFromList(itemName);
+            window.renderListDrawer();
+        }, 300);
+    } else {
+        window.removeFromList(itemName);
+        window.renderListDrawer();
+    }
+};
+
+window.updateItemDuration = function(itemName, newDuration) {
+    const item = window.layoverList.find(i => i.name === itemName);
+    if (item) {
+        item.duration = newDuration;
+        localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+        window.updateTimeCalculations();
+        window.renderListDrawer();
+        
+        if (window.activeItem && window.activeItem.name === itemName) {
+             const detDur = document.getElementById('item-duration');
+             if (detDur) {
+                 for (let i = 0; i < detDur.options.length; i++) {
+                     if (detDur.options[i].text === newDuration || detDur.options[i].value === newDuration) {
+                         detDur.selectedIndex = i;
+                         break;
+                     }
+                 }
+             }
+        }
+    }
+};
+
+window.toggleListDrawer = function() {
+    const drawer = document.getElementById('list-drawer');
+    const panel = document.getElementById('list-drawer-panel');
+    
+    if (drawer.classList.contains('hidden')) {
+        window.renderListDrawer();
+        drawer.classList.remove('hidden');
+        setTimeout(() => {
+            drawer.classList.add('opacity-100');
+            panel.classList.remove('translate-x-full');
+        }, 10);
+    } else {
+        panel.classList.add('translate-x-full');
+        drawer.classList.remove('opacity-100');
+        setTimeout(() => drawer.classList.add('hidden'), 300);
+    }
+};
+
 window.addToList = function(btn, itemName, category, duration, distance, image) {
     if (!duration) return;
     const existing = window.layoverList.find(i => i.name === itemName);
@@ -730,90 +694,12 @@ window.addToList = function(btn, itemName, category, duration, distance, image) 
     window.updateTimeCalculations();
 };
 
-window.updateListIndicator = function() {
-    // Basic indicator to show cart/list
-    let indicator = document.getElementById('global-list-indicator');
-    if (!indicator) {
-        indicator = document.createElement('div');
-        indicator.id = 'global-list-indicator';
-        indicator.className = 'fixed bottom-[100px] left-1/2 -translate-x-1/2 z-[100] transition-all duration-300';
-        document.body.appendChild(indicator);
-    }
-    
-    if (window.layoverList.length > 0) {
-        indicator.style.display = 'flex';
-        indicator.innerHTML = `
-            <div class="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-outline-variant p-2 shadow-lg">
-                <button onclick=\"window.toggleListDrawer()\" class="bg-surface-container hover:bg-outline-variant px-6 py-2 font-bold text-[10px] uppercase tracking-widest text-on-surface border border-outline-variant transition-colors">View List (${window.layoverList.length})</button>
-                <button onclick=\"window.proceedToPlan(this)\" class=\"bg-secondary text-white px-8 py-2 font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-orange-700 transition-all\">Plan My Trip <span class=\"material-symbols-outlined text-sm\">arrow_forward</span></button>
-            </div>`;
-    } else {
-        indicator.style.display = 'none';
-    }
-};
-
-window.toggleListDrawer = function() {
-    const drawer = document.getElementById('list-drawer');
-    const panel = document.getElementById('list-drawer-panel');
-    const content = document.getElementById('list-drawer-content');
-    const totals = document.getElementById('drawer-totals');
-    
-    if (drawer.classList.contains('hidden')) {
-        content.innerHTML = window.layoverList.length > 0 ? 
-            window.layoverList.map((item, idx) => {
-                const travel = Math.round(window.calculateDynamicTravelMins(item.distance) * 2 + 30);
-                return `
-                <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-primary/30 transition-colors">
-                    <div class="flex items-center gap-4">
-                        ${item.image ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover">` : `<div class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400"><span class="material-symbols-outlined">category</span></div>`}
-                        <div>
-                            <p class="font-bold text-sm text-primary uppercase">${item.name}</p>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${item.category} &bull; ${item.duration.replace('h',' hr').replace('m',' min')} &bull; Est. Travel: ${travel}m</p>
-                        </div>
-                    </div>
-                    <button onclick="window.removeFromList('${item.name}')" class="text-slate-300 hover:text-red-500 transition-colors ml-2 p-1">
-                        <span class="material-symbols-outlined text-lg">delete</span>
-                    </button>
-                </div>
-            `}).join('') : '<p class="text-center text-slate-400 font-bold text-[10px] uppercase py-20 tracking-widest">No items secured</p>';
-        
-        let expMins = 0;
-        let maxDist = 0;
-        window.layoverList.forEach(item => {
-            const dur = String(item.duration || '0');
-            if (dur.includes('h')) expMins += parseFloat(dur) * 60;
-            else if (dur.includes('m')) expMins += parseFloat(dur);
-            else expMins += parseFloat(dur) * 60;
-            if (item.distance > maxDist) maxDist = item.distance;
-        });
-        const travelMins = window.layoverList.length > 0 ? Math.round(window.calculateDynamicTravelMins(maxDist) * 2 + 30) : 0;
-        const totalUsed = expMins + travelMins;
-        
-        const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
-        
-        if(totals) {
-            totals.innerHTML = `
-                <div class="flex flex-col items-start">
-                    <span class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Total Time Used</span>
-                    <span class="text-base text-primary">${format(totalUsed)}</span>
-                </div>
-                <div class="flex flex-col items-end">
-                    <span class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Remaining</span>
-                    <span class="text-base ${window.isRisk ? 'text-red-600' : 'text-emerald-600'}">${document.getElementById('time-remaining') ? document.getElementById('time-remaining').textContent : ''}</span>
-                </div>
-            `;
-        }
-
-        drawer.classList.remove('hidden');
-        setTimeout(() => {
-            drawer.classList.add('opacity-100');
-            panel.classList.remove('translate-x-full');
-        }, 10);
-    } else {
-        panel.classList.add('translate-x-full');
-        drawer.classList.remove('opacity-100');
-        setTimeout(() => drawer.classList.add('hidden'), 300);
-    }
+window.removeFromList = function(itemName) {
+    window.layoverList = window.layoverList.filter(i => i.name !== itemName);
+    localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+    window.renderCategory(window.activeCategory);
+    window.updateListIndicator();
+    window.updateTimeCalculations();
 };
 
 window.clearList = function() {
@@ -823,7 +709,6 @@ window.clearList = function() {
     window.updateListIndicator();
     window.updateTimeCalculations();
     
-    // Refresh drawer if open
     const drawer = document.getElementById('list-drawer');
     if (drawer && !drawer.classList.contains('hidden')) {
         const panel = document.getElementById('list-drawer-panel');
@@ -847,7 +732,6 @@ window.closeWarningModal = function() {
     }
 };
 
-// Add global ESC key listener
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         const warningModal = document.getElementById('warning-modal');
@@ -864,6 +748,27 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
+window.updateListIndicator = function() {
+    let indicator = document.getElementById('global-list-indicator');
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'global-list-indicator';
+        indicator.className = 'fixed bottom-[100px] left-1/2 -translate-x-1/2 z-[100] transition-all duration-300';
+        document.body.appendChild(indicator);
+    }
+    
+    if (window.layoverList.length > 0) {
+        indicator.style.display = 'flex';
+        indicator.innerHTML = `
+            <div class="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-outline-variant p-2 shadow-lg">
+                <button onclick=\"window.toggleListDrawer()\" class="bg-surface-container hover:bg-outline-variant px-6 py-2 font-bold text-[10px] uppercase tracking-widest text-on-surface border border-outline-variant transition-colors">View List (${window.layoverList.length})</button>
+                <button onclick=\"window.proceedToPlan(this)\" class=\"bg-secondary text-white px-8 py-2 font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-orange-700 transition-all\">Plan My Trip <span class=\"material-symbols-outlined text-sm\">arrow_forward</span></button>
+            </div>`;
+    } else {
+        indicator.style.display = 'none';
+    }
+};
 
 window.proceedToPlan = function(btn) {
     if (window.isRisk) {
@@ -894,9 +799,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.updateListIndicator();
 });
 </script>
-
-
-
 
 <!-- Custom Warning Modal -->
 <div id="warning-modal" class="fixed inset-0 z-[100] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target === this) window.closeWarningModal()">

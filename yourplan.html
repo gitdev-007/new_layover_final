@@ -226,7 +226,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            const finalState = window.getPlannerState();
+            const finalState = window.parseDurationToMins = function(durStr) {
+    if (!durStr) return 0;
+    const lowerStr = String(durStr).toLowerCase();
+    let totalMins = 0;
+    const hMatch = lowerStr.match(/([\d\.]+)\s*(h|hour|hours)/);
+    if (hMatch) totalMins += parseFloat(hMatch[1]) * 60;
+    const mMatch = lowerStr.match(/([\d\.]+)\s*(m|min|mins|minute|minutes)/);
+    if (mMatch) totalMins += parseFloat(mMatch[1]);
+    if (!hMatch && !mMatch) {
+        const val = parseFloat(lowerStr);
+        if (!isNaN(val)) {
+            if (val <= 24) totalMins += val * 60;
+            else totalMins += val;
+        }
+    }
+    return totalMins;
+};
+
+window.getPlannerState();
             localStorage.setItem('final_itinerary_data', JSON.stringify(finalState));
             window.location.href = 'finalize_itinerary.html';
         };
@@ -264,7 +282,25 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e) {}
 
     
-    window.getPlannerState = function(listToCalculate = layoverList) {
+    window.parseDurationToMins = function(durStr) {
+    if (!durStr) return 0;
+    const lowerStr = String(durStr).toLowerCase();
+    let totalMins = 0;
+    const hMatch = lowerStr.match(/([\d\.]+)\s*(h|hour|hours)/);
+    if (hMatch) totalMins += parseFloat(hMatch[1]) * 60;
+    const mMatch = lowerStr.match(/([\d\.]+)\s*(m|min|mins|minute|minutes)/);
+    if (mMatch) totalMins += parseFloat(mMatch[1]);
+    if (!hMatch && !mMatch) {
+        const val = parseFloat(lowerStr);
+        if (!isNaN(val)) {
+            if (val <= 24) totalMins += val * 60;
+            else totalMins += val;
+        }
+    }
+    return totalMins;
+};
+
+window.getPlannerState = function(listToCalculate = layoverList) {
         let totalLayoverMins = 0;
         const layoverDurationRaw = localStorage.getItem('layover_duration') || '';
         if (layoverDurationRaw.includes('h') || layoverDurationRaw.includes('H')) {
@@ -279,10 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentDist = 0;
         
         let processedItems = listToCalculate.map((item, idx) => {
-            let mins = 0;
-            const durStr = (item.duration || '').toLowerCase();
-            if (durStr.includes('h')) mins += parseFloat(durStr) * 60;
-            else if (durStr.includes('m')) mins += parseFloat(durStr);
+            let mins = window.parseDurationToMins(item.duration);
             
             let legDistance = (currentDist === 0) ? (item.distance || 0) : ((currentDist + (item.distance || 0)));
             let tMins = Math.round((legDistance * 3) + 15);
@@ -322,7 +355,25 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.calculateTiming = function() {
-        let state = window.getPlannerState(layoverList);
+        let state = window.parseDurationToMins = function(durStr) {
+    if (!durStr) return 0;
+    const lowerStr = String(durStr).toLowerCase();
+    let totalMins = 0;
+    const hMatch = lowerStr.match(/([\d\.]+)\s*(h|hour|hours)/);
+    if (hMatch) totalMins += parseFloat(hMatch[1]) * 60;
+    const mMatch = lowerStr.match(/([\d\.]+)\s*(m|min|mins|minute|minutes)/);
+    if (mMatch) totalMins += parseFloat(mMatch[1]);
+    if (!hMatch && !mMatch) {
+        const val = parseFloat(lowerStr);
+        if (!isNaN(val)) {
+            if (val <= 24) totalMins += val * 60;
+            else totalMins += val;
+        }
+    }
+    return totalMins;
+};
+
+window.getPlannerState(layoverList);
         return { expMins: state.totalExperienceMinutes, travelMins: state.totalTransitMinutes };
     };
 
@@ -373,7 +424,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formatTime = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
 
-        let state = window.getPlannerState(layoverList);
+        let state = window.parseDurationToMins = function(durStr) {
+    if (!durStr) return 0;
+    const lowerStr = String(durStr).toLowerCase();
+    let totalMins = 0;
+    const hMatch = lowerStr.match(/([\d\.]+)\s*(h|hour|hours)/);
+    if (hMatch) totalMins += parseFloat(hMatch[1]) * 60;
+    const mMatch = lowerStr.match(/([\d\.]+)\s*(m|min|mins|minute|minutes)/);
+    if (mMatch) totalMins += parseFloat(mMatch[1]);
+    if (!hMatch && !mMatch) {
+        const val = parseFloat(lowerStr);
+        if (!isNaN(val)) {
+            if (val <= 24) totalMins += val * 60;
+            else totalMins += val;
+        }
+    }
+    return totalMins;
+};
+
+window.getPlannerState(layoverList);
         let journeyMins = state.remainingMinutes;
         
         
@@ -388,11 +457,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let remEl = document.getElementById('time-remaining');
         let remContainer = document.getElementById('rem-container');
         if (remEl && remContainer) {
-            if (journeyMins < 0) {
-                remEl.textContent = 'Risk';
+            if (journeyMins < 15) {
+                remEl.textContent = journeyMins < 0 ? Math.abs(journeyMins) + 'm Over' : formatTime(journeyMins);
                 remEl.style.color = '#dc2626';
                 remContainer.style.backgroundColor = '#fef2f2';
                 remContainer.style.border = '1px solid #fee2e2';
+            } else if (journeyMins <= 45) {
+                remEl.textContent = formatTime(journeyMins);
+                remEl.style.color = '#b45309';
+                remContainer.style.backgroundColor = '#fffbeb';
+                remContainer.style.border = '1px solid #fef3c7';
             } else {
                 remEl.textContent = formatTime(journeyMins);
                 remEl.style.color = '#15803d';
