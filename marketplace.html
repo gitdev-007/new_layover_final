@@ -808,8 +808,11 @@ window.openLevel2 = function(id) {
     const itemDur = document.getElementById('item-duration');
     if (itemDur) {
         itemDur.innerHTML = '';
+        const defaultDur = window.getDefaultDuration(item);
         config.durations.forEach(d => {
-            itemDur.add(new Option(d.l, d.l));
+            const opt = new Option(d.l, d.l);
+            if (d.l === defaultDur || d.v === defaultDur) opt.selected = true;
+            itemDur.add(opt);
         });
     }
 
@@ -1021,6 +1024,30 @@ window.toggleListDrawer = function() {
         drawer.classList.remove('opacity-100');
         setTimeout(() => drawer.classList.add('hidden'), 300);
     }
+};
+
+window.getDefaultDuration = function(item) {
+    if (item.type === 'Hotel') {
+        if (item.category === 'Premium') return '4 Hours';
+        if (item.category === 'Standard') return '3 Hours';
+        return '2 Hours';
+    }
+    if (item.type === 'Restaurant') {
+        if (item.category === 'Fine Dining') return '1.5 Hours';
+        if (item.category === 'Cafes' || item.category === 'Fast Dining') return '30 Min';
+        return '1 Hour';
+    }
+    if (item.type === 'Spa') {
+        if (item.category === 'Premium Spa') return '1.5 Hours';
+        if (item.category === 'Express Treatments') return '30 Min';
+        return '1 Hour';
+    }
+    if (item.type === 'Entertainment' || item.category === 'Gaming & Entertainment') {
+        if (item.category === 'Lounges') return '1 Hour';
+        if (item.category === 'Kids' || item.category === 'VR' || item.category === 'Gaming') return '45 Mins';
+        return '2 Hours';
+    }
+    return '1 Hour';
 };
 
 window.addToList = function(btn, itemName, category, duration, distance, image) {
