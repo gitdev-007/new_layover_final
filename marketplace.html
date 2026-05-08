@@ -1,460 +1,687 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TransitLuxury | Curated Layover Experiences</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-tailwind.config = {
-    darkMode: "class",
-    theme: {
-        extend: {
-            "colors": {
-                "primary": "#000000",
-                "on-primary": "#ffffff",
-                "surface": "#fdf8f8",
-                "on-surface": "#1c1b1b",
-                "surface-container": "#f1edec",
-                "surface-container-low": "#f7f3f2",
-                "outline-variant": "#c7c6ca",
-                "secondary": "#5d5f5f",
-                "brand-blue": "#2563eb",
-                "brand-orange": "#f97316",
-                "blueprint-bg": "#f9fafb",
-                "blueprint-border": "#d1d5db"
-            },
-            "borderRadius": {
-                "DEFAULT": "0.125rem",
-                "lg": "0.25rem",
-                "xl": "0.5rem",
-                "full": "0.75rem"
-            },
-            "spacing": {
-                "xs": "8px",
-                "base": "4px",
-                "sm": "12px",
-                "md": "16px",
-                "container-margin": "20px",
-                "xl": "32px",
-                "gutter": "12px",
-                "lg": "24px"
-            },
-            "fontFamily": {
-                "sans": ["Inter", "sans-serif"]
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>TransitLuxury | Curated Layover Experiences</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1d4ed8", /* blue */
+                        "primary-container": "#bfdbfe",
+                        secondary: "#ea580c", /* orange */
+                        "secondary-container": "#fed7aa",
+                        surface: "#ffffff",
+                        "surface-container": "#f8fafc",
+                        "surface-container-high": "#f1f5f9",
+                        "outline-variant": "#cbd5e1",
+                        "on-surface": "#0f172a",
+                        "on-surface-variant": "#475569",
+                        "brand-blue": "#2563eb",
+                        "brand-orange": "#f97316"
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                        manrope: ["Manrope", "sans-serif"]
+                    },
+                    fontSize: {
+                        "meta-label": ["10px", { letterSpacing: "0.1em", fontWeight: "700" }],
+                        "node-title-lg": ["20px", { letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "node-title-md": ["16px", { letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "node-description": ["12px", { lineHeight: "1.5" }]
+                    }
+                }
             }
         }
-    }
-}
-</script>
-<style>
-    body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #1c1b1b; }
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-</style>
+    </script>
+    <style>
+        body { background-color: #f7f7fb; font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
+    </style>
 </head>
-<body class="pb-32 overflow-x-hidden">
-<!-- TopAppBar -->
-<header class="sticky top-0 z-50 flex justify-between items-center w-full px-6 h-16 bg-white/90 backdrop-blur-md border-b border-blueprint-border">
-<div class="flex items-center gap-md">
-<button class="hover:bg-slate-100 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-200" onclick="window.history.back()">
-<span class="material-symbols-outlined text-primary">arrow_back</span>
-</button>
-<h1 class="text-lg font-bold text-primary tracking-tighter uppercase">TransitLuxury</h1>
-</div>
-<div class="flex items-center gap-md">
-<button class="hover:bg-slate-100 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-200">
-<span class="material-symbols-outlined text-primary">search</span>
-</button>
-<div class="w-8 h-8 rounded-full overflow-hidden border border-blueprint-border">
-<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb6QlKHRooEUzlf4DY3Kgm29qMIJPlLKAvT72LmkLF0mwy0hbM4R4h6h650JhqgeHEJhE6E5aSUb9SDbG6gpIXYmhVA-R3nSBGb0FFZJHSIe4F0lFV6eFHFOvOKzAENKglaqd5lArarawkT68ImSQf7i6pqehTfolSRuKXVFSesSVWe5qDmJ5oV8b-iXxs1axSWK-bNFlJ2TPw0AN01U5gSa885EacZnZtb7xks7UehSDogJPOmrPZEyKaoeDiu3B2-wTO0-N9_CsK"/>
-</div>
-</div>
-</header>
-<main class="px-6 mt-8 space-y-8 max-w-7xl mx-auto">
-<!-- Smart Time Panel -->
-<section class="bg-white border border-blueprint-border rounded-3xl p-6 shadow-sm relative overflow-hidden">
-    <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xs font-bold text-on-surface flex items-center gap-2 uppercase tracking-[0.2em]"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
-        <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
-            <span class="material-symbols-outlined text-xs text-brand-blue">flight_takeoff</span>
-            <span class="text-[10px] text-brand-blue tracking-widest font-bold uppercase" id="time-departure">Departure --:--</span>
-        </div>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Layover</p>
-            <p class="text-sm font-bold text-primary" id="time-total">6h</p>
-        </div>
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Buffer</p>
-            <p class="text-sm font-bold text-primary" id="time-buffer">2h 0m</p>
-        </div>
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Travel</p>
-            <p class="text-sm font-bold text-primary" id="time-travel">0m</p>
-        </div>
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Experiences</p>
-            <p class="text-sm font-bold text-brand-blue" id="time-exp">0m</p>
-        </div>
-        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center col-span-2 md:col-span-1 transition-colors duration-300" id="rem-container">
-            <p class="text-[9px] text-emerald-800 uppercase font-bold tracking-widest mb-1" id="rem-label">Remaining</p>
-            <p class="text-base font-bold text-emerald-700" id="time-remaining">4h 0m</p>
-        </div>
-    </div>
-</section>
-
-<!-- Category Pills -->
-<section class="flex gap-2 overflow-x-auto no-scrollbar py-2 border-b border-blueprint-border pb-4">
-<button onclick="renderMarketplace('recommended', this)" class="category-pill bg-primary text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended</button>
-<button onclick="renderMarketplace('hotels', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
-<button onclick="renderMarketplace('restaurants', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
-<button onclick="renderMarketplace('spa', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
-<button onclick="renderMarketplace('gaming', this)" class="category-pill bg-white border border-blueprint-border text-on-surface px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Ent.</button>
-</section>
-
-<!-- REAL INVENTORY CONTAINER -->
-<div id="marketplaceInventory" class="min-h-[400px]">
-<!-- Rendered via JS -->
-</div>
-
-</main>
-
-<!-- List Drawer -->
-<div id="list-drawer" class="fixed inset-0 z-[70] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex justify-end" onclick="if(event.target === this) window.toggleListDrawer()">
-    <div class="bg-white w-full max-w-md h-full shadow-2xl overflow-hidden transform translate-x-full transition-transform duration-300 flex flex-col" id="list-drawer-panel">
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <h2 class="text-xl font-bold text-primary uppercase tracking-tight">SELECTED EXPERIENCES</h2>
-            <button onclick="window.toggleListDrawer()" class="p-2 rounded-full hover:bg-white border border-transparent hover:border-slate-200 transition-all">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-        </div>
-        <div id="list-drawer-content" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"></div>
-        <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
-             <div class="flex justify-between items-center text-sm font-bold text-primary mb-2" id="drawer-totals">
-                 <!-- Injected via JS -->
-             </div>
-             <button onclick="window.proceedToPlan(this)" class="w-full bg-primary hover:bg-black text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">PLAN MY TRIP &rarr;</button>
-             <button onclick="window.clearList()" class="w-full bg-white text-red-600 font-bold py-3 rounded-xl text-xs uppercase tracking-widest border border-red-200 hover:bg-red-50 active:scale-95 transition-all">CLEAR LIST</button>
-        </div>
-    </div>
-</div>
-
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 h-20 bg-white/95 backdrop-blur-md border-t border-blueprint-border">
-<button id="nav-explore-tab" onclick="window.location.reload()" class="flex flex-col items-center justify-center text-primary font-bold active:scale-95 transition-all duration-150">
-<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">explore</span>
-<span class="text-[9px] uppercase tracking-widest mt-1">Explore</span>
-</button>
-<button id="nav-trips-tab" class="flex flex-col items-center justify-center text-secondary font-bold opacity-40 cursor-not-allowed">
-<span class="material-symbols-outlined text-2xl">airplane_ticket</span>
-<span class="text-[9px] uppercase tracking-widest mt-1">Trips</span>
-</button>
-<button id="nav-profile-tab" class="flex flex-col items-center justify-center text-secondary font-bold active:scale-95 transition-all duration-150">
-<span class="material-symbols-outlined text-2xl">person</span>
-<span class="text-[9px] uppercase tracking-widest mt-1">Profile</span>
-</button>
-</nav>
-
-<!-- Custom Warning Modal -->
-<div id="warning-modal" class="fixed inset-0 z-[100] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target === this) window.closeWarningModal()">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-95 transition-transform duration-300" id="warning-modal-panel">
-        <div class="p-6 text-center space-y-4">
-            <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2 text-red-500">
-                <span class="material-symbols-outlined text-3xl">warning</span>
+<body class="text-on-surface font-sans antialiased overflow-x-hidden min-h-screen flex flex-col pb-32">
+    <!-- Navbar -->
+    <header class="w-full bg-white border-b border-outline-variant sticky top-0 z-50">
+        <div class="max-w-[1400px] mx-auto px-6 h-16 flex justify-between items-center text-sm font-semibold text-on-surface-variant">
+            <div class="flex items-center gap-8">
+                <a class="text-lg font-bold text-primary font-manrope uppercase tracking-tight" href="index.html">LayoverX</a>
+                <nav class="hidden md:flex gap-6 items-center">
+                    <a class="text-primary border-b-2 border-primary pb-1 uppercase text-[11px] tracking-widest" href="#">Browse</a>
+                    <a class="hover:text-primary transition-colors uppercase text-[11px] tracking-widest" href="#">My Bookings</a>
+                    <a class="hover:text-primary transition-colors uppercase text-[11px] tracking-widest" href="#">Support</a>
+                </nav>
             </div>
-            <h3 class="text-xl font-bold text-primary tracking-tight">Time Warning</h3>
-            <p class="text-sm text-slate-500 font-medium leading-relaxed">Your itinerary exceeds the available layover time. Please reduce stay durations or remove experiences before proceeding.</p>
+            <div class="flex gap-4 items-center">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+                <span class="material-symbols-outlined text-[20px]">account_circle</span>
+            </div>
         </div>
-        <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-center">
-            <button onclick="window.closeWarningModal()" class="w-full bg-primary hover:bg-black text-white font-bold py-3 rounded-xl text-sm uppercase tracking-widest transition-colors shadow-md active:scale-[0.98]">Acknowledge</button>
-        </div>
-    </div>
-</div>
+    </header>
 
-<script>
-// --- GLOBAL STATE & CONFIG ---
-window.layoverList = [];
-window.activeCategory = 'recommended'; 
-window.activeItem = null;
-window.isRisk = false;
-
-// --- FALLBACK INVENTORY DATA ---
-const marketplaceData = {
-    recommended: [
-        { id: 1, name: "The Orchid Hotel", lat: 19.0991, lng: 72.8538, distance: 0.9, category: "Premium", rating: "4.8", type: 'Hotel', durations: ['3h','4h','6h'] },
-        { id: 202, name: "JW Cafe", lat: 19.1023, lng: 72.8771, distance: 1.8, category: "Fine Dining", rating: "4.7", type: 'Restaurant', durations: ['1h','1.5h','2h'] },
-        { id: 301, name: "Jiva Spa", lat: 19.0963, lng: 72.8540, distance: 1.6, category: "Premium Spa", rating: "4.9", type: 'Spa', durations: ['1h','2h','3h'] }
-    ],
-    hotels: [
-        { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", type: 'Hotel', durations: ['3h','4h','6h','12h'], lat: 19.0991, lng: 72.8538 },
-        { id: 2, name: "Hotel Sahara Star", distance: 1.1, category: "Premium", rating: "4.7", type: 'Hotel', durations: ['3h','4h','6h','12h'], lat: 19.0967, lng: 72.8524 },
-        { id: 3, name: "Taj Santacruz", distance: 1.6, category: "Premium", rating: "4.9", type: 'Hotel', durations: ['4h','6h','8h','12h'], lat: 19.0963, lng: 72.8540 },
-        { id: 4, name: "Hotel Bawa Intl.", distance: 1.7, category: "Standard", rating: "4.2", type: 'Hotel', durations: ['2h','3h','4h','6h'], lat: 19.0950, lng: 72.8500 },
-        { id: 5, name: "JW Marriott Sahar", distance: 1.8, category: "Premium", rating: "4.8", type: 'Hotel', durations: ['4h','6h','12h'], lat: 19.1022, lng: 72.8770 },
-        { id: 6, name: "Hotel Midland", distance: 2.3, category: "Standard", rating: "4.0", type: 'Hotel', durations: ['2h','3h','4h'], lat: 19.0880, lng: 72.8450 }
-    ],
-    restaurants: [
-        { id: 201, name: "Thai Naam", distance: 1.8, category: "Fine Dining", rating: "4.8", type: 'Restaurant', durations: ['1h','1.5h','2h'], lat: 19.1022, lng: 72.8770 },
-        { id: 202, name: "JW Cafe", distance: 1.8, category: "Fine Dining", rating: "4.7", type: 'Restaurant', durations: ['1h','1.5h','2h'], lat: 19.1023, lng: 72.8771 },
-        { id: 203, name: "Cafe Coffee Day", distance: 0.4, category: "Cafes", rating: "4.2", type: 'Restaurant', durations: ['30m','1h'], lat: 19.0980, lng: 72.8750 },
-        { id: 204, name: "Sake & Stone", distance: 1.8, category: "Fine Dining", rating: "4.9", type: 'Restaurant', durations: ['1.5h','2h'], lat: 19.1024, lng: 72.8772 },
-        { id: 205, name: "Subway", distance: 0.2, category: "Fast Dining", rating: "4.0", type: 'Restaurant', durations: ['15m','30m'], lat: 19.0975, lng: 72.8740 }
-    ],
-    spa: [
-        { id: 301, name: "Jiva Spa", distance: 1.6, category: "Premium Spa", rating: "4.9", type: 'Spa', durations: ['1h','1.5h','2h'], lat: 19.0963, lng: 72.8540 },
-        { id: 302, name: "Aura Wellness", distance: 1.6, category: "Wellness", rating: "4.7", type: 'Spa', durations: ['30m','1h','1.5h'], lat: 19.0964, lng: 72.8541 },
-        { id: 303, name: "O2 Spa Express", distance: 0.5, category: "Express Treatments", rating: "4.4", type: 'Spa', durations: ['15m','30m','45m'], lat: 19.0978, lng: 72.8748 }
-    ],
-    gaming: [
-        { id: 401, name: "KidZania", distance: 7.9, category: "Kids", rating: "4.8", type: 'Entertainment', durations: ['2h','3h','4h'], lat: 19.0860, lng: 72.9080 },
-        { id: 402, name: "Zero Latency VR", distance: 16.5, category: "VR", rating: "4.9", type: 'Entertainment', durations: ['1h','2h'], lat: 18.9900, lng: 72.8200 },
-        { id: 403, name: "T2 Premium Lounge", distance: 0.1, category: "Lounges", rating: "4.6", type: 'Entertainment', durations: ['1h','2h','3h'], lat: 19.0975, lng: 72.8745 }
-    ]
-};
-
-// --- ROUTING ENGINE ---
-window.AIRPORT_COORDS = { lat: 19.0974, lng: 72.8745, name: "Mumbai BOM T2" };
-
-window.RoutingEngine = {
-    haversineDistance: function(lat1, lon1, lat2, lon2) {
-        const R = 6371;
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    },
-    calculateLeg: function(startCoord, endCoord) {
-        const dist = this.haversineDistance(startCoord.lat, startCoord.lng, endCoord.lat, endCoord.lng) * 1.4;
-        const transportType = localStorage.getItem("transportType") || "Luxury";
-        const speeds = { Walking: 5, Shuttle: 30, Transit: 40, Taxi: 35, Luxury: 45 };
-        const speed = speeds[transportType] || 35;
-        const durationMins = Math.round((dist / speed) * 60 + 8);
-        return { durationMins, distKm: dist.toFixed(1), mode: transportType.toLowerCase() };
-    }
-};
-
-window.calculateItineraryTravel = function(list) {
-    let total = 0; let legs = []; let currentCoord = window.AIRPORT_COORDS;
-    list.forEach(item => {
-        let target = { lat: item.lat || window.AIRPORT_COORDS.lat + (item.distance/111), lng: item.lng || window.AIRPORT_COORDS.lng + (item.distance/111) };
-        const leg = window.RoutingEngine.calculateLeg(currentCoord, target);
-        legs.push(leg); total += leg.durationMins; currentCoord = target;
-    });
-    const ret = window.RoutingEngine.calculateLeg(currentCoord, window.AIRPORT_COORDS);
-    total += ret.durationMins; legs.push(ret);
-    return { totalTravelMins: total, legs: legs };
-};
-
-// --- CORE FUNCTIONS ---
-window.parseDurationToMins = function(durStr) {
-    if (!durStr) return 0;
-    const lower = String(durStr).toLowerCase();
-    let mins = 0;
-    const hMatch = lower.match(/([\d\.]+)\s*h/); if (hMatch) mins += parseFloat(hMatch[1]) * 60;
-    const mMatch = lower.match(/([\d\.]+)\s*m/); if (mMatch) mins += parseFloat(mMatch[1]);
-    if (!hMatch && !mMatch) {
-        const val = parseFloat(lower);
-        if (!isNaN(val)) mins = val <= 24 ? val * 60 : val;
-    }
-    return mins;
-};
-
-window.updateTimeCalculations = function() {
-    const layoverH = parseInt(localStorage.getItem('layover_duration') || '6', 10);
-    let totalMins = layoverH * 60;
-    let expMins = 0;
-    window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
-    const travelData = window.calculateItineraryTravel(window.layoverList);
-    const travelMins = travelData.totalTravelMins;
-    const remainingMins = totalMins - 120 - travelMins - expMins;
-
-    document.getElementById('time-total').textContent = layoverH + 'h';
-    document.getElementById('time-travel').textContent = travelMins + 'm';
-    document.getElementById('time-exp').textContent = expMins + 'm';
-    const remEl = document.getElementById('time-remaining');
-    const remContainer = document.getElementById('rem-container');
-    
-    const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
-    remEl.textContent = format(remainingMins);
-    window.isRisk = remainingMins < 15;
-    
-    if (remainingMins < 15) {
-        remEl.style.color = '#dc2626'; remContainer.style.backgroundColor = '#fef2f2';
-    } else if (remainingMins <= 45) {
-        remEl.style.color = '#b45309'; remContainer.style.backgroundColor = '#fffbeb';
-    } else {
-        remEl.style.color = '#15803d'; remContainer.style.backgroundColor = '#ecfdf5';
-    }
-};
-
-window.renderMarketplace = function(category, btn) {
-    if (btn) {
-        document.querySelectorAll('.category-pill').forEach(p => { p.classList.remove('bg-primary','text-white'); p.classList.add('bg-white','text-on-surface'); });
-        btn.classList.add('bg-primary','text-white'); btn.classList.remove('bg-white','text-on-surface');
-    }
-    window.activeCategory = category;
-    const container = document.getElementById('marketplaceInventory');
-    const items = marketplaceData[category] || [];
-    
-    container.innerHTML = `
-        <div class="main-layout flex flex-col xl:flex-row items-start gap-8 w-full">
-            <div id="level1" class="w-full bg-blueprint-bg border border-blueprint-border p-8 rounded-xl shadow-sm">
-                <div class="flex justify-between items-end border-b border-blueprint-border pb-6 mb-8">
-                    <div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-1">LEVEL 1: LISTING</p>
-                        <h3 class="text-3xl font-bold text-primary uppercase tracking-tight">${category.toUpperCase()}</h3>
-                    </div>
-                </div>
-                <div class="border-2 border-dashed border-blueprint-border p-6 rounded-lg bg-white">
-                    <p class="text-[11px] font-bold text-primary uppercase tracking-widest mb-6">INVENTORY (${items.length} FOUND)</p>
-                    <div id="hotel-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        ${items.map(i => `
-                            <div class="p-4 border border-blueprint-border rounded-lg bg-white hover:border-primary transition-all flex flex-col justify-between h-32 cursor-pointer group" onclick="window.openDetail(${i.id})">
-                                <div>
-                                    <h4 class="font-bold text-sm text-primary group-hover:text-brand-blue">${i.name}</h4>
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase">${i.category}</p>
-                                </div>
-                                <div class="mt-2 pt-2 border-t border-slate-100 flex justify-between items-end">
-                                    <span class="text-[11px] font-bold text-primary">${i.distance}km • ${i.rating}★</span>
-                                    <span class="material-symbols-outlined text-slate-300 text-lg group-hover:text-primary">arrow_forward</span>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
+    <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col gap-6 relative mt-4">
+        
+        <!-- Smart Time Panel (Inherited from Marketplace) -->
+        <section class="bg-white border-2 border-primary-container rounded-xl p-6 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-meta-label text-on-surface flex items-center gap-2 uppercase"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
+                <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+                    <span class="material-symbols-outlined text-xs text-brand-blue">flight_takeoff</span>
+                    <span class="text-[10px] text-brand-blue tracking-widest font-bold uppercase" id="time-departure">Departure --:--</span>
                 </div>
             </div>
-            <div id="level2" class="hidden w-full max-w-xl bg-white border border-blueprint-border rounded-xl p-6 shadow-xl flex flex-col sticky top-24">
-                <div class="flex justify-between items-start mb-6 border-b pb-4">
-                    <h3 id="l2-name" class="text-xl font-bold uppercase">Detail View</h3>
-                    <button onclick="window.closeDetail()" class="p-2"><span class="material-symbols-outlined">close</span></button>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                <div class="bg-surface-container border border-outline-variant rounded-lg p-4 text-center">
+                    <p class="text-[9px] text-on-surface-variant uppercase font-bold tracking-widest mb-1">Layover</p>
+                    <p class="text-sm font-extrabold text-primary" id="time-total">6h</p>
                 </div>
-                <div class="space-y-6">
-                    <div class="bg-blueprint-bg p-4 rounded-lg border border-blueprint-border">
-                        <p id="l2-meta" class="text-[10px] font-bold text-slate-400 uppercase mb-1"></p>
-                        <div class="flex items-center gap-2"><span id="l2-rating" class="bg-brand-orange text-white text-[10px] px-2 rounded font-bold"></span></div>
+                <div class="bg-surface-container border border-outline-variant rounded-lg p-4 text-center">
+                    <p class="text-[9px] text-on-surface-variant uppercase font-bold tracking-widest mb-1">Buffer</p>
+                    <p class="text-sm font-extrabold text-primary" id="time-buffer">2h 0m</p>
+                </div>
+                <div class="bg-surface-container border border-outline-variant rounded-lg p-4 text-center">
+                    <p class="text-[9px] text-on-surface-variant uppercase font-bold tracking-widest mb-1">Travel</p>
+                    <p class="text-sm font-extrabold text-primary" id="time-travel">0m</p>
+                </div>
+                <div class="bg-surface-container border border-outline-variant rounded-lg p-4 text-center">
+                    <p class="text-[9px] text-on-surface-variant uppercase font-bold tracking-widest mb-1">Experiences</p>
+                    <p class="text-sm font-extrabold text-brand-blue" id="time-exp">0m</p>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-center col-span-2 md:col-span-1 transition-colors duration-300" id="rem-container">
+                    <p class="text-[9px] text-emerald-800 uppercase font-bold tracking-widest mb-1" id="rem-label">Remaining</p>
+                    <p class="text-base font-extrabold text-emerald-700" id="time-remaining">4h 0m</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Pills (Explore-style) -->
+        <section class="flex gap-2 overflow-x-auto hide-scrollbar py-2 border-b border-outline-variant pb-4">
+            <button onclick="renderMarketplace('recommended', this)" class="category-pill bg-primary text-white px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended</button>
+            <button onclick="renderMarketplace('hotels', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
+            <button onclick="renderMarketplace('restaurants', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
+            <button onclick="renderMarketplace('spa', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
+            <button onclick="renderMarketplace('gaming', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Ent.</button>
+        </section>
+
+        <!-- LEVEL 1: LISTING (Cloned from hotel.html) -->
+        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
+            </div>
+
+            <!-- Main Card Container -->
+            <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">Recommended For You</h3>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Search & Filters -->
+                    <div id="filter-section" class="border border-outline-variant p-3 bg-surface-container">
+                        <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <select id="filter-duration" onchange="applyFilters()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                  <option value="any">Duration</option>
+                              </select>
+                            <select id="filter-price" onchange="applyFilters()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Price Range</option>
+                                <option value="0-3000">₹0 – ₹3000</option>
+                                <option value="3000-6000">₹3000 – ₹6000</option>
+                                <option value="6000-10000">₹6000 – ₹10000</option>
+                                <option value="10000+">₹10000+</option>
+                            </select>
+                            <select id="filter-distance" onchange="applyFilters()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Distance</option>
+                                <option value="1">Within 1 km</option>
+                                <option value="3">Within 3 km</option>
+                                <option value="5">Within 5 km</option>
+                            </select>
+                            <select id="filter-amenities" onchange="applyFilters()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Amenities</option>
+                                <option value="Pool">Pool</option>
+                                <option value="Spa">Spa</option>
+                                <option value="Gym">Gym</option>
+                                <option value="Bar">Bar</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="border border-primary/20 p-5 rounded-lg bg-primary/5">
-                        <label class="block text-[9px] font-bold text-primary uppercase mb-2">Duration</label>
-                        <select id="item-duration" class="w-full mb-4 p-3 border rounded-lg font-bold text-sm"></select>
-                        <button id="add-list-btn" class="w-full bg-primary text-white font-black py-4 rounded-xl text-sm uppercase tracking-widest active:scale-95 shadow-lg">ADD TO LIST</button>
+
+                    <!-- Grid Preview -->
+                    <div class="border-2 border-dashed border-outline-variant p-4">
+                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">INVENTORY (0 ITEMS FOUND)</p>
+                        
+                        <!-- Dynamic Grid -->
+                        <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <!-- Cards injected here -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    `;
-};
 
-window.openDetail = function(id) {
-    let item = null;
-    Object.values(marketplaceData).forEach(cat => { const found = cat.find(i => i.id === id); if (found) item = found; });
-    if (!item) return;
-    window.activeItem = item;
-    document.getElementById('level2').classList.remove('hidden');
-    document.getElementById('l2-name').textContent = item.name;
-    document.getElementById('l2-meta').textContent = `${item.category} • ${item.distance}km from T2`;
-    document.getElementById('l2-rating').textContent = item.rating + ' ★';
-    
-    const durSel = document.getElementById('item-duration');
-    durSel.innerHTML = item.durations.map(d => `<option value="${d}">${d}</option>`).join('');
-    
-    const btn = document.getElementById('add-list-btn');
-    const exists = window.layoverList.some(i => i.name === item.name);
-    if (exists) {
-        btn.innerHTML = 'ADDED'; btn.disabled = true; btn.className = 'w-full py-4 bg-emerald-50 text-emerald-700 border rounded-xl font-bold uppercase';
-    } else {
-        btn.innerHTML = 'ADD TO LIST'; btn.disabled = false; btn.className = 'w-full bg-primary text-white font-black py-4 rounded-xl text-sm uppercase tracking-widest active:scale-95 shadow-lg';
-        btn.onclick = () => {
-            window.layoverList.push({ ...item, duration: durSel.value });
-            localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
-            window.updateListIndicator(); window.updateTimeCalculations(); window.openDetail(id);
+        <!-- LEVEL 2: DETAIL (Cloned from hotel.html) -->
+        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
+            </div>
+
+            <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
+                <div class="flex justify-between items-start mb-6 shrink-0">
+                    <h3 id="l2-title-label" class="text-node-title-md text-secondary uppercase">Detail Page</h3>
+                    <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
+                </div>
+                
+                <div class="space-y-4 overflow-y-auto hide-scrollbar flex-grow pb-4">
+                    <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
+                        <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
+                        <h4 id="l2-name" class="text-[14px] font-bold">Item Name</h4>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold">4.8 ★</span>
+                            <span id="l2-distance" class="text-[10px] text-on-surface-variant">0.9 km from T2</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="wireframe-box p-2 text-center bg-surface-container">
+                            <span class="material-symbols-outlined text-secondary text-[18px]">grid_view</span>
+                            <p class="text-[10px] mt-1 font-bold">Media Gallery</p>
+                        </div>
+                        <div class="wireframe-box p-2 text-center bg-surface-container">
+                            <span class="material-symbols-outlined text-secondary text-[18px]">info</span>
+                            <p class="text-[10px] mt-1 font-bold">Options</p>
+                        </div>
+                    </div>
+
+                    <div class="wireframe-box p-3 bg-surface-container">
+                        <p class="text-meta-label text-on-surface-variant mb-2">KEY DIFFERENTIATORS</p>
+                        <div id="l2-amenities" class="text-[11px] space-y-1"></div>
+                    </div>
+
+                    <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
+                        <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer"></select>
+                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
+                            ADD TO LIST
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 text-meta-label mt-4">
+                        <div class="wireframe-box p-2">
+                            <p class="text-on-surface-variant mb-1">REVIEWS</p>
+                            <p class="font-semibold text-secondary">Verified</p>
+                        </div>
+                        <div class="wireframe-box p-2">
+                            <p class="text-on-surface-variant mb-1">CONTACT</p>
+                            <p class="font-semibold text-secondary">Quick Inquiry</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- List Drawer & Overlays (Inherited from Marketplace) -->
+    <div id="list-drawer" class="fixed inset-0 z-[70] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex justify-end" onclick="if(event.target === this) window.toggleListDrawer()">
+        <div class="bg-white w-full max-md h-full shadow-2xl overflow-hidden transform translate-x-full transition-transform duration-300 flex flex-col" id="list-drawer-panel">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h2 class="text-xl font-bold text-primary uppercase tracking-tight">SELECTED EXPERIENCES</h2>
+                <button onclick="window.toggleListDrawer()" class="p-2 rounded-full hover:bg-white border border-transparent hover:border-slate-200 transition-all">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="list-drawer-content" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"></div>
+            <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
+                 <div class="flex justify-between items-center text-sm font-bold text-primary mb-2" id="drawer-totals"></div>
+                 <button onclick="window.proceedToPlan(this)" class="w-full bg-primary hover:bg-black text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">PLAN MY TRIP &rarr;</button>
+                 <button onclick="window.clearList()" class="w-full bg-white text-red-600 font-bold py-3 rounded-xl text-xs uppercase tracking-widest border border-red-200 hover:bg-red-50 active:scale-95 transition-all">CLEAR LIST</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Warning Modal -->
+    <div id="warning-modal" class="fixed inset-0 z-[100] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-95 transition-transform duration-300" id="warning-modal-panel">
+            <div class="p-6 text-center space-y-4">
+                <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2 text-red-500">
+                    <span class="material-symbols-outlined text-3xl">warning</span>
+                </div>
+                <h3 class="text-xl font-bold text-primary tracking-tight uppercase">Time Warning</h3>
+                <p class="text-sm text-on-surface-variant font-medium leading-relaxed">Your itinerary exceeds the available layover time. Please reduce stay durations or remove experiences before proceeding.</p>
+            </div>
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-center">
+                <button onclick="window.closeWarningModal()" class="w-full bg-primary hover:bg-black text-white font-bold py-3 rounded-xl text-sm uppercase tracking-widest transition-colors shadow-md active:scale-[0.98]">Acknowledge</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 h-20 bg-white/95 backdrop-blur-md border-t border-outline-variant">
+        <button onclick="window.location.href='index.html'" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+            <span class="material-symbols-outlined text-2xl">explore</span>
+            <span class="text-[9px] uppercase tracking-widest mt-1">Explore</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-primary font-bold">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+            <span class="text-[9px] uppercase tracking-widest mt-1">Marketplace</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+            <span class="material-symbols-outlined text-2xl">person</span>
+            <span class="text-[9px] uppercase tracking-widest mt-1">Profile</span>
+        </button>
+    </nav>
+
+    <script>
+        // --- DATA (As requested) ---
+        const marketplaceData = {
+            hotels: {
+                title: "Hotels Listing Page",
+                label: "HOTEL",
+                durations: ['3h','4h','6h','8h','10h','12h','16h','24h'],
+                amenities: ['Pool','Spa','Gym','Bar','Airport Shuttle','Business Center'],
+                premium: [
+                    { id: 101, name: "The Orchid Hotel", distance: 0.9, rating: "4.8", price: 4500, terminal: "T2", category: "Hotel", type: "Premium", am: ["Airport Shuttle", "Pool", "Spa"] },
+                    { id: 102, name: "Hotel Sahara Star", distance: 1.1, rating: "4.7", price: 5200, terminal: "T2", category: "Hotel", type: "Premium", am: ["Pool", "Spa", "Bar"] },
+                    { id: 103, name: "Taj Santacruz", distance: 1.6, rating: "4.9", price: 8200, terminal: "T2", category: "Hotel", type: "Premium", am: ["Airport Shuttle", "Spa", "Business Center"] },
+                    { id: 104, name: "JW Marriott Sahar", distance: 1.8, rating: "4.8", price: 7800, terminal: "T2", category: "Hotel", type: "Premium", am: ["Pool", "Spa", "Gym"] },
+                    { id: 105, name: "ITC Maratha", distance: 2.4, rating: "4.8", price: 7600, terminal: "T2", category: "Hotel", type: "Premium", am: ["Pool", "Spa", "Bar"] },
+                    { id: 106, name: "The Leela Mumbai", distance: 2.5, rating: "4.7", price: 7200, terminal: "T2", category: "Hotel", type: "Premium", am: ["Airport Shuttle", "Pool", "Gym"] },
+                    { id: 107, name: "Aurika Mumbai", distance: 2.8, rating: "4.6", price: 6200, terminal: "T2", category: "Hotel", type: "Premium", am: ["Pool", "Gym", "Bar"] },
+                    { id: 108, name: "Grand Hyatt", distance: 6.1, rating: "4.7", price: 7000, terminal: "T2", category: "Hotel", type: "Premium", am: ["Pool", "Spa", "Business Center"] }
+                ],
+                standard: [
+                    { id: 109, name: "Hotel Bawa Intl.", distance: 1.7, rating: "4.2", price: 2800, terminal: "T2", category: "Hotel", type: "Standard", am: ["Business Center", "Bar"] },
+                    { id: 110, name: "Hotel Midland", distance: 2.3, rating: "4.0", price: 2500, terminal: "T2", category: "Hotel", type: "Standard", am: ["Bar"] },
+                    { id: 111, name: "Lemon Tree Premier", distance: 3.2, rating: "4.2", price: 3800, terminal: "T2", category: "Hotel", type: "Standard", am: ["Airport Shuttle", "Pool"] },
+                    { id: 112, name: "Holiday Inn", distance: 4.2, rating: "4.4", price: 4200, terminal: "T2", category: "Hotel", type: "Standard", am: ["Pool", "Gym"] }
+                ]
+            },
+            restaurants: {
+                title: "Restaurants Listing Page",
+                label: "RESTAURANT",
+                durations: ['30m','1h','1.5h','2h'],
+                amenities: ['Fine Dining','Casual','Bar','Buffet','Quick Bites'],
+                premium: [
+                    { id: 201, name: "Masala Library", distance: 1.8, rating: "4.8", price: 3800, terminal: "T2", category: "Restaurant", type: "Premium", am: ["Fine Dining", "Bar"] },
+                    { id: 202, name: "Yauatcha", distance: 2.1, rating: "4.7", price: 3200, terminal: "T2", category: "Restaurant", type: "Premium", am: ["Fine Dining", "Bar"] },
+                    { id: 203, name: "O Pedro", distance: 2.4, rating: "4.6", price: 2800, terminal: "T2", category: "Restaurant", type: "Premium", am: ["Casual", "Bar"] },
+                    { id: 204, name: "Bombay Canteen", distance: 2.5, rating: "4.8", price: 3500, terminal: "T2", category: "Restaurant", type: "Premium", am: ["Casual", "Bar"] }
+                ],
+                standard: [
+                    { id: 205, name: "Cafe Metro", distance: 0.5, rating: "4.1", price: 800, terminal: "T2", category: "Restaurant", type: "Standard", am: ["Quick Bites"] },
+                    { id: 206, name: "Urban Tadka", distance: 1.2, rating: "4.3", price: 1200, terminal: "T2", category: "Restaurant", type: "Standard", am: ["Casual"] },
+                    { id: 207, name: "Spice Route", distance: 1.5, rating: "4.0", price: 1500, terminal: "T2", category: "Restaurant", type: "Standard", am: ["Casual", "Bar"] },
+                    { id: 208, name: "Food Studio", distance: 1.9, rating: "4.2", price: 1800, terminal: "T2", category: "Restaurant", type: "Standard", am: ["Buffet"] }
+                ]
+            },
+            spa: {
+                title: "Spa Listing Page",
+                label: "SPA",
+                durations: ['30m','1h','1.5h','2h','3h'],
+                amenities: ['Ayurvedic','Massage','Steam','Sauna','Express'],
+                premium: [
+                    { id: 301, name: "Quan Spa", distance: 1.8, rating: "4.9", price: 4500, terminal: "T2", category: "Spa", type: "Premium", am: ["Ayurvedic", "Massage", "Sauna"] },
+                    { id: 302, name: "Jiva Spa", distance: 1.6, rating: "4.9", price: 5000, terminal: "T2", category: "Spa", type: "Premium", am: ["Ayurvedic", "Steam"] },
+                    { id: 303, name: "Heavenly Spa", distance: 2.0, rating: "4.8", price: 4200, terminal: "T2", category: "Spa", type: "Premium", am: ["Massage", "Steam", "Sauna"] },
+                    { id: 304, name: "Sohum Wellness", distance: 2.5, rating: "4.7", price: 3800, terminal: "T2", category: "Spa", type: "Premium", am: ["Ayurvedic", "Massage"] }
+                ],
+                standard: [
+                    { id: 305, name: "Relax Hub", distance: 0.8, rating: "4.0", price: 1200, terminal: "T2", category: "Spa", type: "Standard", am: ["Express", "Massage"] },
+                    { id: 306, name: "Aroma Spa", distance: 1.3, rating: "4.2", price: 1500, terminal: "T2", category: "Spa", type: "Standard", am: ["Massage"] },
+                    { id: 307, name: "Zen Wellness", distance: 1.7, rating: "4.1", price: 1800, terminal: "T2", category: "Spa", type: "Standard", am: ["Steam", "Massage"] },
+                    { id: 308, name: "Urban Calm", distance: 2.2, rating: "4.3", price: 2000, terminal: "T2", category: "Spa", type: "Standard", am: ["Express", "Steam"] }
+                ]
+            },
+            gaming: {
+                title: "Gaming & Ent. Listing Page",
+                label: "ENTERTAINMENT",
+                durations: ['1h','2h','3h','4h'],
+                amenities: ['VR','Arcade','Lounge','Bowling','Kids'],
+                premium: [
+                    { id: 401, name: "Smaaash", distance: 7.5, rating: "4.6", price: 2500, terminal: "T2", category: "Entertainment", type: "Premium", am: ["VR", "Bowling", "Arcade"] },
+                    { id: 402, name: "Timezone Luxe", distance: 4.2, rating: "4.5", price: 1800, terminal: "T2", category: "Entertainment", type: "Premium", am: ["Arcade", "Lounge"] },
+                    { id: 403, name: "VR Arena", distance: 5.1, rating: "4.8", price: 3000, terminal: "T2", category: "Entertainment", type: "Premium", am: ["VR"] },
+                    { id: 404, name: "Game Palacio", distance: 8.2, rating: "4.7", price: 2800, terminal: "T2", category: "Entertainment", type: "Premium", am: ["Bowling", "Lounge"] }
+                ],
+                standard: [
+                    { id: 405, name: "Fun City", distance: 3.5, rating: "4.1", price: 1000, terminal: "T2", category: "Entertainment", type: "Standard", am: ["Kids", "Arcade"] },
+                    { id: 406, name: "Arcade Point", distance: 2.8, rating: "4.2", price: 1200, terminal: "T2", category: "Entertainment", type: "Standard", am: ["Arcade"] },
+                    { id: 407, name: "PlayZone", distance: 4.5, rating: "4.0", price: 900, terminal: "T2", category: "Entertainment", type: "Standard", am: ["Kids"] },
+                    { id: 408, name: "Bowling Hub", distance: 5.8, rating: "4.3", price: 1500, terminal: "T2", category: "Entertainment", type: "Standard", am: ["Bowling"] }
+                ]
+            }
         };
-    }
-};
 
-window.closeDetail = function() { document.getElementById('level2').classList.add('hidden'); };
+        // --- GLOBAL STATE ---
+        window.layoverList = [];
+        window.activeCategory = 'recommended';
+        window.activeItem = null;
+        window.isRisk = false;
 
-window.toggleListDrawer = function() {
-    const d = document.getElementById('list-drawer'); const p = document.getElementById('list-drawer-panel');
-    if (d.classList.contains('hidden')) {
-        window.renderListDrawer(); d.classList.remove('hidden'); setTimeout(() => { d.classList.add('opacity-100'); p.classList.remove('translate-x-full'); }, 10);
-    } else {
-        p.classList.add('translate-x-full'); d.classList.remove('opacity-100'); setTimeout(() => d.classList.add('hidden'), 300);
-    }
-};
+        // --- CORE FUNCTIONS ---
+        function renderMarketplace(catId, btn) {
+            if (btn) {
+                document.querySelectorAll('.category-pill').forEach(p => { 
+                    p.classList.remove('bg-primary','text-white'); 
+                    p.classList.add('bg-white','text-on-surface','border-outline-variant'); 
+                });
+                btn.classList.add('bg-primary','text-white'); 
+                btn.classList.remove('bg-white','text-on-surface','border-outline-variant');
+            }
 
-window.renderListDrawer = function() {
-    const cont = document.getElementById('list-drawer-content');
-    cont.innerHTML = window.layoverList.length > 0 ? window.layoverList.map((i, idx) => `
-        <div id="item-${idx}" class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col gap-3">
-            <div class="flex justify-between items-center">
-                <p class="font-bold text-sm uppercase">${i.name}</p>
-                <button onclick="window.removeItem('${i.name.replace(/'/g, "\\'")}', 'item-${idx}')" class="text-slate-300 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
-            </div>
-            <div class="flex justify-between items-center text-[10px] font-bold border-t pt-3">
-                <span class="text-slate-400">DURATION:</span>
-                <select onchange="window.updateDur('${i.name.replace(/'/g, "\\'")}', this.value)" class="bg-slate-50 px-2 py-1 rounded">
-                    ${i.durations.map(d => `<option value="${d}" ${i.duration===d?'selected':''}>${d}</option>`).join('')}
-                </select>
-            </div>
-        </div>
-    `).join('') : '<div class="text-center py-20 text-slate-300 font-bold uppercase text-[10px]">No experiences added yet.</div>';
-    
-    const totals = document.getElementById('drawer-totals');
-    let expMins = 0; window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
-    const travel = window.calculateItineraryTravel(window.layoverList).totalTravelMins;
-    const rem = (parseInt(localStorage.getItem('layover_duration')||'6')*60) - 120 - travel - expMins;
-    const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
-    
-    totals.innerHTML = `<div class="flex flex-col"><span class="text-[9px] text-slate-400">TOTAL USED</span><span class="text-primary">${format(expMins+travel)}</span></div>
-                        <div class="flex flex-col items-end"><span class="text-[9px] text-slate-400">REMAINING</span><span class="${rem<15?'text-red-600':'text-emerald-600'}">${format(rem)}</span></div>`;
-};
+            window.activeCategory = catId;
+            closeLevel2();
+            
+            if (catId === 'recommended') {
+                document.getElementById('level1-heading').textContent = "Recommended For You";
+                document.getElementById('filter-section').style.display = 'none';
+                renderGrid('recommended');
+                return;
+            }
 
-window.removeItem = function(name, id) {
-    const el = document.getElementById(id); el.style.opacity = '0'; el.style.transform = 'scale(0.9)';
-    setTimeout(() => {
-        window.layoverList = window.layoverList.filter(i => i.name !== name);
-        localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
-        window.renderListDrawer(); window.updateListIndicator(); window.updateTimeCalculations();
-        if (window.activeItem && window.activeItem.name === name) window.openDetail(window.activeItem.id);
-    }, 200);
-};
+            document.getElementById('filter-section').style.display = 'block';
+            const config = marketplaceData[catId];
+            document.getElementById('level1-heading').textContent = config.title;
+            
+            // Populate Filters
+            const durSel = document.getElementById('filter-duration');
+            durSel.innerHTML = '<option value="any">Duration</option>';
+            config.durations.forEach(d => durSel.add(new Option(d, d)));
+            
+            const amSel = document.getElementById('filter-amenities');
+            amSel.innerHTML = '<option value="any">Amenities</option>';
+            config.amenities.forEach(a => amSel.add(new Option(a, a)));
 
-window.updateDur = function(name, val) {
-    const i = window.layoverList.find(x => x.name === name); if (i) i.duration = val;
-    localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
-    window.renderListDrawer(); window.updateTimeCalculations();
-};
+            applyFilters();
+        }
 
-window.updateListIndicator = function() {
-    let ind = document.getElementById('global-list-indicator');
-    if (!ind) { ind = document.createElement('div'); ind.id = 'global-list-indicator'; ind.className = 'fixed bottom-[100px] left-1/2 -translate-x-1/2 z-[100]'; document.body.appendChild(ind); }
-    if (window.layoverList.length > 0) {
-        ind.style.display = 'flex';
-        ind.innerHTML = `<div class="flex bg-white/95 backdrop-blur-md border border-slate-200 p-2 shadow-lg gap-2">
-            <button onclick="window.toggleListDrawer()" class="bg-slate-100 px-6 py-2 font-bold text-[10px] uppercase">View List (${window.layoverList.length})</button>
-            <button onclick="window.proceedToPlan()" class="bg-black text-white px-8 py-2 font-bold text-[10px] uppercase">Plan My Trip</button>
-        </div>`;
-    } else ind.style.display = 'none';
-};
+        function applyFilters() {
+            if (window.activeCategory === 'recommended') return;
+            renderGrid(window.activeCategory);
+        }
 
-window.proceedToPlan = function() { if (window.isRisk) { document.getElementById('warning-modal').classList.remove('hidden'); document.getElementById('warning-modal').classList.add('opacity-100'); document.getElementById('warning-modal-panel').classList.remove('scale-95'); } else window.location.href = 'yourplan.html'; };
-window.closeWarningModal = function() { document.getElementById('warning-modal').classList.add('hidden'); };
-window.clearList = function() { window.layoverList = []; localStorage.setItem('layoverList', '[]'); window.renderListDrawer(); window.updateListIndicator(); window.updateTimeCalculations(); };
+        function renderGrid(catId) {
+            const grid = document.getElementById('hotel-grid');
+            const countEl = document.getElementById('inventory-count');
+            
+            let allItems = [];
+            let configLabel = "ITEMS";
 
-document.addEventListener('DOMContentLoaded', () => {
-    try { window.layoverList = JSON.parse(localStorage.getItem('layoverList') || '[]'); } catch(e) { window.layoverList = []; }
-    window.renderMarketplace('recommended');
-    window.updateTimeCalculations();
-    window.updateListIndicator();
-});
-</script>
+            if (catId === 'recommended') {
+                allItems = [...marketplaceData.hotels.premium.slice(0,2), ...marketplaceData.restaurants.premium.slice(0,1), ...marketplaceData.spa.premium.slice(0,1)];
+                configLabel = "RECOMMENDED";
+            } else {
+                const config = marketplaceData[catId];
+                allItems = [...config.premium, ...config.standard];
+                configLabel = config.label;
+            }
+
+            // Simple Filter Logic
+            const durVal = document.getElementById('filter-duration').value;
+            const priceVal = document.getElementById('filter-price').value;
+            const distVal = document.getElementById('filter-distance').value;
+            const amVal = document.getElementById('filter-amenities').value;
+
+            const filtered = allItems.filter(i => {
+                if (durVal !== 'any' && !i.durations?.includes(durVal)) { /* simplified for mock */ }
+                if (distVal !== 'any' && i.distance > parseFloat(distVal)) return false;
+                if (amVal !== 'any' && !i.am.includes(amVal)) return false;
+                if (priceVal !== 'any') {
+                    if (priceVal === '10000+') { if (i.price < 10000) return false; }
+                    else { const [min, max] = priceVal.split('-').map(Number); if (i.price < min || i.price > max) return false; }
+                }
+                return true;
+            });
+
+            countEl.textContent = `${configLabel} INVENTORY (${filtered.length} FOUND)`;
+            grid.innerHTML = '';
+
+            const renderCard = (h) => {
+                const isActive = window.activeItem && h.id === window.activeItem.id;
+                const isPremium = h.type === "Premium";
+                const bgClass = isActive 
+                    ? 'bg-primary/10 border-primary' 
+                    : (isPremium ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50');
+                
+                return `
+                    <div onclick="openLevel2('${catId}', ${h.id})" class="p-2 border cursor-pointer transition-colors text-[11px] font-medium text-on-surface flex flex-col justify-between h-16 ${bgClass}">
+                        <div class="flex justify-between items-start">
+                            <span class="truncate pr-1 uppercase">${h.name}</span>
+                            ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
+                        </div>
+                        <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
+                            <span>${h.distance} km • ${h.terminal}</span>
+                            <span class="font-bold text-secondary">${h.rating}</span>
+                        </div>
+                    </div>
+                `;
+            };
+
+            const premium = filtered.filter(i => i.type === "Premium");
+            const standard = filtered.filter(i => i.type === "Standard");
+
+            if (premium.length > 0) {
+                grid.innerHTML += `<div class="col-span-full mt-2 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
+                    <h4 class="text-meta-label text-primary uppercase">Premium ${catId === 'recommended' ? 'Picks' : catId}</h4>
+                    <span class="text-[10px] font-bold text-on-surface-variant">(${premium.length})</span>
+                </div>`;
+                premium.forEach(i => grid.innerHTML += renderCard(i));
+            }
+            if (standard.length > 0) {
+                grid.innerHTML += `<div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
+                    <h4 class="text-meta-label text-primary uppercase">Standard ${catId}</h4>
+                    <span class="text-[10px] font-bold text-on-surface-variant">(${standard.length})</span>
+                </div>`;
+                standard.forEach(i => grid.innerHTML += renderCard(i));
+            }
+        }
+
+        function openLevel2(catId, id) {
+            let item = null;
+            if (catId === 'recommended') {
+                Object.values(marketplaceData).forEach(c => { const f = [...c.premium, ...c.standard].find(x => x.id === id); if (f) item = f; });
+            } else {
+                const config = marketplaceData[catId];
+                item = [...config.premium, ...config.standard].find(x => x.id === id);
+            }
+            if(!item) return;
+            window.activeItem = item;
+            renderGrid(window.activeCategory);
+
+            document.getElementById('l2-name').textContent = item.name;
+            document.getElementById('l2-rating').textContent = `${item.rating} ★`;
+            document.getElementById('l2-distance').textContent = `${item.distance} km from ${item.terminal}`;
+            
+            const amCont = document.getElementById('l2-amenities');
+            amCont.innerHTML = item.am.length 
+                ? item.am.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('') 
+                : '<div class="text-[11px] text-on-surface-variant italic">Standard amenities included</div>';
+
+            const durSel = document.getElementById('item-duration');
+            const catConfig = marketplaceData[item.category.toLowerCase() + 's'] || marketplaceData[item.category.toLowerCase()] || marketplaceData.hotels;
+            durSel.innerHTML = '';
+            catConfig.durations.forEach(d => durSel.add(new Option(d, d)));
+            
+            const btn = document.getElementById('add-list-btn');
+            const alreadyAdded = window.layoverList.some(i => i.name === item.name);
+            
+            if (alreadyAdded) {
+                btn.innerHTML = 'ADDED';
+                btn.className = 'w-full py-2 text-sm tracking-widest uppercase transition-colors bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default';
+                btn.disabled = true;
+                durSel.disabled = true;
+            } else {
+                btn.innerHTML = 'ADD TO LIST';
+                btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
+                btn.disabled = false;
+                durSel.disabled = false;
+                btn.onclick = () => window.addToList(btn, item.name, item.category, durSel.value, item.distance, '');
+            }
+
+            const l2 = document.getElementById('level2');
+            l2.classList.remove('hidden');
+            requestAnimationFrame(() => { 
+                l2.classList.remove('opacity-0'); 
+                setTimeout(() => l2.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+            });
+        }
+
+        function closeLevel2() {
+            window.activeItem = null;
+            if (window.activeCategory) renderGrid(window.activeCategory);
+            const l2 = document.getElementById('level2');
+            l2.classList.add('opacity-0');
+            setTimeout(() => l2.classList.add('hidden'), 300);
+        }
+
+        // --- TIME LOGIC (Centralized) ---
+        window.parseDurationToMins = function(durStr) {
+            if (!durStr) return 0;
+            const lower = String(durStr).toLowerCase();
+            let mins = 0;
+            const hMatch = lower.match(/([\d\.]+)\s*h/); if (hMatch) mins += parseFloat(hMatch[1]) * 60;
+            const mMatch = lower.match(/([\d\.]+)\s*m/); if (mMatch) mins += parseFloat(mMatch[1]);
+            if (!hMatch && !mMatch) { const val = parseFloat(lower); if (!isNaN(val)) mins = val <= 24 ? val * 60 : val; }
+            return mins;
+        };
+
+        window.updateTimeCalculations = function() {
+            const layoverH = parseInt(localStorage.getItem('layover_duration') || '6', 10);
+            let totalMins = layoverH * 60;
+            let expMins = 0;
+            window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
+            
+            // Mock Travel Calc (Realistic Sequential)
+            let travelMins = 0;
+            if (window.layoverList.length > 0) {
+                let maxDist = 0;
+                window.layoverList.forEach(i => { if(i.distance > maxDist) maxDist = i.distance; });
+                travelMins = Math.round(maxDist * 10 + 15); // Mock travel logic
+            }
+            
+            const remainingMins = totalMins - 120 - travelMins - expMins;
+
+            document.getElementById('time-total').textContent = layoverH + 'h';
+            document.getElementById('time-travel').textContent = travelMins + 'm';
+            document.getElementById('time-exp').textContent = expMins + 'm';
+            const remEl = document.getElementById('time-remaining');
+            const remContainer = document.getElementById('rem-container');
+            
+            const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+            remEl.textContent = format(remainingMins);
+            window.isRisk = remainingMins < 15;
+            
+            if (remainingMins < 15) { remEl.style.color = '#dc2626'; remContainer.style.backgroundColor = '#fef2f2'; }
+            else if (remainingMins <= 45) { remEl.style.color = '#b45309'; remContainer.style.backgroundColor = '#fffbeb'; }
+            else { remEl.style.color = '#15803d'; remContainer.style.backgroundColor = '#ecfdf5'; }
+        };
+
+        // --- LIST MANAGEMENT ---
+        window.addToList = function(btn, name, category, duration, distance) {
+            window.layoverList.push({ name, category, duration, distance });
+            localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+            window.updateTimeCalculations();
+            window.updateListIndicator();
+            openLevel2(window.activeCategory, window.activeItem.id);
+        };
+
+        window.removeItem = function(name) {
+            window.layoverList = window.layoverList.filter(i => i.name !== name);
+            localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+            window.renderListDrawer();
+            window.updateTimeCalculations();
+            window.updateListIndicator();
+            if (window.activeItem) openLevel2(window.activeCategory, window.activeItem.id);
+        };
+
+        window.clearList = function() {
+            window.layoverList = [];
+            localStorage.setItem('layoverList', '[]');
+            window.updateTimeCalculations();
+            window.updateListIndicator();
+            window.toggleListDrawer();
+            if (window.activeItem) openLevel2(window.activeCategory, window.activeItem.id);
+        };
+
+        window.toggleListDrawer = function() {
+            const d = document.getElementById('list-drawer');
+            const p = document.getElementById('list-drawer-panel');
+            if (d.classList.contains('hidden')) {
+                window.renderListDrawer();
+                d.classList.remove('hidden');
+                setTimeout(() => { d.classList.add('opacity-100'); p.classList.remove('translate-x-full'); }, 10);
+            } else {
+                p.classList.add('translate-x-full');
+                d.classList.remove('opacity-100');
+                setTimeout(() => d.classList.add('hidden'), 300);
+            }
+        }
+
+        window.renderListDrawer = function() {
+            const cont = document.getElementById('list-drawer-content');
+            cont.innerHTML = window.layoverList.length > 0 ? window.layoverList.map((i, idx) => `
+                <div class="p-4 bg-white border border-slate-200 rounded-lg flex justify-between items-center">
+                    <div>
+                        <p class="font-bold text-xs uppercase">${i.name}</p>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase">${i.category} • ${i.duration}</p>
+                    </div>
+                    <button onclick="window.removeItem('${i.name.replace(/'/g, "\\'")}')" class="text-slate-300 hover:text-red-500 transition-colors">
+                        <span class="material-symbols-outlined text-lg">delete</span>
+                    </button>
+                </div>
+            `).join('') : '<p class="text-center py-10 text-slate-400 text-xs font-bold uppercase tracking-widest">No experiences added yet.</p>';
+            
+            const totals = document.getElementById('drawer-totals');
+            let expMins = 0; window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
+            const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+            totals.innerHTML = `<span class="text-[10px] text-slate-400 uppercase">Experiences: ${format(expMins)}</span>`;
+        };
+
+        window.updateListIndicator = function() {
+            let ind = document.getElementById('global-list-indicator');
+            if (!ind) {
+                ind = document.createElement('div');
+                ind.id = 'global-list-indicator';
+                ind.className = 'fixed bottom-[100px] left-1/2 -translate-x-1/2 z-[60] transition-all duration-300';
+                document.body.appendChild(ind);
+            }
+            if (window.layoverList.length > 0) {
+                ind.style.display = 'block';
+                ind.innerHTML = `<div class="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-outline-variant p-2 shadow-lg rounded-full">
+                    <button onclick="window.toggleListDrawer()" class="bg-primary text-white px-6 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest">View List (${window.layoverList.length})</button>
+                    <button onclick="window.proceedToPlan()" class="bg-secondary text-white px-8 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest">Plan My Trip</button>
+                </div>`;
+            } else ind.style.display = 'none';
+        };
+
+        window.proceedToPlan = function() {
+            if (window.isRisk) {
+                const modal = document.getElementById('warning-modal');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.add('opacity-100');
+                    document.getElementById('warning-modal-panel').classList.remove('scale-95');
+                }, 10);
+            } else window.location.href = 'yourplan.html';
+        };
+        window.closeWarningModal = function() {
+            document.getElementById('warning-modal').classList.add('hidden');
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try { window.layoverList = JSON.parse(localStorage.getItem('layoverList') || '[]'); } catch(e) {}
+            renderMarketplace('recommended');
+            window.updateTimeCalculations();
+            window.updateListIndicator();
+        });
+    </script>
 </body>
 </html>
