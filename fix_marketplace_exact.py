@@ -1,19 +1,34 @@
 import re
 
-with open('marketplace.html', 'r', encoding='utf-8') as f:
-    content = f.read()
+with open('hotel.html', 'r', encoding='utf-8') as f:
+    hotel_content = f.read()
 
-# Replace the body content starting from <main>
-# We need to maintain the timeline section and the list drawer / indicator.
+# Extract styles from hotel.html
+style_match = re.search(r'<style>.*?</style>', hotel_content, re.DOTALL)
+styles = style_match.group(0) if style_match else ''
+
+# Extract Tailwind config from hotel.html
+tw_match = re.search(r'<script id=\"tailwind-config\">.*?</script>', hotel_content, re.DOTALL)
+tw_config = tw_match.group(0) if tw_match else ''
+
+# Read marketplace.html
+with open('marketplace.html', 'r', encoding='utf-8') as f:
+    market_content = f.read()
+
+# Replace Tailwind config
+if tw_config:
+    market_content = re.sub(r'<script id=\"tailwind-config\">.*?</script>', tw_config, market_content, flags=re.DOTALL)
+
+# Inject styles just before </head>
+market_content = re.sub(r'</head>', styles + '\n</head>', market_content)
 
 new_script = r'''<script>
 // --- GLOBAL STATE & CONFIG ---
 window.layoverList = [];
-window.activeCategory = 'hotel.html'; // Default to Hotel to match reference? Or recommended? The prompt says "Keep RECOMMENDED working" earlier, but now says "A duplicate implementation of Explore". I'll keep the category pills.
+window.activeCategory = 'hotel.html'; 
 window.activeItem = null;
 window.isRisk = false;
 
-// We use the exact data from the Explore pages.
 window.LAYOVER_INVENTORY = {
     'Hotels': [
         { id: 1, name: "The Orchid Hotel", distance: 0.9, terminal: "T2", category: "Premium", rating: "4.8", price: 4500, durations: [3, 4, 6, 8, 10, 12, 16, 24], amenities: ["Airport Shuttle", "Pool", "Spa"], type: 'Hotel' },
@@ -56,7 +71,7 @@ const FILTER_CONFIG = {
         durationLabel: "Duration",
         durations: [{v:'3',l:'3 Hours'}, {v:'4',l:'4 Hours'}, {v:'6',l:'6 Hours'}, {v:'8',l:'8 Hours'}, {v:'10',l:'10 Hours'}, {v:'12',l:'12 Hours'}, {v:'16',l:'16 Hours'}, {v:'24',l:'24 Hours'}],
         priceRange: [{v:'0-3000',l:'₹0 – ₹3000'}, {v:'3000-6000',l:'₹3000 – ₹6000'}, {v:'6000-10000',l:'₹6000 – ₹10000'}, {v:'10000+',l:'₹10000+'}],
-        distance: [{v:'1',l:'Within 1 km'}, {v:'3',l:'Within 3 km'}, {v:'5',l:'Within 5 km'}],
+        distance: [{v:'1',l:'Within 1 km'}, {v:'3',l:'Within 3 km'}, {v:'5',l:'Within 5 km'}, {v:'10',l:'Within 10 km'}],
         amenities: [{v:'Airport Shuttle',l:'Airport Shuttle'}, {v:'Pool',l:'Pool'}, {v:'Spa',l:'Spa'}, {v:'Business Center',l:'Business Center'}],
         groups: [{key:'Premium', title:'PREMIUM HOTELS'}, {key:'Standard', title:'STANDARD HOTELS'}]
     },
@@ -153,11 +168,13 @@ window.updateTimeCalculations = function() {
         if (remainingMins < 0) {
             window.isRisk = true;
             remEl.textContent = 'Risk';
-            remContainer.className = 'bg-red-50 border border-red-100 rounded-2xl p-4 text-center';
+            remEl.style.color = '#dc2626';
+            remContainer.style.backgroundColor = '#fef2f2';
         } else {
             window.isRisk = false;
             remEl.textContent = format(remainingMins);
-            remContainer.className = 'bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center';
+            remEl.style.color = '#15803d';
+            remContainer.style.backgroundColor = '#ecfdf5';
         }
     }
 };
@@ -165,19 +182,17 @@ window.updateTimeCalculations = function() {
 window.renderCategory = function(catId, btn) {
     if (btn) {
         document.querySelectorAll('.category-pill').forEach(pill => {
-            pill.classList.remove('bg-primary', 'text-on-primary');
+            pill.classList.remove('bg-primary', 'text-white');
             pill.classList.add('bg-white', 'text-on-surface');
         });
         btn.classList.remove('bg-white', 'text-on-surface');
-        btn.classList.add('bg-primary', 'text-on-primary');
+        btn.classList.add('bg-primary', 'text-white');
     }
 
     window.activeCategory = catId;
     const container = document.getElementById('marketplace-content');
     
-    // Recommended View is a simplified wrapper for blueprint
     if (catId === 'recommended') {
-        const hConfig = FILTER_CONFIG['hotel.html'];
         container.innerHTML = `
             <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
                 <div class="flex items-center justify-between mb-4">
@@ -193,7 +208,7 @@ window.renderCategory = function(catId, btn) {
                     </div>
                     <div class="border-2 border-dashed border-outline-variant p-4">
                         <p class="text-meta-label text-on-surface-variant mb-3">INVENTORY (3 ITEMS FOUND)</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2" id="hotel-grid">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="hotel-grid">
                             ${[window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => renderCard(i)).join('')}
                         </div>
                     </div>
@@ -232,11 +247,11 @@ window.renderCategory = function(catId, btn) {
     `;
 
     container.innerHTML = `
-        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
-            <div class="flex items-center justify-between mb-4">
+        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative flex flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-4">
                 <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
             </div>
-            <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
+            <div class="w-full bg-white border-2 border-primary-container p-6 shadow-sm">
                 <div class="flex justify-between items-start mb-6">
                     <h3 class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">${config.title}</h3>
                 </div>
@@ -255,11 +270,11 @@ window.renderCategory = function(catId, btn) {
 
 function level2Template() {
     return `
-        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative mt-6 md:mt-0">
-            <div class="flex items-center justify-between mb-4">
+        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative mt-6 lg:mt-0 flex flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-4">
                 <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
             </div>
-            <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
+            <div class="w-full bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
                 <div class="flex justify-between items-start mb-6 shrink-0">
                     <h3 class="text-node-title-md text-secondary uppercase">Detail Page</h3>
                     <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
@@ -316,8 +331,18 @@ function level2Template() {
 
 function renderCard(h) {
     const isActive = window.activeItem && window.activeItem.id === h.id;
-    // Assuming 'Premium' keywords define premium
-    const isPremium = String(h.category).toLowerCase().includes("premium") || String(h.category).toLowerCase().includes("fine dining") || h.price > 5000;
+    // Defining premium based on the group property to match Explore layout grouping
+    let isPremium = false;
+    let configKey = 'hotel.html';
+    if (h.type === 'Hotel') configKey = 'hotel.html';
+    if (h.type === 'Restaurant') configKey = 'restaurant.html';
+    if (h.type === 'Spa') configKey = 'spa.html';
+    if (h.type === 'Entertainment') configKey = 'entertainment.html';
+
+    const config = FILTER_CONFIG[configKey];
+    if (config) {
+        isPremium = (h.category === config.groups[0].key);
+    }
     
     const bgClass = isActive 
         ? 'bg-primary/10 border-primary' 
@@ -330,7 +355,7 @@ function renderCard(h) {
                 ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
             </div>
             <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
-                <span>${h.distance} km • ${h.terminal}</span>
+                <span>${h.distance} km</span>
                 <span class="font-bold text-secondary">${h.rating} ★</span>
             </div>
         </div>
@@ -588,18 +613,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.updateListIndicator();
 });
 </script>
-<style>
-/* Blueprint specific overrides to ensure perfect matching */
-.wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
-body { background-color: #f7f7fb; }
-.text-meta-label { font-size: 10px; letter-spacing: 0.1em; font-weight: 700; }
-.text-node-title-md { font-size: 16px; letter-spacing: -0.01em; font-weight: 700; }
-</style>
 '''
 
-# Standardizing navigation items and IDs
-new_content = re.sub(r'<script>.*?</script>', new_script, content, flags=re.DOTALL)
-new_content = re.sub(r'<style>.*?</style>', '', new_content, flags=re.DOTALL) # remove existing styles to clean up
+new_content = re.sub(r'<script>.*?</script>', new_script, market_content, flags=re.DOTALL)
 
 with open('marketplace.html', 'w', encoding='utf-8') as f:
     f.write(new_content)
+
+print("Updated marketplace.html with exact Explore blueprint")
