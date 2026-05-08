@@ -274,6 +274,39 @@ window.FILTER_CONFIG = {
 window.calculateDynamicTravelMins = function(distance) {
     const transportType = localStorage.getItem("transportType") || "Luxury";
     const speedMap = { walking: 5, cab: 28, metro: 40, bike: 18, Sedan: 40, SUV: 38, XL: 35, Luxury: 45, Shuttle: 30 };
+
+window.calculateLegTravelTime = function(dist1, dist2) {
+    if (dist1 === 0) return Math.round(window.calculateDynamicTravelMins(dist2) + 15);
+    if (dist2 === 0) return Math.round(window.calculateDynamicTravelMins(dist1) + 15);
+    
+    // Mock realistic cross-city distance based on radial difference
+    const mockCrossDist = Math.max(1.2, Math.abs(dist1 - dist2) * 1.5 + 2.5);
+    return Math.round(window.calculateDynamicTravelMins(mockCrossDist) + 10);
+};
+
+window.calculateItineraryTravel = function(list) {
+    if (!list || list.length === 0) return { totalTravelMins: 0, legs: [] };
+    
+    let total = 0;
+    let legs = [];
+    let currentDist = 0;
+    
+    list.forEach(item => {
+        const itemDist = parseFloat(item.distance) || 0;
+        const legTime = window.calculateLegTravelTime(currentDist, itemDist);
+        legs.push(legTime);
+        total += legTime;
+        currentDist = itemDist;
+    });
+    
+    // Return to airport
+    const returnTime = window.calculateLegTravelTime(currentDist, 0);
+    legs.push(returnTime);
+    total += returnTime;
+    
+    return { totalTravelMins: total, legs: legs };
+};
+
     const speed = speedMap[transportType] || 28;
     let trafficMultiplier = 1.3;
     return (distance / speed) * 60 * trafficMultiplier;
@@ -310,12 +343,11 @@ window.updateTimeCalculations = function() {
     let worstTravelMins = 0;
 
     if (window.layoverList.length > 0) {
-        let maxDist = 0;
         window.layoverList.forEach(item => {
             expMins += window.parseDurationToMins(item.duration);
-            if (item.distance > maxDist) maxDist = item.distance;
         });
-        worstTravelMins = Math.round(window.calculateDynamicTravelMins(maxDist) * 2 + 30);
+        const travelData = window.calculateItineraryTravel(window.layoverList);
+        worstTravelMins = travelData.totalTravelMins;
     }
 
     let remainingMins = totalMins - bufferMins - worstTravelMins - expMins;
@@ -763,7 +795,7 @@ window.renderListDrawer = function() {
     if (content) {
         content.innerHTML = window.layoverList.length > 0 ? 
             window.layoverList.map((item, idx) => {
-                const travel = Math.round(window.calculateDynamicTravelMins(item.distance) * 2 + 30);
+                const travel = window.calculateLegTravelTime(0, item.distance);
                 
                 let catConfig = window.CATEGORY_CONFIG['hotel.html'];
                 if (item.category === 'Hotel') catConfig = window.CATEGORY_CONFIG['hotel.html'];
@@ -812,7 +844,7 @@ window.renderListDrawer = function() {
             expMins += window.parseDurationToMins(item.duration);
             if (item.distance > maxDist) maxDist = item.distance;
         });
-        const travelMins = window.layoverList.length > 0 ? Math.round(window.calculateDynamicTravelMins(maxDist) * 2 + 30) : 0;
+        const travelMins = window.layoverList.length > 0 ? window.calculateItineraryTravel(window.layoverList).totalTravelMins : 0;
         const totalUsed = expMins + travelMins;
         
         const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';

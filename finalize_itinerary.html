@@ -501,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     state.selectedItems.forEach((item, idx) => {
         // Transit to stop
-        const legTravel = Math.round((item.originalItem.distance * 3) + 15);
+        const legTravel = item.transitOverheadMinutes;
         currentTime = new Date(currentTime.getTime() + (legTravel * 60 * 1000));
         
         html += `
@@ -546,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Final Transit back to airport
     const lastItem = state.selectedItems[state.selectedItems.length - 1];
-    const returnTravel = Math.round((lastItem.originalItem.distance * 3) + 15);
+    const returnTravel = state.totalTransitMinutes - state.selectedItems.reduce((acc, curr) => acc + curr.transitOverheadMinutes, 0);
     currentTime = new Date(currentTime.getTime() + (returnTravel * 60 * 1000));
     
     html += `
