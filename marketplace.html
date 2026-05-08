@@ -749,9 +749,7 @@ window.updateListIndicator = function() {
 };
 
 window.toggleListDrawer = function() {
-    alert("Items in list: 
-" + window.layoverList.map(i => i.name + " (" + i.duration + ")").join("
-"));
+    alert("Items in list: \\n" + window.layoverList.map(i => i.name + " (" + i.duration + ")").join("\\n"));
 };
 
 window.proceedToPlan = function(btn) {
