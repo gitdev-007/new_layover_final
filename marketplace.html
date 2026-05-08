@@ -13,9 +13,9 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#1d4ed8", /* blue */
+                        primary: "#1d4ed8",
                         "primary-container": "#bfdbfe",
-                        secondary: "#ea580c", /* orange */
+                        secondary: "#ea580c",
                         "secondary-container": "#fed7aa",
                         surface: "#ffffff",
                         "surface-container": "#f8fafc",
@@ -70,7 +70,7 @@
 
     <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col gap-6 relative mt-4">
         
-        <!-- Smart Time Panel (Inherited from Marketplace) -->
+        <!-- Smart Time Panel -->
         <section class="bg-white border-2 border-primary-container rounded-xl p-6 shadow-sm relative overflow-hidden">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-meta-label text-on-surface flex items-center gap-2 uppercase"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
@@ -105,14 +105,14 @@
 
         <!-- Category Pills (Explore-style) -->
         <section class="flex gap-2 overflow-x-auto hide-scrollbar py-2 border-b border-outline-variant pb-4">
-            <button onclick="renderMarketplace('recommended', this)" class="category-pill bg-primary text-white px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended</button>
-            <button onclick="renderMarketplace('hotels', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
-            <button onclick="renderMarketplace('restaurants', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
-            <button onclick="renderMarketplace('spa', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
-            <button onclick="renderMarketplace('gaming', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Ent.</button>
+            <button id="pill-recommended" onclick="renderMarketplace('recommended', this)" class="category-pill bg-primary text-white px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all shadow-sm">Recommended</button>
+            <button id="pill-hotels" onclick="renderMarketplace('hotels', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Hotels</button>
+            <button id="pill-restaurants" onclick="renderMarketplace('restaurants', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Restaurants</button>
+            <button id="pill-spa" onclick="renderMarketplace('spa', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Spa</button>   
+            <button id="pill-gaming" onclick="renderMarketplace('gaming', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 active:scale-95 transition-all">Gaming &amp; Ent.</button>
         </section>
 
-        <!-- LEVEL 1: LISTING (Cloned from hotel.html) -->
+        <!-- LEVEL 1: LISTING -->
         <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
             <div class="flex items-center justify-between mb-4">
                 <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
@@ -130,8 +130,8 @@
                         <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                             <select id="filter-duration" onchange="applyFilters()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-                                  <option value="any">Duration</option>
-                              </select>
+                                <option value="any">Duration</option>
+                            </select>
                             <select id="filter-price" onchange="applyFilters()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Price Range</option>
                                 <option value="0-3000">₹0 – ₹3000</option>
@@ -147,10 +147,6 @@
                             </select>
                             <select id="filter-amenities" onchange="applyFilters()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Amenities</option>
-                                <option value="Pool">Pool</option>
-                                <option value="Spa">Spa</option>
-                                <option value="Gym">Gym</option>
-                                <option value="Bar">Bar</option>
                             </select>
                         </div>
                     </div>
@@ -168,7 +164,7 @@
             </div>
         </div>
 
-        <!-- LEVEL 2: DETAIL (Cloned from hotel.html) -->
+        <!-- LEVEL 2: DETAIL -->
         <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative">
             <div class="flex items-center justify-between mb-4">
                 <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
@@ -229,20 +225,22 @@
 
     </main>
 
-    <!-- List Drawer & Overlays (Inherited from Marketplace) -->
-    <div id="list-drawer" class="fixed inset-0 z-[70] hidden opacity-0 transition-all duration-300 bg-black/40 backdrop-blur-sm flex justify-end" onclick="if(event.target === this) window.toggleListDrawer()">
-        <div class="bg-white w-full max-md h-full shadow-2xl overflow-hidden transform translate-x-full transition-transform duration-300 flex flex-col" id="list-drawer-panel">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-                <h2 class="text-xl font-bold text-primary uppercase tracking-tight">SELECTED EXPERIENCES</h2>
+    <!-- List Drawer -->
+    <div id="list-drawer" class="fixed inset-0 z-[70] hidden opacity-0 transition-all duration-300 bg-black/20 backdrop-blur-sm flex items-end justify-center pb-24 px-4" onclick="if(event.target === this) window.toggleListDrawer()">
+        <div class="bg-white w-full max-w-[480px] rounded-3xl shadow-2xl overflow-hidden transform translate-y-full transition-transform duration-300 flex flex-col max-h-[70vh]" id="list-drawer-panel">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h2 class="text-lg font-bold text-primary uppercase tracking-tight">Selected Itinerary</h2>
                 <button onclick="window.toggleListDrawer()" class="p-2 rounded-full hover:bg-white border border-transparent hover:border-slate-200 transition-all">
-                    <span class="material-symbols-outlined">close</span>
+                    <span class="material-symbols-outlined text-on-surface-variant">close</span>
                 </button>
             </div>
             <div id="list-drawer-content" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"></div>
-            <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
+            <div class="p-6 border-t border-slate-100 bg-slate-50/80 backdrop-blur-md space-y-4">
                  <div class="flex justify-between items-center text-sm font-bold text-primary mb-2" id="drawer-totals"></div>
-                 <button onclick="window.proceedToPlan(this)" class="w-full bg-primary hover:bg-black text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">PLAN MY TRIP &rarr;</button>
-                 <button onclick="window.clearList()" class="w-full bg-white text-red-600 font-bold py-3 rounded-xl text-xs uppercase tracking-widest border border-red-200 hover:bg-red-50 active:scale-95 transition-all">CLEAR LIST</button>
+                 <div class="grid grid-cols-2 gap-3">
+                    <button onclick="window.clearList()" class="bg-white text-red-600 font-bold py-3.5 rounded-2xl text-[11px] uppercase tracking-widest border border-red-100 hover:bg-red-50 active:scale-95 transition-all">Clear List</button>
+                    <button onclick="window.proceedToPlan(this)" class="bg-primary hover:bg-black text-white font-bold py-3.5 rounded-2xl text-[11px] uppercase tracking-widest shadow-xl active:scale-95 transition-all">Plan Trip &rarr;</button>
+                 </div>
             </div>
         </div>
     </div>
@@ -280,12 +278,19 @@
     </nav>
 
     <script>
-        // --- DATA (As requested) ---
+        // --- CONFIG ---
+        const categoryDurations = {
+            hotels: ['1 Hour', '2 Hours', '3 Hours', 'Overnight'],
+            restaurants: ['30 Min', '1 Hour', '90 Min'],
+            spa: ['30 Min', '1 Hour', '90 Min', '2 Hours'],
+            gaming: ['30 Min', '1 Hour', '2 Hours']
+        };
+
         const marketplaceData = {
             hotels: {
                 title: "Hotels Listing Page",
                 label: "HOTEL",
-                durations: ['3h','4h','6h','8h','10h','12h','16h','24h'],
+                durations: categoryDurations.hotels,
                 amenities: ['Pool','Spa','Gym','Bar','Airport Shuttle','Business Center'],
                 premium: [
                     { id: 101, name: "The Orchid Hotel", distance: 0.9, rating: "4.8", price: 4500, terminal: "T2", category: "Hotel", type: "Premium", am: ["Airport Shuttle", "Pool", "Spa"] },
@@ -307,7 +312,7 @@
             restaurants: {
                 title: "Restaurants Listing Page",
                 label: "RESTAURANT",
-                durations: ['30m','1h','1.5h','2h'],
+                durations: categoryDurations.restaurants,
                 amenities: ['Fine Dining','Casual','Bar','Buffet','Quick Bites'],
                 premium: [
                     { id: 201, name: "Masala Library", distance: 1.8, rating: "4.8", price: 3800, terminal: "T2", category: "Restaurant", type: "Premium", am: ["Fine Dining", "Bar"] },
@@ -325,7 +330,7 @@
             spa: {
                 title: "Spa Listing Page",
                 label: "SPA",
-                durations: ['30m','1h','1.5h','2h','3h'],
+                durations: categoryDurations.spa,
                 amenities: ['Ayurvedic','Massage','Steam','Sauna','Express'],
                 premium: [
                     { id: 301, name: "Quan Spa", distance: 1.8, rating: "4.9", price: 4500, terminal: "T2", category: "Spa", type: "Premium", am: ["Ayurvedic", "Massage", "Sauna"] },
@@ -343,7 +348,7 @@
             gaming: {
                 title: "Gaming & Ent. Listing Page",
                 label: "ENTERTAINMENT",
-                durations: ['1h','2h','3h','4h'],
+                durations: categoryDurations.gaming,
                 amenities: ['VR','Arcade','Lounge','Bowling','Kids'],
                 premium: [
                     { id: 401, name: "Smaaash", distance: 7.5, rating: "4.6", price: 2500, terminal: "T2", category: "Entertainment", type: "Premium", am: ["VR", "Bowling", "Arcade"] },
@@ -365,6 +370,38 @@
         window.activeCategory = 'recommended';
         window.activeItem = null;
         window.isRisk = false;
+
+        // --- ROUTING ENGINE ---
+        window.AIRPORT_COORDS = { lat: 19.0974, lng: 72.8745, name: "Mumbai BOM T2" };
+        window.RoutingEngine = {
+            haversineDistance: function(lat1, lon1, lat2, lon2) {
+                const R = 6371;
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLon = (lon2 - lon1) * Math.PI / 180;
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            },
+            calculateLeg: function(startCoord, endCoord) {
+                const dist = this.haversineDistance(startCoord.lat, startCoord.lng, endCoord.lat, endCoord.lng) * 1.4;
+                const transportType = localStorage.getItem("transportType") || "Luxury";
+                const speeds = { Walking: 5, Shuttle: 30, Transit: 40, Taxi: 35, Luxury: 45 };
+                const speed = speeds[transportType] || 35;
+                const durationMins = Math.round((dist / speed) * 60 + 8);
+                return { durationMins, distKm: dist.toFixed(1), mode: transportType.toLowerCase() };
+            }
+        };
+
+        window.calculateItineraryTravel = function(list) {
+            let total = 0; let legs = []; let currentCoord = window.AIRPORT_COORDS;
+            list.forEach(item => {
+                let target = { lat: item.lat || window.AIRPORT_COORDS.lat + ((item.distance||0.5)/111), lng: item.lng || window.AIRPORT_COORDS.lng + ((item.distance||0.5)/111) };
+                const leg = window.RoutingEngine.calculateLeg(currentCoord, target);
+                legs.push(leg); total += leg.durationMins; currentCoord = target;
+            });
+            const ret = window.RoutingEngine.calculateLeg(currentCoord, window.AIRPORT_COORDS);
+            total += ret.durationMins; legs.push(ret);
+            return { totalTravelMins: total, legs: legs };
+        };
 
         // --- CORE FUNCTIONS ---
         function renderMarketplace(catId, btn) {
@@ -424,14 +461,11 @@
                 configLabel = config.label;
             }
 
-            // Simple Filter Logic
-            const durVal = document.getElementById('filter-duration').value;
-            const priceVal = document.getElementById('filter-price').value;
             const distVal = document.getElementById('filter-distance').value;
             const amVal = document.getElementById('filter-amenities').value;
+            const priceVal = document.getElementById('filter-price').value;
 
             const filtered = allItems.filter(i => {
-                if (durVal !== 'any' && !i.durations?.includes(durVal)) { /* simplified for mock */ }
                 if (distVal !== 'any' && i.distance > parseFloat(distVal)) return false;
                 if (amVal !== 'any' && !i.am.includes(amVal)) return false;
                 if (priceVal !== 'any') {
@@ -458,7 +492,7 @@
                             ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
                         </div>
                         <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
-                            <span>${h.distance} km • ${h.terminal}</span>
+                            <span>${h.distance} km • ${h.terminal || 'T2'}</span>
                             <span class="font-bold text-secondary">${h.rating}</span>
                         </div>
                     </div>
@@ -486,19 +520,14 @@
 
         function openLevel2(catId, id) {
             let item = null;
-            if (catId === 'recommended') {
-                Object.values(marketplaceData).forEach(c => { const f = [...c.premium, ...c.standard].find(x => x.id === id); if (f) item = f; });
-            } else {
-                const config = marketplaceData[catId];
-                item = [...config.premium, ...config.standard].find(x => x.id === id);
-            }
+            Object.values(marketplaceData).forEach(c => { const f = [...c.premium, ...c.standard].find(x => x.id === id); if (f) item = f; });
             if(!item) return;
             window.activeItem = item;
             renderGrid(window.activeCategory);
 
             document.getElementById('l2-name').textContent = item.name;
             document.getElementById('l2-rating').textContent = `${item.rating} ★`;
-            document.getElementById('l2-distance').textContent = `${item.distance} km from ${item.terminal}`;
+            document.getElementById('l2-distance').textContent = `${item.distance} km from ${item.terminal || 'T2'}`;
             
             const amCont = document.getElementById('l2-amenities');
             amCont.innerHTML = item.am.length 
@@ -506,9 +535,10 @@
                 : '<div class="text-[11px] text-on-surface-variant italic">Standard amenities included</div>';
 
             const durSel = document.getElementById('item-duration');
-            const catConfig = marketplaceData[item.category.toLowerCase() + 's'] || marketplaceData[item.category.toLowerCase()] || marketplaceData.hotels;
+            const dataKey = item.category.toLowerCase() + (item.category.toLowerCase().endsWith('s') ? '' : 's');
+            const config = categoryDurations[dataKey] || categoryDurations.hotels;
             durSel.innerHTML = '';
-            catConfig.durations.forEach(d => durSel.add(new Option(d, d)));
+            config.forEach(d => durSel.add(new Option(d, d)));
             
             const btn = document.getElementById('add-list-btn');
             const alreadyAdded = window.layoverList.some(i => i.name === item.name);
@@ -523,7 +553,7 @@
                 btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
                 btn.disabled = false;
                 durSel.disabled = false;
-                btn.onclick = () => window.addToList(btn, item.name, item.category, durSel.value, item.distance, '');
+                btn.onclick = () => window.addToList(btn, item.name, item.category, durSel.value, item.distance);
             }
 
             const l2 = document.getElementById('level2');
@@ -542,11 +572,12 @@
             setTimeout(() => l2.classList.add('hidden'), 300);
         }
 
-        // --- TIME LOGIC (Centralized) ---
+        // --- TIME LOGIC ---
         window.parseDurationToMins = function(durStr) {
             if (!durStr) return 0;
             const lower = String(durStr).toLowerCase();
             let mins = 0;
+            if (lower.includes('overnight')) return 480;
             const hMatch = lower.match(/([\d\.]+)\s*h/); if (hMatch) mins += parseFloat(hMatch[1]) * 60;
             const mMatch = lower.match(/([\d\.]+)\s*m/); if (mMatch) mins += parseFloat(mMatch[1]);
             if (!hMatch && !mMatch) { const val = parseFloat(lower); if (!isNaN(val)) mins = val <= 24 ? val * 60 : val; }
@@ -558,15 +589,8 @@
             let totalMins = layoverH * 60;
             let expMins = 0;
             window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
-            
-            // Mock Travel Calc (Realistic Sequential)
-            let travelMins = 0;
-            if (window.layoverList.length > 0) {
-                let maxDist = 0;
-                window.layoverList.forEach(i => { if(i.distance > maxDist) maxDist = i.distance; });
-                travelMins = Math.round(maxDist * 10 + 15); // Mock travel logic
-            }
-            
+            const travelData = window.calculateItineraryTravel(window.layoverList);
+            const travelMins = travelData.totalTravelMins;
             const remainingMins = totalMins - 120 - travelMins - expMins;
 
             document.getElementById('time-total').textContent = layoverH + 'h';
@@ -582,6 +606,14 @@
             if (remainingMins < 15) { remEl.style.color = '#dc2626'; remContainer.style.backgroundColor = '#fef2f2'; }
             else if (remainingMins <= 45) { remEl.style.color = '#b45309'; remContainer.style.backgroundColor = '#fffbeb'; }
             else { remEl.style.color = '#15803d'; remContainer.style.backgroundColor = '#ecfdf5'; }
+
+            const flightDep = localStorage.getItem('flight_departure');
+            if (flightDep) {
+                try {
+                    const depDate = new Date(flightDep);
+                    document.getElementById('time-departure').textContent = `Departure ${depDate.getHours().toString().padStart(2,'0')}:${depDate.getMinutes().toString().padStart(2,'0')}`;
+                } catch(e) {}
+            }
         };
 
         // --- LIST MANAGEMENT ---
@@ -602,6 +634,14 @@
             if (window.activeItem) openLevel2(window.activeCategory, window.activeItem.id);
         };
 
+        window.updateDur = function(name, val) {
+            const i = window.layoverList.find(x => x.name === name);
+            if (i) i.duration = val;
+            localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+            window.renderListDrawer();
+            window.updateTimeCalculations();
+        };
+
         window.clearList = function() {
             window.layoverList = [];
             localStorage.setItem('layoverList', '[]');
@@ -617,9 +657,9 @@
             if (d.classList.contains('hidden')) {
                 window.renderListDrawer();
                 d.classList.remove('hidden');
-                setTimeout(() => { d.classList.add('opacity-100'); p.classList.remove('translate-x-full'); }, 10);
+                setTimeout(() => { d.classList.add('opacity-100'); p.classList.remove('translate-y-full'); }, 10);
             } else {
-                p.classList.add('translate-x-full');
+                p.classList.add('translate-y-full');
                 d.classList.remove('opacity-100');
                 setTimeout(() => d.classList.add('hidden'), 300);
             }
@@ -627,22 +667,36 @@
 
         window.renderListDrawer = function() {
             const cont = document.getElementById('list-drawer-content');
-            cont.innerHTML = window.layoverList.length > 0 ? window.layoverList.map((i, idx) => `
-                <div class="p-4 bg-white border border-slate-200 rounded-lg flex justify-between items-center">
-                    <div>
-                        <p class="font-bold text-xs uppercase">${i.name}</p>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase">${i.category} • ${i.duration}</p>
+            cont.innerHTML = window.layoverList.length > 0 ? window.layoverList.map((i, idx) => {
+                const catKey = i.category.toLowerCase() + (i.category.toLowerCase().endsWith('s') ? '' : 's');
+                const options = categoryDurations[catKey] || categoryDurations.hotels;
+                
+                return `
+                <div class="p-4 bg-white border border-slate-200 rounded-2xl flex flex-col gap-3 shadow-sm group">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-xs uppercase text-primary">${i.name}</p>
+                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">${i.category}</p>
+                        </div>
+                        <button onclick="window.removeItem('${i.name.replace(/'/g, "\\'")}')" class="text-slate-300 hover:text-red-500 transition-colors">
+                            <span class="material-symbols-outlined text-lg">delete</span>
+                        </button>
                     </div>
-                    <button onclick="window.removeItem('${i.name.replace(/'/g, "\\'")}')" class="text-slate-300 hover:text-red-500 transition-colors">
-                        <span class="material-symbols-outlined text-lg">delete</span>
-                    </button>
+                    <div class="flex items-center gap-2 border-t border-slate-50 pt-2">
+                        <span class="text-[9px] font-bold text-on-surface-variant uppercase">Duration:</span>
+                        <select onchange="window.updateDur('${i.name.replace(/'/g, "\\'")}', this.value)" class="bg-surface-container-high border border-outline-variant text-[10px] font-bold uppercase rounded-lg px-2 py-1 outline-none cursor-pointer">
+                            ${options.map(o => `<option value="${o}" ${i.duration === o ? 'selected' : ''}>${o}</option>`).join('')}
+                        </select>
+                    </div>
                 </div>
-            `).join('') : '<p class="text-center py-10 text-slate-400 text-xs font-bold uppercase tracking-widest">No experiences added yet.</p>';
+            `}).join('') : '<p class="text-center py-10 text-slate-400 text-xs font-bold uppercase tracking-widest">No experiences added yet.</p>';
             
             const totals = document.getElementById('drawer-totals');
             let expMins = 0; window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
+            const travelData = window.calculateItineraryTravel(window.layoverList);
+            const totalUsed = expMins + travelData.totalTravelMins;
             const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
-            totals.innerHTML = `<span class="text-[10px] text-slate-400 uppercase">Experiences: ${format(expMins)}</span>`;
+            totals.innerHTML = `<span class="text-[10px] text-slate-400 uppercase">Experiences: ${format(expMins)}</span><span class="text-[10px] text-slate-400 uppercase">Total: ${format(totalUsed)}</span>`;
         };
 
         window.updateListIndicator = function() {

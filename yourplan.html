@@ -1,583 +1,299 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Plan My Layover - Itinerary Builder</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f9f9f9;
-        }
-    </style>
-<script id="tailwind-config">
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Plan My Layover - Itinerary Builder</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
-                        "on-tertiary-fixed": "#301400",
-                        "inverse-surface": "#2f3131",
-                        "primary-fixed-dim": "#c0c1ff",
-                        "primary-fixed": "#e1e0ff",
-                        "secondary": "#5f5e5e",
-                        "surface-tint": "#494bd6",
-                        "surface-container-highest": "#e2e2e2",
-                        "surface": "#f9f9f9",
-                        "surface-container-high": "#e8e8e8",
-                        "primary-container": "#6063ee",
-                        "error": "#ba1a1a",
-                        "surface-variant": "#e2e2e2",
-                        "on-surface": "#1a1c1c",
-                        "secondary-fixed": "#e5e2e1",
-                        "outline": "#767586",
-                        "background": "#f9f9f9",
-                        "secondary-fixed-dim": "#c8c6c5",
-                        "surface-dim": "#dadada",
-                        "surface-container-low": "#f3f3f3",
-                        "surface-container-lowest": "#ffffff",
-                        "surface-bright": "#f9f9f9",
-                        "on-background": "#1a1c1c",
-                        "on-primary-container": "#fffbff",
-                        "inverse-primary": "#c0c1ff",
-                        "tertiary": "#904900",
-                        "on-error": "#ffffff",
-                        "on-tertiary-container": "#fffbff",
-                        "on-primary-fixed": "#07006c",
-                        "on-primary-fixed-variant": "#2f2ebe",
-                        "on-tertiary": "#ffffff",
-                        "on-error-container": "#93000a",
-                        "surface-container": "#eeeeee",
-                        "on-primary": "#ffffff",
-                        "on-surface-variant": "#464554",
-                        "on-secondary": "#ffffff",
-                        "inverse-on-surface": "#f1f1f1",
-                        "secondary-container": "#e2dfde",
-                        "primary": "#4648d4",
-                        "on-secondary-container": "#636262",
-                        "on-tertiary-fixed-variant": "#703700",
-                        "outline-variant": "#c7c4d7",
-                        "on-secondary-fixed": "#1c1b1b",
-                        "tertiary-fixed-dim": "#ffb783",
-                        "tertiary-container": "#b55d00",
-                        "on-secondary-fixed-variant": "#474746",
-                        "tertiary-fixed": "#ffdcc5",
-                        "error-container": "#ffdad6"
+                    colors: {
+                        primary: "#1d4ed8",
+                        "primary-container": "#bfdbfe",
+                        secondary: "#ea580c",
+                        "secondary-container": "#fed7aa",
+                        surface: "#ffffff",
+                        "surface-container": "#f8fafc",
+                        "surface-container-high": "#f1f5f9",
+                        "outline-variant": "#cbd5e1",
+                        "on-surface": "#0f172a",
+                        "on-surface-variant": "#475569",
+                        "brand-blue": "#2563eb",
+                        "brand-orange": "#f97316"
                     },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                        manrope: ["Manrope", "sans-serif"]
                     },
-                    "spacing": {
-                        "lg": "24px",
-                        "gutter": "12px",
-                        "container_margin": "20px",
-                        "md": "16px",
-                        "xs": "4px",
-                        "xl": "40px",
-                        "sm": "8px",
-                        "base": "4px"
-                    },
-                    "fontFamily": {
-                        "display": ["Inter"],
-                        "label-caps": ["Inter"],
-                        "body-md": ["Inter"],
-                        "h2": ["Inter"],
-                        "body-lg": ["Inter"],
-                        "h1": ["Inter"],
-                        "status": ["Inter"]
-                    },
-                    "fontSize": {
-                        "display": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
-                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                        "h2": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
-                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "h1": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                        "status": ["13px", {"lineHeight": "18px", "fontWeight": "500"}]
+                    fontSize: {
+                        "meta-label": ["10px", { letterSpacing: "0.1em", fontWeight: "700" }],
+                        "node-title-lg": ["20px", { letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "node-title-md": ["16px", { letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "node-description": ["12px", { lineHeight: "1.5" }]
                     }
                 }
             }
         }
     </script>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-background text-on-surface">
-<!-- TopAppBar -->
-<header class="bg-surface dark:bg-surface-dim shadow-sm flex justify-between items-center px-container_margin py-md w-full sticky top-0 z-50">
-<div class="flex items-center gap-sm cursor-pointer active:scale-95 duration-200">
-<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="flight_takeoff">flight_takeoff</span>
-<h1 class="font-display text-h1 font-bold text-primary dark:text-primary-fixed-dim">Plan My Layover</h1>
-</div>
-<div class="hidden md:flex gap-lg items-center">
-<span class="text-on-surface-variant dark:text-outline-variant font-medium hover:text-primary-container transition-colors cursor-pointer">Explore</span>
-<span class="text-primary dark:text-primary-fixed-dim font-medium hover:text-primary-container transition-colors cursor-pointer">Plan</span>
-<span class="text-on-surface-variant dark:text-outline-variant font-medium hover:text-primary-container transition-colors cursor-pointer">Support</span>
-</div>
-<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden cursor-pointer active:scale-95 duration-200">
-<img alt="User Profile" data-alt="A professional headshot of a business traveler with a clean, minimalist background. The lighting is soft and even, highlighting a confident yet calm expression. The overall aesthetic is corporate-modern with high-key lighting and a muted, sophisticated color palette of whites and soft greys." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQyFTlg2jhaOAbMBeCKp0UGqkJs_GHU0_MSSxqvCl7mF9Qq69DrDVq6_VynoIrd13wsx-Nje3ARFjXi1cXNr-VJ9K5i_y67Calm_eAauNHu8J2l5G3cXTLBQ8IVTzPQcy66K3Q7A1yyQNWddQZ2Q0RzySwW-qAwKzFrb2dU91FAIrRThzw5AYwX_-cL6K5JK6iviaVWdQwWhqpXXUxbuIGOWHT0ZsKXwEPDROhTaiPWPAEKIflJ_l1yrg5j-vDuAWonQRFtEvGjuPP"/>
-</div>
-</header>
-<main class="max-w-4xl mx-auto px-container_margin py-xl space-y-lg pb-32">
-<!-- Smart Time Panel -->
-<section class="bg-white border border-outline-variant rounded-3xl p-6 shadow-sm relative overflow-hidden">
-    <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xs font-bold text-on-surface flex items-center gap-2 uppercase tracking-[0.2em]"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
-        <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
-            <span class="material-symbols-outlined text-xs text-brand-blue">flight_takeoff</span>
-            <span class="text-[10px] text-brand-blue tracking-widest font-bold uppercase" id="time-departure">Departure --:--</span>
+    <style>
+        body { background-color: #f7f7fb; font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="text-on-surface font-sans antialiased overflow-x-hidden min-h-screen flex flex-col pb-32">
+    <!-- Navbar -->
+    <header class="w-full bg-white border-b border-outline-variant sticky top-0 z-50">
+        <div class="max-w-[1400px] mx-auto px-6 h-16 flex justify-between items-center text-sm font-semibold text-on-surface-variant">
+            <div class="flex items-center gap-8">
+                <a class="text-lg font-bold text-primary font-manrope uppercase tracking-tight" href="index.html">LayoverX</a>
+                <nav class="hidden md:flex gap-6 items-center">
+                    <a class="hover:text-primary transition-colors uppercase text-[11px] tracking-widest" href="marketplace.html">Explore</a>
+                    <a class="text-primary border-b-2 border-primary pb-1 uppercase text-[11px] tracking-widest" href="#">Plan</a>
+                    <a class="hover:text-primary transition-colors uppercase text-[11px] tracking-widest" href="#">Support</a>
+                </nav>
+            </div>
+            <div class="flex gap-4 items-center">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+                <span class="material-symbols-outlined text-[20px]">account_circle</span>
+            </div>
         </div>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Layover</p>
-            <p class="text-sm font-bold text-primary" id="time-total">--</p>
-        </div>
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Buffer</p>
-            <p class="text-sm font-bold text-primary" id="time-buffer">2h 0m</p>
-        </div>
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Travel</p>
-            <p class="text-sm font-bold text-primary" id="time-travel">0m</p>
-        </div>
-        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Experiences</p>
-            <p class="text-sm font-bold text-brand-blue" id="time-exp">0m</p>
-        </div>
-        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center col-span-2 md:col-span-1" id="rem-container">
-            <p class="text-[9px] text-emerald-800 uppercase font-bold tracking-widest mb-1">Remaining</p>
-            <p class="text-base font-bold text-emerald-700" id="time-remaining">--</p>
-        </div>
-    </div>
-</section>
+    </header>
 
-<!-- Selected Experiences List -->
-<section class="space-y-sm">
-<div class="flex justify-between items-center mb-sm">
-<h3 class="font-display text-h2 text-on-surface">Planned Itinerary</h3>
-<span class="text-secondary font-body-md" id="plan-activity-count">0 activities scheduled</span>
-</div>
-<div id="itinerary-list" class="space-y-sm">
-    <!-- Rendered via JS -->
-</div>
-<!-- Add Experience Button -->
-<button onclick="window.location.href='marketplace.html'" class="w-full border-2 border-dashed border-outline-variant rounded-xl py-lg flex flex-col items-center justify-center text-secondary hover:text-primary hover:border-primary transition-all group mt-sm bg-surface hover:bg-surface-container-lowest">
-<span class="material-symbols-outlined text-display" data-icon="add_circle">add_circle</span>
-<span class="font-label-caps text-label-caps mt-xs">ADD EXPERIENCE</span>
-</button>
-</section>
-</main>
-<!-- BottomNavBar (Mobile Only) -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-lg py-sm pb-safe bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-lg">
-<div onclick="window.location.href='marketplace.html'" class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 active:scale-90 transition-transform duration-150 cursor-pointer">
-<span class="material-symbols-outlined" data-icon="explore">explore</span>
-<span class="font-label-caps text-label-caps">Explore</span>
-</div>
-<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 transition-transform duration-150 cursor-pointer">
-<span class="material-symbols-outlined" data-icon="event_note" style="font-variation-settings: 'FILL' 1;">event_note</span>
-<span class="font-label-caps text-label-caps">Plan</span>
-</div>
-<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 active:scale-90 transition-transform duration-150 cursor-pointer">
-<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
-<span class="font-label-caps text-label-caps">Support</span>
-</div>
-</nav>
-<!-- Footer (Web Only) -->
-<footer class="hidden md:flex w-full py-xl px-container_margin flex-row justify-between items-center gap-md bg-surface-container dark:bg-surface-dim">
-<div class="flex flex-col gap-xs">
-<span class="font-display text-h2 font-semibold text-on-surface">Plan My Layover</span>
-<p class="font-body-md text-secondary dark:text-secondary-fixed">© 2024 Plan My Layover. Calm Efficiency for the modern traveler.</p>
-</div>
-<div class="flex gap-lg">
-<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-body-md" href="#">Privacy</a>
-<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-body-md" href="#">Terms</a>
-<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-body-md" href="#">API</a>
-<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-body-md" href="careershome.html">Careers</a>
-</div>
-</footer>
-<!-- Operational Action FAB -->
-<button id="finalize-btn" class="fixed bottom-24 right-container_margin md:bottom-12 md:right-12 bg-primary text-on-primary shadow-lg rounded-full flex items-center gap-sm pl-md pr-lg py-md active:scale-95 transition-transform z-40 hover:shadow-xl hover:-translate-y-1">
-<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
-<span class="font-label-caps text-label-caps">FINALIZE ITINERARY</span>
-</button>
+    <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col gap-6 relative mt-4">
+        
+        <!-- Smart Time Panel (Identical to Marketplace) -->
+        <section class="bg-white border-2 border-primary-container rounded-xl p-6 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-meta-label text-on-surface flex items-center gap-2 uppercase"><span class="material-symbols-outlined text-sm">schedule</span> Journey Timeline</h2>
+                <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+                    <span class="material-symbols-outlined text-xs text-brand-blue">flight_takeoff</span>
+                    <span class="text-[10px] text-brand-blue tracking-widest font-bold uppercase" id="time-departure">Departure --:--</span>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                <div class="bg-surface-container border border-outline-variant rounded-lg p-4 text-center">
+                    <p class="text-[9px] text-on-surface-variant uppercase font-bold tracking-widest mb-1">Layover</p>
+                    <p class="text-sm font-extrabold text-primary" id="time-total">6h</p>
+                </div>
+                <div class="bg-surface-container border border-outline-variant rounded-lg p-4 text-center">
+                    <p class="text-[9px] text-on-surface-variant uppercase font-bold tracking-widest mb-1">Buffer</p>
+                    <p class="text-sm font-extrabold text-primary" id="time-buffer">2h 0m</p>
+                </div>
+                <div class="bg-surface-container border border-outline-variant rounded-lg p-4 text-center">
+                    <p class="text-[9px] text-on-surface-variant uppercase font-bold tracking-widest mb-1">Travel</p>
+                    <p class="text-sm font-extrabold text-primary" id="time-travel">0m</p>
+                </div>
+                <div class="bg-surface-container border border-outline-variant rounded-lg p-4 text-center">
+                    <p class="text-[9px] text-on-surface-variant uppercase font-bold tracking-widest mb-1">Experiences</p>
+                    <p class="text-sm font-extrabold text-brand-blue" id="time-exp">0m</p>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-center col-span-2 md:col-span-1 transition-colors duration-300" id="rem-container">
+                    <p class="text-[9px] text-emerald-800 uppercase font-bold tracking-widest mb-1" id="rem-label">Remaining</p>
+                    <p class="text-base font-extrabold text-emerald-700" id="time-remaining">4h 0m</p>
+                </div>
+            </div>
+        </section>
 
-<script>
-window.layoverList = [];
+        <!-- Planned Itinerary -->
+        <section class="space-y-4">
+            <div class="flex justify-between items-center border-b border-outline-variant pb-2">
+                <h3 class="text-node-title-lg text-primary uppercase font-manrope">Planned Itinerary</h3>
+                <span class="text-on-surface-variant font-bold text-[11px] uppercase tracking-widest" id="plan-activity-count">0 activities scheduled</span>
+            </div>
+            
+            <div id="itinerary-list" class="space-y-3">
+                <!-- Rendered via JS -->
+            </div>
 
-window.calculateDynamicTravelMins = function(distance) {
-    const transportType = localStorage.getItem("transportType") || "Luxury";
-    const speedMap = { walking: 5, cab: 28, metro: 40, bike: 18, Sedan: 40, SUV: 38, XL: 35, Luxury: 45, Shuttle: 30 };
+            <!-- Add Experience Placeholder -->
+            <button onclick="window.location.href='marketplace.html'" class="w-full border-2 border-dashed border-outline-variant rounded-xl py-8 flex flex-col items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary transition-all group mt-4 bg-white/50">
+                <span class="material-symbols-outlined text-3xl mb-2">add_circle</span>
+                <span class="text-[10px] font-bold uppercase tracking-widest">ADD MORE EXPERIENCES</span>
+            </button>
+        </section>
 
-// --- AIRPORT COORDINATES ---
-window.AIRPORT_COORDS = { lat: 19.0974, lng: 72.8745, name: "Mumbai BOM T2" };
+    </main>
 
-// --- GOOGLE MAPS ROUTING SERVICE (with Graceful Haversine Fallback) ---
-window.RoutingEngine = {
-    haversineDistance: function(lat1, lon1, lat2, lon2) {
-        const R = 6371; // km
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                  Math.sin(dLon/2) * Math.sin(dLon/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return R * c;
-    },
-    getModeDetails: function(transportType) {
-        const modeMap = {
-            'Walking': { speed: 5, label: 'walk' },
-            'Shuttle': { speed: 30, label: 'by shuttle' },
-            'Transit': { speed: 40, label: 'by transit' },
-            'Taxi': { speed: 35, label: 'drive' },
-            'Cab': { speed: 35, label: 'drive' },
-            'Luxury': { speed: 45, label: 'drive' },
-            'Sedan': { speed: 40, label: 'drive' }
+    <!-- Operational Action FAB -->
+    <button id="finalize-btn" class="fixed bottom-24 right-6 bg-primary text-white shadow-xl rounded-full flex items-center gap-3 px-8 py-4 active:scale-95 transition-all z-40 hover:shadow-2xl hover:-translate-y-1">
+        <span class="material-symbols-outlined">task_alt</span>
+        <span class="text-[11px] font-bold uppercase tracking-widest">FINALIZE ITINERARY</span>
+    </button>
+
+    <!-- BottomNavBar -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 h-20 bg-white/95 backdrop-blur-md border-t border-outline-variant">
+        <button onclick="window.location.href='index.html'" class="flex flex-col items-center justify-center text-on-surface-variant">
+            <span class="material-symbols-outlined text-2xl">explore</span>
+            <span class="text-[9px] uppercase tracking-widest mt-1">Explore</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-primary font-bold">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">event_note</span>
+            <span class="text-[9px] uppercase tracking-widest mt-1">Plan</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-on-surface-variant">
+            <span class="material-symbols-outlined text-2xl">support_agent</span>
+            <span class="text-[9px] uppercase tracking-widest mt-1">Support</span>
+        </button>
+    </nav>
+
+    <script>
+        // --- CONFIG ---
+        const categoryDurations = {
+            hotels: ['1 Hour', '2 Hours', '3 Hours', 'Overnight'],
+            restaurants: ['30 Min', '1 Hour', '90 Min'],
+            spa: ['30 Min', '1 Hour', '90 Min', '2 Hours'],
+            gaming: ['30 Min', '1 Hour', '2 Hours']
         };
-        return modeMap[transportType] || { speed: 35, label: 'drive' };
-    },
-    calculateLeg: function(startCoord, endCoord) {
-        if (!startCoord || !endCoord) return { durationMins: 0, distanceKm: 0, mode: 'drive' };
-        
-        // 1. Calculate straight line distance and apply road network multiplier (1.4x)
-        const straightDistance = this.haversineDistance(startCoord.lat, startCoord.lng, endCoord.lat, endCoord.lng);
-        const roadDistance = straightDistance * 1.4;
-        
-        // 2. Determine transport mode and speed
-        const transportType = localStorage.getItem("transportType") || "Luxury";
-        const modeData = this.getModeDetails(transportType);
-        
-        // 3. Traffic Multiplier based on departure time
-        let trafficMultiplier = 1.2; // Default moderate traffic
-        const flightDepartureRaw = localStorage.getItem('flight_departure');
-        if (flightDepartureRaw) {
-            try {
-                const date = new Date(flightDepartureRaw);
-                const hour = date.getHours();
-                if ((hour >= 8 && hour <= 11) || (hour >= 17 && hour <= 20)) trafficMultiplier = 1.6; // Rush hour
-                else if (hour >= 23 || hour <= 5) trafficMultiplier = 1.0; // Night
-            } catch(e) {}
-        }
-        
-        // 4. Calculate final duration
-        // If distance is very small (< 1km) and mode is walk, override mode
-        let finalMode = modeData.label;
-        let finalSpeed = modeData.speed;
-        
-        if (roadDistance < 1.5 && transportType !== 'Shuttle') {
-            finalMode = 'walk';
-            finalSpeed = 5;
-            trafficMultiplier = 1.0; // traffic doesn't affect walking
-        }
-        
-        // Time = Distance / Speed + base overhead (parking/walking to venue)
-        const baseOverheadMins = finalMode === 'walk' ? 2 : 8; 
-        const durationHours = roadDistance / finalSpeed;
-        const durationMins = Math.round((durationHours * 60 * trafficMultiplier) + baseOverheadMins);
-        
-        return {
-            durationMins: durationMins,
-            distanceKm: parseFloat(roadDistance.toFixed(1)),
-            mode: finalMode
+
+        window.AIRPORT_COORDS = { lat: 19.0974, lng: 72.8745, name: "Mumbai BOM T2" };
+        window.layoverList = [];
+
+        // --- CORE FUNCTIONS (Synced with Marketplace) ---
+        window.parseDurationToMins = function(durStr) {
+            if (!durStr) return 0;
+            const lower = String(durStr).toLowerCase();
+            let mins = 0;
+            if (lower.includes('overnight')) return 480; 
+            const hMatch = lower.match(/([\d\.]+)\s*h/); if (hMatch) mins += parseFloat(hMatch[1]) * 60;
+            const mMatch = lower.match(/([\d\.]+)\s*m/); if (mMatch) mins += parseFloat(mMatch[1]);
+            if (!hMatch && !mMatch) { const val = parseFloat(lower); if (!isNaN(val)) mins = val <= 24 ? val * 60 : val; }
+            return mins;
         };
-    }
-};
 
-window.calculateItineraryTravel = function(list) {
-    if (!list || list.length === 0) return { totalTravelMins: 0, legs: [] };
-    
-    let total = 0;
-    let legs = [];
-    
-    // Leg 1: Airport to First
-    let currentCoord = window.AIRPORT_COORDS;
-    
-    list.forEach(item => {
-        // If item doesn't have coords, approximate using distance from T2 to make it robust
-        let targetCoord = { lat: item.lat, lng: item.lng };
-        if (!targetCoord.lat) {
-             const distOffset = (item.distance || 5) / 111; // rough lat degree conversion
-             targetCoord = { lat: window.AIRPORT_COORDS.lat + distOffset, lng: window.AIRPORT_COORDS.lng + distOffset };
-        }
-        
-        // Skip identical locations (0 mins) by enforcing a small minimum if they aren't actually 0
-        if (currentCoord.lat === targetCoord.lat && currentCoord.lng === targetCoord.lng) {
-            legs.push({ durationMins: 0, mode: 'inside venue', label: 'Inside same venue' });
-        } else {
-            const legData = window.RoutingEngine.calculateLeg(currentCoord, targetCoord);
-            legData.label = `${legData.durationMins} mins ${legData.mode} to ${item.name || item.title}`;
-            legs.push(legData);
-            total += legData.durationMins;
-        }
-        
-        currentCoord = targetCoord;
-    });
-    
-    // Final Leg: Last to Airport
-    const returnLeg = window.RoutingEngine.calculateLeg(currentCoord, window.AIRPORT_COORDS);
-    returnLeg.label = `${returnLeg.durationMins} mins ${returnLeg.mode} to Airport`;
-    legs.push(returnLeg);
-    total += returnLeg.durationMins;
-    
-    return { totalTravelMins: total, legs: legs };
-};
-    
-    let total = 0;
-    let legs = [];
-    let currentDist = 0;
-    
-    list.forEach(item => {
-        const itemDist = parseFloat(item.distance) || 0;
-        const legTime = window.calculateLegTravelTime(currentDist, itemDist);
-        legs.push(legTime);
-        total += legTime;
-        currentDist = itemDist;
-    });
-    
-    // Return to airport
-    const returnTime = window.calculateLegTravelTime(currentDist, 0);
-    legs.push(returnTime);
-    total += returnTime;
-    
-    return { totalTravelMins: total, legs: legs };
-};
-
-    const speed = speedMap[transportType] || 28;
-    let trafficMultiplier = 1.3;
-    return (distance / speed) * 60 * trafficMultiplier;
-};
-
-window.parseDurationToMins = function(durStr) {
-    if (!durStr) return 0;
-    const lowerStr = String(durStr).toLowerCase();
-    let totalMins = 0;
-    const hMatch = lowerStr.match(/([\d\.]+)\s*(h|hour|hours)/);
-    if (hMatch) totalMins += parseFloat(hMatch[1]) * 60;
-    
-    const mMatch = lowerStr.match(/([\d\.]+)\s*(m|min|mins|minute|minutes)/);
-    if (mMatch) totalMins += parseFloat(mMatch[1]);
-    
-    if (!hMatch && !mMatch) {
-        const val = parseFloat(lowerStr);
-        if (!isNaN(val)) {
-            if (val <= 24) totalMins += val * 60;
-            else totalMins += val;
-        }
-    }
-    return totalMins;
-};
-
-window.updateTimeCalculations = function() {
-    const layoverDurationRaw = localStorage.getItem('layover_duration') || '8';
-    const layoverDurationHours = parseInt(layoverDurationRaw, 10);
-    const flightDepartureRaw = localStorage.getItem('flight_departure') || '';
-    
-    let totalMins = layoverDurationHours * 60;
-    let bufferMins = 120;
-    let expMins = 0;
-    let worstTravelMins = 0;
-
-    if (window.layoverList.length > 0) {
-        let maxDist = 0;
-        window.layoverList.forEach(item => {
-            expMins += window.parseDurationToMins(item.duration);
-            if (item.distance > maxDist) maxDist = item.distance;
-        });
-        worstTravelMins = Math.round(window.calculateDynamicTravelMins(maxDist) * 2 + 30);
-    }
-
-    let remainingMins = totalMins - bufferMins - worstTravelMins - expMins;
-    const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
-
-    const timeTotalEl = document.getElementById('time-total');
-    const timeTravelEl = document.getElementById('time-travel');
-    const timeExpEl = document.getElementById('time-exp');
-    
-    if (timeTotalEl) timeTotalEl.textContent = layoverDurationHours + 'h';
-    if (timeTravelEl) timeTravelEl.textContent = format(worstTravelMins);
-    if (timeExpEl) timeExpEl.textContent = format(expMins);
-    
-    let depTimeStr = '--:--';
-    if (flightDepartureRaw) {
-        try {
-            const depDate = new Date(flightDepartureRaw);
-            if (!isNaN(depDate.getTime())) {
-                depTimeStr = depDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        window.RoutingEngine = {
+            haversineDistance: function(lat1, lon1, lat2, lon2) {
+                const R = 6371;
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLon = (lon2 - lon1) * Math.PI / 180;
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            },
+            calculateLeg: function(startCoord, endCoord) {
+                const dist = this.haversineDistance(startCoord.lat, startCoord.lng, endCoord.lat, endCoord.lng) * 1.4;
+                const transportType = localStorage.getItem("transportType") || "Luxury";
+                const speeds = { Walking: 5, Shuttle: 30, Transit: 40, Taxi: 35, Luxury: 45 };
+                const speed = speeds[transportType] || 35;
+                const durationMins = Math.round((dist / speed) * 60 + 8);
+                return { durationMins, distKm: dist.toFixed(1), mode: transportType.toLowerCase() };
             }
-        } catch(e) {}
-    }
-    const timeDepartureEl = document.getElementById('time-departure');
-    if (timeDepartureEl) timeDepartureEl.textContent = `Departure ${depTimeStr}`;
+        };
 
-    let remEl = document.getElementById('time-remaining');
-    let remContainer = document.getElementById('rem-container');
-    if (remEl && remContainer) {
-        if (remainingMins < 15) {
-            window.isRisk = true;
-            remEl.textContent = remainingMins < 0 ? Math.abs(remainingMins) + 'm Over' : format(remainingMins);
-            remEl.style.color = '#dc2626';
-            remContainer.style.backgroundColor = '#fef2f2';
-            remContainer.style.border = '1px solid #fee2e2';
-        } else if (remainingMins <= 45) {
-            window.isRisk = false;
-            remEl.textContent = format(remainingMins);
-            remEl.style.color = '#b45309';
-            remContainer.style.backgroundColor = '#fffbeb';
-            remContainer.style.border = '1px solid #fef3c7';
-        } else {
-            window.isRisk = false;
-            remEl.textContent = format(remainingMins);
-            remEl.style.color = '#15803d';
-            remContainer.style.backgroundColor = '#ecfdf5';
-            remContainer.style.border = '1px solid #d1fae5';
-        }
-    }
-};
+        window.calculateItineraryTravel = function(list) {
+            let total = 0; let legs = []; let currentCoord = window.AIRPORT_COORDS;
+            list.forEach(item => {
+                let target = { lat: item.lat || window.AIRPORT_COORDS.lat + ((item.distance||0.5)/111), lng: item.lng || window.AIRPORT_COORDS.lng + ((item.distance||0.5)/111) };
+                const leg = window.RoutingEngine.calculateLeg(currentCoord, target);
+                legs.push(leg); total += leg.durationMins; currentCoord = target;
+            });
+            const ret = window.RoutingEngine.calculateLeg(currentCoord, window.AIRPORT_COORDS);
+            total += ret.durationMins; legs.push(ret);
+            return { totalTravelMins: total, legs: legs };
+        };
 
-document.addEventListener('DOMContentLoaded', () => {
-    const finalizeBtn = document.getElementById('finalize-btn');
-    if (finalizeBtn) {
-        finalizeBtn.onclick = () => {
+        window.updateTimeCalculations = function() {
+            const layoverH = parseInt(localStorage.getItem('layover_duration') || '6', 10);
+            let totalMins = layoverH * 60;
+            let expMins = 0;
+            window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
+            const travelData = window.calculateItineraryTravel(window.layoverList);
+            const travelMins = travelData.totalTravelMins;
+            const remainingMins = totalMins - 120 - travelMins - expMins;
+
+            document.getElementById('time-total').textContent = layoverH + 'h';
+            document.getElementById('time-travel').textContent = travelMins + 'm';
+            document.getElementById('time-exp').textContent = expMins + 'm';
+            
+            const remEl = document.getElementById('time-remaining');
+            const remContainer = document.getElementById('rem-container');
+            const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+            remEl.textContent = format(remainingMins);
+            
+            if (remainingMins < 15) { remEl.style.color = '#dc2626'; remContainer.style.backgroundColor = '#fef2f2'; }
+            else if (remainingMins <= 45) { remEl.style.color = '#b45309'; remContainer.style.backgroundColor = '#fffbeb'; }
+            else { remEl.style.color = '#15803d'; remContainer.style.backgroundColor = '#ecfdf5'; }
+
+            const flightDep = localStorage.getItem('flight_departure');
+            if (flightDep) {
+                try {
+                    const depDate = new Date(flightDep);
+                    document.getElementById('time-departure').textContent = `Departure ${depDate.getHours().toString().padStart(2,'0')}:${depDate.getMinutes().toString().padStart(2,'0')}`;
+                } catch(e) {}
+            }
+        };
+
+        window.saveAndRender = function() {
+            localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
+            window.renderItinerary();
+            window.updateTimeCalculations();
+        };
+
+        window.removeItem = function(name) {
+            window.layoverList = window.layoverList.filter(i => i.name !== name);
+            window.saveAndRender();
+        };
+
+        window.updateDur = function(name, val) {
+            const i = window.layoverList.find(x => x.name === name);
+            if (i) i.duration = val;
+            window.saveAndRender();
+        };
+
+        window.renderItinerary = function() {
+            const listContainer = document.getElementById('itinerary-list');
+            const countEl = document.getElementById('plan-activity-count');
+            countEl.textContent = `${window.layoverList.length} activit${window.layoverList.length === 1 ? 'y' : 'ies'} scheduled`;
+
             if (window.layoverList.length === 0) {
-                alert('Please add at least one experience to your itinerary.');
+                listContainer.innerHTML = `<div class="bg-white border-2 border-dashed border-outline-variant rounded-xl p-12 text-center text-on-surface-variant uppercase font-bold text-[10px] tracking-widest">No activities selected. Start browsing to plan your layover.</div>`;
                 return;
             }
-            
-            // To maintain compatibility with finalize_itinerary.html, construct the state it expects
-            const layoverDurationRaw = localStorage.getItem('layover_duration') || '8';
-            let layoverDurationMinutes = parseInt(layoverDurationRaw, 10) * 60;
-            let totalExperienceMinutes = 0;
-            let maxDist = 0;
-            
-            let processedItems = window.layoverList.map((item, idx) => {
-                let mins = window.parseDurationToMins(item.duration);
-                if (item.distance > maxDist) maxDist = item.distance;
-                totalExperienceMinutes += mins;
-                
-                return {
-                    id: item.id || Date.now() + idx,
-                    category: item.category || 'Experience',
-                    title: item.name,
-                    selectedDurationMinutes: mins,
-                    transitOverheadMinutes: 0, // Will be handled globally in final view now
-                    priority: idx + 1,
-                    originalItem: item
-                };
-            });
-            
-            let totalTransitMinutes = window.layoverList.length > 0 ? Math.round(window.calculateDynamicTravelMins(maxDist) * 2 + 30) : 0;
-            let remainingMinutes = layoverDurationMinutes - 120 - totalTransitMinutes - totalExperienceMinutes;
-            
-            const finalState = {
-                layoverDurationMinutes: layoverDurationMinutes,
-                airportBufferMinutes: 120,
-                selectedItems: processedItems,
-                totalExperienceMinutes: totalExperienceMinutes,
-                totalTransitMinutes: totalTransitMinutes,
-                remainingMinutes: remainingMinutes
-            };
-            
-            localStorage.setItem('final_itinerary_data', JSON.stringify(finalState));
-            window.location.href = 'finalize_itinerary.html';
-        };
-    }
 
-    try {
-        const stored = localStorage.getItem('layoverList');
-        window.layoverList = stored ? JSON.parse(stored) : [];
-    } catch(e) { window.layoverList = []; }
-
-    window.moveUp = function(i) {
-        if (i > 0) {
-            let temp = window.layoverList[i];
-            window.layoverList[i] = window.layoverList[i-1];
-            window.layoverList[i-1] = temp;
-            window.saveAndRender();
-        }
-    };
-    
-    window.moveDown = function(i) {
-        if (i < window.layoverList.length - 1) {
-            let temp = window.layoverList[i];
-            window.layoverList[i] = window.layoverList[i+1];
-            window.layoverList[i+1] = temp;
-            window.saveAndRender();
-        }
-    };
-    
-    window.removeItem = function(name) {
-        window.layoverList = window.layoverList.filter(i => i.name !== name);
-        window.saveAndRender();
-    };
-    
-    window.saveAndRender = function() {
-        localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
-        window.renderItinerary();
-    };
-
-    window.renderItinerary = function() {
-        const listContainer = document.getElementById('itinerary-list');
-        const countEl = document.getElementById('plan-activity-count');
-        if (countEl) countEl.textContent = `${window.layoverList.length} activit${window.layoverList.length === 1 ? 'y' : 'ies'} scheduled`;
-
-        if (window.layoverList.length === 0) {
-            listContainer.innerHTML = `
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl flex flex-col items-center justify-center text-center">
-                    <span class="material-symbols-outlined text-[48px] text-outline-variant mb-4">list_alt_add</span>
-                    <h4 class="font-h2 text-on-surface font-semibold mb-2">No Experiences Yet</h4>
-                    <p class="font-body-md text-secondary">Browse the marketplace and add experiences to start planning your perfect layover.</p>
-                </div>
-            `;
-        } else {
             let html = '';
             window.layoverList.forEach((item, index) => {
+                const catKey = (item.category || 'hotels').toLowerCase() + (item.category?.toLowerCase().endsWith('s') ? '' : 's');
+                const options = categoryDurations[catKey] || categoryDurations.hotels;
+                
                 html += `
-                    <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-md flex flex-col gap-3 group hover:border-primary/40 transition-colors shadow-sm relative">
-                        <div class="flex items-center gap-md">
-                            <div class="flex flex-col items-center justify-center text-outline-variant gap-1 shrink-0">
-                                <button onclick="window.moveUp(${index})" class="hover:text-primary ${index===0?'opacity-30 pointer-events-none':''}"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span></button>
-                                <span class="font-bold text-sm w-6 text-center text-primary bg-primary-fixed rounded-full aspect-square flex items-center justify-center">${index + 1}</span>
-                                <button onclick="window.moveDown(${index})" class="hover:text-primary ${index===window.layoverList.length-1?'opacity-30 pointer-events-none':''}"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_down</span></button>
-                            </div>
-                            
-                            <div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden shrink-0 border border-outline-variant/30 hidden sm:block">
-                                ${item.image ? `<img class="w-full h-full object-cover" src="${item.image}"/>` : `<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-outline-variant">image</span></div>`}
-                            </div>
-                            <div class="flex-grow min-w-0">
-                                <div class="flex items-center flex-wrap">
-                                    <h4 class="font-h2 text-body-lg font-semibold truncate">${item.name}</h4>
-                                </div>
-                                <p class="font-body-md text-secondary flex items-center gap-1 mt-0.5 text-sm">
-                                    ${item.category} • ${item.duration ? item.duration.replace('h', ' hr').replace('m', ' min') + ' stay' : ''} ${item.distance ? `• ${item.distance} km` : ''}
-                                </p>
-                            </div>
-                            <button onclick="window.removeItem('${item.name.replace(/'/g, "\\'")}')" class="text-outline-variant hover:text-error transition-colors p-2 rounded-md hover:bg-error-container shrink-0">
-                                <span class="material-symbols-outlined">delete</span>
+                    <div class="bg-white border border-outline-variant rounded-xl p-4 flex gap-4 items-center group shadow-sm hover:shadow-md transition-all">
+                        <div class="w-10 h-10 bg-primary/5 rounded-full flex items-center justify-center text-primary font-bold text-sm shrink-0 border border-primary/10">${index + 1}</div>
+                        <div class="flex-grow min-w-0">
+                            <h4 class="font-bold text-sm text-primary uppercase truncate">${item.name}</h4>
+                            <p class="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest">${item.category} • ${item.distance || '0.5'} km from T2</p>
+                        </div>
+                        <div class="flex items-center gap-3 shrink-0">
+                            <select onchange="window.updateDur('${item.name.replace(/'/g, "\\'")}', this.value)" class="bg-surface-container border border-outline-variant text-[11px] font-bold uppercase rounded-lg px-3 py-1.5 outline-none cursor-pointer hover:bg-surface-container-high transition-colors">
+                                ${options.map(o => `<option value="${o}" ${item.duration === o ? 'selected' : ''}>${o}</option>`).join('')}
+                            </select>
+                            <button onclick="window.removeItem('${item.name.replace(/'/g, "\\'")}')" class="text-outline-variant hover:text-error transition-colors p-2 rounded-lg hover:bg-error/5">
+                                <span class="material-symbols-outlined text-xl">delete</span>
                             </button>
                         </div>
                     </div>
                 `;
             });
             listContainer.innerHTML = html;
-        }
+        };
 
-        window.updateTimeCalculations();
-    };
+        document.addEventListener('DOMContentLoaded', () => {
+            try { window.layoverList = JSON.parse(localStorage.getItem('layoverList') || '[]'); } catch(e) { window.layoverList = []; }
+            window.renderItinerary();
+            window.updateTimeCalculations();
 
-    window.renderItinerary();
-});
-</script>
-</body></html>
+            const finalizeBtn = document.getElementById('finalize-btn');
+            if (finalizeBtn) {
+                finalizeBtn.onclick = () => {
+                    if (window.layoverList.length === 0) return;
+                    window.location.href = 'finalize_itinerary.html';
+                };
+            }
+        });
+    </script>
+</body>
+</html>
