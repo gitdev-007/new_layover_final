@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SkyCheck | QR Upload History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#00236f",
+                        "on-primary": "#ffffff",
+                        "secondary": "#505f76",
+                        "on-surface": "#1a1b21",
+                        "outline-variant": "#c5c5d3",
+                        "surface-container-low": "#f4f3fa",
+                        "primary-container": "#1e3a8a",
+                        "on-primary-container": "#90a8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xl": "32px"
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-on-surface min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-2">
+<span class="text-xl font-bold tracking-tight text-blue-900 dark:text-blue-400 font-manrope">SkyCheck</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-manrope text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors" href="QR_Upload_State.html">Verification</a>
+<a class="font-manrope text-sm font-bold border-b-2 border-blue-900 text-blue-900 dark:text-blue-400 transition-colors" href="#">History</a>
+<a class="font-manrope text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors" href="#">Travelers</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-slate-500 hover:text-blue-700 transition-colors">help</button>
+<button class="material-symbols-outlined text-slate-500 hover:text-blue-700 transition-colors">settings</button>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-slate-200">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Nb4NyYm6N87qvprgl71vWCh5h-NqzkEVnt8urojtyxxCbUJmEaLIXuV_F4GahKqSMINsu5LqqC1xvW5ijr7_rOYkw21sZIzY9oryURriViaE7a_o0J9S0YWTXrvQMzTwssGCj1z7puuH8wRLCtV_hG9_fAjZBDMO_w7MgWv562fKZxpAokC-NfTEs3TCACk9Of-Yvt9P0d4LSMoqDbqrj2IjALca-lJIScn1_nYyARVr95ByHSTi3oFYKv43AOQDKSSi0H4nAK4"/>
+</div>
+</div>
+</header>
+
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col w-24 h-screen pt-20 pb-8 fixed left-0 top-0 bg-slate-50 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 z-40">
+<div class="flex flex-col items-center gap-8 w-full">
+<div onclick="window.location.href='QR_Upload_State.html'" class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="font-manrope text-xs font-semibold mt-1">Upload</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 p-2 hover:bg-slate-200 rounded-lg">
+<span class="material-symbols-outlined">sync</span>
+<span class="font-manrope text-xs font-semibold mt-1">Processing</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-blue-50 text-blue-900 rounded-lg p-2">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-manrope text-xs font-semibold mt-1">Verification</span>
+</div>
+</div>
+</aside>
+
+<!-- Main Content -->
+<main class="flex-grow pt-24 pb-12 px-6 md:ml-24">
+<div class="max-w-[1000px] mx-auto">
+<div class="mb-12">
+<h1 class="text-3xl font-bold text-primary mb-2">QR Upload History</h1>
+<p class="text-secondary">Track all previously uploaded boarding pass and flight QR verifications.</p>
+</div>
+
+<div id="history-container" class="space-y-4">
+    <!-- History items will be injected here -->
+</div>
+
+<!-- Empty State -->
+<div id="empty-state" class="hidden flex-col items-center justify-center py-20 bg-white rounded-xl border border-dashed border-slate-300">
+    <span class="material-symbols-outlined text-6xl text-slate-200 mb-4">history_toggle_off</span>
+    <p class="text-lg font-medium text-slate-400">No QR uploads yet</p>
+    <button onclick="window.location.href='QR_Upload_State.html'" class="mt-6 bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors">Start Verification</button>
+</div>
+</div>
+</main>
+
+<!-- Details Modal -->
+<div id="detailsModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+            <h3 class="font-bold text-blue-900">Verification Details</h3>
+            <button onclick="closeModal()" class="text-slate-400 hover:text-slate-800">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="modal-content" class="p-6 space-y-4">
+            <!-- Modal content injected here -->
+        </div>
+        <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 text-right">
+            <button onclick="closeModal()" class="bg-primary text-white px-6 py-2 rounded-lg font-medium">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const container = document.getElementById("history-container");
+        const emptyState = document.getElementById("empty-state");
+        
+        let history = [];
+        try {
+            history = JSON.parse(localStorage.getItem('qr_upload_history') || '[]');
+        } catch(e) { history = []; }
+
+        if (history.length === 0) {
+            emptyState.classList.remove('hidden');
+            emptyState.classList.add('flex');
+        } else {
+            container.innerHTML = history.map((entry, index) => `
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-primary/30 transition-colors group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined text-3xl">airplane_ticket</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-blue-900 text-lg">${entry.flight || entry.route}</p>
+                            <p class="text-sm text-slate-500">${entry.timestamp}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
+                        <div class="flex flex-col items-end">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${entry.result === 'Verified' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
+                                ${entry.result}
+                            </span>
+                            <p class="text-[11px] font-bold text-slate-400 mt-1">${entry.action}</p>
+                        </div>
+                        <button onclick="showDetails(${index})" class="bg-slate-50 text-primary px-4 py-2 rounded-lg text-sm font-bold border border-slate-200 hover:bg-primary hover:text-white transition-all shadow-sm">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    });
+
+    function showDetails(index) {
+        const history = JSON.parse(localStorage.getItem('qr_upload_history') || '[]');
+        const entry = history[index];
+        const modal = document.getElementById('detailsModal');
+        const content = document.getElementById('modal-content');
+        
+        content.innerHTML = `
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div><p class="text-slate-400 uppercase text-[10px] font-bold mb-1">Flight Number</p><p class="font-bold text-blue-900">${entry.flight}</p></div>
+                <div><p class="text-slate-400 uppercase text-[10px] font-bold mb-1">Passengers</p><p class="font-bold text-blue-900">${entry.passengers}</p></div>
+                <div><p class="text-slate-400 uppercase text-[10px] font-bold mb-1">Verification</p><p class="font-bold text-green-600">${entry.result}</p></div>
+                <div><p class="text-slate-400 uppercase text-[10px] font-bold mb-1">User Action</p><p class="font-bold text-slate-700">${entry.action}</p></div>
+                <div class="col-span-2 pt-2"><p class="text-slate-400 uppercase text-[10px] font-bold mb-1">Timestamp</p><p class="font-bold text-slate-700">${entry.timestamp}</p></div>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 mt-4">
+                <p class="text-xs text-blue-900 leading-relaxed">Flight data verified against official records. Security tokens generated for this session remain valid for 24 hours.</p>
+            </div>
+        `;
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeModal() {
+        document.getElementById('detailsModal').classList.add('hidden');
+        document.getElementById('detailsModal').classList.remove('flex');
+    }
+</script>
+</body></html>

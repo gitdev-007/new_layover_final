@@ -186,12 +186,11 @@
   </section>
   <!-- Category Pills -->
 <section class="flex gap-sm overflow-x-auto no-scrollbar py-base -mx-container-margin px-container-margin">
-<button onclick="loadCategory('recommended.html', this)" class="category-pill bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform duration-150 shadow-sm">Recommended For You</button>
-<button onclick="loadCategory('hotel.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Hotels</button>
-<button onclick="loadCategory('restaurant.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Restaurants</button>
-<button onclick="loadCategory('spa.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Spa</button>
-<button onclick="loadCategory('entertainment.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Gaming &amp; Entertainment</button>
-</section>
+<button onclick="renderCategory('recommended', this)" class="category-pill bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform duration-150 shadow-sm">Recommended For You</button>
+  <button onclick="renderCategory('hotel.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Hotels</button>
+  <button onclick="renderCategory('restaurant.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Restaurants</button>
+  <button onclick="renderCategory('spa.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Spa</button>   
+  <button onclick="renderCategory('entertainment.html', this)" class="category-pill bg-white border border-outline-variant text-on-surface px-lg py-xs rounded-full font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-low active:scale-95 transition-all duration-150">Gaming &amp; Entertainment</button></section>
 
 <!-- Dynamic Experience Container -->
 <section class="space-y-md min-h-[400px]" id="marketplace-content">

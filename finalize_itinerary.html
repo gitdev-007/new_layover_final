@@ -583,7 +583,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (confirmBtn) {
         confirmBtn.onclick = () => {
             alert("Itinerary Confirmed! Your transit journey is secured.");
-            // Reset state if needed or redirect to a success page
+            
+            // --- CLEAR SESSION ON COMPLETION ---
+            localStorage.removeItem('qr_verified');
+            localStorage.removeItem('tripPlanActivated');
+            // We keep layoverList and other data for the summary result page if needed,
+            // but we reset the verification status so next trip starts fresh if desired.
+            // ------------------------------------
+            
+            // Redirect to a success page or dashboard
+            // window.location.href = 'itinerary-summary.html';
         };
     }
 });

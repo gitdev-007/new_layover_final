@@ -110,7 +110,7 @@
 </div>
 <nav class="hidden md:flex items-center gap-8">
 <a class="font-manrope text-sm font-bold border-b-2 border-blue-900 text-blue-900 dark:text-blue-400 transition-colors" href="#">Verification</a>
-<a class="font-manrope text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors" href="#">History</a>
+<a class="font-manrope text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors" href="QR_Upload_History.html">History</a>
 <a class="font-manrope text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors" href="#">Travelers</a>
 </nav>
 <div class="flex items-center gap-4">
@@ -136,10 +136,6 @@
 <span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
 <span class="font-manrope text-xs font-semibold mt-1">Verification</span>
 </div>
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-600 p-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-transform scale-95 active:scale-90">
-<span class="material-symbols-outlined" data-icon="verified">verified</span>
-<span class="font-manrope text-xs font-semibold mt-1">Final</span>
-</div>
 </div>
 </aside>
 <!-- Main Content -->
@@ -152,6 +148,10 @@
 </div>
 <!-- Progress Bar -->
 <div class="max-w-2xl mx-auto mb-16 relative">
+<div class="flex justify-between items-center mb-4 px-2">
+<span class="text-xs font-bold text-blue-900 uppercase tracking-wider">STEP 1 OF 3</span>
+<span class="text-xs font-bold text-slate-500 uppercase tracking-wider">UPLOAD DOCUMENT</span>
+</div>
 <div class="flex justify-between items-center relative z-10">
 <div class="flex flex-col items-center">
 <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white ring-4 ring-blue-100">
@@ -171,15 +171,9 @@
 </div>
 <span class="font-label-sm text-label-sm text-outline mt-2">Verify</span>
 </div>
-<div class="flex flex-col items-center">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-outline">
-<span class="material-symbols-outlined" data-icon="verified">verified</span>
-</div>
-<span class="font-label-sm text-label-sm text-outline mt-2">Done</span>
-</div>
 </div>
 <!-- Progress Line -->
-<div class="absolute top-5 left-0 w-full h-[2px] bg-slate-200 -z-0"></div>
+<div class="absolute top-[52px] left-0 w-full h-[2px] bg-slate-200 -z-0"></div>
 </div>
 <!-- Main Layout Grid -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

@@ -4,7 +4,34 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>LayoverX | Spa & Wellness Discovery</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+        function handlePlanLayover(item, category) {
+            const isVerified = localStorage.getItem('qr_verified') === 'true';
+            const duration = localStorage.getItem('layover_duration');
+            const departure = localStorage.getItem('flight_departure');
+            
+            // Check if fully set up
+            if (!isVerified || !duration || !departure) {
+                // Save pending item
+                const durSelect = document.getElementById('item-duration');
+                localStorage.setItem('pending_experience', JSON.stringify({
+                    name: item.name,
+                    category: category,
+                    duration: durSelect ? durSelect.value : '1h',
+                    distance: item.distance
+                }));
+                
+                // Redirect to homepage with alert message
+                localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // If already verified, go to transportation/marketplace directly
+            window.location.href = 'transportation.html';
+        }
+    
+</script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
@@ -37,7 +64,34 @@
                 }
             }
         }
-    </script>
+    
+        function handlePlanLayover(item, category) {
+            const isVerified = localStorage.getItem('qr_verified') === 'true';
+            const duration = localStorage.getItem('layover_duration');
+            const departure = localStorage.getItem('flight_departure');
+            
+            // Check if fully set up
+            if (!isVerified || !duration || !departure) {
+                // Save pending item
+                const durSelect = document.getElementById('item-duration');
+                localStorage.setItem('pending_experience', JSON.stringify({
+                    name: item.name,
+                    category: category,
+                    duration: durSelect ? durSelect.value : '1h',
+                    distance: item.distance
+                }));
+                
+                // Redirect to homepage with alert message
+                localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // If already verified, go to transportation/marketplace directly
+            window.location.href = 'transportation.html';
+        }
+    
+</script>
     <style>
         body { background-color: #f7f7fb; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -393,7 +447,7 @@
                     btn.disabled = false;
                     if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
                     btn.onclick = function() {
-                        window.location.href = 'QR_Upload_State.html';
+                        handlePlanLayover(item, 'Spa');
                     };
                 }
             }
@@ -423,6 +477,33 @@
         populateSpaDurations();
         document.addEventListener('DOMContentLoaded', renderItems);
         renderItems();
-    </script>
+    
+        function handlePlanLayover(item, category) {
+            const isVerified = localStorage.getItem('qr_verified') === 'true';
+            const duration = localStorage.getItem('layover_duration');
+            const departure = localStorage.getItem('flight_departure');
+            
+            // Check if fully set up
+            if (!isVerified || !duration || !departure) {
+                // Save pending item
+                const durSelect = document.getElementById('item-duration');
+                localStorage.setItem('pending_experience', JSON.stringify({
+                    name: item.name,
+                    category: category,
+                    duration: durSelect ? durSelect.value : '1h',
+                    distance: item.distance
+                }));
+                
+                // Redirect to homepage with alert message
+                localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // If already verified, go to transportation/marketplace directly
+            window.location.href = 'transportation.html';
+        }
+    
+</script>
 </body>
 </html>
