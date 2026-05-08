@@ -278,19 +278,19 @@
     </nav>
 
     <script>
-        // --- CONFIG ---
+        // --- CENTRALIZED DURATION CONFIG ---
         const categoryDurations = {
-            hotels: ['1 Hour', '2 Hours', '3 Hours', 'Overnight'],
-            restaurants: ['30 Min', '1 Hour', '90 Min'],
-            spa: ['30 Min', '1 Hour', '90 Min', '2 Hours'],
-            gaming: ['30 Min', '1 Hour', '2 Hours']
+            'hotel': ['1 Hour', '2 Hours', '3 Hours', 'Overnight'],
+            'restaurant': ['30 Min', '1 Hour', '90 Min'],
+            'spa': ['30 Min', '1 Hour', '90 Min', '2 Hours'],
+            'entertainment': ['30 Min', '1 Hour', '2 Hours']
         };
 
         const marketplaceData = {
             hotels: {
                 title: "Hotels Listing Page",
                 label: "HOTEL",
-                durations: categoryDurations.hotels,
+                durations: categoryDurations.hotel,
                 amenities: ['Pool','Spa','Gym','Bar','Airport Shuttle','Business Center'],
                 premium: [
                     { id: 101, name: "The Orchid Hotel", distance: 0.9, rating: "4.8", price: 4500, terminal: "T2", category: "Hotel", type: "Premium", am: ["Airport Shuttle", "Pool", "Spa"] },
@@ -312,7 +312,7 @@
             restaurants: {
                 title: "Restaurants Listing Page",
                 label: "RESTAURANT",
-                durations: categoryDurations.restaurants,
+                durations: categoryDurations.restaurant,
                 amenities: ['Fine Dining','Casual','Bar','Buffet','Quick Bites'],
                 premium: [
                     { id: 201, name: "Masala Library", distance: 1.8, rating: "4.8", price: 3800, terminal: "T2", category: "Restaurant", type: "Premium", am: ["Fine Dining", "Bar"] },
@@ -348,7 +348,7 @@
             gaming: {
                 title: "Gaming & Ent. Listing Page",
                 label: "ENTERTAINMENT",
-                durations: categoryDurations.gaming,
+                durations: categoryDurations.entertainment,
                 amenities: ['VR','Arcade','Lounge','Bowling','Kids'],
                 premium: [
                     { id: 401, name: "Smaaash", distance: 7.5, rating: "4.6", price: 2500, terminal: "T2", category: "Entertainment", type: "Premium", am: ["VR", "Bowling", "Arcade"] },
@@ -404,6 +404,49 @@
         };
 
         // --- CORE FUNCTIONS ---
+        window.parseDurationToMins = function(durStr) {
+            if (!durStr) return 0;
+            const lower = String(durStr).toLowerCase();
+            let mins = 0;
+            if (lower.includes('overnight')) return 480; 
+            const hMatch = lower.match(/([\d\.]+)\s*h/); if (hMatch) mins += parseFloat(hMatch[1]) * 60;
+            const mMatch = lower.match(/([\d\.]+)\s*m/); if (mMatch) mins += parseFloat(mMatch[1]);
+            if (!hMatch && !mMatch) { const val = parseFloat(lower); if (!isNaN(val)) mins = val <= 24 ? val * 60 : val; }
+            return mins;
+        };
+
+        window.updateTimeCalculations = function() {
+            const layoverH = parseInt(localStorage.getItem('layover_duration') || '6', 10);
+            let totalMins = layoverH * 60;
+            let expMins = 0;
+            window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
+            const travelData = window.calculateItineraryTravel(window.layoverList);
+            const travelMins = travelData.totalTravelMins;
+            const remainingMins = totalMins - 120 - travelMins - expMins;
+
+            document.getElementById('time-total').textContent = layoverH + 'h';
+            document.getElementById('time-travel').textContent = travelMins + 'm';
+            document.getElementById('time-exp').textContent = expMins + 'm';
+            const remEl = document.getElementById('time-remaining');
+            const remContainer = document.getElementById('rem-container');
+            
+            const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
+            remEl.textContent = format(remainingMins);
+            window.isRisk = remainingMins < 15;
+            
+            if (remainingMins < 15) { remEl.style.color = '#dc2626'; remContainer.style.backgroundColor = '#fef2f2'; }
+            else if (remainingMins <= 45) { remEl.style.color = '#b45309'; remContainer.style.backgroundColor = '#fffbeb'; }
+            else { remEl.style.color = '#15803d'; remContainer.style.backgroundColor = '#ecfdf5'; }
+
+            const flightDep = localStorage.getItem('flight_departure');
+            if (flightDep) {
+                try {
+                    const depDate = new Date(flightDep);
+                    document.getElementById('time-departure').textContent = `Departure ${depDate.getHours().toString().padStart(2,'0')}:${depDate.getMinutes().toString().padStart(2,'0')}`;
+                } catch(e) {}
+            }
+        };
+
         function renderMarketplace(catId, btn) {
             if (btn) {
                 document.querySelectorAll('.category-pill').forEach(p => { 
@@ -535,10 +578,10 @@
                 : '<div class="text-[11px] text-on-surface-variant italic">Standard amenities included</div>';
 
             const durSel = document.getElementById('item-duration');
-            const dataKey = item.category.toLowerCase() + (item.category.toLowerCase().endsWith('s') ? '' : 's');
-            const config = categoryDurations[dataKey] || categoryDurations.hotels;
+            const dataKey = item.category.toLowerCase();
+            const options = categoryDurations[dataKey] || categoryDurations.hotel;
             durSel.innerHTML = '';
-            config.forEach(d => durSel.add(new Option(d, d)));
+            options.forEach(d => durSel.add(new Option(d, d)));
             
             const btn = document.getElementById('add-list-btn');
             const alreadyAdded = window.layoverList.some(i => i.name === item.name);
@@ -571,50 +614,6 @@
             l2.classList.add('opacity-0');
             setTimeout(() => l2.classList.add('hidden'), 300);
         }
-
-        // --- TIME LOGIC ---
-        window.parseDurationToMins = function(durStr) {
-            if (!durStr) return 0;
-            const lower = String(durStr).toLowerCase();
-            let mins = 0;
-            if (lower.includes('overnight')) return 480;
-            const hMatch = lower.match(/([\d\.]+)\s*h/); if (hMatch) mins += parseFloat(hMatch[1]) * 60;
-            const mMatch = lower.match(/([\d\.]+)\s*m/); if (mMatch) mins += parseFloat(mMatch[1]);
-            if (!hMatch && !mMatch) { const val = parseFloat(lower); if (!isNaN(val)) mins = val <= 24 ? val * 60 : val; }
-            return mins;
-        };
-
-        window.updateTimeCalculations = function() {
-            const layoverH = parseInt(localStorage.getItem('layover_duration') || '6', 10);
-            let totalMins = layoverH * 60;
-            let expMins = 0;
-            window.layoverList.forEach(i => expMins += window.parseDurationToMins(i.duration));
-            const travelData = window.calculateItineraryTravel(window.layoverList);
-            const travelMins = travelData.totalTravelMins;
-            const remainingMins = totalMins - 120 - travelMins - expMins;
-
-            document.getElementById('time-total').textContent = layoverH + 'h';
-            document.getElementById('time-travel').textContent = travelMins + 'm';
-            document.getElementById('time-exp').textContent = expMins + 'm';
-            const remEl = document.getElementById('time-remaining');
-            const remContainer = document.getElementById('rem-container');
-            
-            const format = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
-            remEl.textContent = format(remainingMins);
-            window.isRisk = remainingMins < 15;
-            
-            if (remainingMins < 15) { remEl.style.color = '#dc2626'; remContainer.style.backgroundColor = '#fef2f2'; }
-            else if (remainingMins <= 45) { remEl.style.color = '#b45309'; remContainer.style.backgroundColor = '#fffbeb'; }
-            else { remEl.style.color = '#15803d'; remContainer.style.backgroundColor = '#ecfdf5'; }
-
-            const flightDep = localStorage.getItem('flight_departure');
-            if (flightDep) {
-                try {
-                    const depDate = new Date(flightDep);
-                    document.getElementById('time-departure').textContent = `Departure ${depDate.getHours().toString().padStart(2,'0')}:${depDate.getMinutes().toString().padStart(2,'0')}`;
-                } catch(e) {}
-            }
-        };
 
         // --- LIST MANAGEMENT ---
         window.addToList = function(btn, name, category, duration, distance) {
@@ -668,8 +667,8 @@
         window.renderListDrawer = function() {
             const cont = document.getElementById('list-drawer-content');
             cont.innerHTML = window.layoverList.length > 0 ? window.layoverList.map((i, idx) => {
-                const catKey = i.category.toLowerCase() + (i.category.toLowerCase().endsWith('s') ? '' : 's');
-                const options = categoryDurations[catKey] || categoryDurations.hotels;
+                const catKey = i.category.toLowerCase();
+                const options = categoryDurations[catKey] || categoryDurations.hotel;
                 
                 return `
                 <div class="p-4 bg-white border border-slate-200 rounded-2xl flex flex-col gap-3 shadow-sm group">

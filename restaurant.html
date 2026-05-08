@@ -262,18 +262,20 @@
         
         
         const restaurantDurations = [
-            { valStr: '30m', label: '30 Min' },
-            { valStr: '1h', label: '1 Hour' },
-            { valStr: '1.5h', label: '1.5 Hours' },
-            { valStr: '2h', label: '2 Hours' }
+            { valStr: '30 Min', label: '30 Min' },
+            { valStr: '1 Hour', label: '1 Hour' },
+            { valStr: '90 Min', label: '90 Min' }
         ];
 
         function populateRestaurantDurations() {
             const filterDropdown = document.getElementById('filter-duration');
             if (filterDropdown && filterDropdown.options.length <= 1) {
-                restaurantDurations.forEach(d => {
-                    filterDropdown.add(new Option(d.label, d.valStr));
-                });
+                // Check if the dropdown exists (some versions might not have it)
+                if (filterDropdown) {
+                    restaurantDurations.forEach(d => {
+                        filterDropdown.add(new Option(d.label, d.valStr));
+                    });
+                }
             }
 
             const itemDropdown = document.getElementById('item-duration');
@@ -281,7 +283,7 @@
                 restaurantDurations.forEach(d => {
                     itemDropdown.add(new Option(d.label, d.valStr));
                 });
-                itemDropdown.value = '1h'; // Set default to 1 Hour
+                itemDropdown.value = '1 Hour'; // Set default to 1 Hour
             }
         }
         

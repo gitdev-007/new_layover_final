@@ -254,14 +254,10 @@
     <script>
         
         const hotelDurations = [
-            { valNum: '3', valStr: '3h', label: '3 Hours' },
-            { valNum: '4', valStr: '4h', label: '4 Hours' },
-            { valNum: '6', valStr: '6h', label: '6 Hours' },
-            { valNum: '8', valStr: '8h', label: '8 Hours' },
-            { valNum: '10', valStr: '10h', label: '10 Hours' },
-            { valNum: '12', valStr: '12h', label: '12 Hours' },
-            { valNum: '16', valStr: '16h', label: '16 Hours' },
-            { valNum: '24', valStr: '24h', label: '24 Hours' }
+            { valNum: '1', valStr: '1 Hour', label: '1 Hour' },
+            { valNum: '2', valStr: '2 Hours', label: '2 Hours' },
+            { valNum: '3', valStr: '3 Hours', label: '3 Hours' },
+            { valNum: '8', valStr: 'Overnight', label: 'Overnight' }
         ];
 
         function populateHotelDurations() {
@@ -277,7 +273,7 @@
                 hotelDurations.forEach(d => {
                     itemDropdown.add(new Option(d.label, d.valStr));
                 });
-                itemDropdown.value = '3h'; // Set default to 3 Hours
+                itemDropdown.value = '2 Hours'; // Set default to 2 Hours
             }
         }
         

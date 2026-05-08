@@ -258,12 +258,10 @@
         
         
         const spaDurations = [
-            { valStr: '30m', label: '30 Min' },
-            { valStr: '1h', label: '1 Hour' },
-            { valStr: '1.5h', label: '1.5 Hours' },
-            { valStr: '2h', label: '2 Hours' },
-            { valStr: '2.5h', label: '2.5 Hours' },
-            { valStr: '3h', label: '3 Hours' }
+            { valStr: '30 Min', label: '30 Min' },
+            { valStr: '1 Hour', label: '1 Hour' },
+            { valStr: '90 Min', label: '90 Min' },
+            { valStr: '2 Hours', label: '2 Hours' }
         ];
 
         function populateSpaDurations() {
@@ -279,7 +277,7 @@
                 spaDurations.forEach(d => {
                     itemDropdown.add(new Option(d.label, d.valStr));
                 });
-                itemDropdown.value = '1h'; // Set default to 1 Hour
+                itemDropdown.value = '1 Hour'; // Set default to 1 Hour
             }
         }
         
