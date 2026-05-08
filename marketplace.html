@@ -499,6 +499,7 @@ window.updateTimeCalculations = function() {
     }
 };
 
+
 window.renderCategory = function(catId, btn) {
     if (btn) {
         document.querySelectorAll('.category-pill').forEach(pill => {
@@ -515,23 +516,17 @@ window.renderCategory = function(catId, btn) {
     if (catId === 'recommended') {
         const config = window.FILTER_CONFIG['hotel.html'];
         container.innerHTML = `
-            <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
+            <div id="level1" class="layout-transition w-full flex-shrink-0 z-10 relative bg-blueprint-bg border border-blueprint-border p-8 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-6 border-b border-blueprint-border pb-4">
+                    <div>
+                        <span class="text-primary font-bold text-xs uppercase tracking-widest">Recommended For You</span>
+                    </div>
+                    <span class="bg-primary text-white text-[10px] px-3 py-1 uppercase rounded-full tracking-widest shadow-sm">Level 1: Listing</span>
                 </div>
-                <div class="bg-white border-2 border-blueprint-border p-6 shadow-sm">
-                    <div class="flex justify-between items-start mb-6">
-                        <h3 class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="window.closeLevel2()">Recommended For You</h3>
-                    </div>
-                    <div class="border border-outline-variant p-3 bg-surface-container mb-4">
-                        <p class="text-meta-label text-on-surface-variant mb-2">CURATED PICKS</p>
-                        <p class="text-[11px] text-on-surface-variant">Top experiences based on your flight buffer.</p>
-                    </div>
-                    <div class="border-2 border-dashed border-blueprint-border p-4">
-                        <p class="text-meta-label text-on-surface-variant mb-3">INVENTORY (3 ITEMS FOUND)</p>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="hotel-grid">
-                            ${[window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => window.renderCard(i)).join('')}
-                        </div>
+                <div class="border-2 border-dashed border-blueprint-border p-6 rounded-lg bg-white">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">CURATED PICKS (3 FOUND)</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="hotel-grid">
+                        ${[window.LAYOVER_INVENTORY['Hotels'][2], window.LAYOVER_INVENTORY['Restaurants'][3], window.LAYOVER_INVENTORY['Spa'][1]].map(i => window.renderCard(i)).join('')}
                     </div>
                 </div>
             </div>
@@ -544,46 +539,49 @@ window.renderCategory = function(catId, btn) {
     if (!config) return;
 
     let filterHTML = `
-        <div class="border border-outline-variant p-3 bg-surface-container mb-4">
-            <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                <select id="filter-duration" onchange="window.renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-                    <option value="any">${config.durationLabel}</option>
-                    ${config.durations.map(d => `<option value="${d.v}">${d.l}</option>`).join('')}
-                </select>
-                <select id="filter-price" onchange="window.renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-                    <option value="any">Price Range</option>
-                    ${config.priceRange.map(p => `<option value="${p.v}">${p.l}</option>`).join('')}
-                </select>
-                <select id="filter-distance" onchange="window.renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-                    <option value="any">Distance</option>
-                    ${config.distance.map(d => `<option value="${d.v}">${d.l}</option>`).join('')}
-                </select>
-                <select id="filter-amenities" onchange="window.renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
-                    <option value="any">Amenities</option>
-                    ${config.amenities.map(a => `<option value="${a.v}">${a.l}</option>`).join('')}
-                </select>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <select id="filter-duration" onchange="window.renderItems()" class="w-full bg-white border border-blueprint-border p-3 rounded text-[11px] font-bold uppercase tracking-widest text-slate-700 outline-none focus:border-primary transition-colors cursor-pointer shadow-sm">
+                <option value="any">${config.durationLabel}</option>
+                ${config.durations.map(d => `<option value="${d.v}">${d.l}</option>`).join('')}
+            </select>
+            <select id="filter-price" onchange="window.renderItems()" class="w-full bg-white border border-blueprint-border p-3 rounded text-[11px] font-bold uppercase tracking-widest text-slate-700 outline-none focus:border-primary transition-colors cursor-pointer shadow-sm">
+                <option value="any">Price Range</option>
+                ${config.priceRange.map(p => `<option value="${p.v}">${p.l}</option>`).join('')}
+            </select>
+            <select id="filter-distance" onchange="window.renderItems()" class="w-full bg-white border border-blueprint-border p-3 rounded text-[11px] font-bold uppercase tracking-widest text-slate-700 outline-none focus:border-primary transition-colors cursor-pointer shadow-sm">
+                <option value="any">Distance</option>
+                ${config.distance.map(d => `<option value="${d.v}">${d.l}</option>`).join('')}
+            </select>
+            <select id="filter-amenities" onchange="window.renderItems()" class="w-full bg-white border border-blueprint-border p-3 rounded text-[11px] font-bold uppercase tracking-widest text-slate-700 outline-none focus:border-primary transition-colors cursor-pointer shadow-sm">
+                <option value="any">Amenities</option>
+                ${config.amenities.map(a => `<option value="${a.v}">${a.l}</option>`).join('')}
+            </select>
         </div>
     `;
 
     container.innerHTML = `
-        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
-            <div class="flex items-center justify-between mb-4">
-                <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
-            </div>
-            <div class="bg-white border-2 border-blueprint-border p-6 shadow-sm">
-                <div class="flex justify-between items-start mb-6">
-                    <h3 class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="window.closeLevel2()">${config.title}</h3>
+        <div class="main-layout flex flex-col xl:flex-row items-start gap-8 w-full">
+            <div id="level1" class="layout-transition w-full flex-shrink-0 z-10 relative bg-blueprint-bg border border-blueprint-border p-8 rounded-xl shadow-sm">
+                <div class="flex justify-between items-end border-b border-blueprint-border pb-6 mb-8">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-1">LEVEL 1: LISTING</p>
+                        <h3 class="text-3xl font-bold text-primary uppercase tracking-tight" style="letter-spacing: -0.02em;">${config.title}</h3>
+                    </div>
+                    <span class="bg-primary text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-widest shadow-sm">Global Discovery</span>
                 </div>
+                
                 ${filterHTML}
-                <div class="border-2 border-dashed border-blueprint-border p-4">
-                    <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">${config.inventoryLabel} INVENTORY (0 FOUND)</p>
-                    <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+                
+                <div class="border-2 border-dashed border-blueprint-border p-6 rounded-lg bg-white">
+                    <div class="flex justify-between items-center mb-6">
+                        <p id="inventory-count" class="text-[11px] font-bold text-primary uppercase tracking-widest">${config.inventoryLabel} INVENTORY (0 FOUND)</p>
+                    </div>
+                    <div id="hotel-grid" class="w-full"></div>
                 </div>
             </div>
+            
+            ${window.level2Template()}
         </div>
-        ${window.level2Template()}
     `;
 
     window.renderItems();
@@ -591,57 +589,58 @@ window.renderCategory = function(catId, btn) {
 
 window.level2Template = function() {
     return `
-        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative mt-6 md:mt-0">
-            <div class="flex items-center justify-between mb-4">
-                <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
-            </div>
-            <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
-                <div class="flex justify-between items-start mb-6 shrink-0">
-                    <h3 class="text-node-title-md text-secondary uppercase">Detail Page</h3>
-                    <button onclick="window.closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
+        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-xl flex-shrink-0 z-20 relative">
+            <div class="bg-white border border-blueprint-border rounded-xl p-6 shadow-xl flex flex-col h-[700px]">
+                <div class="flex justify-between items-start mb-6 shrink-0 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="bg-primary/10 text-primary text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-widest mb-1 inline-block border border-primary/10">Level 2: Details</span>
+                        <h3 class="text-xl font-bold text-primary uppercase tracking-tight">Detail View</h3>
+                    </div>
+                    <button onclick="window.closeLevel2()" class="text-slate-400 hover:text-primary p-2 rounded-full hover:bg-slate-100 transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
                 </div>
                 
-                <div class="space-y-4 overflow-y-auto hide-scrollbar flex-grow pb-4">
-                    <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
-                        <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-                        <h4 id="l2-name" class="text-[14px] font-bold">Item Name</h4>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold">4.8 ★</span>
-                            <span id="l2-distance" class="text-[10px] text-on-surface-variant">0.9 km from T2</span>
+                <div class="space-y-6 overflow-y-auto hide-scrollbar flex-grow pb-4 px-2">
+                    <div class="border border-blueprint-border p-4 rounded-lg bg-blueprint-bg">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">ENTITY HEADER</p>
+                        <h4 id="l2-name" class="text-lg font-bold text-primary tracking-tight">Item Name</h4>
+                        <div class="flex items-center gap-2 mt-2">
+                            <span id="l2-rating" class="bg-brand-orange text-white text-[10px] px-2 py-0.5 rounded font-bold">4.8 ★</span>
+                            <span id="l2-distance" class="text-[10px] text-slate-500 font-medium">0.9 km from T2</span>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="wireframe-box p-2 text-center bg-surface-container">
-                            <span class="material-symbols-outlined text-secondary text-[18px]">grid_view</span>
-                            <p class="text-[10px] mt-1 font-bold">Media Gallery</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="border border-blueprint-border p-4 rounded-lg text-center bg-white shadow-sm hover:border-primary transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined text-primary text-[24px]">grid_view</span>
+                            <p class="text-[10px] mt-2 font-bold text-primary uppercase tracking-widest">Media Gallery</p>
                         </div>
-                        <div class="wireframe-box p-2 text-center bg-surface-container">
-                            <span class="material-symbols-outlined text-secondary text-[18px]">list_alt</span>
-                            <p class="text-[10px] mt-1 font-bold">Options</p>
+                        <div class="border border-blueprint-border p-4 rounded-lg text-center bg-white shadow-sm hover:border-primary transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined text-primary text-[24px]">list_alt</span>
+                            <p class="text-[10px] mt-2 font-bold text-primary uppercase tracking-widest">Options</p>
                         </div>
                     </div>
 
-                    <div class="wireframe-box p-3 bg-surface-container">
-                        <p class="text-meta-label text-on-surface-variant mb-2">KEY DIFFERENTIATORS</p>
-                        <div id="l2-amenities" class="text-[11px] space-y-1"></div>
+                    <div class="border border-blueprint-border p-5 rounded-lg bg-white shadow-sm">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">KEY DIFFERENTIATORS</p>
+                        <div id="l2-amenities" class="text-xs font-medium text-slate-600 space-y-2"></div>
                     </div>
 
-                    <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
-                        <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer"></select>
-                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
+                    <div class="border-2 border-primary/20 p-5 rounded-lg bg-primary/5 shadow-inner">
+                        <label class="block text-[9px] font-bold text-primary uppercase tracking-widest mb-2">Selection Period <span class="text-red-500">*</span></label>
+                        <select id="item-duration" class="w-full mb-4 bg-white border border-slate-300 px-4 py-3 text-sm text-primary font-bold outline-none cursor-pointer rounded-lg shadow-sm focus:border-primary focus:ring-1 focus:ring-primary"></select>
+                        <button id="add-list-btn" class="w-full bg-primary text-white font-bold py-4 rounded-lg text-sm tracking-widest uppercase hover:bg-black transition-colors shadow-lg active:scale-95">
                             ADD TO LIST
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 text-meta-label mt-4">
-                        <div class="wireframe-box p-2">
-                            <p class="text-on-surface-variant mb-1">REVIEWS</p>
-                            <p class="font-semibold text-secondary">Verified</p>
+                    <div class="grid grid-cols-2 gap-4 text-meta-label">
+                        <div class="border border-blueprint-border p-4 rounded-lg bg-white shadow-sm">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">REVIEWS</p>
+                            <p class="font-bold text-primary text-sm">Verified</p>
                         </div>
-                        <div class="wireframe-box p-2">
-                            <p class="text-on-surface-variant mb-1">CONTACT</p>
-                            <p class="font-semibold text-secondary">Quick Inquiry</p>
+                        <div class="border border-blueprint-border p-4 rounded-lg bg-white shadow-sm">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">CONTACT</p>
+                            <p class="font-bold text-primary text-sm">Quick Inquiry</p>
                         </div>
                     </div>
                 </div>
@@ -665,18 +664,27 @@ window.renderCard = function(h) {
     }
     
     const bgClass = isActive 
-        ? 'bg-primary/10 border-primary' 
-        : (isPremium ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50');
+        ? 'bg-primary/10 border-primary ring-1 ring-primary shadow-md' 
+        : 'bg-white border-blueprint-border hover:border-primary/50 hover:shadow-md';
+    
+    const travel = window.calculateLegTravelTime(0, h.distance);
     
     return `
-        <div onclick="window.openLevel2(${h.id})" class="p-2 border cursor-pointer transition-colors text-[11px] font-medium text-on-surface flex flex-col justify-between h-16 ${bgClass}">
-            <div class="flex justify-between items-start">
-                <span class="truncate pr-1">${h.name}</span>
-                ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
+        <div onclick="window.openLevel2(${h.id})" class="p-4 border rounded-lg cursor-pointer transition-all flex flex-col h-full ${bgClass} group">
+            <div class="flex justify-between items-start mb-3">
+                <div class="pr-2">
+                    <h4 class="font-bold text-sm text-primary leading-tight group-hover:text-brand-blue transition-colors line-clamp-1">${h.name}</h4>
+                </div>
+                ${isPremium ? '<span class="material-symbols-outlined text-[16px] text-brand-orange shrink-0">workspace_premium</span>' : '<span class="material-symbols-outlined text-[16px] text-slate-300 group-hover:text-primary transition-colors">arrow_outward</span>'}
             </div>
-            <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
-                <span>${h.distance} km • ${h.terminal || 'T2'}</span>
-                <span class="font-bold text-secondary">${h.rating} ★</span>
+            <div class="mt-auto border-t border-slate-100 pt-3 flex justify-between items-end">
+                <div class="flex flex-col">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Est. Travel</span>
+                    <span class="text-[11px] font-bold text-primary">${travel}m</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-[11px] font-bold text-brand-orange">${h.rating} ★</span>
+                </div>
             </div>
         </div>
     `;
@@ -732,14 +740,16 @@ window.renderItems = function() {
         const groupItems = filtered.filter(h => h.category === grp.key);
         if (groupItems.length > 0) {
             grid.innerHTML += `
-                <div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
-                    <h4 class="text-meta-label text-primary uppercase">${grp.title}</h4>
-                    <span class="text-[10px] font-bold text-on-surface-variant">(${groupItems.length})</span>
+                <div class="col-span-full mt-6 mb-3 flex items-center justify-between border-b border-blueprint-border pb-2">
+                    <h4 class="text-[11px] font-bold text-brand-blue uppercase tracking-widest flex items-center gap-2">
+                        ${grp.title}
+                    </h4>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${groupItems.length} ITEMS</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full col-span-full">
+                    ${groupItems.map(h => window.renderCard(h)).join('')}
                 </div>
             `;
-            groupItems.forEach(h => {
-                grid.innerHTML += window.renderCard(h);
-            });
         }
     });
 
@@ -747,14 +757,16 @@ window.renderItems = function() {
     const unmappedItems = filtered.filter(h => !mappedCategories.includes(h.category));
     if (unmappedItems.length > 0) {
         grid.innerHTML += `
-            <div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
-                <h4 class="text-meta-label text-primary uppercase">Other Options</h4>
-                <span class="text-[10px] font-bold text-on-surface-variant">(${unmappedItems.length})</span>
+            <div class="col-span-full mt-6 mb-3 flex items-center justify-between border-b border-blueprint-border pb-2">
+                <h4 class="text-[11px] font-bold text-brand-blue uppercase tracking-widest flex items-center gap-2">
+                    OTHER OPTIONS
+                </h4>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${unmappedItems.length} ITEMS</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full col-span-full">
+                ${unmappedItems.map(h => window.renderCard(h)).join('')}
             </div>
         `;
-        unmappedItems.forEach(h => {
-            grid.innerHTML += window.renderCard(h);
-        });
     }
 };
 
@@ -814,7 +826,7 @@ window.openLevel2 = function(id) {
         
         if (alreadyAdded) {
             btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> ADDED';
-            btn.className = 'w-full py-2 text-sm tracking-widest uppercase transition-colors bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default';
+            btn.className = 'w-full py-4 text-sm tracking-widest uppercase transition-colors bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg font-bold cursor-default shadow-sm';
             btn.disabled = true;
             if(itemDur) itemDur.disabled = true;
         } else {
@@ -823,7 +835,7 @@ window.openLevel2 = function(id) {
                 btn.dataset.originalHtml = btn.innerHTML;
             }
             btn.innerHTML = 'ADD TO LIST';
-            btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
+            btn.className = 'w-full bg-primary text-white font-bold py-4 rounded-lg text-sm tracking-widest uppercase hover:bg-black transition-colors shadow-lg active:scale-95';
             btn.disabled = false;
             if(itemDur) itemDur.disabled = false;
             
@@ -837,13 +849,8 @@ window.openLevel2 = function(id) {
     const l1 = document.getElementById('level1');
     const l2 = document.getElementById('level2');
     
-    if (l1) {
-        l1.classList.add('md:w-1/2');
-    }
-
-    if (l2) {
+    if (l1 && l2) {
         l2.classList.remove('hidden');
-        l2.classList.add('md:w-1/2');
         requestAnimationFrame(() => { 
             l2.classList.remove('opacity-0'); 
             setTimeout(() => {
@@ -855,7 +862,7 @@ window.openLevel2 = function(id) {
     const layout = document.getElementById('marketplace-content');
     if (layout) {
          const wrapper = layout.querySelector('.main-layout') || layout;
-         wrapper.classList.add('flex', 'flex-col', 'md:flex-row', 'gap-8');
+         wrapper.classList.add('flex', 'flex-col', 'xl:flex-row', 'gap-8');
     }
 };
 
@@ -870,24 +877,21 @@ window.closeLevel2 = function() {
         }
     }
     
-    const l1 = document.getElementById('level1');
     const l2 = document.getElementById('level2');
-    if (l1) l1.classList.remove('md:w-1/2');
-
     if (l2) {
         l2.classList.add('opacity-0');
         setTimeout(() => {
             l2.classList.add('hidden');
-            l2.classList.remove('md:w-1/2');
         }, 300);
     }
     
     const layout = document.getElementById('marketplace-content');
     if (layout) {
          const wrapper = layout.querySelector('.main-layout') || layout;
-         wrapper.classList.remove('flex', 'flex-col', 'md:flex-row', 'gap-8');
+         wrapper.classList.remove('flex', 'flex-col', 'xl:flex-row', 'gap-8');
     }
 };
+
 
 window.renderListDrawer = function() {
     const content = document.getElementById('list-drawer-content');
