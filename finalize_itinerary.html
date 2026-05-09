@@ -158,37 +158,9 @@
 <main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
 <!-- Top Summary Dashboard -->
 <section class="mb-gutter overflow-x-auto pb-4 -mx-margin-mobile px-margin-mobile md:mx-0 md:px-0">
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 min-w-[600px] md:min-w-full">
-<!-- Card 1 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
-<p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Total Layover</p>
-<p class="font-headline-md text-headline-md text-primary">12h 30m</p>
-</div>
-<!-- Card 2 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
-<p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Experience Time</p>
-<p class="font-headline-md text-headline-md text-primary">9.5h</p>
-</div>
-<!-- Card 3 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
-<p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Travel Time</p>
-<p class="font-headline-md text-headline-md text-primary">1h 17m</p>
-</div>
-<!-- Card 4 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
-<p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Buffer Time</p>
-<p class="font-headline-md text-headline-md text-primary">1.5h</p>
-</div>
-<!-- Card 5 (Status) -->
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20 flex flex-col justify-between">
-<p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Status</p>
-<div class="flex items-center gap-2 mt-2">
-<span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
-<span class="font-body-md text-body-md font-semibold">On Track</span>
-<span class="text-label-sm text-on-surface-variant opacity-70">(Low Risk)</span>
-</div>
-</div>
-</div>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 min-w-[600px] md:min-w-full" id="stats-dashboard">
+        <!-- Cards will be populated by script -->
+    </div>
 </section>
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
 <!-- Main Itinerary Timeline (Vertical) - Left Column -->
@@ -442,33 +414,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const airportHeader = document.querySelector('h3.font-headline-md');
     if (airportHeader) airportHeader.textContent = airportRaw + ' (Start)';
     
-    // 4. Update Summary Dashboard ... (rest of logic)
+    // 4. Update Summary Dashboard
     const formatMins = (m) => m > 0 ? (m >= 60 ? Math.floor(m/60) + 'h ' + (m%60 > 0 ? (m%60)+'m' : '') : m + 'm') : '0m';
     
-    const summarySection = document.querySelector('section.mb-gutter div.grid');
-    summarySection.innerHTML = `
-        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+    let statusLabel = 'On Track (Safe)';
+    let statusColor = 'bg-green-500';
+    if (state.remainingMinutes < 15) {
+        statusLabel = 'Risky';
+        statusColor = 'bg-red-500';
+    } else if (state.remainingMinutes <= 45) {
+        statusLabel = 'Tight Schedule';
+        statusColor = 'bg-orange-500';
+    }
+    
+    const dashboard = document.getElementById('stats-dashboard');
+    dashboard.innerHTML = `
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Total Layover</p>
-            <p class="font-headline-md text-headline-md text-primary">${formatMins(state.layoverDurationMinutes)}</p>
+            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.layoverDurationMinutes)}</p>
         </div>
-        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Experience Time</p>
-            <p class="font-headline-md text-headline-md text-primary">${formatMins(state.totalExperienceMinutes)}</p>
+            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.totalExperienceMinutes)}</p>
         </div>
-        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Travel Time</p>
-            <p class="font-headline-md text-headline-md text-primary">${formatMins(state.totalTransitMinutes)}</p>
+            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.totalTransitMinutes)}</p>
         </div>
-        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Buffer Time</p>
-            <p class="font-headline-md text-headline-md text-primary">${formatMins(state.airportBufferMinutes)}</p>
+            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.airportBufferMinutes)}</p>
         </div>
-        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.06)] border border-outline-variant/20 flex flex-col justify-between">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Status</p>
             <div class="flex items-center gap-2 mt-2">
-                <span class="w-2.5 h-2.5 rounded-full ${state.remainingMinutes >= 0 ? 'bg-green-500' : 'bg-red-500'}"></span>
-                <span class="font-body-md text-body-md font-semibold">${state.remainingMinutes >= 0 ? 'On Track' : 'Risky'}</span>
-                <span class="text-label-sm text-on-surface-variant opacity-70">(${state.remainingMinutes >= 0 ? 'Safe' : 'Insufficient Time'})</span>
+                <span class="w-2.5 h-2.5 rounded-full ${statusColor}"></span>
+                <span class="font-body-md text-body-md font-semibold">${statusLabel}</span>
             </div>
         </div>
     `;
