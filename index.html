@@ -899,27 +899,6 @@ Explore Experiences <span class="material-symbols-outlined text-[18px]">arrow_fo
                 localStorage.setItem('layover_duration', durationVal);
                 localStorage.setItem('flight_departure', departureVal);
                 
-                // --- NEW SESSION CHECK ---
-                const isVerified = localStorage.getItem('qr_verified') === 'true';
-                const sessionTime = parseInt(localStorage.getItem('session_timestamp') || '0', 10);
-                const now = Date.now();
-                const dayInMs = 24 * 60 * 60 * 1000;
-
-                if (isVerified && (now - sessionTime < dayInMs)) {
-                    const modal = document.getElementById('verified-modal');
-                    if (modal) {
-                        modal.classList.remove('hidden');
-                        modal.classList.add('flex');
-                        setTimeout(() => modal.classList.add('opacity-100'), 10);
-                        return;
-                    }
-                } else {
-                    // Clear expired session
-                    localStorage.removeItem('qr_verified');
-                    localStorage.removeItem('session_timestamp');
-                }
-                // --------------------------
-
                 exploreBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">refresh</span> Routing...';
                 exploreBtn.style.pointerEvents = 'none';
                 exploreBtn.classList.add('opacity-90');
