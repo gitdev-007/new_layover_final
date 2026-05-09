@@ -7,6 +7,133 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1d4ed8", /* blue */
+                        "primary-container": "#bfdbfe",
+                        secondary: "#ea580c", /* orange */
+                        "secondary-container": "#fed7aa",
+                        surface: "#ffffff",
+                        "surface-container": "#f8fafc",
+                        "surface-container-high": "#f1f5f9",
+                        "outline-variant": "#cbd5e1",
+                        "on-surface": "#0f172a",
+                        "on-surface-variant": "#475569"
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                        manrope: ["Manrope", "sans-serif"]
+                    },
+                    fontSize: {
+                        "meta-label": ["10px", { letterSpacing: "0.1em", fontWeight: "700" }],
+                        "node-title-lg": ["20px", { letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "node-title-md": ["16px", { letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "node-description": ["12px", { lineHeight: "1.5" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f7f7fb; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
+    </style>
+</head>
+<body class="text-on-surface font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <header class="w-full bg-white border-b border-outline-variant sticky top-0 z-50">
+        <div class="max-w-[1400px] mx-auto px-6 h-16 flex justify-between items-center text-sm font-semibold text-on-surface-variant">
+            <div class="flex items-center gap-8">
+                <a class="text-lg font-bold text-primary font-manrope uppercase tracking-tight" href="#">LayoverX</a>
+                <nav class="hidden md:flex gap-6 items-center">
+                    <a class="text-primary border-b-2 border-primary pb-1 uppercase text-[11px] tracking-widest" href="#">Browse</a>
+                    <a class="hover:text-primary transition-colors uppercase text-[11px] tracking-widest" href="#">My Bookings</a>
+                    <a class="hover:text-primary transition-colors uppercase text-[11px] tracking-widest" href="#">Support</a>
+                </nav>
+            </div>
+            <div class="flex gap-4 items-center">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+                <span class="material-symbols-outlined text-[20px]">account_circle</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col items-center gap-6 relative pb-20 mt-4">
+        
+        <!-- LEVEL 1: LISTING -->
+        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
+            </div>
+
+            <!-- Main Card Container -->
+            <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">HOTELS LISTING PAGE</h3>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Search & Filters -->
+                    <div class="border border-outline-variant p-3 bg-surface-container">
+                        <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <select id="filter-type" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Hotel Type</option></select>
+                            <select id="filter-price" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Price Range</option></select>
+                            <select id="filter-distance" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Distance</option></select>
+                            <select id="filter-amenity" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Amenities</option></select>
+                        </div>
+                    </div>
+
+                    <!-- Grid Preview -->
+                    <div class="border-2 border-dashed border-outline-variant p-4">
+                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">HOTEL INVENTORY (12 HOTELS FOUND)</p>
+                        <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVEL 2: DETAIL -->
+        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative">
+            <div class="flex items-center justify-between mb-4">
+                <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
+            </div>
+
+            <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
+                <div class="flex justify-between items-start mb-6 shrink-0">
+                    <h3 class="text-node-title-md text-secondary uppercase">HOTEL DETAIL PAGE</h3>
+                    <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
+                </div>
+                
+                <div class="space-y-4 overflow-y-auto hide-scrollbar flex-grow pb-4">
+                    <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
+                        <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
+                        <h4 id="l2-name" class="text-[14px] font-bold"></h4>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold"></span>
+                            <span id="l2-distance" class="text-[10px] text-on-surface-variant"></span>
+                        </div>
+                    </div>
+                    <div class="wireframe-box p-3 bg-surface-container">
+                        <p class="text-meta-label text-on-surface-variant mb-2">KEY DIFFERENTIATORS</p>
+                        <div id="l2-amenities" class="text-[11px] space-y-1"></div>
+                    </div>
+                    <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
+                        <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer"></select>
+                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm uppercase hover:bg-orange-700 transition-colors">PLAN LAYOVER</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <script>
         function handlePlanLayover(item, category) {
             const isVerified = localStorage.getItem('qr_verified') === 'true';
@@ -21,67 +148,7 @@
             }
             window.location.href = 'transportation.html';
         }
-    </script>
-    <style>
-        body { background-color: #f7f7fb; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
-    </style>
-</head>
-<body class="text-on-surface font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
-    <header class="w-full bg-white border-b border-outline-variant sticky top-0 z-50">
-        <div class="max-w-[1400px] mx-auto px-6 h-16 flex justify-between items-center text-sm font-semibold text-on-surface-variant">
-            <a class="text-lg font-bold text-blue-700 font-manrope uppercase tracking-tight" href="#">LayoverX</a>
-            <div class="flex gap-4 items-center"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="material-symbols-outlined text-[20px]">account_circle</span></div>
-        </div>
-    </header>
 
-    <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col items-center gap-6 relative pb-20 mt-4">
-        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto z-10 relative">
-            <div class="flex items-center justify-between mb-4"><span class="bg-blue-700 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1">Level 1: Listing</span></div>
-            <div class="bg-white border-2 border-blue-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-blue-700 uppercase mb-6 cursor-pointer hover:underline" onclick="closeLevel2()">HOTELS LISTING PAGE</h3>
-                <div class="border border-slate-200 p-3 bg-slate-50 mb-4">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">SEARCH & FILTERS</p>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        <select id="filter-type" onchange="renderItems()" class="bg-white border border-slate-200 px-2 py-1 text-[11px] font-medium outline-none cursor-pointer"><option value="any">Hotel Category</option></select>
-                        <select id="filter-price" onchange="renderItems()" class="bg-white border border-slate-200 px-2 py-1 text-[11px] font-medium outline-none cursor-pointer"><option value="any">Price Range</option></select>
-                        <select id="filter-distance" onchange="renderItems()" class="bg-white border border-slate-200 px-2 py-1 text-[11px] font-medium outline-none cursor-pointer"><option value="any">Distance</option></select>
-                        <select id="filter-amenity" onchange="renderItems()" class="bg-white border border-slate-200 px-2 py-1 text-[11px] font-medium outline-none cursor-pointer"><option value="any">Amenities</option></select>
-                    </div>
-                </div>
-                <div class="border-2 border-dashed border-slate-200 p-4">
-                    <p id="inventory-count" class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">HOTEL INVENTORY (12 HOTELS FOUND)</p>
-                    <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
-                </div>
-            </div>
-        </div>
-        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto z-20 relative">
-            <div class="bg-white border-2 border-orange-600 p-6 shadow-sm">
-                <div class="flex justify-between items-start mb-6">
-                    <h3 class="text-lg font-bold text-orange-600 uppercase">HOTEL DETAIL PAGE</h3>
-                    <button onclick="closeLevel2()" class="text-slate-400 hover:text-orange-600"><span class="material-symbols-outlined">close</span></button>
-                </div>
-                <div class="space-y-4">
-                    <div class="p-3 bg-orange-50 border border-orange-200">
-                        <p class="text-[10px] font-bold text-orange-600 uppercase mb-1">Entity Header</p>
-                        <h4 id="l2-name" class="text-[14px] font-bold"></h4>
-                        <div class="flex items-center gap-2 mt-1"><span id="l2-rating" class="bg-orange-100 text-orange-600 text-[10px] px-1 font-semibold"></span><span id="l2-distance" class="text-[10px] text-slate-500"></span></div>
-                    </div>
-                    <div class="p-3 bg-slate-50 border border-slate-200">
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Key Differentiators</p>
-                        <div id="l2-amenities" class="text-[11px] space-y-1 text-slate-600"></div>
-                    </div>
-                    <div class="border-2 border-orange-600 p-3 bg-orange-50 mt-4">
-                        <select id="item-duration" class="w-full mb-3 bg-white border border-slate-200 px-2 py-2 text-[11px] outline-none"></select>
-                        <button id="add-list-btn" class="w-full bg-orange-600 text-white font-bold py-2 text-sm uppercase transition-colors hover:bg-orange-700">PLAN LAYOVER</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    <script>
         const items = [
             { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", features: ["Airport Shuttle", "Pool", "Spa"] },
             { id: 2, name: "Hotel Sahara Star", distance: 1.1, category: "Premium", rating: "4.7", features: ["Pool", "Airport Shuttle"] },
@@ -96,20 +163,21 @@
             { id: 11, name: "Lemon Tree Premier", distance: 3.2, category: "Standard", rating: "4.4", features: ["Business rooms", "Airport shuttle"] },
             { id: 12, name: "Holiday Inn", distance: 4.2, category: "Standard", rating: "4.5", features: ["Rooftop pool", "Transit support"] }
         ];
+
         function renderItems() {
             const grid = document.getElementById('hotel-grid');
             grid.innerHTML = '';
             ['Premium', 'Standard'].forEach(cat => {
-                grid.innerHTML += `<div class="col-span-full border-b border-slate-200 pb-1 mt-6 flex justify-between items-end"><h4 class="text-[10px] font-bold text-blue-700 uppercase tracking-widest">${cat} HOTELS</h4></div>`;
+                grid.innerHTML += `<div class="col-span-full border-b border-outline-variant pb-1 mt-6 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">${cat} HOTELS</h4><span class="text-[10px] font-bold text-on-surface-variant">(${items.filter(i=>i.category===cat).length})</span></div>`;
                 items.filter(i => i.category === cat).forEach(h => {
-                    grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-3 border rounded-xl cursor-pointer hover:border-blue-500 hover:shadow-sm bg-white transition-all flex flex-col gap-2">
+                    grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-3 border cursor-pointer hover:border-primary hover:shadow-sm transition-all flex flex-col gap-2 ${h.category === 'Premium' ? 'bg-white border-outline-variant' : 'bg-surface-container border-outline-variant'}">
                         <div class="flex justify-between items-start">
                             <span class="font-bold text-xs">${h.name}</span>
-                            ${h.category === 'Premium' ? '<span class="material-symbols-outlined text-[14px] text-blue-600">workspace_premium</span>' : ''}
+                            ${h.category === 'Premium' ? '<span class="material-symbols-outlined text-[14px] text-primary">workspace_premium</span>' : ''}
                         </div>
-                        <div class="flex items-center justify-between text-[10px] text-slate-500 mt-auto">
+                        <div class="flex items-center justify-between text-[10px] text-on-surface-variant mt-auto">
                             <span>${h.distance} km from T2</span>
-                            <span class="font-bold text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded">${h.rating}★</span>
+                            <span class="font-bold text-secondary bg-secondary-container px-1.5 py-0.5 rounded">${h.rating}★</span>
                         </div>
                     </div>`;
                 });
@@ -120,7 +188,7 @@
             document.getElementById('l2-name').textContent = item.name;
             document.getElementById('l2-rating').textContent = item.rating + ' ★';
             document.getElementById('l2-distance').textContent = item.distance + ' km from T2';
-            document.getElementById('l2-amenities').innerHTML = item.features.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-emerald-600">check_circle</span> ${a}</div>`).join('');
+            document.getElementById('l2-amenities').innerHTML = item.features.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('');
             document.getElementById('add-list-btn').onclick = () => handlePlanLayover(item, 'Hotel');
             document.getElementById('level1').classList.add('opacity-0', 'hidden');
             document.getElementById('level2').classList.remove('hidden', 'opacity-0');
