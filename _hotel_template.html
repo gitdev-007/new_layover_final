@@ -97,10 +97,12 @@
                             
                             <select id="filter-price" onchange="renderHotels()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Price Range</option>
-                                <option value="0-3000">₹0 – ₹3000</option>
-                                <option value="3000-6000">₹3000 – ₹6000</option>
-                                <option value="6000-10000">₹6000 – ₹10000</option>
-                                <option value="10000+">₹10000+</option>
+                                <option value="0-2000">₹0 – ₹2000</option>
+                                <option value="2000-4000">₹2000 – ₹4000</option>
+                                <option value="4000-6000">₹4000 – ₹6000</option>
+                                <option value="6000-8000">₹6000 – ₹8000</option>
+                                <option value="8000-12000">₹8000 – ₹12000</option>
+                                <option value="12000+">₹12000+</option>
                             </select>
 
                             <select id="filter-distance" onchange="renderHotels()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
@@ -108,14 +110,22 @@
                                 <option value="1">Within 1 km</option>
                                 <option value="3">Within 3 km</option>
                                 <option value="5">Within 5 km</option>
+                                <option value="10">Within 10 km</option>
+                                <option value="any">Any Distance</option>
                             </select>
 
                             <select id="filter-amenities" onchange="renderHotels()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Amenities</option>
+                                <option value="Free WiFi">Free WiFi</option>
                                 <option value="Airport Shuttle">Airport Shuttle</option>
-                                <option value="Pool">Pool</option>
+                                <option value="Swimming Pool">Swimming Pool</option>
                                 <option value="Spa">Spa</option>
+                                <option value="Gym">Gym</option>
+                                <option value="Restaurant">Restaurant</option>
+                                <option value="Free Breakfast">Free Breakfast</option>
+                                <option value="Parking">Parking</option>
                                 <option value="Business Center">Business Center</option>
+                                <option value="Family Rooms">Family Rooms</option>
                             </select>
                         </div>
                     </div>

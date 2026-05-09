@@ -86,15 +86,46 @@
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                             <select id="filter-duration" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Duration</option>
-                                <option value="2h">2 Hours</option>
-                                <option value="4h">4 Hours</option>
-                                <option value="6h">6 Hours</option>
-                                <option value="8h">8 Hours</option>
-                                <option value="12+h">12+ Hours</option>
+                                <option value="3 Hours">3 Hours</option>
+                                <option value="4 Hours">4 Hours</option>
+                                <option value="6 Hours">6 Hours</option>
+                                <option value="8 Hours">8 Hours</option>
+                                <option value="10 Hours">10 Hours</option>
+                                <option value="12 Hours">12 Hours</option>
+                                <option value="16 Hours">16 Hours</option>
+                                <option value="20 Hours">20 Hours</option>
+                                <option value="24 Hours">24 Hours</option>
                             </select>
-                            <select id="filter-price" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer"><option value="any">Price Range</option></select>
-                            <select id="filter-distance" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer"><option value="any">Distance</option></select>
-                            <select id="filter-amenity" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer"><option value="any">Amenities</option></select>
+                            <select id="filter-price" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Price Range</option>
+                                <option value="0-2000">₹0 – ₹2000</option>
+                                <option value="2000-4000">₹2000 – ₹4000</option>
+                                <option value="4000-6000">₹4000 – ₹6000</option>
+                                <option value="6000-8000">₹6000 – ₹8000</option>
+                                <option value="8000-12000">₹8000 – ₹12000</option>
+                                <option value="12000+">₹12000+</option>
+                            </select>
+                            <select id="filter-distance" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Distance</option>
+                                <option value="1">Within 1 km</option>
+                                <option value="3">Within 3 km</option>
+                                <option value="5">Within 5 km</option>
+                                <option value="10">Within 10 km</option>
+                                <option value="any">Any Distance</option>
+                            </select>
+                            <select id="filter-amenity" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Amenities</option>
+                                <option value="Free WiFi">Free WiFi</option>
+                                <option value="Airport Shuttle">Airport Shuttle</option>
+                                <option value="Swimming Pool">Swimming Pool</option>
+                                <option value="Spa">Spa</option>
+                                <option value="Gym">Gym</option>
+                                <option value="Restaurant">Restaurant</option>
+                                <option value="Free Breakfast">Free Breakfast</option>
+                                <option value="Parking">Parking</option>
+                                <option value="Business Center">Business Center</option>
+                                <option value="Family Rooms">Family Rooms</option>
+                            </select>
                         </div>
                     </div>
                     <div class="border-2 border-dashed border-outline-variant p-4">
@@ -133,11 +164,15 @@
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
                         <select id="item-duration" class="w-full mb-3 bg-white border border-slate-300 px-3 py-2 text-[11px] text-slate-800 font-medium outline-none cursor-pointer focus:border-secondary transition-all">
                             <option value="">Select Stay Duration</option>
-                            <option value="2 Hours Stay">2 Hours Stay</option>
-                            <option value="4 Hours Stay">4 Hours Stay</option>
-                            <option value="6 Hours Stay">6 Hours Stay</option>
-                            <option value="8 Hours Stay">8 Hours Stay</option>
-                            <option value="Overnight Stay">Overnight Stay</option>
+                            <option value="3 Hours">3 Hours</option>
+                            <option value="4 Hours">4 Hours</option>
+                            <option value="6 Hours">6 Hours</option>
+                            <option value="8 Hours">8 Hours</option>
+                            <option value="10 Hours">10 Hours</option>
+                            <option value="12 Hours">12 Hours</option>
+                            <option value="16 Hours">16 Hours</option>
+                            <option value="20 Hours">20 Hours</option>
+                            <option value="24 Hours">24 Hours</option>
                         </select>
                         <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm uppercase transition-colors hover:bg-orange-700">PLAN LAYOVER</button>
                     </div>

@@ -62,12 +62,24 @@
                         <label class="block text-[9px] font-bold text-secondary uppercase">Select Stay Duration</label>
                         <select class="w-full bg-surface border border-outline-variant p-1.5 rounded text-[11px] focus:outline-none focus:border-primary" onchange="this.nextElementSibling.disabled = !this.value; this.nextElementSibling.dataset.duration = this.value;">
                             <option value="" disabled selected hidden>Select Duration</option>
-                            <option value="30m">30 mins</option>
-                            <option value="1h">1 hour</option>
-                            <option value="2h">2 hours</option>
-                            <option value="3h">3 hours</option>
-                            <option value="4h">4 hours</option>
-                            <option value="6h">6 hours</option>
+                            ${item.category === 'Hotels' ? `
+                                <option value="3 Hours">3 Hours</option>
+                                <option value="4 Hours">4 Hours</option>
+                                <option value="6 Hours">6 Hours</option>
+                                <option value="8 Hours">8 Hours</option>
+                                <option value="10 Hours">10 Hours</option>
+                                <option value="12 Hours">12 Hours</option>
+                                <option value="16 Hours">16 Hours</option>
+                                <option value="20 Hours">20 Hours</option>
+                                <option value="24 Hours">24 Hours</option>
+                            ` : `
+                                <option value="30m">30 mins</option>
+                                <option value="1h">1 hour</option>
+                                <option value="2h">2 hours</option>
+                                <option value="3h">3 hours</option>
+                                <option value="4h">4 hours</option>
+                                <option value="6h">6 hours</option>
+                            `}
                         </select>
                         <button disabled data-duration="" onclick="window.addToList && window.addToList(this, '${item.name}', '${item.category}', this.dataset.duration, ${item.distance}, '${item.image}')" class="w-full bg-primary text-white text-[10px] font-bold px-4 py-2 rounded-md hover:shadow-md active:scale-95 transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">Add to List</button>
                     </div>
