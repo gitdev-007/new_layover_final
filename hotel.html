@@ -170,14 +170,14 @@
             ['Premium', 'Standard'].forEach(cat => {
                 grid.innerHTML += `<div class="col-span-full border-b border-outline-variant pb-1 mt-6 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">${cat} HOTELS</h4><span class="text-[10px] font-bold text-on-surface-variant">(${items.filter(i=>i.category===cat).length})</span></div>`;
                 items.filter(i => i.category === cat).forEach(h => {
-                    grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-3 border cursor-pointer hover:border-primary hover:shadow-sm transition-all flex flex-col gap-2 ${h.category === 'Premium' ? 'bg-white border-outline-variant' : 'bg-surface-container border-outline-variant'}">
+                    grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-3 border border-slate-200 cursor-pointer hover:border-blue-500 hover:shadow-sm transition-all flex flex-col gap-2 bg-white">
                         <div class="flex justify-between items-start">
-                            <span class="font-bold text-xs">${h.name}</span>
-                            ${h.category === 'Premium' ? '<span class="material-symbols-outlined text-[14px] text-primary">workspace_premium</span>' : ''}
+                            <span class="font-bold text-xs text-slate-900">${h.name}</span>
+                            ${h.category === 'Premium' ? '<span class="material-symbols-outlined text-[14px] text-blue-600">workspace_premium</span>' : ''}
                         </div>
-                        <div class="flex items-center justify-between text-[10px] text-on-surface-variant mt-auto">
+                        <div class="flex items-center justify-between text-[10px] text-slate-500 mt-auto">
                             <span>${h.distance} km from T2</span>
-                            <span class="font-bold text-secondary bg-secondary-container px-1.5 py-0.5 rounded">${h.rating}★</span>
+                            <span class="font-bold text-orange-600 bg-orange-50 px-1.5 py-0.5">${h.rating}★</span>
                         </div>
                     </div>`;
                 });
