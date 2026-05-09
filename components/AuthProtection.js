@@ -12,20 +12,42 @@
 </div>
 
 <script>
-    function checkAuth(callback) {
-        const session = localStorage.getItem('sb-yymnczb-auth-token');
-        if (!session) {
-            const modal = document.getElementById('auth-modal');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.querySelector('.scale-95').classList.remove('scale-95');
-        } else {
+    async function checkAuth(callback) {
+        console.log("🔍 Checking authentication session...");
+        let session = null;
+
+        // 1. Check using global Supabase client
+        if (window.supabaseClient) {
+            try {
+                const { data } = await window.supabaseClient.auth.getSession();
+                session = data.session;
+                console.log("📡 Supabase session detected:", !!session);
+            } catch (err) {
+                console.error("❌ Auth session fetch error:", err);
+            }
+        }
+
+        // 2. Final check for session
+        if (session) {
+            console.log("✅ User is authenticated. Proceeding...");
             callback();
+        } else {
+            console.log("⚠️ No active session found. Showing sign-in required modal.");
+            const modal = document.getElementById('auth-modal');
+            if (modal) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                const inner = modal.querySelector('.bg-neutral-900');
+                if (inner) inner.classList.remove('scale-95');
+            }
         }
     }
     
     function closeAuthModal() {
         const modal = document.getElementById('auth-modal');
-        modal.classList.add('opacity-0', 'pointer-events-none');
-        modal.querySelector('.bg-neutral-900').classList.add('scale-95');
+        if (modal) {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            const inner = modal.querySelector('.bg-neutral-900');
+            if (inner) inner.classList.add('scale-95');
+        }
     }
 </script>

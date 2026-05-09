@@ -258,6 +258,28 @@
                     </button>
                 </form>
 
+                <!-- Signup Success State -->
+                <div id="signupSuccess" class="hidden text-center space-y-6 py-4">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="material-symbols-outlined text-primary text-5xl">mark_email_read</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Verify your email</h3>
+                    <p class="text-secondary/80 text-sm leading-relaxed">
+                        Verification email sent successfully. Please check your inbox and verify your email address to activate your LayoverX account.
+                    </p>
+                    <div class="space-y-4 pt-4">
+                        <a href="https://mail.google.com" target="_blank" class="w-full flex items-center justify-center gap-3 bg-white text-surface py-3.5 rounded-xl font-bold hover:bg-white/90 transition-all shadow-lg">
+                            Open Gmail
+                        </a>
+                        <div class="pt-2">
+                            <button id="resendEmailBtn" class="text-primary text-sm font-bold hover:underline transition-all">
+                                Resend verification email
+                            </button>
+                            <p id="resendTimer" class="hidden text-secondary/40 text-[10px] uppercase tracking-widest mt-2"></p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Back to Home -->
                 <div class="mt-8 text-center">
                     <a href="index.html" class="text-secondary/60 hover:text-secondary transition-colors text-sm">
@@ -463,12 +485,65 @@
                 }
 
                 // Signup successful
-                if (result.user && !result.session) {
-                    // Email confirmation required
-                    showSuccess('Account created! Please check your email to confirm your account.');
-                    signupForm.reset();
-                } else if (result.session) {
-                    // Auto-login after signup
+                const user = result.data?.user || result.user;
+                const session = result.data?.session || result.session;
+
+                if (user && !session) {
+                    // Hide messages and forms
+                    hideMessages();
+                    document.getElementById('loginForm').classList.add('hidden');
+                    document.getElementById('signupForm').classList.add('hidden');
+                    document.getElementById('loginTab').parentElement.classList.add('hidden');
+                    document.getElementById('googleSignInBtn').classList.add('hidden');
+                    // Find and hide the divider
+                    const divider = document.querySelector('.flex.items-center.gap-4.mb-6');
+                    if (divider) divider.classList.add('hidden');
+                    
+                    // Show success state
+                    document.getElementById('signupSuccess').classList.remove('hidden');
+
+                    // Setup resend logic
+                    const resendBtn = document.getElementById('resendEmailBtn');
+                    const resendTimer = document.getElementById('resendTimer');
+                    let cooldown = 0;
+
+                    resendBtn.addEventListener('click', async () => {
+                        if (cooldown > 0) return;
+                        
+                        try {
+                            const { error } = await supabaseClient.auth.resend({
+                                type: 'signup',
+                                email: email
+                            });
+                            
+                            if (error) throw error;
+                            
+                            // Success - start cooldown
+                            cooldown = 60;
+                            resendBtn.disabled = true;
+                            resendBtn.classList.add('opacity-50', 'no-underline');
+                            resendTimer.classList.remove('hidden');
+                            
+                            const timerInt = setInterval(() => {
+                                cooldown--;
+                                resendTimer.textContent = `Wait ${cooldown}s to resend again`;
+                                
+                                if (cooldown <= 0) {
+                                    clearInterval(timerInt);
+                                    resendBtn.disabled = false;
+                                    resendBtn.classList.remove('opacity-50', 'no-underline');
+                                    resendTimer.classList.add('hidden');
+                                }
+                            }, 1000);
+
+                            showSuccess('Verification email resent!');
+                        } catch (err) {
+                            showError(err.message || 'Failed to resend email.');
+                        }
+                    });
+
+                } else if (session) {
+                    // Auto-login after signup (if verification is disabled in Supabase)
                     showSuccess('Successfully signed in! Redirecting...');
                     setTimeout(() => {
                         window.location.href = 'index.html';

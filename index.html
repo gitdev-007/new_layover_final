@@ -603,10 +603,11 @@
                 throw new Error('Supabase library not loaded');
             }
 
-            supabaseClient = supabase.createClient(
+            window.supabaseClient = supabase.createClient(
                 'https://piygbsxvvptcivffhnvu.supabase.co',
                 'sb_publishable_FnyuR71dNb05x2TVPPr0_A_mizcZUbP'
             );
+            supabaseClient = window.supabaseClient;
 
             console.log('✅ Supabase client initialized successfully');
         } catch (error) {
@@ -665,20 +666,22 @@
         }
 
         // Plan Layover button click handler with auth check
-        document.getElementById("plan-layover-btn").addEventListener("click", function (e) {
+        document.getElementById("plan-layover-btn").addEventListener("click", async function (e) {
             e.preventDefault();
-            checkAuth(() => {
-                window.location.href = "/plan.html";
+            await checkAuth(() => {
+                const isVerified = localStorage.getItem('qr_verified') === 'true';
+                window.location.href = isVerified ? "transportation.html" : "/plan.html";
             });
         });
 
         // Mobile Plan Layover button - same logic
         const mobileBtn = document.getElementById("plan-layover-btn-mobile");
         if (mobileBtn) {
-            mobileBtn.addEventListener("click", function (e) {
+            mobileBtn.addEventListener("click", async function (e) {
                 e.preventDefault();
-                checkAuth(() => {
-                    window.location.href = "/plan.html";
+                await checkAuth(() => {
+                    const isVerified = localStorage.getItem('qr_verified') === 'true';
+                    window.location.href = isVerified ? "transportation.html" : "/plan.html";
                 });
             });
         }
@@ -705,6 +708,7 @@
 
         // Update UI based on auth state
         function updateAuthUI(user) {
+            window.isUserAuthenticated = !!user;
             if (user) {
                 // User is authenticated - show subtle account dropdown
                 authButtons.innerHTML = `
@@ -975,7 +979,7 @@
             
             validateForm(); // Initial state check
             
-            exploreBtn.addEventListener('click', function(e) {
+            exploreBtn.addEventListener('click', async function(e) {
                 e.preventDefault();
                 
                 const durationVal = durationInput.value;
@@ -991,7 +995,7 @@
                     return;
                 }
                 
-                checkAuth(() => {
+                await checkAuth(() => {
                     // Store values for downstream components
                     localStorage.setItem('layover_duration', durationVal);
                     localStorage.setItem('flight_departure', departureVal);
