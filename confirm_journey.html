@@ -315,13 +315,58 @@
                                 Pay &amp; Confirm Journey
                             </button>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-    document.getElementById('pay-confirm-btn').onclick = function() {
-        this.innerHTML = 'Processing Payment...';
-        this.disabled = true;
-        setTimeout(() => {
-            window.location.href = 'success.html';
-        }, 1500);
+    document.getElementById('pay-confirm-btn').onclick = async function() {
+        const btn = this;
+        btn.innerHTML = 'Processing Payment...';
+        btn.disabled = true;
+
+        try {
+            // 1. Create Order
+            const orderResponse = await fetch('https://layoverbackend.onrender.com/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: 8999 }) // Total from price breakdown
+            });
+            const order = await orderResponse.json();
+
+            // 2. Open Razorpay
+            const options = {
+                key: "rzp_test_YOUR_TEST_KEY", // Replace with your actual key
+                amount: order.amount,
+                currency: "INR",
+                name: "LayoverX",
+                description: "Journey Confirmation",
+                order_id: order.id,
+                handler: async function (response) {
+                    // 3. Verify Payment
+                    const verifyResponse = await fetch('https://layoverbackend.onrender.com/verify-payment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(response)
+                    });
+                    const verifyResult = await verifyResponse.json();
+                    
+                    if (verifyResult.success) {
+                        window.location.href = 'success.html';
+                    } else {
+                        alert("Payment verification failed. Please contact support.");
+                        btn.innerHTML = 'Pay & Confirm Journey';
+                        btn.disabled = false;
+                    }
+                },
+                prefill: { name: "User", email: "user@example.com" },
+                theme: { color: "#2952FF" }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+        } catch (error) {
+            console.error("Payment error:", error);
+            alert("Error initiating payment. Please try again.");
+            btn.innerHTML = 'Pay & Confirm Journey';
+            btn.disabled = false;
+        }
     };
 </script>
 </form>
