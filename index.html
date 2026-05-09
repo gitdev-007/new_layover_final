@@ -125,6 +125,15 @@
             opacity: 1;
             transform: translateY(0);
         }
+        @keyframes planner-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 90, 51, 0.2); }
+            50% { box-shadow: 0 0 30px 10px rgba(255, 90, 51, 0.4); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 90, 51, 0.2); }
+        }
+        .planner-highlight {
+            animation: planner-pulse 2s infinite ease-in-out;
+            border-color: rgba(255, 90, 51, 0.4) !important;
+        }
     </style>
 </head>
 <body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
@@ -818,7 +827,50 @@
         function initializeApp() {
             console.log('🚀 Initializing application...');
 
-            // --- CHECK REDIRECT REASON ---
+            // --- CHECK FOR PLANNER PROMPT (From Experience Pages) ---
+            const showPrompt = localStorage.getItem('show_planner_prompt') === 'true';
+            if (showPrompt) {
+                const planner = document.getElementById('planning-section');
+                if (planner) {
+                    // 1. Create Premium Notification
+                    const promptDiv = document.createElement('div');
+                    promptDiv.id = 'travel-details-prompt';
+                    promptDiv.className = 'fixed top-32 left-1/2 -translate-x-1/2 z-[60] w-[90%] max-w-xl opacity-0 translate-y-[-20px] transition-all duration-700 ease-out';
+                    promptDiv.innerHTML = `
+                        <div class="bg-neutral-900/90 backdrop-blur-xl border border-primary/30 rounded-2xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-primary text-[20px]">info</span>
+                            </div>
+                            <p class="text-sm font-bold text-white/90 leading-tight">
+                                Please fill in your layover duration and flight departure details to continue planning your experience.
+                            </p>
+                            <button onclick="this.parentElement.parentElement.remove()" class="ml-auto text-secondary/40 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">close</span>
+                            </button>
+                        </div>
+                    `;
+                    document.body.appendChild(promptDiv);
+
+                    // 2. Trigger Entrance & Highlight
+                    requestAnimationFrame(() => {
+                        promptDiv.classList.remove('opacity-0', 'translate-y-[-20px]');
+                        planner.classList.add('planner-highlight');
+                    });
+
+                    // 3. Auto-dismiss after 6s
+                    setTimeout(() => {
+                        if (promptDiv) {
+                            promptDiv.classList.add('opacity-0', 'translate-y-[-20px]');
+                            planner.classList.remove('planner-highlight');
+                            setTimeout(() => promptDiv.remove(), 700);
+                        }
+                    }, 6500);
+                }
+                localStorage.removeItem('show_planner_prompt');
+            }
+            // -------------------------------------------------------
+
+            // --- CHECK REDIRECT REASON (Legacy) ---
             const reason = localStorage.getItem('redirect_reason');
             if (reason) {
                 const validationMsg = document.getElementById('form-validation-msg');
