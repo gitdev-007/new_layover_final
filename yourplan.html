@@ -229,6 +229,24 @@
             }
         };
 
+        window.moveUp = function(i) {
+            if (i > 0) {
+                let temp = window.layoverList[i];
+                window.layoverList[i] = window.layoverList[i-1];
+                window.layoverList[i-1] = temp;
+                window.saveAndRender();
+            }
+        };
+
+        window.moveDown = function(i) {
+            if (i < window.layoverList.length - 1) {
+                let temp = window.layoverList[i];
+                window.layoverList[i] = window.layoverList[i+1];
+                window.layoverList[i+1] = temp;
+                window.saveAndRender();
+            }
+        };
+
         window.saveAndRender = function() {
             localStorage.setItem('layoverList', JSON.stringify(window.layoverList));
             window.renderItinerary();
@@ -263,7 +281,11 @@
                 
                 html += `
                     <div class="bg-white border border-outline-variant rounded-xl p-4 flex gap-4 items-center group shadow-sm hover:shadow-md transition-all">
-                        <div class="w-10 h-10 bg-primary/5 rounded-full flex items-center justify-center text-primary font-bold text-sm shrink-0 border border-primary/10">${index + 1}</div>
+                        <div class="flex flex-col items-center gap-0.5 shrink-0">
+                            <button onclick="window.moveUp(${index})" class="text-outline-variant hover:text-primary ${index===0 ? 'opacity-0 cursor-default' : ''}" ${index===0 ? 'disabled' : ''}><span class="material-symbols-outlined text-sm">arrow_upward</span></button>
+                            <div class="w-8 h-8 bg-primary/5 rounded-full flex items-center justify-center text-primary font-bold text-sm border border-primary/10">${index + 1}</div>
+                            <button onclick="window.moveDown(${index})" class="text-outline-variant hover:text-primary ${index===window.layoverList.length-1 ? 'opacity-0 cursor-default' : ''}" ${index===window.layoverList.length-1 ? 'disabled' : ''}><span class="material-symbols-outlined text-sm">arrow_downward</span></button>
+                        </div>
                         <div class="flex-grow min-w-0">
                             <h4 class="font-bold text-sm text-primary uppercase truncate">${item.name}</h4>
                             <p class="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest">${item.category} • ${item.distance || '0.5'} km from T2</p>
