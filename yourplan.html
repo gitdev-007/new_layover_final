@@ -313,6 +313,23 @@
             if (finalizeBtn) {
                 finalizeBtn.onclick = () => {
                     if (window.layoverList.length === 0) return;
+                    
+                    const layoverH = parseInt(localStorage.getItem('layover_duration') || '6', 10);
+                    const bufferMins = 120; // Hardcoded in current updateTimeCalculations
+                    const travelData = window.calculateItineraryTravel(window.layoverList);
+                    const expMins = window.layoverList.reduce((acc, i) => acc + window.parseDurationToMins(i.duration), 0);
+                    const remainingMins = (layoverH * 60) - bufferMins - travelData.totalTravelMins - expMins;
+                    
+                    const state = {
+                        layoverTime: layoverH * 60,
+                        experienceTime: expMins,
+                        travelTime: travelData.totalTravelMins,
+                        bufferTime: bufferMins,
+                        remainingTime: remainingMins,
+                        activities: window.layoverList,
+                        // priorities and selectedDurations are captured in the 'activities' list structure
+                    };
+                    localStorage.setItem('itineraryState', JSON.stringify(state));
                     window.location.href = 'finalize_itinerary.html';
                 };
             }

@@ -384,31 +384,27 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Load Data
-    const storedData = localStorage.getItem('final_itinerary_data');
-    if (!storedData) {
+    const storedState = localStorage.getItem('itineraryState');
+    if (!storedState) {
         alert("No itinerary found. Please plan your layover first.");
         window.location.href = 'yourplan.html';
         return;
     }
-    const state = JSON.parse(storedData);
+    const state = JSON.parse(storedState);
     
     // 2. Load Flight/Departure Context
     const flightDepartureRaw = localStorage.getItem('flight_departure') || '';
     const airportRaw = localStorage.getItem('layover_airport') || 'Mumbai BOM T2';
     
     let depTime = new Date();
-    let depDateStr = '';
     if (flightDepartureRaw) {
         try {
             depTime = new Date(flightDepartureRaw);
-            if (!isNaN(depTime.getTime())) {
-                depDateStr = depTime.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
-            }
         } catch(e) {}
     }
 
     // 3. Calculate Arrival (Approximate arrival as Departure - Layover)
-    let arrivalTime = new Date(depTime.getTime() - (state.layoverDurationMinutes * 60 * 1000));
+    let arrivalTime = new Date(depTime.getTime() - (state.layoverTime * 60 * 1000));
     
     // Update Header
     const airportHeader = document.querySelector('h3.font-headline-md');
@@ -419,10 +415,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let statusLabel = 'On Track (Safe)';
     let statusColor = 'bg-green-500';
-    if (state.remainingMinutes < 15) {
+    if (state.remainingTime < 15) {
         statusLabel = 'Risky';
         statusColor = 'bg-red-500';
-    } else if (state.remainingMinutes <= 45) {
+    } else if (state.remainingTime <= 45) {
         statusLabel = 'Tight Schedule';
         statusColor = 'bg-orange-500';
     }
@@ -431,19 +427,19 @@ document.addEventListener('DOMContentLoaded', () => {
     dashboard.innerHTML = `
         <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Total Layover</p>
-            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.layoverDurationMinutes)}</p>
+            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.layoverTime)}</p>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Experience Time</p>
-            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.totalExperienceMinutes)}</p>
+            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.experienceTime)}</p>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Travel Time</p>
-            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.totalTransitMinutes)}</p>
+            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.travelTime)}</p>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-2">Buffer Time</p>
-            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.airportBufferMinutes)}</p>
+            <p class="font-headline-md text-headline-md text-primary font-bold">${formatMins(state.bufferTime)}</p>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Status</p>
@@ -468,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="flex justify-between items-start">
                 <div>
                     <h3 class="font-headline-md text-headline-md uppercase tracking-tight">AIRPORT (Start)</h3>
-                    <p class="text-on-surface-variant text-sm font-medium">Mumbai Chhatrapati Shivaji Maharaj (BOM) T2</p>
+                    <p class="text-on-surface-variant text-sm font-medium">${airportRaw}</p>
                 </div>
                 <div class="text-right">
                     <p class="font-black text-primary text-lg">${formatClock(arrivalTime)}</p>
@@ -480,25 +476,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentTime = new Date(arrivalTime.getTime());
 
-    state.selectedItems.forEach((item, idx) => {
-        // Transit to stop
-        const legTravel = item.transitOverheadMinutes;
-        const legMode = item.legTravelData ? item.legTravelData.mode : 'drive';
-        const legLabel = item.legTravelData ? item.legTravelData.label : `${legTravel} mins drive to ${item.title}`;
-        const legIcon = legMode === 'walk' ? 'directions_walk' : legMode === 'by transit' ? 'directions_subway' : legMode.includes('shuttle') ? 'airport_shuttle' : 'directions_car';
+    state.activities.forEach((item, idx) => {
+        const itemDuration = (item.duration || '0m').replace('stay', '').trim();
+        const itemDurationMins = (item.duration) ? (item.duration.includes('h') ? parseInt(item.duration)*60 : parseInt(item.duration)) : 0;
         
+        // Use static/estimated travel if specific leg data isn't in activity structure
+        const legTravel = 15; 
         currentTime = new Date(currentTime.getTime() + (legTravel * 60 * 1000));
         
         html += `
-            <!-- Transit ${idx + 1} -->
             <div class="relative pl-12 py-2">
                 <div class="route-line"></div>
                 <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3 shadow-sm">
-                    <span class="material-symbols-outlined text-brand-purple" data-icon="${legIcon}">${legIcon}</span>
-                    <span class="text-primary font-bold text-[11px] uppercase tracking-wide">${legLabel}</span>
+                    <span class="material-symbols-outlined text-primary" data-icon="directions_car">directions_car</span>
+                    <span class="text-primary font-bold text-[11px] uppercase tracking-wide">Transit to ${item.name}</span>
                 </div>
             </div>
-            <!-- EXPERIENCE -->
             <div class="relative pl-12">
                 <div class="route-line"></div>
                 <div class="route-node absolute left-0 top-0 route-node-active shadow-sm border-2 border-white"></div>
@@ -507,45 +500,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="bg-secondary-container text-on-secondary-container text-[9px] uppercase font-black px-3 py-1 rounded-full mb-3 inline-block tracking-widest shadow-sm">${item.category}</span>
-                                <h3 class="font-headline-md text-xl font-black tracking-tight text-primary uppercase">${item.title}</h3>
+                                <h3 class="font-headline-md text-xl font-black tracking-tight text-primary uppercase">${item.name}</h3>
                             </div>
                             <div class="text-right">
                                 <p class="font-black text-primary text-lg">${formatClock(currentTime)}</p>
-                                <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-60">Arrive & Check-in</p>
+                                <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-60">Arrival</p>
                             </div>
                         </div>
                         <div class="flex gap-4">
-                             <span class="text-secondary font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> ${formatMins(item.selectedDurationMinutes)} stay</span>
+                             <span class="text-secondary font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> ${item.duration} stay</span>
                         </div>
                     </div>
                     <div class="h-32 rounded-xl overflow-hidden shadow-inner bg-slate-100">
-                        ${item.originalItem.image ? `<img class="w-full h-full object-cover" src="${item.originalItem.image}"/>` : `<div class="w-full h-full flex items-center justify-center text-outline-variant"><span class="material-symbols-outlined text-4xl">image</span></div>`}
+                         <div class="w-full h-full flex items-center justify-center text-outline-variant"><span class="material-symbols-outlined text-4xl">image</span></div>
                     </div>
                 </div>
             </div>
         `;
-        
-        // Depart from stop
-        currentTime = new Date(currentTime.getTime() + (item.selectedDurationMinutes * 60 * 1000));
+        currentTime = new Date(currentTime.getTime() + (itemDurationMins * 60 * 1000));
     });
 
-    // Final Transit back to airport
-    const lastItem = state.selectedItems[state.selectedItems.length - 1];
-    const returnTravel = state.totalTransitMinutes - state.selectedItems.reduce((acc, curr) => acc + curr.transitOverheadMinutes, 0);
-    // Since we don't have the final leg object natively here without recalculating, we infer from total
-    const returnLegIcon = 'airport_shuttle';
-    
-    currentTime = new Date(currentTime.getTime() + (returnTravel * 60 * 1000));
-    
     html += `
-        <!-- Final Transit -->
-        <div class="relative pl-12 py-2">
-            <div class="route-line"></div>
-            <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/20 inline-flex items-center gap-3 shadow-sm">
-                <span class="material-symbols-outlined text-brand-purple" data-icon="${returnLegIcon}">${returnLegIcon}</span>
-                <span class="text-primary font-bold text-[11px] uppercase tracking-wide">${returnTravel} mins drive to Airport</span>
-            </div>
-        </div>
         <!-- AIRPORT END -->
         <div class="relative pl-12">
             <div class="route-node absolute left-0 top-0 bg-primary border-primary shadow-sm border-2 border-white">
@@ -554,35 +529,17 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="flex justify-between items-start">
                 <div>
                     <h3 class="font-headline-md text-headline-md uppercase tracking-tight">AIRPORT (End)</h3>
-                    <p class="text-on-surface-variant text-sm font-medium">Mumbai Chhatrapati Shivaji Maharaj (BOM) T2</p>
+                    <p class="text-on-surface-variant text-sm font-medium">${airportRaw}</p>
                 </div>
                 <div class="text-right">
                     <p class="font-black text-primary text-lg">${formatClock(currentTime)}</p>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-60">Security Check & Boarding</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-60">Boarding</p>
                 </div>
             </div>
         </div>
     `;
 
     timelineContainer.innerHTML = html;
-    
-    // 6. Handle confirm button
-    const confirmBtn = document.getElementById('confirm-btn');
-    if (confirmBtn) {
-        confirmBtn.onclick = () => {
-            alert("Itinerary Confirmed! Your transit journey is secured.");
-            
-            // --- CLEAR SESSION ON COMPLETION ---
-            localStorage.removeItem('qr_verified');
-            localStorage.removeItem('tripPlanActivated');
-            // We keep layoverList and other data for the summary result page if needed,
-            // but we reset the verification status so next trip starts fresh if desired.
-            // ------------------------------------
-            
-            // Redirect to a success page or dashboard
-            // window.location.href = 'itinerary-summary.html';
-        };
-    }
 });
 </script>
 </body></html>
