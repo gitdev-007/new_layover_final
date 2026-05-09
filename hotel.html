@@ -146,19 +146,10 @@
         </div>
     </main>
 
+    <script src="lib/plannerRedirect.js"></script>
     <script>
         function handlePlanLayover(item, category) {
-            const isVerified = localStorage.getItem('qr_verified') === 'true';
-            const duration = localStorage.getItem('layover_duration');
-            const departure = localStorage.getItem('flight_departure');
-            if (!isVerified || !duration || !departure) {
-                const durSelect = document.getElementById('item-duration');
-                localStorage.setItem('pending_experience', JSON.stringify({ name: item.name, category: category, duration: durSelect ? durSelect.value : '2 Hours', distance: item.distance }));
-                localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
-                window.location.href = 'index.html#how-it-works';
-                return;
-            }
-            window.location.href = 'transportation.html';
+            redirectToPlanner(category);
         }
 
         const items = [
