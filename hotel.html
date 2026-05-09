@@ -45,11 +45,13 @@
         .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
         /* Typography System */
-        .text-node-title-md { font-size: 16px; letter-spacing: -0.01em; font-weight: 700; }
         .text-meta-label { font-size: 10px; letter-spacing: 0.1em; font-weight: 700; text-transform: uppercase; }
+        .text-node-title-md { font-size: 16px; letter-spacing: -0.01em; font-weight: 700; }
+        .text-node-title-lg { font-size: 20px; letter-spacing: -0.02em; font-weight: 800; }
+        .text-node-description { font-size: 12px; line-height: 1.5; }
     </style>
 </head>
-<body class="text-on-surface font-sans antialiased">
+<body class="text-on-surface font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
     <!-- Navbar -->
     <header class="w-full bg-white border-b border-outline-variant sticky top-0 z-50">
         <div class="max-w-[1400px] mx-auto px-6 h-16 flex justify-between items-center text-sm font-semibold text-on-surface-variant">
@@ -69,34 +71,27 @@
     </header>
 
     <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col items-center gap-6 relative pb-20 mt-4">
-        
         <!-- LEVEL 1: LISTING -->
-        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
+        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto z-10 relative">
             <div class="flex items-center justify-between mb-4">
-                <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
+                <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase tracking-widest">Level 1: Listing</span>
             </div>
-
-            <!-- Main Card Container -->
             <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
                 <div class="flex justify-between items-start mb-6">
                     <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">HOTELS LISTING PAGE</h3>
                 </div>
-
                 <div class="space-y-4">
-                    <!-- Search & Filters -->
                     <div class="border border-outline-variant p-3 bg-surface-container">
-                        <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
+                        <p class="text-meta-label text-on-surface-variant mb-2 tracking-widest">SEARCH & FILTERS</p>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                            <select id="filter-type" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Hotel Type</option></select>
+                            <select id="filter-type" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Hotel Category</option></select>
                             <select id="filter-price" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Price Range</option></select>
                             <select id="filter-distance" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Distance</option></select>
                             <select id="filter-amenity" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Amenities</option></select>
                         </div>
                     </div>
-
-                    <!-- Grid Preview -->
                     <div class="border-2 border-dashed border-outline-variant p-4">
-                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">HOTEL INVENTORY (12 HOTELS FOUND)</p>
+                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3 uppercase tracking-widest">HOTEL INVENTORY (12 HOTELS FOUND)</p>
                         <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
                     </div>
                 </div>
