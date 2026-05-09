@@ -895,18 +895,20 @@ Explore Experiences <span class="material-symbols-outlined text-[18px]">arrow_fo
                     return;
                 }
                 
-                // Store values for downstream components
-                localStorage.setItem('layover_duration', durationVal);
-                localStorage.setItem('flight_departure', departureVal);
-                
-                exploreBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">refresh</span> Routing...';
-                exploreBtn.style.pointerEvents = 'none';
-                exploreBtn.classList.add('opacity-90');
-                
-                console.log('✅ Form validated - redirecting to QR Upload...');
-                setTimeout(() => {
-                    window.location.href = 'QR_Upload_State.html';
-                }, 400);
+                checkAuth(() => {
+                    // Store values for downstream components
+                    localStorage.setItem('layover_duration', durationVal);
+                    localStorage.setItem('flight_departure', departureVal);
+                    
+                    exploreBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">refresh</span> Routing...';
+                    exploreBtn.style.pointerEvents = 'none';
+                    exploreBtn.classList.add('opacity-90');
+                    
+                    console.log('✅ Form validated - redirecting to QR Upload...');
+                    setTimeout(() => {
+                        window.location.href = 'QR_Upload_State.html';
+                    }, 400);
+                });
             });
             
             console.log('✅ Explore validation handler attached');
