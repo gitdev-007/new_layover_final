@@ -4,34 +4,8 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>LayoverX | Restaurant Discovery</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
-        function handlePlanLayover(item, category) {
-            const isVerified = localStorage.getItem('qr_verified') === 'true';
-            const duration = localStorage.getItem('layover_duration');
-            const departure = localStorage.getItem('flight_departure');
-            
-            // Check if fully set up
-            if (!isVerified || !duration || !departure) {
-                // Save pending item
-                const durSelect = document.getElementById('item-duration');
-                localStorage.setItem('pending_experience', JSON.stringify({
-                    name: item.name,
-                    category: category,
-                    duration: durSelect ? durSelect.value : '1h',
-                    distance: item.distance
-                }));
-                
-                // Redirect to homepage with alert message
-                localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            // If already verified, go to transportation/marketplace directly
-            window.location.href = 'transportation.html';
-        }
-    
-</script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="lib/plannerRedirect.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
@@ -64,36 +38,9 @@
                 }
             }
         }
-    
-        function handlePlanLayover(item, category) {
-            const isVerified = localStorage.getItem('qr_verified') === 'true';
-            const duration = localStorage.getItem('layover_duration');
-            const departure = localStorage.getItem('flight_departure');
-            
-            // Check if fully set up
-            if (!isVerified || !duration || !departure) {
-                // Save pending item
-                const durSelect = document.getElementById('item-duration');
-                localStorage.setItem('pending_experience', JSON.stringify({
-                    name: item.name,
-                    category: category,
-                    duration: durSelect ? durSelect.value : '1h',
-                    distance: item.distance
-                }));
-                
-                // Redirect to homepage with alert message
-                localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            // If already verified, go to transportation/marketplace directly
-            window.location.href = 'transportation.html';
-        }
-    
-</script>
+    </script>
     <style>
-        body { background-color: #f7f7fb; }
+        body { background-color: #f7f7fb; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -124,23 +71,22 @@
         <!-- LEVEL 1: LISTING -->
         <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
             <div class="flex items-center justify-between mb-4">
-                <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span>
-                
+                <span class="bg-primary text-white text-meta-label px-3 py-1 uppercase tracking-widest">Level 1: Listing</span>
             </div>
 
             <!-- Main Card Container -->
             <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
                 <div class="flex justify-between items-start mb-6">
-                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">Restaurants Listing Page</h3>
+                    <h3 id="level1-heading" class="text-node-title-md text-primary uppercase cursor-pointer hover:underline" onclick="closeLevel2()">RESTAURANTS LISTING PAGE</h3>
                 </div>
 
                 <div class="space-y-4">
                     <!-- Search & Filters -->
                     <div class="border border-outline-variant p-3 bg-surface-container">
-                        <p class="text-meta-label text-on-surface-variant mb-2">SEARCH &amp; FILTERS</p>
+                        <p class="text-meta-label text-on-surface-variant mb-2 tracking-widest">SEARCH & FILTERS</p>
                         
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                            <select id="filter-cuisine" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                            <select id="filter-cuisine" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1.5 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Cuisine Type</option>
                                 <option value="Indian">Indian</option>
                                 <option value="Continental">Continental</option>
@@ -149,14 +95,14 @@
                                 <option value="Cafe">Cafe</option>
                             </select>
                             
-                            <select id="filter-price" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                            <select id="filter-price" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1.5 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Price Range</option>
                                 <option value="0-1000">0 - 1000</option>
                                 <option value="1000-3000">1000 - 3000</option>
                                 <option value="3000+">3000+</option>
                             </select>
 
-                            <select id="filter-distance" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                            <select id="filter-distance" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1.5 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Distance</option>
                                 <option value="1">Within 1 km</option>
                                 <option value="3">Within 3 km</option>
@@ -164,7 +110,7 @@
                                 <option value="10">Within 10 km</option>
                             </select>
 
-                            <select id="filter-style" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
+                            <select id="filter-style" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1.5 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer">
                                 <option value="any">Dining Style</option>
                                 <option value="Fine Dining">Fine Dining</option>
                                 <option value="Casual Dining">Casual Dining</option>
@@ -177,11 +123,9 @@
 
                     <!-- Grid Preview -->
                     <div class="border-2 border-dashed border-outline-variant p-4">
-                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">FOOD & DINING INVENTORY (12 RESTAURANTS FOUND)</p>
+                        <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3 uppercase tracking-widest">FOOD & DINING INVENTORY (12 RESTAURANTS FOUND)</p>
                         
-                        <!-- Dynamic Hotels -->
-                        <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        </div>
+                        <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
                     </div>
                 </div>
             </div>
@@ -190,29 +134,25 @@
         <!-- LEVEL 2: DETAIL -->
         <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative">
             <div class="flex items-center justify-between mb-4">
-                <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase">Level 2: Details</span>
-                
+                <span class="bg-secondary text-white text-meta-label px-3 py-1 uppercase tracking-widest">Level 2: Details</span>
             </div>
 
-            <!-- Main Card Container -->
             <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
                 <div class="flex justify-between items-start mb-6 shrink-0">
-                    <h3 class="text-node-title-md text-secondary uppercase">Restaurant Detail Page</h3>
+                    <h3 class="text-node-title-md text-secondary uppercase">RESTAURANT DETAIL PAGE</h3>
                     <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
                 </div>
                 
                 <div class="space-y-4 overflow-y-auto hide-scrollbar flex-grow pb-4">
-                    <!-- Detail Header -->
                     <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
-                        <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
-                        <h4 id="l2-name" class="text-[14px] font-bold">Hotel Name</h4>
+                        <p class="text-meta-label text-secondary mb-1 uppercase tracking-widest">ENTITY HEADER</p>
+                        <h4 id="l2-name" class="text-[14px] font-bold">Restaurant Name</h4>
                         <div class="flex items-center gap-2 mt-1">
                             <span id="l2-rating" class="bg-secondary-container text-secondary text-[10px] px-1 font-semibold">4.8 ★</span>
                             <span id="l2-distance" class="text-[10px] text-on-surface-variant">0.9 km from T2</span>
                         </div>
                     </div>
 
-                    <!-- Gallery & Dining Options -->
                     <div class="grid grid-cols-2 gap-3">
                         <div class="wireframe-box p-2 text-center bg-surface-container">
                             <span class="material-symbols-outlined text-secondary text-[18px]">grid_view</span>
@@ -224,32 +164,26 @@
                         </div>
                     </div>
 
-                    <!-- Feature List -->
                     <div class="wireframe-box p-3 bg-surface-container">
-                        <p class="text-meta-label text-on-surface-variant mb-2">KEY DIFFERENTIATORS</p>
-                        <div id="l2-amenities" class="text-[11px] space-y-1">
-                            <!-- Amenities list -->
-                        </div>
+                        <p class="text-meta-label text-on-surface-variant mb-2 uppercase tracking-widest">KEY DIFFERENTIATORS</p>
+                        <div id="l2-amenities" class="text-[11px] space-y-1"></div>
                     </div>
 
-                    <!-- Plan Layover Block -->
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
-                        
-                      <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer">
+                        <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] text-on-surface font-medium outline-none cursor-pointer focus:border-secondary transition-all">
                         </select>
-                      <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors">
+                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm uppercase transition-colors hover:bg-orange-700">
                             PLAN LAYOVER
                         </button>
                     </div>
 
-                    <!-- Reviews & Contact -->
                     <div class="grid grid-cols-2 gap-3 text-meta-label mt-4">
                         <div class="wireframe-box p-2">
-                            <p class="text-on-surface-variant mb-1">REVIEWS</p>
+                            <p class="text-on-surface-variant mb-1 uppercase tracking-widest">REVIEWS</p>
                             <p class="font-semibold text-secondary">482 Verified</p>
                         </div>
                         <div class="wireframe-box p-2">
-                            <p class="text-on-surface-variant mb-1">CONTACT</p>
+                            <p class="text-on-surface-variant mb-1 uppercase tracking-widest">CONTACT</p>
                             <p class="font-semibold text-secondary">Quick Inquiry</p>
                         </div>
                     </div>
@@ -259,35 +193,24 @@
     </main>
 
     <script>
-        
-        
         const restaurantDurations = [
             { valStr: '30 Min', label: '30 Min' },
+            { valStr: '45 Min', label: '45 Min' },
             { valStr: '1 Hour', label: '1 Hour' },
-            { valStr: '90 Min', label: '90 Min' }
+            { valStr: '1.5 Hour', label: '1.5 Hour' },
+            { valStr: '2 Hour', label: '2 Hour' }
         ];
 
         function populateRestaurantDurations() {
-            const filterDropdown = document.getElementById('filter-duration');
-            if (filterDropdown && filterDropdown.options.length <= 1) {
-                // Check if the dropdown exists (some versions might not have it)
-                if (filterDropdown) {
-                    restaurantDurations.forEach(d => {
-                        filterDropdown.add(new Option(d.label, d.valStr));
-                    });
-                }
-            }
-
             const itemDropdown = document.getElementById('item-duration');
-            if (itemDropdown && itemDropdown.options.length === 0) {
+            if (itemDropdown) {
+                itemDropdown.innerHTML = '';
                 restaurantDurations.forEach(d => {
                     itemDropdown.add(new Option(d.label, d.valStr));
                 });
-                itemDropdown.value = '1 Hour'; // Set default to 1 Hour
+                itemDropdown.value = '1 Hour';
             }
         }
-        
-        document.addEventListener('DOMContentLoaded', populateRestaurantDurations);
 
         const items = [
             { id: 1, name: "Masala Kraft", distance: 4.2, category: "Premium", rating: "4.8", price: 3500, type: "Indian", style: "Fine Dining", features: ["Fine Dining", "Authentic Spices", "Indoor Seating"] },
@@ -308,37 +231,26 @@
 
         function renderItems() {
             const grid = document.getElementById('hotel-grid');
-            
             const cuisineVal = document.getElementById('filter-cuisine').value;
             const priceVal = document.getElementById('filter-price').value;
             const distVal = document.getElementById('filter-distance').value;
             const styleVal = document.getElementById('filter-style').value;
 
             const filtered = items.filter(h => {
-                let match = true;
-                if (cuisineVal !== 'any' && match) {
-                    if (h.type !== cuisineVal) match = false;
-                }
-                if (distVal !== 'any' && match) {
-                    const maxD = parseFloat(distVal);
-                    if (h.distance > maxD) match = false;
-                }
-                if (priceVal !== 'any' && match) {
-                    if (priceVal === '3000+') {
-                        if (h.price < 3000) match = false;
-                    } else {
+                if (cuisineVal !== 'any' && h.type !== cuisineVal) return false;
+                if (distVal !== 'any' && h.distance > parseFloat(distVal)) return false;
+                if (priceVal !== 'any') {
+                    if (priceVal === '3000+') { if (h.price < 3000) return false; }
+                    else {
                         const [min, max] = priceVal.split('-').map(Number);
-                        if (h.price < min || h.price > max) match = false;
+                        if (h.price < min || h.price > max) return false;
                     }
                 }
-                if (styleVal !== 'any' && match) {
-                    if (h.style !== styleVal) match = false;
-                }
-                return match;
+                if (styleVal !== 'any' && h.style !== styleVal) return false;
+                return true;
             });
 
             document.getElementById('inventory-count').textContent = `FOOD & DINING INVENTORY (${filtered.length} RESTAURANTS FOUND)`;
-
             grid.innerHTML = '';
             
             const premiumItems = filtered.filter(h => h.category === "Premium");
@@ -347,10 +259,7 @@
             const renderCard = (h) => {
                 const isActive = h.id === activeItemId;
                 const isPremium = h.category === "Premium";
-                const bgClass = isActive 
-                    ? 'bg-primary/10 border-primary' 
-                    : (isPremium ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50');
-                
+                const bgClass = isActive ? 'bg-primary/10 border-primary' : (isPremium ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50');
                 return `
                     <div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer transition-colors text-[11px] font-medium text-on-surface flex flex-col justify-between h-16 ${bgClass}">
                         <div class="flex justify-between items-start">
@@ -366,34 +275,18 @@
             };
 
             if (premiumItems.length > 0) {
-                grid.innerHTML += `
-                    <div class="col-span-full mt-2 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
-                        <h4 class="text-meta-label text-primary uppercase">PREMIUM RESTAURANTS</h4>
-                        <span class="text-[10px] font-bold text-on-surface-variant">(${premiumItems.length})</span>
-                    </div>
-                `;
-                premiumItems.forEach(h => {
-                    grid.innerHTML += renderCard(h);
-                });
+                grid.innerHTML += `<div class="col-span-full border-b border-outline-variant/50 pb-1 mt-6 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase tracking-widest font-bold">PREMIUM RESTAURANTS</h4><span class="text-[10px] font-bold text-on-surface-variant">(${premiumItems.length})</span></div>`;
+                premiumItems.forEach(h => grid.innerHTML += renderCard(h));
             }
-
             if (standardItems.length > 0) {
-                grid.innerHTML += `
-                    <div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
-                        <h4 class="text-meta-label text-primary uppercase">STANDARD RESTAURANTS</h4>
-                        <span class="text-[10px] font-bold text-on-surface-variant">(${standardItems.length})</span>
-                    </div>
-                `;
-                standardItems.forEach(h => {
-                    grid.innerHTML += renderCard(h);
-                });
+                grid.innerHTML += `<div class="col-span-full border-b border-outline-variant/50 pb-1 mt-6 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase tracking-widest font-bold">STANDARD RESTAURANTS</h4><span class="text-[10px] font-bold text-on-surface-variant">(${standardItems.length})</span></div>`;
+                standardItems.forEach(h => grid.innerHTML += renderCard(h));
             }
         }
 
         function openLevel2(id) {
             activeItemId = id;
             renderItems(); 
-            
             const item = items.find(h => h.id === id);
             if(!item) return;
 
@@ -401,117 +294,45 @@
             document.getElementById('l2-rating').textContent = `${item.rating} ★`;
             document.getElementById('l2-distance').textContent = `${item.distance} km from T2`;
             
-            const amCont = document.getElementById('l2-amenities');
-            amCont.innerHTML = item.features.length 
-                ? item.features.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> ${a}</div>`).join('') 
-                : '<div class="text-[11px] text-on-surface-variant italic">Standard options included</div>';
+            document.getElementById('l2-amenities').innerHTML = item.features.map(a => `<div class="flex items-center gap-2 text-slate-600"><span class="material-symbols-outlined text-[14px] text-emerald-600">check_circle</span> ${a}</div>`).join('');
 
-            const l1 = document.getElementById('level1');
             const l2 = document.getElementById('level2');
-            
             const btn = document.getElementById('add-list-btn');
+            
             if (btn) {
-                // Reset styling
-                if (btn.dataset.originalClasses) {
-                    btn.className = btn.dataset.originalClasses;
-                    btn.innerHTML = btn.dataset.originalHtml;
-                    btn.disabled = false;
-                }
-                btn.dataset.itemName = item.name;
-                
-                const isMarketplace = !!document.getElementById('marketplace-content') || window.location.pathname.includes('marketplace');
-                if (isMarketplace) {
-                    // Check if already in list
-                    const existingListStr = localStorage.getItem('layoverList') || '[]';
-                    let alreadyAdded = false;
-                    try {
-                        const existingList = JSON.parse(existingListStr);
-                        alreadyAdded = existingList.some(i => i.name === item.name);
-                    } catch(e) {}
-                    
-                    if (alreadyAdded) {
-                        btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> ADDED';
-                        btn.className = 'w-full py-2 text-sm tracking-widest uppercase transition-colors bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default';
-                        btn.disabled = true;
-                        if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = true;
-                    } else {
-                        btn.innerHTML = 'ADD TO LIST';
-                        btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
-                        btn.disabled = false;
-                        if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
-                        btn.onclick = function() {
-                            const durSelect = document.getElementById('item-duration');
-                            const duration = durSelect ? durSelect.value : '1h';
-                            if (window.addToList) {
-                                window.addToList(btn, item.name, 'Restaurant', duration, item.distance, '');
-                            } else if (window.parent && window.parent.addToList) {
-                                window.parent.addToList(btn, item.name, 'Restaurant', duration, item.distance, '');
-                            }
-                        };
-                    }
-                } else {
-                    btn.innerHTML = 'PLAN LAYOVER';
-                    btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
-                    btn.disabled = false;
-                    if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
-                    btn.onclick = function() {
-                        handlePlanLayover(restaurant, 'Restaurant');
-                    };
-                }
+                btn.onclick = function() {
+                    handlePlanLayover(item, 'Restaurant');
+                };
             }
+
             l2.classList.remove('hidden');
-    
             requestAnimationFrame(() => { 
                 l2.classList.remove('opacity-0'); 
-                setTimeout(() => {
-                    l2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
+                setTimeout(() => { l2.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
             });
         }
 
         function closeLevel2() {
             activeItemId = null;
             renderItems();
-            
-            const l1 = document.getElementById('level1');
             const l2 = document.getElementById('level2');
-            
             l2.classList.add('opacity-0');
-            setTimeout(() => {
-                l2.classList.add('hidden');
-            }, 300);
+            setTimeout(() => { l2.classList.add('hidden'); }, 300);
+        }
+
+        function handlePlanLayover(item, category) {
+            const durSelect = document.getElementById('item-duration');
+            localStorage.setItem('pending_experience', JSON.stringify({
+                name: item.name,
+                category: category,
+                duration: durSelect ? durSelect.value : '1 Hour',
+                distance: item.distance
+            }));
+            redirectToExplorePlanner(category);
         }
 
         populateRestaurantDurations();
         document.addEventListener('DOMContentLoaded', renderItems);
-        renderItems();
-    
-        function handlePlanLayover(item, category) {
-            const isVerified = localStorage.getItem('qr_verified') === 'true';
-            const duration = localStorage.getItem('layover_duration');
-            const departure = localStorage.getItem('flight_departure');
-            
-            // Check if fully set up
-            if (!isVerified || !duration || !departure) {
-                // Save pending item
-                const durSelect = document.getElementById('item-duration');
-                localStorage.setItem('pending_experience', JSON.stringify({
-                    name: item.name,
-                    category: category,
-                    duration: durSelect ? durSelect.value : '1h',
-                    distance: item.distance
-                }));
-                
-                // Redirect to homepage with alert message
-                localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            // If already verified, go to transportation/marketplace directly
-            window.location.href = 'transportation.html';
-        }
-    
-</script>
+    </script>
 </body>
 </html>

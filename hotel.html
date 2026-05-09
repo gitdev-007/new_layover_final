@@ -184,47 +184,97 @@
     <script src="lib/plannerRedirect.js"></script>
     <script>
         function handlePlanLayover(item, category) {
+            const durSelect = document.getElementById('item-duration');
+            localStorage.setItem('pending_experience', JSON.stringify({
+                name: item.name,
+                category: category,
+                duration: durSelect ? durSelect.value : '3 Hours',
+                distance: item.distance
+            }));
             redirectToExplorePlanner(category);
         }
 
         const items = [
-            { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", features: ["Airport Shuttle", "Pool", "Spa"] },
-            { id: 2, name: "Hotel Sahara Star", distance: 1.1, category: "Premium", rating: "4.7", features: ["Pool", "Airport Shuttle"] },
-            { id: 3, name: "Taj Santacruz", distance: 1.6, category: "Premium", rating: "4.9", features: ["Premium suites", "Spa"] },
-            { id: 4, name: "JW Marriott Sahar", distance: 1.8, category: "Premium", rating: "4.8", features: ["Resort Pool", "Business Center"] },
-            { id: 5, name: "ITC Maratha", distance: 2.4, category: "Premium", rating: "4.8", features: ["Heritage Luxury", "Signature Dining"] },
-            { id: 6, name: "The Leela Mumbai", distance: 2.5, category: "Premium", rating: "4.7", features: ["Garden view", "Airport Shuttle"] },
-            { id: 7, name: "Aurika Mumbai", distance: 2.8, category: "Premium", rating: "4.6", features: ["Modern rooms", "Fast check-in"] },
-            { id: 8, name: "Grand Hyatt", distance: 6.1, category: "Premium", rating: "4.7", features: ["Large rooms", "Restaurants"] },
-            { id: 9, name: "Hotel Bawa Intl.", distance: 1.7, category: "Standard", rating: "4.2", features: ["Quick access", "Budget rooms"] },
-            { id: 10, name: "Hotel Midland", distance: 2.3, category: "Standard", rating: "4.0", features: ["Transit rooms", "Cafe"] },
-            { id: 11, name: "Lemon Tree Premier", distance: 3.2, category: "Standard", rating: "4.4", features: ["Business rooms", "Airport shuttle"] },
-            { id: 12, name: "Holiday Inn", distance: 4.2, category: "Standard", rating: "4.5", features: ["Rooftop pool", "Transit support"] }
+            { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", price: 4500, durations: ["3 Hours", "4 Hours", "6 Hours", "8 Hours"], features: ["Airport Shuttle", "Swimming Pool", "Spa", "Free WiFi"] },
+            { id: 2, name: "Hotel Sahara Star", distance: 1.1, category: "Premium", rating: "4.7", price: 5200, durations: ["4 Hours", "6 Hours", "8 Hours", "10 Hours"], features: ["Swimming Pool", "Airport Shuttle", "Restaurant", "Gym"] },
+            { id: 3, name: "Taj Santacruz", distance: 1.6, category: "Premium", rating: "4.9", price: 8200, durations: ["6 Hours", "8 Hours", "10 Hours", "12 Hours", "Overnight Stay"], features: ["Airport Shuttle", "Spa", "Business Center", "Fine Dining", "Free WiFi"] },
+            { id: 4, name: "JW Marriott Sahar", distance: 1.8, category: "Premium", rating: "4.8", price: 7800, durations: ["6 Hours", "8 Hours", "10 Hours", "12 Hours", "16 Hours"], features: ["Swimming Pool", "Spa", "Gym", "Restaurant", "Parking"] },
+            { id: 5, name: "ITC Maratha", distance: 2.4, category: "Premium", rating: "4.8", price: 7600, durations: ["8 Hours", "10 Hours", "12 Hours", "16 Hours", "20 Hours"], features: ["Spa", "Restaurant", "Free Breakfast", "Business Center", "Free WiFi"] },
+            { id: 6, name: "The Leela Mumbai", distance: 2.5, category: "Premium", rating: "4.7", price: 7200, durations: ["6 Hours", "8 Hours", "12 Hours", "24 Hours"], features: ["Swimming Pool", "Airport Shuttle", "Business Center", "Restaurant", "Gym"] },
+            { id: 7, name: "Aurika Mumbai", distance: 2.8, category: "Premium", rating: "4.6", price: 6200, durations: ["4 Hours", "6 Hours", "8 Hours", "12 Hours"], features: ["Swimming Pool", "Gym", "Free WiFi", "Parking", "Free Breakfast"] },
+            { id: 8, name: "Grand Hyatt", distance: 6.1, category: "Premium", rating: "4.7", price: 7000, durations: ["8 Hours", "12 Hours", "16 Hours", "24 Hours"], features: ["Swimming Pool", "Spa", "Business Center", "Family Rooms", "Gym"] },
+            { id: 9, name: "Hotel Bawa Intl.", distance: 1.7, category: "Standard", rating: "4.2", price: 3300, durations: ["3 Hours", "4 Hours", "6 Hours", "8 Hours"], features: ["Free WiFi", "Restaurant", "Parking", "Family Rooms"] },
+            { id: 10, name: "Hotel Midland", distance: 2.3, category: "Standard", rating: "4.0", price: 1900, durations: ["3 Hours", "4 Hours", "6 Hours"], features: ["Restaurant", "Free WiFi", "Family Rooms", "Parking"] },
+            { id: 11, name: "Lemon Tree Premier", distance: 3.2, category: "Standard", rating: "4.4", price: 3900, durations: ["4 Hours", "6 Hours", "8 Hours", "12 Hours"], features: ["Airport Shuttle", "Swimming Pool", "Free Breakfast", "Gym"] },
+            { id: 12, name: "Holiday Inn", distance: 4.2, category: "Standard", rating: "4.5", price: 4200, durations: ["6 Hours", "8 Hours", "10 Hours", "12 Hours"], features: ["Swimming Pool", "Gym", "Restaurant", "Free WiFi", "Business Center"] }
         ];
 
         // Active State Tracking
         let activeItemId = null;
 
-        // Render Function with Active State
+        // Render Function with simultaneous multi-filtering
         function renderItems() {
             const grid = document.getElementById('hotel-grid');
+            const inventoryCount = document.getElementById('inventory-count');
+            
+            // Get filter values
+            const duration = document.getElementById('filter-duration').value;
+            const priceRange = document.getElementById('filter-price').value;
+            const distanceLimit = document.getElementById('filter-distance').value;
+            const amenity = document.getElementById('filter-amenity').value;
+
+            // Apply filters
+            const filteredItems = items.filter(item => {
+                // Duration filter
+                if (duration !== 'any' && !item.durations.some(d => d.includes(duration.replace('h', '')))) return false;
+                
+                // Price Range filter
+                if (priceRange !== 'any') {
+                    if (priceRange === '12000+') {
+                        if (item.price < 12000) return false;
+                    } else {
+                        const [min, max] = priceRange.split(' – ').map(p => parseInt(p.replace(/[^0-9]/g, '')));
+                        if (item.price < min || item.price > max) return false;
+                    }
+                }
+
+                // Distance filter
+                if (distanceLimit !== 'any' && item.distance > parseFloat(distanceLimit)) return false;
+
+                // Amenity filter
+                if (amenity !== 'any' && !item.features.includes(amenity)) return false;
+
+                return true;
+            });
+
+            // Update Total Inventory Count
+            inventoryCount.textContent = `HOTEL INVENTORY (${filteredItems.length} HOTELS FOUND)`;
+
             grid.innerHTML = '';
             ['Premium', 'Standard'].forEach(cat => {
-                grid.innerHTML += `<div class="col-span-full border-b border-outline-variant pb-1 mt-6 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase tracking-widest font-bold">${cat} HOTELS</h4><span class="text-[10px] font-bold text-on-surface-variant">(${items.filter(i=>i.category===cat).length})</span></div>`;
-                items.filter(i => i.category === cat).forEach(h => {
-                    const isActive = h.id === activeItemId;
-                    grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-3 border border-slate-200 cursor-pointer hover:border-blue-500 hover:shadow-sm transition-all flex flex-col gap-2 bg-white ${isActive ? 'bg-blue-50 border-blue-500 shadow-sm' : ''}">
-                        <div class="flex justify-between items-start">
-                            <span class="font-bold text-xs text-slate-900">${h.name}</span>
-                            ${h.category === 'Premium' ? '<span class="material-symbols-outlined text-[14px] text-blue-600">workspace_premium</span>' : ''}
-                        </div>
-                        <div class="flex items-center justify-between text-[10px] text-slate-500 mt-auto">
-                            <span>${h.distance} km from T2</span>
-                            <span class="font-bold text-orange-600 bg-orange-50 px-1.5 py-0.5">${h.rating}★</span>
-                        </div>
-                    </div>`;
-                });
+                const catItems = filteredItems.filter(i => i.category === cat);
+                if (catItems.length > 0) {
+                    grid.innerHTML += `<div class="col-span-full border-b border-outline-variant pb-1 mt-6 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase tracking-widest font-bold">${cat} HOTELS</h4><span class="text-[10px] font-bold text-on-surface-variant">(${catItems.length})</span></div>`;
+                    catItems.forEach(h => {
+                        const isActive = h.id === activeItemId;
+                        grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-3 border border-slate-200 cursor-pointer hover:border-blue-500 hover:shadow-sm transition-all flex flex-col gap-2 bg-white ${isActive ? 'bg-blue-50 border-blue-500 shadow-sm' : ''}">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-xs text-slate-900">${h.name}</span>
+                                ${h.category === 'Premium' ? '<span class="material-symbols-outlined text-[14px] text-blue-600">workspace_premium</span>' : ''}
+                            </div>
+                            <div class="flex items-center justify-between text-[10px] text-slate-500 mt-auto">
+                                <span>${h.distance} km from T2</span>
+                                <span class="font-bold text-orange-600 bg-orange-50 px-1.5 py-0.5">${h.rating}★</span>
+                            </div>
+                        </div>`;
+                    });
+                }
             });
+            
+            // Handle empty results
+            if (filteredItems.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-on-surface-variant font-medium text-xs uppercase tracking-widest">No hotels match your current filters.</div>`;
+            }
         }
 
         function openLevel2(id) {
