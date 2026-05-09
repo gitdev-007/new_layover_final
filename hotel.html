@@ -448,6 +448,12 @@
                     btn.innerHTML = 'PLAN LAYOVER';
                     btn.className = 'w-full bg-secondary text-white font-bold py-2 text-sm tracking-widest uppercase hover:bg-orange-700 transition-colors';
                     btn.disabled = false;
+                    btn.onclick = () => {
+                        const duration = document.getElementById('item-duration').value;
+                        localStorage.setItem('redirect_data', JSON.stringify({ name: hotel.name, duration: duration, type: 'hotel', category: 'Hotel', distance: hotel.distance }));
+                        window.location.href = 'index.html#how-it-works';
+                    };
+                }
                     if(document.getElementById('item-duration')) document.getElementById('item-duration').disabled = false;
                     btn.onclick = function() {
                         handlePlanLayover(hotel, 'Hotel');
