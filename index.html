@@ -227,7 +227,7 @@
 </div>
 <a class="block rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-secondary hover:text-white transition" href="#about-us">About</a>
 <a class="block rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-secondary hover:text-white transition" href="#contact">Contact</a>
-<a class="block rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-secondary hover:text-white transition" href="#">Sign In</a>
+<a id="signInBtnMobile" class="block rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-secondary hover:text-white transition" href="auth.html">Sign In</a>
 <button id="plan-layover-btn-mobile" class="w-full bg-primary-container text-on-primary-container px-6 py-3 rounded-2xl font-label-md mt-3" type="button">Plan Layover</button>
 </div>
 </div>
@@ -706,21 +706,60 @@
         // Update UI based on auth state
         function updateAuthUI(user) {
             if (user) {
-                // User is authenticated - show logout button
+                // User is authenticated - show subtle account dropdown
                 authButtons.innerHTML = `
-                    <span class="text-secondary/60 text-sm mr-2">Welcome, ${user.email?.split('@')[0] || 'User'}</span>
-                    <button id="logoutBtn" class="px-4 py-2 rounded-full border border-white/10 bg-white/[0.03] text-secondary hover:text-white hover:bg-white/[0.06] transition-colors">
-                        Sign Out
-                    </button>
+                    <div class="flex items-center gap-3">
+                        <div class="text-right hidden lg:block select-none">
+                            <p class="text-[9px] text-secondary/40 uppercase tracking-[0.2em] font-black leading-none mb-1.5">Verified Traveler</p>
+                            <p class="text-[13px] text-white font-bold leading-none uppercase tracking-tight">Welcome, ${user.email?.split('@')[0] || 'User'}</p>
+                        </div>
+                        <div class="relative group">
+                            <button class="w-10 h-10 rounded-full border border-white/10 bg-white/[0.03] text-secondary hover:text-white flex items-center justify-center transition-all duration-300 active:scale-95 shadow-lg">
+                                <span class="material-symbols-outlined text-[20px]">account_circle</span>
+                            </button>
+                            <!-- Account Dropdown -->
+                            <div class="absolute right-0 top-full pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[60]">
+                                <div class="rounded-2xl border border-white/10 bg-neutral-900/95 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2.5">
+                                    <div class="px-4 py-3 border-b border-white/5 mb-1">
+                                        <p class="text-[10px] text-secondary/30 uppercase tracking-widest font-black mb-1">Account Details</p>
+                                        <p class="text-[12px] text-white/90 truncate font-bold">${user.email}</p>
+                                    </div>
+                                    <button id="logoutBtn" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[12px] text-secondary hover:text-white hover:bg-white/5 transition-all duration-200 group/logout">
+                                        <span class="material-symbols-outlined text-[18px] text-secondary/40 group-hover/logout:text-white">logout</span>
+                                        <span class="font-bold tracking-widest uppercase">Sign Out</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 `;
                 
                 // Add logout handler
-                document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+
+                // Handle mobile sign in button if it exists - change to Sign Out
+                const mobileSignIn = document.getElementById('signInBtnMobile');
+                if (mobileSignIn) {
+                    mobileSignIn.textContent = 'Sign Out';
+                    mobileSignIn.href = '#';
+                    mobileSignIn.onclick = (e) => { e.preventDefault(); handleLogout(); };
+                    mobileSignIn.classList.add('text-error/70');
+                }
             } else {
                 // User is not authenticated - show sign in button
                 authButtons.innerHTML = `
                     <a id="signInBtn" class="px-4 py-2 rounded-full border border-white/10 bg-white/[0.03] text-secondary hover:text-white hover:bg-white/[0.06] transition-colors" href="auth.html">Sign In</a>
                 `;
+
+                // Handle mobile sign in button
+                const mobileSignIn = document.getElementById('signInBtnMobile');
+                if (mobileSignIn) {
+                    mobileSignIn.textContent = 'Sign In';
+                    mobileSignIn.href = 'auth.html';
+                    mobileSignIn.onclick = null;
+                    mobileSignIn.classList.remove('text-error/70');
+                }
             }
         
             const isVerified = localStorage.getItem('qr_verified') === 'true';
