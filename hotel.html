@@ -12,15 +12,9 @@
             const isVerified = localStorage.getItem('qr_verified') === 'true';
             const duration = localStorage.getItem('layover_duration');
             const departure = localStorage.getItem('flight_departure');
-            
             if (!isVerified || !duration || !departure) {
                 const durSelect = document.getElementById('item-duration');
-                localStorage.setItem('pending_experience', JSON.stringify({
-                    name: item.name,
-                    category: category,
-                    duration: durSelect ? durSelect.value : '2 Hours',
-                    distance: item.distance
-                }));
+                localStorage.setItem('pending_experience', JSON.stringify({ name: item.name, category: category, duration: durSelect ? durSelect.value : '2 Hours', distance: item.distance }));
                 localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
                 window.location.href = 'index.html#how-it-works';
                 return;
@@ -32,80 +26,81 @@
         body { background-color: #f7f7fb; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .wireframe-box { border: 1px solid #cbd5e1; background-color: #ffffff; }
     </style>
 </head>
-<body class="text-slate-900 font-sans antialiased min-h-screen flex flex-col">
-    <header class="w-full bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-[1400px] mx-auto px-6 h-16 flex justify-between items-center text-sm font-semibold text-slate-600">
-            <a class="text-lg font-bold text-blue-700 font-manrope uppercase tracking-tight" href="#">LayoverX</a>
-            <div class="flex gap-4 items-center"><span class="material-symbols-outlined">notifications</span><span class="material-symbols-outlined">account_circle</span></div>
+<body class="text-on-surface font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
+    <header class="w-full bg-white border-b border-outline-variant sticky top-0 z-50">
+        <div class="max-w-[1400px] mx-auto px-6 h-16 flex justify-between items-center text-sm font-semibold text-on-surface-variant">
+            <div class="flex items-center gap-8"><a class="text-lg font-bold text-primary font-manrope uppercase tracking-tight" href="#">LayoverX</a></div>
+            <div class="flex gap-4 items-center"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="material-symbols-outlined text-[20px]">account_circle</span></div>
         </div>
     </header>
 
-    <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col items-center gap-6 mt-4">
-        <div id="level1" class="layout-transition w-full max-w-4xl">
-            <div class="bg-white border-2 border-blue-100 p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-blue-700 mb-6 uppercase">Hotels Listing</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
-                    <select id="filter-duration" onchange="renderItems()" class="border-slate-200 p-2 text-xs">
-                        <option value="any">Duration</option>
-                    </select>
+    <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col items-center gap-6 relative pb-20 mt-4">
+        <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
+            <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
+                <h3 class="text-node-title-md text-primary uppercase mb-6">Hotels Listing Page</h3>
+                <div class="border border-outline-variant p-3 bg-surface-container mb-4">
+                    <p class="text-meta-label text-on-surface-variant mb-2">SEARCH & FILTERS</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <select id="filter-type" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Hotel Type</option></select>
+                        <select id="filter-price" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Price Range</option></select>
+                    </div>
                 </div>
-                <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+                <div class="border-2 border-dashed border-outline-variant p-4">
+                    <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">HOTEL INVENTORY</p>
+                    <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+                </div>
             </div>
         </div>
-
-        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl">
-            <div class="bg-white border-2 border-orange-600 p-6 shadow-sm">
-                <div class="flex justify-between mb-6">
-                    <h3 class="text-lg font-bold text-orange-600">Hotel Detail</h3>
-                    <button onclick="closeLevel2()" class="text-slate-400"><span class="material-symbols-outlined">close</span></button>
+        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl mx-auto flex-shrink-0 z-20 relative">
+            <div class="bg-white border-2 border-secondary p-6 shadow-sm flex flex-col">
+                <div class="flex justify-between items-start mb-6 shrink-0">
+                    <h3 class="text-node-title-md text-secondary uppercase">Hotel Detail Page</h3>
+                    <button onclick="closeLevel2()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[16px]">close</span></button>
                 </div>
-                <div id="detail-content" class="space-y-4">
-                    <h4 id="l2-name" class="font-bold"></h4>
-                    <p id="l2-distance" class="text-xs"></p>
-                    <div id="l2-amenities" class="text-xs space-y-1"></div>
-                    <select id="item-duration" class="w-full border-slate-200 p-2 text-xs"></select>
-                    <button id="add-list-btn" class="w-full bg-orange-600 text-white font-bold py-2 text-sm uppercase">PLAN LAYOVER</button>
+                <div class="space-y-4">
+                    <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
+                        <h4 id="l2-name" class="text-[14px] font-bold"></h4>
+                        <div class="flex items-center gap-2 mt-1"><span id="l2-rating" class="text-[10px] px-1 font-semibold"></span><span id="l2-distance" class="text-[10px] text-on-surface-variant"></span></div>
+                    </div>
+                    <div id="l2-amenities" class="text-[11px] space-y-1"></div>
+                    <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
+                        <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] outline-none cursor-pointer"></select>
+                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm uppercase">PLAN LAYOVER</button>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
-
     <script>
         const items = [
-            { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", price: 4500, amenities: ["Airport Shuttle", "Pool", "Spa"] },
-            { id: 2, name: "Taj Santacruz", distance: 1.6, category: "Premium", rating: "4.9", price: 8200, amenities: ["Airport Shuttle", "Spa"] }
+            { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", price: 4500, features: ["Airport Shuttle", "Pool", "Spa"] },
+            { id: 2, name: "Taj Santacruz", distance: 1.6, category: "Premium", rating: "4.9", price: 8200, features: ["Airport Shuttle", "Spa"] }
         ];
-        
         function renderItems() {
             const grid = document.getElementById('hotel-grid');
             grid.innerHTML = items.map(h => `
-                <div onclick="openLevel2(${h.id})" class="p-4 border rounded cursor-pointer hover:border-orange-600">
-                    <p class="font-bold text-sm">${h.name}</p>
-                    <p class="text-xs text-slate-500">${h.distance} km from T2</p>
+                <div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer h-16 ${h.category === 'Premium' ? 'bg-primary/5' : 'bg-surface'}">
+                    <p class="font-bold text-xs">${h.name}</p>
+                    <p class="text-[9px] text-slate-500">${h.distance} km from T2</p>
                 </div>
             `).join('');
         }
-
         function openLevel2(id) {
             const item = items.find(h => h.id === id);
             document.getElementById('l2-name').textContent = item.name;
+            document.getElementById('l2-rating').textContent = item.rating + ' ★';
             document.getElementById('l2-distance').textContent = item.distance + ' km from T2';
-            document.getElementById('l2-amenities').innerHTML = item.amenities.map(a => `<div>${a}</div>`).join('');
+            document.getElementById('l2-amenities').innerHTML = item.features.map(a => `<div>${a}</div>`).join('');
             document.getElementById('add-list-btn').onclick = () => handlePlanLayover(item, 'Hotel');
-            
-            document.getElementById('level2').style.display = 'block';
             document.getElementById('level1').classList.add('hidden');
-            setTimeout(() => document.getElementById('level2').style.opacity = '1', 50);
+            document.getElementById('level2').classList.remove('hidden', 'opacity-0');
         }
-
         function closeLevel2() {
-            document.getElementById('level2').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('level2').style.display = 'none';
-                document.getElementById('level1').classList.remove('hidden');
-            }, 300);
+            document.getElementById('level2').classList.add('opacity-0', 'hidden');
+            document.getElementById('level1').classList.remove('hidden');
         }
         renderItems();
     </script>
