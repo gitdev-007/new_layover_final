@@ -151,7 +151,7 @@
         function handlePlanLayover(item, category) {
             redirectToExplorePlanner(category);
         }
-    </script>
+
         const items = [
             { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", features: ["Airport Shuttle", "Pool", "Spa"] },
             { id: 2, name: "Hotel Sahara Star", distance: 1.1, category: "Premium", rating: "4.7", features: ["Pool", "Airport Shuttle"] },
@@ -167,15 +167,18 @@
             { id: 12, name: "Holiday Inn", distance: 4.2, category: "Standard", rating: "4.5", features: ["Rooftop pool", "Transit support"] }
         ];
 
+        // Active State Tracking
+        let activeItemId = null;
+
         // Render Function with Active State
         function renderItems() {
             const grid = document.getElementById('hotel-grid');
             grid.innerHTML = '';
             ['Premium', 'Standard'].forEach(cat => {
-                grid.innerHTML += `<div class="col-span-full border-b border-outline-variant pb-1 mt-6 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase">${cat} HOTELS</h4><span class="text-[10px] font-bold text-on-surface-variant">(${items.filter(i=>i.category===cat).length})</span></div>`;
+                grid.innerHTML += `<div class="col-span-full border-b border-outline-variant pb-1 mt-6 flex justify-between items-end"><h4 class="text-meta-label text-primary uppercase tracking-widest font-bold">${cat} HOTELS</h4><span class="text-[10px] font-bold text-on-surface-variant">(${items.filter(i=>i.category===cat).length})</span></div>`;
                 items.filter(i => i.category === cat).forEach(h => {
                     const isActive = h.id === activeItemId;
-                    grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-3 border cursor-pointer transition-all flex flex-col gap-2 ${isActive ? 'bg-blue-50 border-blue-500 shadow-sm' : 'bg-white border-slate-200 hover:border-blue-500 hover:shadow-sm'}">
+                    grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-3 border border-slate-200 cursor-pointer hover:border-blue-500 hover:shadow-sm transition-all flex flex-col gap-2 bg-white ${isActive ? 'bg-blue-50 border-blue-500 shadow-sm' : ''}">
                         <div class="flex justify-between items-start">
                             <span class="font-bold text-xs text-slate-900">${h.name}</span>
                             ${h.category === 'Premium' ? '<span class="material-symbols-outlined text-[14px] text-blue-600">workspace_premium</span>' : ''}
@@ -188,9 +191,6 @@
                 });
             });
         }
-
-        // Active State Tracking
-        let activeItemId = null;
 
         function openLevel2(id) {
             activeItemId = id;
