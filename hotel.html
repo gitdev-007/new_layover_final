@@ -127,21 +127,47 @@
         function renderItems() {
             const grid = document.getElementById('hotel-grid');
             grid.innerHTML = '';
-            ['Premium', 'Standard'].forEach(cat => {
-                grid.innerHTML += `<div class="col-span-full border-b pb-1 flex justify-between items-end mt-4"><h4 class="text-meta-label text-primary uppercase">${cat} HOTELS</h4></div>`;
-                items.filter(i => i.category === cat).forEach(h => {
-                    grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer transition-colors text-[11px] font-medium flex flex-col justify-between h-16 ${h.category === 'Premium' ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50'}">
+            const renderCard = (h) => {
+                const isPremium = h.category === "Premium";
+                const bgClass = isPremium ? 'bg-primary/5 border-primary/20 hover:border-primary/50' : 'bg-surface border-outline-variant hover:border-primary/50';
+                
+                return `
+                    <div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer transition-colors text-[11px] font-medium flex flex-col justify-between h-16 ${bgClass}">
                         <div class="flex justify-between items-start">
                             <span class="truncate pr-1">${h.name}</span>
-                            ${h.category === 'Premium' ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
+                            ${isPremium ? '<span class="material-symbols-outlined text-[12px] text-primary shrink-0">workspace_premium</span>' : ''}
                         </div>
                         <div class="text-[9px] text-on-surface-variant flex justify-between items-center mt-1">
                             <span>${h.distance} km from T2</span>
                             <span class="font-bold text-secondary">${h.rating} ★</span>
                         </div>
-                    </div>`;
+                    </div>
+                `;
+            };
+
+            if (premiumItems.length > 0) {
+                grid.innerHTML += `
+                    <div class="col-span-full mt-2 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
+                        <h4 class="text-meta-label text-primary uppercase">PREMIUM HOTELS</h4>
+                        <span class="text-[10px] font-bold text-on-surface-variant">(${premiumItems.length})</span>
+                    </div>
+                `;
+                premiumItems.forEach(h => {
+                    grid.innerHTML += renderCard(h);
                 });
-            });
+            }
+
+            if (standardItems.length > 0) {
+                grid.innerHTML += `
+                    <div class="col-span-full mt-4 mb-1 border-b border-outline-variant/50 pb-1 flex justify-between items-end">
+                        <h4 class="text-meta-label text-primary uppercase">STANDARD HOTELS</h4>
+                        <span class="text-[10px] font-bold text-on-surface-variant">(${standardItems.length})</span>
+                    </div>
+                `;
+                standardItems.forEach(h => {
+                    grid.innerHTML += renderCard(h);
+                });
+            }
         }
         function openLevel2(id) {
             const item = items.find(h => h.id === id);
