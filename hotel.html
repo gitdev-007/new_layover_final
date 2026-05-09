@@ -12,9 +12,15 @@
             const isVerified = localStorage.getItem('qr_verified') === 'true';
             const duration = localStorage.getItem('layover_duration');
             const departure = localStorage.getItem('flight_departure');
+            
             if (!isVerified || !duration || !departure) {
                 const durSelect = document.getElementById('item-duration');
-                localStorage.setItem('pending_experience', JSON.stringify({ name: item.name, category: category, duration: durSelect ? durSelect.value : '2 Hours', distance: item.distance }));
+                localStorage.setItem('pending_experience', JSON.stringify({
+                    name: item.name,
+                    category: category,
+                    duration: durSelect ? durSelect.value : '2 Hours',
+                    distance: item.distance
+                }));
                 localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
                 window.location.href = 'index.html#how-it-works';
                 return;
@@ -39,8 +45,9 @@
 
     <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col items-center gap-6 relative pb-20 mt-4">
         <div id="level1" class="layout-transition w-full max-w-4xl mx-auto flex-shrink-0 z-10 relative">
+            <div class="flex items-center justify-between mb-4"><span class="bg-primary text-white text-meta-label px-3 py-1 uppercase">Level 1: Listing</span></div>
             <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
-                <h3 class="text-node-title-md text-primary uppercase mb-6">Hotels Listing Page</h3>
+                <h3 id="level1-heading" class="text-node-title-md text-primary uppercase mb-6 cursor-pointer hover:underline" onclick="closeLevel2()">Hotels Listing Page</h3>
                 <div class="border border-outline-variant p-3 bg-surface-container mb-4">
                     <p class="text-meta-label text-on-surface-variant mb-2">SEARCH & FILTERS</p>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -49,7 +56,7 @@
                     </div>
                 </div>
                 <div class="border-2 border-dashed border-outline-variant p-4">
-                    <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">HOTEL INVENTORY</p>
+                    <p id="inventory-count" class="text-meta-label text-on-surface-variant mb-3">HOTEL INVENTORY (12 HOTELS FOUND)</p>
                     <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
                 </div>
             </div>
@@ -62,13 +69,17 @@
                 </div>
                 <div class="space-y-4">
                     <div class="wireframe-box p-3 bg-secondary/5 border-outline-variant">
+                        <p class="text-meta-label text-secondary mb-1">ENTITY HEADER</p>
                         <h4 id="l2-name" class="text-[14px] font-bold"></h4>
                         <div class="flex items-center gap-2 mt-1"><span id="l2-rating" class="text-[10px] px-1 font-semibold"></span><span id="l2-distance" class="text-[10px] text-on-surface-variant"></span></div>
                     </div>
-                    <div id="l2-amenities" class="text-[11px] space-y-1"></div>
+                    <div class="wireframe-box p-3 bg-surface-container">
+                        <p class="text-meta-label text-on-surface-variant mb-2">KEY DIFFERENTIATORS</p>
+                        <div id="l2-amenities" class="text-[11px] space-y-1"></div>
+                    </div>
                     <div class="border-2 border-secondary p-3 bg-secondary/10 mt-4">
                         <select id="item-duration" class="w-full mb-3 bg-white border border-outline-variant px-2 py-2 text-[11px] outline-none cursor-pointer"></select>
-                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm uppercase">PLAN LAYOVER</button>
+                        <button id="add-list-btn" class="w-full bg-secondary text-white font-bold py-2 text-sm uppercase hover:bg-orange-700 transition-colors">PLAN LAYOVER</button>
                     </div>
                 </div>
             </div>
@@ -77,23 +88,37 @@
     <script>
         const items = [
             { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", price: 4500, features: ["Airport Shuttle", "Pool", "Spa"] },
-            { id: 2, name: "Taj Santacruz", distance: 1.6, category: "Premium", rating: "4.9", price: 8200, features: ["Airport Shuttle", "Spa"] }
+            { id: 2, name: "Hotel Sahara Star", distance: 1.1, category: "Premium", rating: "4.7", price: 5000, features: ["Pool", "Airport Shuttle"] },
+            { id: 3, name: "Taj Santacruz", distance: 1.6, category: "Premium", rating: "4.9", price: 8200, features: ["Premium suites", "Spa"] },
+            { id: 4, name: "JW Marriott Sahar", distance: 1.8, category: "Premium", rating: "4.8", price: 7800, features: ["Resort Pool", "Business Center"] },
+            { id: 5, name: "ITC Maratha", distance: 2.4, category: "Premium", rating: "4.8", price: 7600, features: ["Heritage Luxury", "Signature Dining"] },
+            { id: 6, name: "The Leela Mumbai", distance: 2.5, category: "Premium", rating: "4.7", price: 7200, features: ["Garden view", "Airport Shuttle"] },
+            { id: 7, name: "Aurika Mumbai", distance: 2.8, category: "Premium", rating: "4.6", price: 6200, features: ["Modern rooms", "Fast check-in"] },
+            { id: 8, name: "Grand Hyatt", distance: 6.1, category: "Premium", rating: "4.7", price: 7000, features: ["Large rooms", "Restaurants"] },
+            { id: 9, name: "Hotel Bawa Intl.", distance: 1.7, category: "Standard", rating: "4.2", price: 3300, features: ["Quick access", "Budget rooms"] },
+            { id: 10, name: "Hotel Midland", distance: 2.3, category: "Standard", rating: "4.0", price: 2900, features: ["Transit rooms", "Cafe"] },
+            { id: 11, name: "Lemon Tree Premier", distance: 3.2, category: "Standard", rating: "4.4", price: 3900, features: ["Business rooms", "Airport shuttle"] },
+            { id: 12, name: "Holiday Inn", distance: 4.2, category: "Standard", rating: "4.5", price: 4200, features: ["Rooftop pool", "Transit support"] }
         ];
+
         function renderItems() {
             const grid = document.getElementById('hotel-grid');
-            grid.innerHTML = items.map(h => `
-                <div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer h-16 ${h.category === 'Premium' ? 'bg-primary/5' : 'bg-surface'}">
-                    <p class="font-bold text-xs">${h.name}</p>
-                    <p class="text-[9px] text-slate-500">${h.distance} km from T2</p>
-                </div>
-            `).join('');
+            grid.innerHTML = '';
+            ['Premium', 'Standard'].forEach(cat => {
+                grid.innerHTML += `<div class="col-span-full border-b pb-1 flex justify-between items-end mt-4"><h4 class="text-meta-label text-primary uppercase">${cat} HOTELS</h4></div>`;
+                items.filter(i => i.category === cat).forEach(h => {
+                    grid.innerHTML += `<div onclick="openLevel2(${h.id})" class="p-2 border cursor-pointer h-16 ${h.category === 'Premium' ? 'bg-primary/5 border-primary/20' : 'bg-surface border-outline-variant'}">
+                        <p class="font-bold text-xs">${h.name}</p><p class="text-[9px] text-slate-500">${h.distance} km from T2</p>
+                    </div>`;
+                });
+            });
         }
         function openLevel2(id) {
             const item = items.find(h => h.id === id);
             document.getElementById('l2-name').textContent = item.name;
             document.getElementById('l2-rating').textContent = item.rating + ' ★';
             document.getElementById('l2-distance').textContent = item.distance + ' km from T2';
-            document.getElementById('l2-amenities').innerHTML = item.features.map(a => `<div>${a}</div>`).join('');
+            document.getElementById('l2-amenities').innerHTML = item.features.map(a => `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span>${a}</div>`).join('');
             document.getElementById('add-list-btn').onclick = () => handlePlanLayover(item, 'Hotel');
             document.getElementById('level1').classList.add('hidden');
             document.getElementById('level2').classList.remove('hidden', 'opacity-0');
