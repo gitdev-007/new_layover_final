@@ -3,91 +3,111 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>LayoverX Hotels Sitemap</title>
+    <title>LayoverX | Hotel Discovery</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        function handlePlanLayover(item, category) {
+            const isVerified = localStorage.getItem('qr_verified') === 'true';
+            const duration = localStorage.getItem('layover_duration');
+            const departure = localStorage.getItem('flight_departure');
+            
+            if (!isVerified || !duration || !departure) {
+                const durSelect = document.getElementById('item-duration');
+                localStorage.setItem('pending_experience', JSON.stringify({
+                    name: item.name,
+                    category: category,
+                    duration: durSelect ? durSelect.value : '2 Hours',
+                    distance: item.distance
+                }));
+                localStorage.setItem('redirect_reason', 'Please enter your layover details first before planning experiences.');
+                window.location.href = 'index.html#how-it-works';
+                return;
+            }
+            window.location.href = 'transportation.html';
+        }
+    </script>
     <style>
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; font-size: 1.25rem; }
-        .main-layout { display: flex; justify-content: center; align-items: flex-start; gap: 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .main-layout.active { justify-content: flex-start; }
-        .level1 { width: 600px; }
-        .level2 { width: 600px; display: none; opacity: 0; transition: opacity 0.3s; }
-        .hotel-item { cursor: pointer; }
-        .filter-field { cursor: pointer; min-height: 32px; width: 100%; outline: none; }
+        body { background-color: #f7f7fb; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .layout-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="bg-white text-slate-900 antialiased p-8">
-    <header class="flex justify-between items-center w-full px-8 py-3 max-w-full mx-auto mb-12 border-b border-slate-200">
-        <h1 class="text-xl font-bold tracking-tight">StayMarket</h1>
-        <div class="flex gap-4 items-center">
-            <span class="material-symbols-outlined">notifications</span>
-            <span class="material-symbols-outlined">account_circle</span>
+<body class="text-slate-900 font-sans antialiased min-h-screen flex flex-col">
+    <header class="w-full bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-[1400px] mx-auto px-6 h-16 flex justify-between items-center text-sm font-semibold text-slate-600">
+            <a class="text-lg font-bold text-blue-700 font-manrope uppercase tracking-tight" href="#">LayoverX</a>
+            <div class="flex gap-4 items-center"><span class="material-symbols-outlined">notifications</span><span class="material-symbols-outlined">account_circle</span></div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto">
-        <div class="main-layout" id="main-layout">
-            <div class="level1 space-y-6" id="level1">
-                <div class="bg-white border-2 border-primary-container p-6 shadow-sm">
-                    <h3 class="text-lg font-bold text-primary mb-6">Hotels Listing Page</h3>
-                    <div id="hotel-grid" class="grid grid-cols-2 gap-4">
-                        <!-- Hotels dynamically rendered -->
-                    </div>
+    <main class="flex-grow w-full max-w-4xl mx-auto p-4 flex flex-col items-center gap-6 mt-4">
+        <div id="level1" class="layout-transition w-full max-w-4xl">
+            <div class="bg-white border-2 border-blue-100 p-6 shadow-sm">
+                <h3 class="text-lg font-bold text-blue-700 mb-6 uppercase">Hotels Listing</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+                    <select id="filter-duration" onchange="renderItems()" class="border-slate-200 p-2 text-xs">
+                        <option value="any">Duration</option>
+                    </select>
                 </div>
+                <div id="hotel-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
             </div>
-            <div class="level2 space-y-6" id="level2">
-                <div class="bg-white border-2 border-secondary p-6 shadow-sm">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-bold text-secondary">Hotel Detail Page</h3>
-                        <button onclick="closeLevel2()" class="text-slate-500 hover:text-secondary"><span class="material-symbols-outlined">close</span></button>
-                    </div>
-                    <div id="detail-content" class="space-y-4">
-                        <!-- Detail content dynamically rendered -->
-                        <button id="plan-layover-btn" class="w-full bg-secondary text-white font-bold py-3 rounded-lg mt-4">PLAN LAYOVER</button>
-                    </div>
+        </div>
+
+        <div id="level2" class="layout-transition hidden opacity-0 w-full max-w-4xl">
+            <div class="bg-white border-2 border-orange-600 p-6 shadow-sm">
+                <div class="flex justify-between mb-6">
+                    <h3 class="text-lg font-bold text-orange-600">Hotel Detail</h3>
+                    <button onclick="closeLevel2()" class="text-slate-400"><span class="material-symbols-outlined">close</span></button>
+                </div>
+                <div id="detail-content" class="space-y-4">
+                    <h4 id="l2-name" class="font-bold"></h4>
+                    <p id="l2-distance" class="text-xs"></p>
+                    <div id="l2-amenities" class="text-xs space-y-1"></div>
+                    <select id="item-duration" class="w-full border-slate-200 p-2 text-xs"></select>
+                    <button id="add-list-btn" class="w-full bg-orange-600 text-white font-bold py-2 text-sm uppercase">PLAN LAYOVER</button>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        const hotels = [
-            { id: 1, name: "The Orchid Hotel", distance: 0.9, terminal: "T2", rating: "4.8", price: 4500, details: ["Flexible hourly stay", "Complimentary Airport Shuttle"] },
-            { id: 2, name: "Taj Santacruz", distance: 1.6, terminal: "T2", rating: "4.9", price: 8200, details: ["Premium suites", "Luxury transit lounge"] }
+        const items = [
+            { id: 1, name: "The Orchid Hotel", distance: 0.9, category: "Premium", rating: "4.8", price: 4500, amenities: ["Airport Shuttle", "Pool", "Spa"] },
+            { id: 2, name: "Taj Santacruz", distance: 1.6, category: "Premium", rating: "4.9", price: 8200, amenities: ["Airport Shuttle", "Spa"] }
         ];
-
-        function renderHotels() {
+        
+        function renderItems() {
             const grid = document.getElementById('hotel-grid');
-            grid.innerHTML = hotels.map(h => `
-                <div onclick="openLevel2(${h.id})" class="hotel-item p-4 border border-slate-200 rounded hover:border-secondary cursor-pointer">
+            grid.innerHTML = items.map(h => `
+                <div onclick="openLevel2(${h.id})" class="p-4 border rounded cursor-pointer hover:border-orange-600">
                     <p class="font-bold text-sm">${h.name}</p>
-                    <p class="text-xs text-slate-500">${h.distance} km away</p>
+                    <p class="text-xs text-slate-500">${h.distance} km from T2</p>
                 </div>
             `).join('');
         }
 
         function openLevel2(id) {
-            const hotel = hotels.find(h => h.id === id);
+            const item = items.find(h => h.id === id);
+            document.getElementById('l2-name').textContent = item.name;
+            document.getElementById('l2-distance').textContent = item.distance + ' km from T2';
+            document.getElementById('l2-amenities').innerHTML = item.amenities.map(a => `<div>${a}</div>`).join('');
+            document.getElementById('add-list-btn').onclick = () => handlePlanLayover(item, 'Hotel');
+            
             document.getElementById('level2').style.display = 'block';
-            document.getElementById('main-layout').classList.add('active');
+            document.getElementById('level1').classList.add('hidden');
             setTimeout(() => document.getElementById('level2').style.opacity = '1', 50);
-
-            document.getElementById('plan-layover-btn').onclick = () => {
-                localStorage.setItem('redirect_data', JSON.stringify({ name: hotel.name, type: 'hotel' }));
-                window.location.href = 'index.html#how-it-works';
-            };
         }
 
         function closeLevel2() {
             document.getElementById('level2').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('level2').style.display = 'none';
-                document.getElementById('main-layout').classList.remove('active');
+                document.getElementById('level1').classList.remove('hidden');
             }, 300);
         }
-
-        renderHotels();
+        renderItems();
     </script>
 </body>
 </html>
