@@ -568,6 +568,13 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     timelineContainer.innerHTML = html;
+
+    const confirmBtn = document.getElementById('confirm-btn');
+    if (confirmBtn) {
+        confirmBtn.onclick = () => {
+            window.location.href = 'confirm_journey.html';
+        };
+    }
 });
 </script>
 </body></html>
