@@ -450,8 +450,21 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `;
 
+    // Add utility for time parsing
+    window.parseDurationToMins = function(durStr) {
+        if (!durStr) return 0;
+        const lower = String(durStr).toLowerCase();
+        let mins = 0;
+        if (lower.includes('overnight')) return 480; 
+        const hMatch = lower.match(/([\d\.]+)\s*h/); if (hMatch) mins += parseFloat(hMatch[1]) * 60;
+        const mMatch = lower.match(/([\d\.]+)\s*m/); if (mMatch) mins += parseFloat(mMatch[1]);
+        if (!hMatch && !mMatch) { const val = parseFloat(lower); if (!isNaN(val)) mins = val <= 24 ? val * 60 : val; }
+        return mins;
+    };
+
     // 5. Render Timeline
     const timelineContainer = document.querySelector('.lg\\:col-span-8 .relative.space-y-16');
+    timelineContainer.innerHTML = ''; // Clear all static content
     const formatClock = (date) => date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
     
     let currentTime = new Date(arrivalTime.getTime());
