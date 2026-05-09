@@ -84,10 +84,17 @@
                     <div class="border border-outline-variant p-3 bg-surface-container">
                         <p class="text-meta-label text-on-surface-variant mb-2 tracking-widest">SEARCH & FILTERS</p>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                            <select id="filter-type" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Hotel Category</option></select>
-                            <select id="filter-price" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Price Range</option></select>
-                            <select id="filter-distance" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Distance</option></select>
-                            <select id="filter-amenity" onchange="renderItems()" class="bg-white border border-outline-variant px-2 py-1 text-[11px] text-on-surface font-medium outline-none rounded-none cursor-pointer"><option value="any">Amenities</option></select>
+                            <select id="filter-duration" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer">
+                                <option value="any">Duration</option>
+                                <option value="2h">2 Hours</option>
+                                <option value="4h">4 Hours</option>
+                                <option value="6h">6 Hours</option>
+                                <option value="8h">8 Hours</option>
+                                <option value="12+h">12+ Hours</option>
+                            </select>
+                            <select id="filter-price" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer"><option value="any">Price Range</option></select>
+                            <select id="filter-distance" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer"><option value="any">Distance</option></select>
+                            <select id="filter-amenity" onchange="renderItems()" class="bg-white border border-slate-300 px-2 py-1.5 text-[11px] text-slate-600 font-medium outline-none rounded-none cursor-pointer"><option value="any">Amenities</option></select>
                         </div>
                     </div>
                     <div class="border-2 border-dashed border-outline-variant p-4">
