@@ -650,42 +650,40 @@ Explore Experiences <span class="material-symbols-outlined text-[18px]">arrow_fo
             }
         }
 
-        // Plan Layover button click handler - clean auth flow with no alerts
-        document.getElementById("plan-layover-btn").addEventListener("click", async function (e) {
+        // Plan Layover button click handler with auth check
+        document.getElementById("plan-layover-btn").addEventListener("click", function (e) {
             e.preventDefault();
-            console.log("Plan Layover button clicked");
-
-            const { data: { session }, error } = await supabaseClient.auth.getSession();
-
-            if (!session) {
-                console.log("User not logged in → redirecting");
-                window.location.href = "/auth.html";
-                return;
-            }
-
-            console.log("User logged in → continue");
-            window.location.href = "/plan.html";
+            checkAuth(() => {
+                window.location.href = "/plan.html";
+            });
         });
 
         // Mobile Plan Layover button - same logic
         const mobileBtn = document.getElementById("plan-layover-btn-mobile");
         if (mobileBtn) {
-            mobileBtn.addEventListener("click", async function (e) {
+            mobileBtn.addEventListener("click", function (e) {
                 e.preventDefault();
-                console.log("Plan Layover button clicked (mobile)");
-
-                const { data: { session }, error } = await supabaseClient.auth.getSession();
-
-                if (!session) {
-                    console.log("User not logged in → redirecting");
-                    window.location.href = "/auth.html";
-                    return;
-                }
-
-                console.log("User logged in → continue");
-                window.location.href = "/plan.html";
+                checkAuth(() => {
+                    window.location.href = "/plan.html";
+                });
             });
         }
+        
+        // Include Auth Protection Component
+        const authContainer = document.createElement('div');
+        authContainer.id = 'auth-protection-container';
+        document.body.appendChild(authContainer);
+        fetch('components/AuthProtection.js')
+            .then(response => response.text())
+            .then(text => {
+                authContainer.innerHTML = text;
+                const scripts = authContainer.querySelectorAll('script');
+                scripts.forEach(script => {
+                    const newScript = document.createElement('script');
+                    newScript.text = script.text;
+                    document.body.appendChild(newScript);
+                });
+            });
 
         // Authentication UI elements
         const authButtons = document.getElementById('authButtons');
