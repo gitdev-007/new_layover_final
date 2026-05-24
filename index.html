@@ -1,10 +1,45 @@
 <!DOCTYPE html>
 
 <html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>LayoverX | Elevating the art of the journey</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>LayoverX | Elevating the Art of the Journey</title>
+    <meta name="description" content="LayoverX elevates your airport layover with curated experiences. Discover top-rated hotels, dining, spa wellness, and city tours designed for the modern traveler.">
+    <link rel="canonical" href="https://layoverx.in/">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://layoverx.in/">
+    <meta property="og:title" content="LayoverX | Elevating the Art of the Journey">
+    <meta property="og:description" content="Transform your layover into a premium experience. Curated hotels, dining, and city tours.">
+    <meta property="og:image" content="https://layoverx.in/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://layoverx.in/">
+    <meta property="twitter:title" content="LayoverX | Elevating the Art of the Journey">
+    <meta property="twitter:description" content="Transform your layover into a premium experience. Curated hotels, dining, and city tours.">
+    <meta property="twitter:image" content="https://layoverx.in/og-image.jpg">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "LayoverX",
+      "url": "https://layoverx.in",
+      "description": "Premium airport layover experiences including hotels, dining, and city tours.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://layoverx.in/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -236,7 +271,7 @@
 <!-- Hero Section -->
 <section class="relative min-h-screen flex items-center pt-24 px-8 overflow-hidden">
 <div class="absolute inset-0 z-0">
-<img class="w-full h-full object-cover opacity-40" data-alt="Cinematic wide shot of a modern airport terminal lounge with large windows at sunset, warm orange and purple hues reflecting on sleek floors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7bVECyHwsD_FPkeHUiZk7Pxa0MuWKHsQq2Tz3RNAiCZzR63Goe_Uo1ipzHHjXCUpuCaTamyDWnV012gRmq-a_PtAMr4DL1i-Rr4wuTfjjuFGYUbJ_GK-UTYndpd7mC-9lHr1SaNBZDcr-4NRqzfQaFJZcAzpEVClg19suEHsTqrKKoyxreJIdAaqVlV7EaVCOzpt6Bq11vGY9FlTU9MU7tWMaWrh7eXirWCxKSBuDoPKaeHfq006amnrEANkph3CX4cGBQA6c9K4"/>
+<img class="w-full h-full object-cover opacity-40" alt="Cinematic wide shot of a modern airport terminal lounge with large windows at sunset, warm orange and purple hues reflecting on sleek floors" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7bVECyHwsD_FPkeHUiZk7Pxa0MuWKHsQq2Tz3RNAiCZzR63Goe_Uo1ipzHHjXCUpuCaTamyDWnV012gRmq-a_PtAMr4DL1i-Rr4wuTfjjuFGYUbJ_GK-UTYndpd7mC-9lHr1SaNBZDcr-4NRqzfQaFJZcAzpEVClg19suEHsTqrKKoyxreJIdAaqVlV7EaVCOzpt6Bq11vGY9FlTU9MU7tWMaWrh7eXirWCxKSBuDoPKaeHfq006amnrEANkph3CX4cGBQA6c9K4"/>
 <div class="absolute inset-0 bg-gradient-to-b from-transparent via-surface/80 to-surface"></div>
 </div>
 <div class="relative z-10 max-w-5xl mx-auto text-center">

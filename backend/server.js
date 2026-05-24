@@ -26,6 +26,28 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Security Headers
+app.use((req, res, next) => {
+  // Content Security Policy
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://lh3.googleusercontent.com https://piygbsxvvptcivffhnvu.supabase.co; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "img-src 'self' data: https://lh3.googleusercontent.com https://images.unsplash.com https://piygbsxvvptcivffhnvu.supabase.co; " +
+    "font-src 'self' https://fonts.gstatic.com; " +
+    "connect-src 'self' https://piygbsxvvptcivffhnvu.supabase.co https://layoverbackend.onrender.com; " +
+    "frame-ancestors 'none';"
+  );
+  // Prevent clickjacking
+  res.setHeader('X-Frame-Options', 'DENY');
+  // Prevent MIME sniffing
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  // Referrer Policy
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
 app.options('*', cors());
 
 // Middleware
