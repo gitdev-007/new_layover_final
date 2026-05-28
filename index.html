@@ -139,6 +139,11 @@
     </script>
 <style>
         .glass { background: rgba(18, 18, 18, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        @media (max-width: 768px) {
+            .glass { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+            .backdrop-blur-md { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+            .backdrop-blur-xl { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         html { scroll-behavior: smooth; }
         body { scroll-padding-top: 110px; }
@@ -277,7 +282,7 @@
 <!-- Hero Section -->
 <section class="relative min-h-screen flex items-center pt-24 px-8 overflow-hidden">
 <div class="absolute inset-0 z-0">
-<img class="w-full h-full object-cover opacity-40" alt="Cinematic wide shot of a modern airport terminal lounge with large windows at sunset, warm orange and purple hues reflecting on sleek floors" fetchpriority="high" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7bVECyHwsD_FPkeHUiZk7Pxa0MuWKHsQq2Tz3RNAiCZzR63Goe_Uo1ipzHHjXCUpuCaTamyDWnV012gRmq-a_PtAMr4DL1i-Rr4wuTfjjuFGYUbJ_GK-UTYndpd7mC-9lHr1SaNBZDcr-4NRqzfQaFJZcAzpEVClg19suEHsTqrKKoyxreJIdAaqVlV7EaVCOzpt6Bq11vGY9FlTU9MU7tWMaWrh7eXirWCxKSBuDoPKaeHfq006amnrEANkph3CX4cGBQA6c9K4"/>
+<img class="w-full h-full object-cover opacity-40" alt="Cinematic wide shot of a modern airport terminal lounge with large windows at sunset, warm orange and purple hues reflecting on sleek floors" fetchpriority="high" width="1920" height="1080" decoding="async" decoding="async" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7bVECyHwsD_FPkeHUiZk7Pxa0MuWKHsQq2Tz3RNAiCZzR63Goe_Uo1ipzHHjXCUpuCaTamyDWnV012gRmq-a_PtAMr4DL1i-Rr4wuTfjjuFGYUbJ_GK-UTYndpd7mC-9lHr1SaNBZDcr-4NRqzfQaFJZcAzpEVClg19suEHsTqrKKoyxreJIdAaqVlV7EaVCOzpt6Bq11vGY9FlTU9MU7tWMaWrh7eXirWCxKSBuDoPKaeHfq006amnrEANkph3CX4cGBQA6c9K4"/>
 <div class="absolute inset-0 bg-gradient-to-b from-transparent via-surface/80 to-surface"></div>
 </div>
 <div class="relative z-10 max-w-5xl mx-auto text-center">
@@ -373,21 +378,21 @@
 <section class="py-24 px-8 max-w-7xl mx-auto" id="how-it-works">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
 <div class="group relative overflow-hidden rounded-3xl bg-surface-container border border-white/5 h-[400px]">
-<img class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" data-alt="Luxury airport spa interior with soft warm lighting, professional massage table, and bamboo elements for a calming atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuBeISMzXQPmWmOmB0ft4zxGshz-gTXvzupRjlzTpxD0wsTviCiyUtRzn3emtm-4mFRNk1sshFtHHN9FZyFc9FDWyaeXk8ad4U6Y7UyLtvGZT44QPc8dYNFY5c6OXVhfZLSdC3IU4_UP8n0rqYmETKgd07B-ktbHUz7ty3qLWIl7TiyTUv8bovx2eJRJljeeXdMkeE2PHMnSIILL3EIFW2YYbK7lP6iYBfTpoF5c4mtXEICObvxAQEi9TN9RhLPY1HqUBaE-dfU3o"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" data-alt="Luxury airport spa interior with soft warm lighting, professional massage table, and bamboo elements for a calming atmosphere" decoding="async" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuBeISMzXQPmWmOmB0ft4zxGshz-gTXvzupRjlzTpxD0wsTviCiyUtRzn3emtm-4mFRNk1sshFtHHN9FZyFc9FDWyaeXk8ad4U6Y7UyLtvGZT44QPc8dYNFY5c6OXVhfZLSdC3IU4_UP8n0rqYmETKgd07B-ktbHUz7ty3qLWIl7TiyTUv8bovx2eJRJljeeXdMkeE2PHMnSIILL3EIFW2YYbK7lP6iYBfTpoF5c4mtXEICObvxAQEi9TN9RhLPY1HqUBaE-dfU3o"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container via-surface-container/20 to-transparent p-8 flex flex-col justify-end">
 <h3 class="font-headline-md text-white mb-2">Curated Layover Experiences</h3>
 <p class="text-secondary/70">Discover handpicked hotels, lounges, spas, and short city experiences designed specifically for travelers in transit. Every option is selected for convenience, quality, and proximity to the airport.</p>
 </div>
 </div>
 <div class="group relative overflow-hidden rounded-3xl bg-surface-container border border-white/5 h-[400px]">
-<img class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" data-alt="Modern boutique hotel room interior with clean white linens, minimalist design, and a view of the airport runway at dusk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATVkR2KXkjynUzwChDVcZkDkKNFrDNseyf3wI6FNpzzIi9WSZIBh4fp5UEP4hylQCsTVoKcSOAVBzDSDkZOEzSqhWiGuwQVHP3Cote2EL6fvUHv6r6gjsDfoPSu0SBnPJ3SLxLuXLpeuyhYPaSOEgM5qaDyyq9CxdQuJLa7ZGavDOQjSFOuu8bEkLLp8-dE-p_Uq9a8kSpnMSGRLrtDVaiOMkEFxVvev0JD6S1hV7lDpM9_jf6AQ9U2715D53S3HRGxsyaYwvkSPY"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" data-alt="Modern boutique hotel room interior with clean white linens, minimalist design, and a view of the airport runway at dusk" decoding="async" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATVkR2KXkjynUzwChDVcZkDkKNFrDNseyf3wI6FNpzzIi9WSZIBh4fp5UEP4hylQCsTVoKcSOAVBzDSDkZOEzSqhWiGuwQVHP3Cote2EL6fvUHv6r6gjsDfoPSu0SBnPJ3SLxLuXLpeuyhYPaSOEgM5qaDyyq9CxdQuJLa7ZGavDOQjSFOuu8bEkLLp8-dE-p_Uq9a8kSpnMSGRLrtDVaiOMkEFxVvev0JD6S1hV7lDpM9_jf6AQ9U2715D53S3HRGxsyaYwvkSPY"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container via-surface-container/20 to-transparent p-8 flex flex-col justify-end">
 <h3 class="font-headline-md text-white mb-2">Flexible &amp; Time-Based Booking</h3>
 <p class="text-secondary/70">Book only for the time you need. No rigid schedules or full-day commitments - everything is optimized for your layover duration.</p>
 </div>
 </div>
 <div class="group relative overflow-hidden rounded-3xl bg-surface-container border border-white/5 h-[400px]">
-<img class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" data-alt="Close up of a traveler's hand holding a high-end smartphone displaying a sleek mobile boarding pass and booking confirmation UI" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeuOcp48bW0hOY4l8pEuj6z5sWn30Mv5P4Av858FhP6Aa2LtthA85vYicS7BpPAsl0Yq--QwUBB5AEwKLBYSZK_wcWjf3LOMYYW4lHtyN8bM5mTCt0dmNm1ou6uR4nMoyA7TinsYas2aKSI-N3O4BPLSUt_lBIjUvm9j2LSLoK_PzaTxh9uPrF8Al8gh9WCdud3wx2Qm0Ft2Z4EiEmvCS650vh5cgfDw58zTGl8XjeXsKNB8Rkm_8Ns2TKIWh7_5ppRliaUpBOgSk"/>
+<img class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" data-alt="Close up of a traveler's hand holding a high-end smartphone displaying a sleek mobile boarding pass and booking confirmation UI" decoding="async" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeuOcp48bW0hOY4l8pEuj6z5sWn30Mv5P4Av858FhP6Aa2LtthA85vYicS7BpPAsl0Yq--QwUBB5AEwKLBYSZK_wcWjf3LOMYYW4lHtyN8bM5mTCt0dmNm1ou6uR4nMoyA7TinsYas2aKSI-N3O4BPLSUt_lBIjUvm9j2LSLoK_PzaTxh9uPrF8Al8gh9WCdud3wx2Qm0Ft2Z4EiEmvCS650vh5cgfDw58zTGl8XjeXsKNB8Rkm_8Ns2TKIWh7_5ppRliaUpBOgSk"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container via-surface-container/20 to-transparent p-8 flex flex-col justify-end">
 <h3 class="font-headline-md text-white mb-2">Instant &amp; Seamless Booking</h3>
 <p class="text-secondary/70">Confirm your experience in seconds with real-time availability and secure checkout. Enjoy smooth entry with digital confirmations.</p>
@@ -457,7 +462,7 @@
 </div>
 </div>
 <div class="relative">
-<img class="rounded-3xl shadow-2xl" data-alt="A satisfied traveler sitting in a premium airport lounge, working on a laptop with a cup of coffee, background showing blurred airplanes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuRVO62zdv0fT7mYOWLqFAENE0C3MeiqWMzwxY8fvHyto_KpdrEHmKlTb3yj1AjwAyV-I0kFUXT1fE1sirgoM1OlTbrXAu611jENnrLd65-OQO_6NjkW9-X73Cy1n8a8PexPq9b46B2GYXDDPLM717YkZrqhb3R4DXpiPuhVulJmgU4WxGHuhAiJ6ppbKn9bfwMo_klweNRbwVxCPK_Thnnns4FVYXljJQBJP9sZnUdT6rrPEoWLRggCQhyECrW2vTQeqxBcKCD_8"/>
+<img class="rounded-3xl shadow-2xl" data-alt="A satisfied traveler sitting in a premium airport lounge, working on a laptop with a cup of coffee, background showing blurred airplanes" decoding="async" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuRVO62zdv0fT7mYOWLqFAENE0C3MeiqWMzwxY8fvHyto_KpdrEHmKlTb3yj1AjwAyV-I0kFUXT1fE1sirgoM1OlTbrXAu611jENnrLd65-OQO_6NjkW9-X73Cy1n8a8PexPq9b46B2GYXDDPLM717YkZrqhb3R4DXpiPuhVulJmgU4WxGHuhAiJ6ppbKn9bfwMo_klweNRbwVxCPK_Thnnns4FVYXljJQBJP9sZnUdT6rrPEoWLRggCQhyECrW2vTQeqxBcKCD_8"/>
 </div>
 </div>
 </section>
@@ -727,21 +732,40 @@
             });
         }
         
-        // Include Auth Protection Component
-        const authContainer = document.createElement('div');
-        authContainer.id = 'auth-protection-container';
-        document.body.appendChild(authContainer);
-        fetch('components/AuthProtection.js')
-            .then(response => response.text())
-            .then(text => {
-                authContainer.innerHTML = text;
-                const scripts = authContainer.querySelectorAll('script');
-                scripts.forEach(script => {
-                    const newScript = document.createElement('script');
-                    newScript.text = script.text;
-                    document.body.appendChild(newScript);
-                });
-            });
+        // Inline Auth Protection logic and modal
+        async function checkAuth(callback) {
+            console.log("🔍 Checking authentication session...");
+            let session = null;
+
+            if (window.supabaseClient) {
+                try {
+                    const { data } = await window.supabaseClient.auth.getSession();
+                    session = data.session;
+                } catch (err) {
+                    console.error("❌ Auth session fetch error:", err);
+                }
+            }
+
+            if (session) {
+                callback();
+            } else {
+                const modal = document.getElementById('auth-modal');
+                if (modal) {
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                    const inner = modal.querySelector('.bg-neutral-900');
+                    if (inner) inner.classList.remove('scale-95');
+                }
+            }
+        }
+        
+        function closeAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            if (modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                const inner = modal.querySelector('.bg-neutral-900');
+                if (inner) inner.classList.add('scale-95');
+            }
+        }
 
         // Authentication UI elements
         const authButtons = document.getElementById('authButtons');
